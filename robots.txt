@@ -1,0 +1,11 @@
+# robots.txt for lhpedclinic.com.tw
+# Generated for Netlify deployment
+
+User-agent: *
+Allow: /
+
+# Block access to internal Netlify paths
+Disallow: /.netlify/
+
+# Sitemap location
+Sitemap: https://lhpedclinic.com.tw/sitemap.xml
