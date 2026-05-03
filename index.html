@@ -929,6 +929,7 @@
 
         /* Hero Background */
         .hero-bg {
+            position: relative;
             background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(168, 198, 159, 0.3) 100%), url('images/hero-bg.jpg'), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIHNsaWNlIj4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJza3kiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRjBGN0VDIi8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNENEU1QzkiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNBOEM2OUYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNza3kpIi8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iODAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjQiLz4KPGNpcmNsZSBjeD0iMTcwMCIgY3k9IjMwMCIgcj0iNjAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjMiLz4KPGNpcmNsZSBjeD0iODAwIiBjeT0iMTUwIiByPSI0MCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4=');
             background-size: cover;
             background-position: center;
@@ -3508,6 +3509,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- 手機版小鹿：Hero 右下角，讓開浮動按鈕與底部 CTA bar -->
+        <div id="mobile-hero-deer" class="md:hidden" aria-hidden="true" style="position:fixed;bottom:76px;right:78px;width:110px;height:110px;pointer-events:none;z-index:1;opacity:0.88;transition:opacity 0.3s,visibility 0.3s;">
+            <img src="images/hero-mascot.png"
+                 data-fallback="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQThDNjlGIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN0M5QTZFIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxjaXJjbGUgY3g9IjI1MCIgY3k9IjI1MCIgcj0iMjAwIiBmaWxsPSJ1cmwoI2JnKSIgb3BhY2l0eT0iMC4zIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1MCAyMzApIj48ZWxsaXBzZSBjeD0iMCIgY3k9IjQwIiByeD0iODAiIHJ5PSIxMDAiIGZpbGw9IiNENEI4OTYiLz48Y2lyY2xlIGN4PSIwIiBjeT0iLTMwIiByPSI2MCIgZmlsbD0iI0Q0Qjg5NiIvPjxlbGxpcHNlIGN4PSItMjUiIGN5PSItMzAiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiMzYTNhM2EiLz48ZWxsaXBzZSBjeD0iMjUiIGN5PSItMzAiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiMzYTNhM2EiLz48Y2lyY2xlIGN4PSItMjMiIGN5PSItMzIiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMjciIGN5PSItMzIiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGVsbGlwc2UgY3g9IjAiIGN5PSItMTAiIHJ4PSI2IiByeT0iNCIgZmlsbD0iIzljN2E1YyIvPjxwYXRoIGQ9Ik0gLTE1IDAgUSAwIDggMTUgMCIgc3Ryb2tlPSIjOWM3YTVjIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0gLTUwIC01MCBMIC01NSAtODUgTCAtNDUgLTc4IFoiIGZpbGw9IiM5YzdhNWMiLz48cGF0aCBkPSJNIDUwIC01MCBMIDU1IC04NSBMIDQ1IC03OCBaIiBmaWxsPSIjOWM3YTVjIi8+PGNpcmNsZSBjeD0iLTMwIiBjeT0iNjAiIHI9IjYiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjYiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjgwIiByPSI1IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC42Ii8+PC9nPgo8dGV4dCB4PSIyNTAiIHk9IjQ1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzdDOUE2RSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSJib2xkIj7nq4vmrKPoqLrmiYA8L3RleHQ+Cjwvc3ZnPg=="
+                 alt=""
+                 width="110" height="110"
+                 class="float-animation w-full h-full object-contain"
+                 loading="eager" fetchpriority="high" decoding="async"
+                 style="filter:drop-shadow(0px 6px 14px rgba(0,0,0,0.12));">
+        </div>
     </section>
 
     <!-- Breadcrumb Navigation（視覺＋無障礙）-->
@@ -4519,6 +4531,26 @@
                 });
             }
         }
+        // 手機版 Hero 小鹿：只在 Hero 區可見，滾出後隱藏
+        (function() {
+            var deer = document.getElementById('mobile-hero-deer');
+            if (!deer) return;
+            var heroSection = document.querySelector('section.hero-bg');
+            if (!heroSection) return;
+            function updateDeer() {
+                var heroBottom = heroSection.getBoundingClientRect().bottom;
+                if (heroBottom <= 0) {
+                    deer.style.opacity = '0';
+                    deer.style.visibility = 'hidden';
+                } else {
+                    deer.style.opacity = '0.9';
+                    deer.style.visibility = 'visible';
+                }
+            }
+            window.addEventListener('scroll', updateDeer, { passive: true });
+            updateDeer();
+        })();
+
 
         // 圖片載入失敗時自動切換到 SVG fallback（覆蓋 picture/source 機制的不足）
         (function() {
