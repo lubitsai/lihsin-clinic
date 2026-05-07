@@ -453,19 +453,10 @@
     "@context": "https://schema.org",
     "@type": "Physician",
     "name": "蔡宗儒 醫師",
-    "telephone": "+886-6-2516086",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "育德路 467 號",
-      "addressLocality": "北區",
-      "addressRegion": "台南市",
-      "postalCode": "704",
-      "addressCountry": "TW"
-    },
-    "image": "https://lhpedclinic.com.tw/images/dr-tsai-portrait.jpg",
     "memberOf": {
-      "@id": "https://lhpedclinic.com.tw/#organization"
+      "@type": "MedicalOrganization",
+      "@id": "https://lhpedclinic.com.tw/#organization",
+      "name": "立欣診所 LiHsin Clinic"
     },
     "alumniOf": [
       {
@@ -497,11 +488,17 @@
     ],
     "description": "立欣診所院長，具中國醫藥大學醫學士暨公共衛生碩士、馬偕兒童過敏氣喘免疫風濕科研究醫師、新光醫院兒科總醫師、成大醫院兒科住院醫師、日本順天堂大學臨床進修等資歷，並為台灣肥胖醫學會醫師。",
     "worksFor": {
-      "@id": "https://lhpedclinic.com.tw/#organization"
+      "@type": "MedicalOrganization",
+      "@id": "https://lhpedclinic.com.tw/#organization",
+      "name": "立欣診所 LiHsin Clinic"
     },
     "hasOccupation": {
       "@type": "Occupation",
-      "name": "院長"
+      "name": "院長",
+      "occupationLocation": {
+        "@type": "MedicalClinic",
+        "@id": "https://lhpedclinic.com.tw/#organization"
+      }
     },
     "url": "https://lhpedclinic.com.tw/"
   },
@@ -509,19 +506,10 @@
     "@context": "https://schema.org",
     "@type": "Physician",
     "name": "李佳玲 醫師",
-    "telephone": "+886-6-2516086",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "育德路 467 號",
-      "addressLocality": "北區",
-      "addressRegion": "台南市",
-      "postalCode": "704",
-      "addressCountry": "TW"
-    },
-    "image": "https://lhpedclinic.com.tw/images/dr-li-portrait.jpg",
     "memberOf": {
-      "@id": "https://lhpedclinic.com.tw/#organization"
+      "@type": "MedicalOrganization",
+      "@id": "https://lhpedclinic.com.tw/#organization",
+      "name": "立欣診所 LiHsin Clinic"
     },
     "alumniOf": [
       {
@@ -545,11 +533,17 @@
     ],
     "description": "立欣診所主治醫師，具國防醫學院醫學士、國泰綜合醫院新生兒次專科研究醫師、台北禾馨民權婦幼診所兒科主治醫師、國泰綜合醫院兒科主治醫師等資歷，專長新生兒照護與小兒成長發育。",
     "worksFor": {
-      "@id": "https://lhpedclinic.com.tw/#organization"
+      "@type": "MedicalOrganization",
+      "@id": "https://lhpedclinic.com.tw/#organization",
+      "name": "立欣診所 LiHsin Clinic"
     },
     "hasOccupation": {
       "@type": "Occupation",
-      "name": "主治醫師"
+      "name": "主治醫師",
+      "occupationLocation": {
+        "@type": "MedicalClinic",
+        "@id": "https://lhpedclinic.com.tw/#organization"
+      }
     },
     "url": "https://lhpedclinic.com.tw/"
   }
@@ -3670,79 +3664,35 @@
   "description": "立欣診所位於台南市北區育德路467號，由馬偕兒童過敏氣喘免疫風濕科訓練蔡宗儒院長主持。提供小兒科、兒童過敏氣喘、新生兒照護、公費自費疫苗、科學減重、家庭醫學，平日夜診至21:30，週六週日均有門診。",
   "about": [
     {
-      "@type": "MedicalCondition",
+      "@type": "Thing",
       "name": "兒童過敏氣喘"
     },
     {
-      "@type": "MedicalCondition",
+      "@type": "Thing",
       "name": "新生兒照護"
     },
     {
-      "@type": "MedicalCondition",
+      "@type": "Thing",
       "name": "小兒科"
     },
     {
-      "@type": "MedicalCondition",
-      "name": "兒童肥胖與科學減重"
+      "@type": "Thing",
+      "name": "科學減重"
     }
   ],
   "reviewedBy": {
     "@type": "Physician",
     "@id": "https://lhpedclinic.com.tw/#tsai-physician",
     "name": "蔡宗儒 醫師",
-    "hasCredential": [
-      {
-        "@type": "EducationalOccupationalCredential",
-        "credentialCategory": "醫學士",
-        "recognizedBy": {
-          "@type": "EducationalOrganization",
-          "name": "中國醫藥大學"
-        }
-      },
-      {
-        "@type": "EducationalOccupationalCredential",
-        "credentialCategory": "公共衛生碩士",
-        "recognizedBy": {
-          "@type": "EducationalOrganization",
-          "name": "中國醫藥大學"
-        }
-      },
-      {
-        "@type": "EducationalOccupationalCredential",
-        "credentialCategory": "兒童過敏氣喘免疫風濕科研究醫師",
-        "recognizedBy": {
-          "@type": "Hospital",
-          "name": "馬偕紀念醫院"
-        }
-      }
-    ],
-    "memberOf": [
-      {
-        "@type": "MedicalOrganization",
-        "name": "台灣兒科醫學會"
-      },
-      {
-        "@type": "MedicalOrganization",
-        "name": "台灣肥胖醫學會"
-      },
-      {
-        "@type": "MedicalOrganization",
-        "name": "中華民國過敏免疫風濕醫學會"
-      }
-    ]
+    "url": "https://lhpedclinic.com.tw/"
   },
   "lastReviewed": "2026-05-01",
-  "mainContentOfPage": {
-    "@type": "WebPageElement",
-    "cssSelector": "main"
-  },
   "speakable": {
     "@type": "SpeakableSpecification",
-    "cssSelector": [
-      "h1",
-      "h2",
-      ".faq-answer",
-      "#ai-knowledge-block"
+    "xpath": [
+      "/html/body//h1",
+      "/html/body//h2",
+      "//*[contains(@class, 'faq-answer')]"
     ]
   },
   "inLanguage": "zh-TW",
@@ -3750,12 +3700,7 @@
     "@id": "https://lhpedclinic.com.tw/#website"
   }
 }
-    </script>
-</head>
-<body class="bg-white">
-
-    <!-- Skip to Main Content（無障礙）-->
-    <a href="#main-content" class="skip-link">跳至主要內容</a>
+    </script>跳至主要內容</a>
 
     <!-- Navigation -->
     <nav id="navbar" role="navigation" aria-label="主選單" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white" style="">
