@@ -454,16 +454,8 @@
     "@type": "Physician",
     "name": "蔡宗儒 醫師",
     "memberOf": {
-      "@type": "MedicalOrganization",
-      "@id": "https://lhpedclinic.com.tw/#organization",
-      "name": "立欣診所 LiHsin Clinic"
+      "@id": "https://lhpedclinic.com.tw/#organization"
     },
-    "alumniOf": [
-      {
-        "@type": "EducationalOrganization",
-        "name": "中國醫藥大學"
-      }
-    ],
     "knowsAbout": [
       {
         "@type": "Thing",
@@ -488,35 +480,18 @@
     ],
     "description": "立欣診所院長，具中國醫藥大學醫學士暨公共衛生碩士、馬偕兒童過敏氣喘免疫風濕科研究醫師、新光醫院兒科總醫師、成大醫院兒科住院醫師、日本順天堂大學臨床進修等資歷，並為台灣肥胖醫學會醫師。",
     "worksFor": {
-      "@type": "MedicalOrganization",
-      "@id": "https://lhpedclinic.com.tw/#organization",
-      "name": "立欣診所 LiHsin Clinic"
+      "@id": "https://lhpedclinic.com.tw/#organization"
     },
-    "hasOccupation": {
-      "@type": "Occupation",
-      "name": "院長",
-      "occupationLocation": {
-        "@type": "MedicalClinic",
-        "@id": "https://lhpedclinic.com.tw/#organization"
-      }
-    },
-    "url": "https://lhpedclinic.com.tw/"
+    "url": "https://lhpedclinic.com.tw/",
+    "jobTitle": "院長"
   },
   {
     "@context": "https://schema.org",
     "@type": "Physician",
     "name": "李佳玲 醫師",
     "memberOf": {
-      "@type": "MedicalOrganization",
-      "@id": "https://lhpedclinic.com.tw/#organization",
-      "name": "立欣診所 LiHsin Clinic"
+      "@id": "https://lhpedclinic.com.tw/#organization"
     },
-    "alumniOf": [
-      {
-        "@type": "EducationalOrganization",
-        "name": "國防醫學院"
-      }
-    ],
     "knowsAbout": [
       {
         "@type": "Thing",
@@ -533,19 +508,10 @@
     ],
     "description": "立欣診所主治醫師，具國防醫學院醫學士、國泰綜合醫院新生兒次專科研究醫師、台北禾馨民權婦幼診所兒科主治醫師、國泰綜合醫院兒科主治醫師等資歷，專長新生兒照護與小兒成長發育。",
     "worksFor": {
-      "@type": "MedicalOrganization",
-      "@id": "https://lhpedclinic.com.tw/#organization",
-      "name": "立欣診所 LiHsin Clinic"
+      "@id": "https://lhpedclinic.com.tw/#organization"
     },
-    "hasOccupation": {
-      "@type": "Occupation",
-      "name": "主治醫師",
-      "occupationLocation": {
-        "@type": "MedicalClinic",
-        "@id": "https://lhpedclinic.com.tw/#organization"
-      }
-    },
-    "url": "https://lhpedclinic.com.tw/"
+    "url": "https://lhpedclinic.com.tw/",
+    "jobTitle": "主治醫師"
   }
 ]
     </script>
@@ -3665,38 +3631,43 @@
   "about": [
     {
       "@type": "Thing",
-      "name": "兒童過敏氣喘"
+      "name": "兒童過敏氣喘",
+      "url": "https://lhpedclinic.com.tw/"
     },
     {
       "@type": "Thing",
-      "name": "新生兒照護"
+      "name": "新生兒照護",
+      "url": "https://lhpedclinic.com.tw/"
     },
     {
       "@type": "Thing",
-      "name": "小兒科"
+      "name": "小兒科",
+      "url": "https://lhpedclinic.com.tw/"
     },
     {
       "@type": "Thing",
-      "name": "科學減重"
+      "name": "科學減重",
+      "url": "https://lhpedclinic.com.tw/"
     }
   ],
   "reviewedBy": {
-    "@type": "Physician",
-    "@id": "https://lhpedclinic.com.tw/#tsai-physician",
-    "name": "蔡宗儒 醫師",
+    "@type": "Person",
+    "name": "蔡宗儒",
+    "jobTitle": "院長・小兒科醫師",
     "url": "https://lhpedclinic.com.tw/"
   },
   "lastReviewed": "2026-05-01",
   "speakable": {
     "@type": "SpeakableSpecification",
-    "xpath": [
-      "/html/body//h1",
-      "/html/body//h2",
-      "//*[contains(@class, 'faq-answer')]"
-    ]
+    "cssSelector": "h1, h2, .faq-answer"
   },
-  "inLanguage": "zh-TW",
+  "inLanguage": {
+    "@type": "Language",
+    "name": "Chinese",
+    "alternateName": "zh-TW"
+  },
   "isPartOf": {
+    "@type": "WebSite",
     "@id": "https://lhpedclinic.com.tw/#website"
   }
 }
