@@ -1,11 +1,13 @@
 # robots.txt for lhpedclinic.com.tw
-# Generated for Netlify deployment
 
 User-agent: *
 Allow: /
 
-# Block access to internal Netlify paths
+# 封鎖重複內容路徑（Netlify 將 index.html 對應為獨立 URL 造成 canonical 替代頁面）
+Disallow: /index.html
+
+# 封鎖 Netlify 內部路徑
 Disallow: /.netlify/
 
-# Sitemap location
+# Sitemap
 Sitemap: https://lhpedclinic.com.tw/sitemap.xml

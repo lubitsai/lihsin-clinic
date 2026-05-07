@@ -1,0 +1,4 @@
+# Netlify _redirects
+# 強制將 /index.html 301 跳轉到 /，解決 Google 的「替代頁面」問題
+
+/index.html  /  301!
