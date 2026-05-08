@@ -1,5 +1,9 @@
 # robots.txt for lhpedclinic.com.tw
+# 最後更新：2026-05-08
 
+# ============================================================
+# 全體爬蟲通用規則
+# ============================================================
 User-agent: *
 Allow: /
 
@@ -9,5 +13,50 @@ Disallow: /index.html
 # 封鎖 Netlify 內部路徑
 Disallow: /.netlify/
 
+# 封鎖查詢字串產生的重複內容
+Disallow: /*?*
+
+# ============================================================
+# Google 爬蟲明確宣告
+# ============================================================
+User-agent: Googlebot
+Allow: /
+Disallow: /index.html
+Disallow: /.netlify/
+Disallow: /*?*
+
+# Google 圖片爬蟲
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.webp$
+
+# ============================================================
+# Bing 爬蟲明確宣告
+# ============================================================
+User-agent: Bingbot
+Allow: /
+Disallow: /index.html
+Disallow: /.netlify/
+Disallow: /*?*
+
+# ============================================================
+# 封鎖惡意／無用爬蟲（節省頻寬）
+# ============================================================
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# ============================================================
 # Sitemap
+# ============================================================
 Sitemap: https://lhpedclinic.com.tw/sitemap.xml
