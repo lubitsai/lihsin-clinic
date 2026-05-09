@@ -182,7 +182,7 @@
       "@type": "MedicalProcedure",
       "name": "小兒科門診",
       "description": "兒童感冒、發燒、腸胃炎、皮膚病等一般兒科診療。",
-      "provider": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所", "url": "https://lhpedclinic.com.tw/"},
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"},
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -199,7 +199,7 @@
       "@type": "MedicalProcedure",
       "name": "兒童過敏氣喘評估與治療",
       "description": "肺功能檢測、過敏原評估、氣喘長期控制計畫，由馬偕兒童過敏氣喘免疫風濕科訓練蔡宗儒院長主診。",
-      "provider": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所", "url": "https://lhpedclinic.com.tw/"},
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"},
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -216,7 +216,7 @@
       "@type": "MedicalProcedure",
       "name": "新生兒照護",
       "description": "新生兒黃疸追蹤、餵食評估、生長曲線追蹤，由國泰新生兒次專科訓練李佳玲醫師主診。",
-      "provider": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所", "url": "https://lhpedclinic.com.tw/"},
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"},
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -233,7 +233,7 @@
       "@type": "MedicalProcedure",
       "name": "公費及自費疫苗接種",
       "description": "提供完整兒童公費疫苗及多種自費疫苗：輪狀病毒、腸病毒71型、RSV單株抗體、HPV、帶狀疱疹疫苗等。",
-      "provider": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所", "url": "https://lhpedclinic.com.tw/"},
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"},
       "offers": {
         "@type": "Offer",
         "priceCurrency": "TWD",
@@ -249,7 +249,7 @@
       "@type": "MedicalProcedure",
       "name": "科學減重門診",
       "description": "InBody體脂分析、醫師完整評估，依醫師評估必要時搭配合法核准減重藥物，由台灣肥胖醫學會醫師主診。需經醫師評估，效果因人而異。",
-      "provider": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所", "url": "https://lhpedclinic.com.tw/"},
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"},
       "offers": {
         "@type": "Offer",
         "priceCurrency": "TWD",
@@ -265,7 +265,7 @@
       "@type": "MedicalProcedure",
       "name": "家庭醫學照護",
       "description": "成人感冒、腸胃道症狀、高血壓糖尿病慢性病追蹤、戒菸門診、成人健康檢查。",
-      "provider": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所", "url": "https://lhpedclinic.com.tw/"},
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"},
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -280,20 +280,8 @@
     }
   ],
   "employee": [
-    {
-      "@type": "Physician",
-      "@id": "https://lhpedclinic.com.tw/#physician-tsai",
-      "name": "蔡宗儒",
-      "jobTitle": "院長・小兒科醫師",
-      "url": "https://lhpedclinic.com.tw/#physician-tsai"
-    },
-    {
-      "@type": "Physician",
-      "@id": "https://lhpedclinic.com.tw/#physician-lee",
-      "name": "李佳玲",
-      "jobTitle": "主治醫師・小兒科醫師",
-      "url": "https://lhpedclinic.com.tw/#physician-lee"
-    }
+    {"@id": "https://lhpedclinic.com.tw/#physician-tsai"},
+    {"@id": "https://lhpedclinic.com.tw/#physician-lee"}
   ],
   "areaServed": [
     {"@type": "AdministrativeArea", "name": "台南市北區"},
@@ -363,37 +351,27 @@
   "description": "立欣診所院長，具中國醫藥大學醫學士暨公共衛生碩士、馬偕兒童過敏氣喘免疫風濕科研究醫師、新光醫院兒科總醫師、成大醫院兒科住院醫師、日本順天堂大學臨床進修等資歷，並為台灣肥胖醫學會醫師。",
   "url": "https://lhpedclinic.com.tw/#physician-tsai",
   "medicalSpecialty": [
-    {
-      "@type": "MedicalSpecialty",
-      "name": "Pediatric",
-      "alternateName": "小兒科",
-      "url": "https://schema.org/Pediatric"
-    },
-    {
-      "@type": "MedicalSpecialty",
-      "name": "FamilyPractice",
-      "alternateName": "家庭醫學",
-      "url": "https://schema.org/FamilyPractice"
-    }
+    "Pediatric",
+    "FamilyPractice"
   ],
   "hasCredential": [
     {
       "@type": "EducationalOccupationalCredential",
       "credentialCategory": "degree",
       "name": "醫學士暨公共衛生碩士",
-      "recognizedBy": {"@type": "Organization", "name": "中國醫藥大學", "url": "https://www.cmu.edu.tw/"}
+      "recognizedBy": {"@type": "Organization", "name": "中國醫藥大學"}
     },
     {
       "@type": "EducationalOccupationalCredential",
       "credentialCategory": "fellowship",
       "name": "兒童過敏氣喘免疫風濕科研究醫師",
-      "recognizedBy": {"@type": "Organization", "name": "馬偕兒童醫院", "url": "https://www.mmh.org.tw/child/"}
+      "recognizedBy": {"@type": "Organization", "name": "馬偕兒童醫院"}
     },
     {
       "@type": "EducationalOccupationalCredential",
       "credentialCategory": "training",
       "name": "日本順天堂大學臨床進修",
-      "recognizedBy": {"@type": "Organization", "name": "日本順天堂大學", "url": "https://www.juntendo.ac.jp/"}
+      "recognizedBy": {"@type": "Organization", "name": "日本順天堂大學"}
     }
   ],
   "affiliation": [
@@ -403,49 +381,14 @@
       "url": "https://www.taso.org.tw"
     }
   ],
-  "worksFor": {
-    "@type": "MedicalOrganization",
-    "@id": "https://lhpedclinic.com.tw/#organization",
-    "name": "立欣診所",
-    "url": "https://lhpedclinic.com.tw/"
-  },
-  "memberOf": {
-    "@type": "MedicalOrganization",
-    "@id": "https://lhpedclinic.com.tw/#organization",
-    "name": "立欣診所",
-    "url": "https://lhpedclinic.com.tw/"
-  },
+  "worksFor": {"@id": "https://lhpedclinic.com.tw/#organization"},
+  "memberOf": {"@id": "https://lhpedclinic.com.tw/#organization"},
   "knowsAbout": [
-    {
-      "@type": "MedicalCondition",
-      "name": "兒童過敏",
-      "alternateName": "Pediatric Allergy",
-      "code": {"@type": "MedicalCode", "codeValue": "T78.40", "codingSystem": "ICD-10"}
-    },
-    {
-      "@type": "MedicalCondition",
-      "name": "兒童氣喘",
-      "alternateName": "Pediatric Asthma",
-      "code": {"@type": "MedicalCode", "codeValue": "J45", "codingSystem": "ICD-10"}
-    },
-    {
-      "@type": "MedicalCondition",
-      "name": "異位性皮膚炎",
-      "alternateName": "Atopic Dermatitis",
-      "code": {"@type": "MedicalCode", "codeValue": "L20", "codingSystem": "ICD-10"}
-    },
-    {
-      "@type": "MedicalCondition",
-      "name": "慢性鼻炎",
-      "alternateName": "Chronic Rhinitis",
-      "code": {"@type": "MedicalCode", "codeValue": "J31.0", "codingSystem": "ICD-10"}
-    },
-    {
-      "@type": "MedicalCondition",
-      "name": "肥胖症",
-      "alternateName": "Obesity",
-      "code": {"@type": "MedicalCode", "codeValue": "E66", "codingSystem": "ICD-10"}
-    },
+    {"@type": "MedicalCondition", "name": "兒童過敏"},
+    {"@type": "MedicalCondition", "name": "兒童氣喘"},
+    {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
+    {"@type": "MedicalCondition", "name": "慢性鼻炎"},
+    {"@type": "MedicalCondition", "name": "肥胖症"},
     {"@type": "Thing", "name": "科學減重"},
     {"@type": "Thing", "name": "肺功能檢查"},
     {"@type": "Thing", "name": "一般兒科"}
@@ -454,52 +397,17 @@
     {
       "@type": "MedicalProcedure",
       "name": "兒童過敏氣喘門診",
-      "provider": {
-        "@type": "MedicalOrganization",
-        "@id": "https://lhpedclinic.com.tw/#organization",
-        "name": "立欣診所"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "TWD",
-        "priceSpecification": {"@type": "PriceSpecification", "description": "健保給付，持健保卡就診"},
-        "availability": "https://schema.org/InStock",
-        "seller": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所"}
-      }
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"}
     },
     {
       "@type": "MedicalProcedure",
       "name": "科學減重門診",
-      "provider": {
-        "@type": "MedicalOrganization",
-        "@id": "https://lhpedclinic.com.tw/#organization",
-        "name": "立欣診所"
-      },
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "TWD",
-        "priceSpecification": {"@type": "PriceSpecification", "description": "自費門診，費用依評估項目與療程而定，請來電 06-2516086 諮詢"},
-        "availability": "https://schema.org/InStock",
-        "seller": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所"}
-      }
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"}
     },
     {
       "@type": "MedicalProcedure",
       "name": "小兒科一般門診",
-      "provider": {
-        "@type": "MedicalOrganization",
-        "@id": "https://lhpedclinic.com.tw/#organization",
-        "name": "立欣診所"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "TWD",
-        "priceSpecification": {"@type": "PriceSpecification", "description": "健保給付，持健保卡就診"},
-        "availability": "https://schema.org/InStock",
-        "seller": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所"}
-      }
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"}
     }
   ]
 }
@@ -526,52 +434,27 @@
   "description": "立欣診所主治醫師，具國防醫學院醫學士、國泰綜合醫院新生兒次專科研究醫師、台北禾馨民權婦幼診所兒科主治醫師、國泰綜合醫院兒科主治醫師等資歷，專長新生兒照護與小兒成長發育。",
   "url": "https://lhpedclinic.com.tw/#physician-lee",
   "medicalSpecialty": [
-    {
-      "@type": "MedicalSpecialty",
-      "name": "Pediatric",
-      "alternateName": "小兒科",
-      "url": "https://schema.org/Pediatric"
-    }
+    "Pediatric"
   ],
   "hasCredential": [
     {
       "@type": "EducationalOccupationalCredential",
       "credentialCategory": "degree",
       "name": "醫學士",
-      "recognizedBy": {"@type": "Organization", "name": "國防醫學院", "url": "https://www.ndmc.edu.tw/"}
+      "recognizedBy": {"@type": "Organization", "name": "國防醫學院"}
     },
     {
       "@type": "EducationalOccupationalCredential",
       "credentialCategory": "fellowship",
       "name": "新生兒次專科研究醫師",
-      "recognizedBy": {"@type": "Organization", "name": "國泰綜合醫院", "url": "https://www.cgh.org.tw/"}
+      "recognizedBy": {"@type": "Organization", "name": "國泰綜合醫院"}
     }
   ],
-  "worksFor": {
-    "@type": "MedicalOrganization",
-    "@id": "https://lhpedclinic.com.tw/#organization",
-    "name": "立欣診所",
-    "url": "https://lhpedclinic.com.tw/"
-  },
-  "memberOf": {
-    "@type": "MedicalOrganization",
-    "@id": "https://lhpedclinic.com.tw/#organization",
-    "name": "立欣診所",
-    "url": "https://lhpedclinic.com.tw/"
-  },
+  "worksFor": {"@id": "https://lhpedclinic.com.tw/#organization"},
+  "memberOf": {"@id": "https://lhpedclinic.com.tw/#organization"},
   "knowsAbout": [
-    {
-      "@type": "MedicalCondition",
-      "name": "新生兒黃疸",
-      "alternateName": "Neonatal Jaundice",
-      "code": {"@type": "MedicalCode", "codeValue": "P59", "codingSystem": "ICD-10"}
-    },
-    {
-      "@type": "MedicalCondition",
-      "name": "新生兒餵食問題",
-      "alternateName": "Neonatal Feeding Problem",
-      "code": {"@type": "MedicalCode", "codeValue": "P92", "codingSystem": "ICD-10"}
-    },
+    {"@type": "MedicalCondition", "name": "新生兒黃疸"},
+    {"@type": "MedicalCondition", "name": "新生兒餵食問題"},
     {"@type": "Thing", "name": "新生兒照護"},
     {"@type": "Thing", "name": "小兒成長發育"},
     {"@type": "Thing", "name": "兒童健康檢查"},
@@ -581,52 +464,17 @@
     {
       "@type": "MedicalProcedure",
       "name": "新生兒照護門診",
-      "provider": {
-        "@type": "MedicalOrganization",
-        "@id": "https://lhpedclinic.com.tw/#organization",
-        "name": "立欣診所"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "TWD",
-        "priceSpecification": {"@type": "PriceSpecification", "description": "健保給付，持健保卡就診"},
-        "availability": "https://schema.org/InStock",
-        "seller": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所"}
-      }
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"}
     },
     {
       "@type": "MedicalProcedure",
       "name": "小兒科一般門診",
-      "provider": {
-        "@type": "MedicalOrganization",
-        "@id": "https://lhpedclinic.com.tw/#organization",
-        "name": "立欣診所"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "TWD",
-        "priceSpecification": {"@type": "PriceSpecification", "description": "健保給付，持健保卡就診"},
-        "availability": "https://schema.org/InStock",
-        "seller": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所"}
-      }
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"}
     },
     {
       "@type": "MedicalProcedure",
       "name": "兒童疫苗接種",
-      "provider": {
-        "@type": "MedicalOrganization",
-        "@id": "https://lhpedclinic.com.tw/#organization",
-        "name": "立欣診所"
-      },
-      "offers": {
-        "@type": "Offer",
-        "priceCurrency": "TWD",
-        "priceSpecification": {"@type": "PriceSpecification", "description": "公費疫苗免費；自費疫苗請來電 06-2516086 詢問"},
-        "availability": "https://schema.org/InStock",
-        "seller": {"@type": "MedicalOrganization", "@id": "https://lhpedclinic.com.tw/#organization", "name": "立欣診所"}
-      }
+      "provider": {"@id": "https://lhpedclinic.com.tw/#organization"}
     }
   ]
 }
@@ -779,7 +627,6 @@
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
-  "@id": "https://lhpedclinic.com.tw/#breadcrumb",
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -3694,7 +3541,7 @@
   ],
   "code": {
     "@type": "MedicalCode",
-    "codeValue": "J45",
+    "code": "J45",
     "codingSystem": "ICD-10"
   },
   "description": "兒童氣喘是一種慢性呼吸道發炎疾病，常見症狀包括反覆性喘鳴、咳嗽（尤其夜間或運動後）、胸悶及呼吸困難。台灣兒童氣喘盛行率約10-15%，北台灣更高達20%。立欣診所院長蔡宗儒醫師具有馬偕兒童過敏氣喘免疫風濕科訓練背景，並引進肺功能檢測儀，提供客觀量化的氣喘診斷與追蹤。",
@@ -3758,252 +3605,49 @@
   "@id": "https://lhpedclinic.com.tw/#webpage",
   "url": "https://lhpedclinic.com.tw/",
   "name": "立欣診所 — 台南北區小兒科・兒童過敏氣喘・疫苗接種・科學減重",
-  "headline": "立欣診所｜台南北區兒科推薦・兒童過敏氣喘・科學減重・假日夜間門診",
   "description": "立欣診所位於台南市北區育德路467號，由馬偕兒童過敏氣喘免疫風濕科訓練蔡宗儒院長主持。提供小兒科、兒童過敏氣喘、新生兒照護、公費自費疫苗、科學減重、家庭醫學，平日夜診至21:30，週六週日均有門診。",
-  "abstract": "台南市北區立欣診所，醫學中心級專業，家門口的暖心照護。",
-  "inLanguage": "zh-TW",
-  "datePublished": "2024-01-01",
-  "dateModified": "2026-05-08",
-  "lastReviewed": "2026-05-08",
-  "isFamilyFriendly": true,
-  "specialty": [
-    {
-      "@type": "MedicalSpecialty",
-      "name": "Pediatric",
-      "alternateName": "小兒科",
-      "url": "https://schema.org/Pediatric"
-    },
-    {
-      "@type": "MedicalSpecialty",
-      "name": "FamilyPractice",
-      "alternateName": "家庭醫學",
-      "url": "https://schema.org/FamilyPractice"
-    }
-  ],
-  "audience": {
-    "@type": "MedicalAudience",
-    "audienceType": "Patient",
-    "healthCondition": [
-      {
-        "@type": "MedicalCondition",
-        "name": "兒童過敏",
-        "alternateName": "Pediatric Allergy",
-        "code": {
-          "@type": "MedicalCode",
-          "codeValue": "T78.40",
-          "codingSystem": "ICD-10"
-        }
-      },
-      {
-        "@type": "MedicalCondition",
-        "name": "兒童氣喘",
-        "alternateName": "Pediatric Asthma",
-        "code": {
-          "@type": "MedicalCode",
-          "codeValue": "J45",
-          "codingSystem": "ICD-10"
-        }
-      },
-      {
-        "@type": "MedicalCondition",
-        "name": "肥胖症",
-        "alternateName": "Obesity",
-        "code": {
-          "@type": "MedicalCode",
-          "codeValue": "E66",
-          "codingSystem": "ICD-10"
-        }
-      }
-    ]
-  },
   "about": [
     {
-      "@type": "MedicalCondition",
+      "@type": "Thing",
       "name": "兒童過敏氣喘",
-      "alternateName": "Pediatric Allergy and Asthma",
-      "code": {
-        "@type": "MedicalCode",
-        "codeValue": "J45.909",
-        "codingSystem": "ICD-10"
-      },
-      "recognizingAuthority": {
-        "@type": "MedicalOrganization",
-        "name": "World Health Organization",
-        "url": "https://www.who.int/"
-      }
+      "url": "https://lhpedclinic.com.tw/"
     },
     {
-      "@type": "MedicalCondition",
+      "@type": "Thing",
       "name": "新生兒照護",
-      "alternateName": "Neonatal Care",
-      "code": {
-        "@type": "MedicalCode",
-        "codeValue": "Z76.2",
-        "codingSystem": "ICD-10"
-      },
-      "recognizingAuthority": {
-        "@type": "MedicalOrganization",
-        "name": "American Academy of Pediatrics",
-        "url": "https://www.aap.org/"
-      }
+      "url": "https://lhpedclinic.com.tw/"
     },
     {
-      "@type": "MedicalSpecialty",
-      "name": "Pediatric",
-      "alternateName": "小兒科",
-      "url": "https://schema.org/Pediatric"
+      "@type": "Thing",
+      "name": "小兒科",
+      "url": "https://lhpedclinic.com.tw/"
     },
     {
-      "@type": "MedicalCondition",
-      "name": "肥胖症",
-      "alternateName": "Obesity",
-      "code": {
-        "@type": "MedicalCode",
-        "codeValue": "E66",
-        "codingSystem": "ICD-10"
-      },
-      "recognizingAuthority": {
-        "@type": "MedicalOrganization",
-        "name": "World Health Organization",
-        "url": "https://www.who.int/"
-      }
-    }
-  ],
-  "mainContentOfPage": {
-    "@type": "WebPageElement",
-    "cssSelector": "#main-content"
-  },
-  "primaryImageOfPage": {
-    "@type": "ImageObject",
-    "url": "https://lhpedclinic.com.tw/images/og-image.jpg",
-    "width": 1200,
-    "height": 630,
-    "caption": "立欣診所 — 台南市北區小兒科診所"
-  },
-  "image": {
-    "@type": "ImageObject",
-    "url": "https://lhpedclinic.com.tw/images/og-image.jpg",
-    "width": 1200,
-    "height": 630
-  },
-  "thumbnailUrl": "https://lhpedclinic.com.tw/images/og-image.jpg",
-  "author": {
-    "@type": "Person",
-    "@id": "https://lhpedclinic.com.tw/#physician-tsai",
-    "name": "蔡宗儒",
-    "givenName": "宗儒",
-    "familyName": "蔡",
-    "honorificPrefix": "Dr.",
-    "jobTitle": "院長・小兒科醫師",
-    "image": "https://lhpedclinic.com.tw/images/og-image.jpg",
-    "url": "https://lhpedclinic.com.tw/#team",
-    "worksFor": {
-      "@type": "MedicalOrganization",
-      "@id": "https://lhpedclinic.com.tw/#organization",
-      "name": "立欣診所",
+      "@type": "Thing",
+      "name": "科學減重",
       "url": "https://lhpedclinic.com.tw/"
     }
-  },
+  ],
   "reviewedBy": {
     "@type": "Person",
-    "@id": "https://lhpedclinic.com.tw/#physician-tsai",
     "name": "蔡宗儒",
-    "givenName": "宗儒",
-    "familyName": "蔡",
-    "honorificPrefix": "Dr.",
     "jobTitle": "院長・小兒科醫師",
-    "image": "https://lhpedclinic.com.tw/images/og-image.jpg",
-    "url": "https://lhpedclinic.com.tw/#team",
-    "hasCredential": [
-      {
-        "@type": "EducationalOccupationalCredential",
-        "credentialCategory": "degree",
-        "name": "醫學士暨公共衛生碩士",
-        "recognizedBy": {
-          "@type": "Organization",
-          "name": "中國醫藥大學",
-          "url": "https://www.cmu.edu.tw/"
-        }
-      },
-      {
-        "@type": "EducationalOccupationalCredential",
-        "credentialCategory": "fellowship",
-        "name": "兒童過敏氣喘免疫風濕科研究醫師",
-        "recognizedBy": {
-          "@type": "Organization",
-          "name": "馬偕兒童醫院",
-          "url": "https://www.mmh.org.tw/child/"
-        }
-      }
-    ],
-    "hasOccupation": {
-      "@type": "Occupation",
-      "name": "小兒科醫師",
-      "occupationLocation": {
-        "@type": "City",
-        "name": "台南市",
-        "alternateName": "Tainan"
-      }
-    },
-    "worksFor": {
-      "@type": "MedicalOrganization",
-      "@id": "https://lhpedclinic.com.tw/#organization",
-      "name": "立欣診所",
-      "url": "https://lhpedclinic.com.tw/"
-    }
+    "url": "https://lhpedclinic.com.tw/"
   },
-  "publisher": {
-    "@type": "MedicalOrganization",
-    "@id": "https://lhpedclinic.com.tw/#organization",
-    "name": "立欣診所",
-    "url": "https://lhpedclinic.com.tw/",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://lhpedclinic.com.tw/images/og-image.jpg",
-      "width": 512,
-      "height": 512
-    }
-  },
+  "lastReviewed": "2026-05-08",
+  "dateModified": "2026-05-08",
   "speakable": {
     "@type": "SpeakableSpecification",
-    "cssSelector": ["h1", "h2", ".faq-answer"]
+    "cssSelector": "h1, h2, .faq-answer"
   },
-  "potentialAction": {
-    "@type": "ReadAction",
-    "target": "https://lhpedclinic.com.tw/"
+  "inLanguage": {
+    "@type": "Language",
+    "name": "Chinese",
+    "alternateName": "zh-TW"
   },
-  "citation": [
-    {
-      "@type": "CreativeWork",
-      "name": "Global Initiative for Asthma (GINA) Guidelines",
-      "url": "https://ginasthma.org/"
-    },
-    {
-      "@type": "CreativeWork",
-      "name": "台灣兒科醫學會臨床指引",
-      "url": "https://www.pediatr.org.tw/"
-    },
-    {
-      "@type": "CreativeWork",
-      "name": "衛生福利部疾病管制署疫苗接種建議",
-      "url": "https://www.cdc.gov.tw/"
-    }
-  ],
   "isPartOf": {
     "@type": "WebSite",
-    "@id": "https://lhpedclinic.com.tw/#website",
-    "name": "立欣診所",
-    "url": "https://lhpedclinic.com.tw/"
-  },
-  "mainEntity": {
-    "@type": "MedicalClinic",
-    "@id": "https://lhpedclinic.com.tw/#organization",
-    "name": "立欣診所",
-    "url": "https://lhpedclinic.com.tw/"
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "@id": "https://lhpedclinic.com.tw/#breadcrumb"
+    "@id": "https://lhpedclinic.com.tw/#website"
   }
 }
     </script>跳至主要內容</a>
