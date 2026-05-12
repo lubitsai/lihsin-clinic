@@ -1,5 +1,5 @@
 # robots.txt for lhpedclinic.com.tw
-# 最後更新：2026-05-08
+# 最後更新：2026-05-13
 
 # ============================================================
 # 全體爬蟲通用規則
@@ -13,7 +13,7 @@ Disallow: /index.html
 # 封鎖 Netlify 內部路徑
 Disallow: /.netlify/
 
-# 封鎖查詢字串產生的重複內容
+# 封鎖查詢字串產生的重複內容（utm_source、fbclid 等行銷參數）
 Disallow: /*?*
 
 # ============================================================
@@ -45,10 +45,10 @@ Disallow: /*?*
 # 封鎖惡意／無用爬蟲（節省頻寬）
 # ============================================================
 User-agent: AhrefsBot
-Crawl-delay: 10
+Disallow: /
 
 User-agent: SemrushBot
-Crawl-delay: 10
+Disallow: /
 
 User-agent: MJ12bot
 Disallow: /

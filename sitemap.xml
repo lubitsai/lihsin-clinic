@@ -5,7 +5,7 @@
   <!-- 主頁（單頁網站主入口）-->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="zh-TW" href="https://lhpedclinic.com.tw/"/>
@@ -15,7 +15,7 @@
   <!-- 門診時間區塊 -->
   <url>
     <loc>https://lhpedclinic.com.tw/#schedule</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -23,7 +23,7 @@
   <!-- 服務項目區塊 -->
   <url>
     <loc>https://lhpedclinic.com.tw/#services</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -31,7 +31,7 @@
   <!-- 醫療團隊區塊 -->
   <url>
     <loc>https://lhpedclinic.com.tw/#team</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -39,15 +39,31 @@
   <!-- 認識立欣（院長的話）區塊 -->
   <url>
     <loc>https://lhpedclinic.com.tw/#director-message</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <!-- 關於立欣（診所特色與差異化）區塊 -->
+  <url>
+    <loc>https://lhpedclinic.com.tw/#about</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- 信任指標區塊（Google 評分、EEAT 憑證）-->
+  <url>
+    <loc>https://lhpedclinic.com.tw/#trust</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 
   <!-- 衛教知識區塊 -->
   <url>
     <loc>https://lhpedclinic.com.tw/#health-tips</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -55,7 +71,7 @@
   <!-- 常見問題 FAQ 區塊 -->
   <url>
     <loc>https://lhpedclinic.com.tw/#faq</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -63,7 +79,7 @@
   <!-- 聯絡我們區塊 -->
   <url>
     <loc>https://lhpedclinic.com.tw/#contact</loc>
-    <lastmod>2026-05-08</lastmod>
+    <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
