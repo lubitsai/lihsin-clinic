@@ -1,21 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemaps-image/1.1">
 
   <!--
-    立欣診所為單頁網站（Single-Page Website），
+    ============================================================
+    立欣診所 LiHsin Clinic - sitemap.xml
+    ============================================================
+    本站為單頁網站（Single-Page Website / Static），
     所有內容均位於同一個 URL（https://lhpedclinic.com.tw/），
     其餘 #schedule、#services、#team 等皆為同頁錨點，
     依 Google Search Central 官方規範不應列為獨立 URL。
-    最後更新：2026-05-14
+
+    最後更新：2026-05-15
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-05-14</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-05-15</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+
+    <!-- 語言版本宣告（zh-TW 為主） -->
     <xhtml:link rel="alternate" hreflang="zh-TW" href="https://lhpedclinic.com.tw/"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://lhpedclinic.com.tw/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://lhpedclinic.com.tw/"/>
+
+    <!-- 圖片資產（協助 Google Images 索引） -->
+    <image:image>
+      <image:loc>https://lhpedclinic.com.tw/images/og-image.jpg</image:loc>
+      <image:title>立欣診所 LiHsin Clinic — 台南市北區小兒科</image:title>
+      <image:caption>立欣診所｜台南市北區育德路467號｜台南假日兒科・小兒科・兒童過敏氣喘・科學減重</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://lhpedclinic.com.tw/images/logo.png</image:loc>
+      <image:title>立欣診所 LOGO</image:title>
+      <image:caption>立欣診所識別標誌</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://lhpedclinic.com.tw/images/hero-mascot.png</image:loc>
+      <image:title>立欣診所吉祥物</image:title>
+      <image:caption>立欣診所小鹿吉祥物</image:caption>
+    </image:image>
   </url>
 
 </urlset>

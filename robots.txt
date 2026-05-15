@@ -1,27 +1,30 @@
+# ============================================================
 # robots.txt for lhpedclinic.com.tw
-# 立欣診所｜台南市北區小兒科
-# 最後更新：2026-05-14
+# 立欣診所 LiHsin Clinic｜台南市北區小兒科
+# 最後更新：2026-05-15
+# ============================================================
 
 # ============================================================
-# 全體爬蟲通用規則
+# 全體爬蟲通用規則（預設允許索引）
 # ============================================================
 User-agent: *
 Allow: /
 
-# 封鎖 Netlify 平台內部路徑（系統檔案）
+# 封鎖 Netlify 平台內部路徑（系統檔案，非網頁內容）
 Disallow: /.netlify/
 
 # 封鎖建置中與管理路徑（若未來新增）
 Disallow: /admin/
 Disallow: /draft/
+Disallow: /private/
 
-# 註：以下情境不在 robots.txt 處理，改由 HTML 端設定：
-# • /index.html 重複內容：由 _redirects 301 轉至 /
-# • UTM/fbclid 等查詢字串重複內容：由 <link rel="canonical"> 處理
-#   ※ 不在 robots 封鎖 query string，以免擋掉社群分享流量
+# 註：以下情境「不」在 robots.txt 處理，而由 HTML 端設定：
+# • /index.html 重複內容    → 由 _redirects 301 轉至 /
+# • UTM/fbclid 等查詢字串    → 由 <link rel="canonical"> 處理
+#   ※ 不在 robots 封鎖 query string，避免擋掉社群分享流量
 
 # ============================================================
-# Google 爬蟲明確宣告
+# Google 爬蟲
 # ============================================================
 User-agent: Googlebot
 Allow: /
@@ -32,17 +35,29 @@ User-agent: Googlebot-Image
 Allow: /
 Allow: /images/
 
-# Google 行動爬蟲（行動裝置索引優先）
+# Google 行動爬蟲（行動裝置索引優先 Mobile-First Indexing）
 User-agent: Googlebot-Mobile
 Allow: /
 
+# Google AdsBot（檢查 Google Ads 連結頁面品質）
+User-agent: AdsBot-Google
+Allow: /
+
+# Google Mobile AdsBot
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
 # ============================================================
-# Bing 爬蟲
+# Bing / Microsoft 爬蟲
 # ============================================================
 User-agent: Bingbot
 Allow: /
 Disallow: /.netlify/
 Crawl-delay: 2
+
+# Bing 圖片
+User-agent: msnbot-media
+Allow: /
 
 # ============================================================
 # 其他主要搜尋引擎
@@ -54,32 +69,66 @@ Disallow: /.netlify/
 User-agent: DuckDuckBot
 Allow: /
 
+User-agent: Applebot
+Allow: /
+
 # ============================================================
 # AI 爬蟲（明確允許索引以利 AI 搜尋曝光）
-#   ChatGPT、Claude、Perplexity 等 AI 引擎主動抓取網頁
+# 2026 年 AI 搜尋已成為重要流量來源，明確允許可提升被引用機率。
+# 包含：OpenAI、Anthropic、Perplexity、Google AI、Meta、Apple 等
 # ============================================================
+
+# OpenAI（ChatGPT）
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic（Claude）
 User-agent: ClaudeBot
 Allow: /
 
 User-agent: Claude-Web
 Allow: /
 
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity AI 搜尋
 User-agent: PerplexityBot
 Allow: /
 
+# Google AI / Gemini（訓練與檢索）
 User-agent: Google-Extended
+Allow: /
+
+# Meta AI（LLaMA、Meta AI 助手）
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Apple 智能（Apple Intelligence / Siri 知識來源）
+User-agent: Applebot-Extended
+Allow: /
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+
+# You.com AI 搜尋
+User-agent: YouBot
 Allow: /
 
 # ============================================================
 # 高頻 SEO 工具爬蟲（節流但不封鎖）
-#   過去版本曾完全封鎖，但完全封鎖會影響院長自行用工具
-#   查詢診所 SEO 狀態與反向連結。改為設定 Crawl-delay 即可。
+# 完全封鎖會影響院長自行使用工具查詢 SEO 與反向連結。
+# 改為設定 Crawl-delay 即可節省頻寬。
 # ============================================================
 User-agent: AhrefsBot
 Crawl-delay: 10
@@ -90,8 +139,11 @@ Crawl-delay: 10
 User-agent: MJ12bot
 Crawl-delay: 10
 
+User-agent: rogerbot
+Crawl-delay: 10
+
 # ============================================================
-# 封鎖確認為惡意或無用的爬蟲
+# 封鎖確認為惡意、過度抓取或無用的爬蟲
 # ============================================================
 User-agent: DotBot
 Disallow: /
@@ -102,7 +154,17 @@ Disallow: /
 User-agent: BLEXBot
 Disallow: /
 
+User-agent: Bytespider
+Disallow: /
+
+User-agent: SeznamBot
+Disallow: /
+
+User-agent: SerpstatBot
+Disallow: /
+
 # ============================================================
-# Sitemap
+# Sitemap 宣告
+# Google、Bing、Yandex 等主流搜尋引擎都會自動偵測此宣告
 # ============================================================
 Sitemap: https://lhpedclinic.com.tw/sitemap.xml
