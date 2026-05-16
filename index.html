@@ -865,16 +865,80 @@
  ]
 }
  </script>
+<!-- SiteNavigationElement：頁面內主要區段導覽（取代不適用於單頁網站的 BreadcrumbList）
+     用途：協助 Google、ChatGPT、Claude、Perplexity 等 AI 引擎快速理解頁面結構，
+     並讓搜尋結果頁可能顯示「跳至區段」連結 -->
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
- "@type": "BreadcrumbList",
+ "@type": "ItemList",
+ "@id": "https://lhpedclinic.com.tw/#site-navigation",
+ "name": "立欣診所網站區段導覽",
+ "description": "立欣診所官網主要區段，可由各錨點快速跳轉",
+ "numberOfItems": 9,
  "itemListElement": [
  {
- "@type": "ListItem",
+ "@type": "SiteNavigationElement",
  "position": 1,
- "name": "首頁",
- "item": "https://lhpedclinic.com.tw/"
+ "name": "門診時間",
+ "description": "週六、週日均有門診，平日夜診至 21:30",
+ "url": "https://lhpedclinic.com.tw/#schedule"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 2,
+ "name": "服務項目",
+ "description": "小兒科、兒童過敏氣喘、新生兒照護、疫苗接種、家庭醫學、科學減重",
+ "url": "https://lhpedclinic.com.tw/#services"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 3,
+ "name": "醫療團隊",
+ "description": "蔡宗儒院長（馬偕兒童過敏氣喘免疫風濕科訓練）、李佳玲醫師（國泰醫院新生兒次專科訓練）",
+ "url": "https://lhpedclinic.com.tw/#team"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 4,
+ "name": "院長的話",
+ "description": "立欣診所創立理念與診療態度說明",
+ "url": "https://lhpedclinic.com.tw/#director-message"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 5,
+ "name": "為什麼選擇立欣",
+ "description": "醫師資歷、院內設備、診所特色介紹",
+ "url": "https://lhpedclinic.com.tw/#about"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 6,
+ "name": "醫師資歷與專業認證",
+ "description": "公開、可驗證的醫療團隊資訊",
+ "url": "https://lhpedclinic.com.tw/#trust"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 7,
+ "name": "衛教知識",
+ "description": "兒科、過敏氣喘、異位性皮膚炎、疫苗、減重等衛教資訊",
+ "url": "https://lhpedclinic.com.tw/#health-tips"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 8,
+ "name": "常見問題",
+ "description": "掛號、看診、疫苗、新生兒、成人照護、特殊狀況等常見問題",
+ "url": "https://lhpedclinic.com.tw/#faq"
+ },
+ {
+ "@type": "SiteNavigationElement",
+ "position": 9,
+ "name": "聯絡我們",
+ "description": "電話 06-2516086、LINE @lhpedclinic、台南市北區育德路 467 號",
+ "url": "https://lhpedclinic.com.tw/#contact"
  }
  ]
 }
@@ -4306,13 +4370,13 @@
  {"@type": "Thing", "name": "科學減重門診"}
  ],
  "mentions": [
- {"@type": "Drug", "name": "RSV 長效型單株抗體（樂唯初 Beyfortus，nirsevimab）"},
- {"@type": "Drug", "name": "HPV 9 價疫苗（嘉喜 Gardasil 9）"},
- {"@type": "Drug", "name": "帶狀皰疹疫苗（欣剋疹 Shingrix）"},
- {"@type": "Drug", "name": "B 型腦脊髓膜炎疫苗（Bexsero 必思諾）"},
- {"@type": "Drug", "name": "15 價肺炎鏈球菌疫苗"},
- {"@type": "Drug", "name": "輪狀病毒疫苗"},
- {"@type": "Drug", "name": "腸病毒 71 型疫苗"},
+ {"@type": "Substance", "name": "RSV 長效型單株抗體（樂唯初 Beyfortus，nirsevimab）"},
+ {"@type": "Substance", "name": "HPV 9 價疫苗（嘉喜 Gardasil 9）"},
+ {"@type": "Substance", "name": "帶狀皰疹疫苗（欣剋疹 Shingrix）"},
+ {"@type": "Substance", "name": "B 型腦脊髓膜炎疫苗（Bexsero 必思諾）"},
+ {"@type": "Substance", "name": "15 價肺炎鏈球菌疫苗"},
+ {"@type": "Substance", "name": "輪狀病毒疫苗"},
+ {"@type": "Substance", "name": "腸病毒 71 型疫苗"},
  {"@type": "MedicalCondition", "name": "兒童氣喘"},
  {"@type": "MedicalCondition", "name": "過敏性鼻炎"},
  {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
@@ -4344,7 +4408,6 @@
  "section#schedule"
  ]
  },
- "breadcrumb": {"@id": "https://lhpedclinic.com.tw/#breadcrumb"},
  "potentialAction": [
  {
  "@type": "ReserveAction",
