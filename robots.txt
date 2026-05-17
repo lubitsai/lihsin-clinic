@@ -1,7 +1,7 @@
 # ============================================================
 # robots.txt for lhpedclinic.com.tw
 # 立欣診所 LiHsin Clinic｜台南市北區小兒科
-# 最後更新：2026-05-15
+# 最後更新：2026-05-17
 # ============================================================
 
 # ============================================================
@@ -18,6 +18,9 @@ Disallow: /admin/
 Disallow: /draft/
 Disallow: /private/
 
+# 封鎖 404 頁面（雙重保險：頁面 meta 已 noindex，此處再次明確封鎖）
+Disallow: /404.html
+
 # 註：以下情境「不」在 robots.txt 處理，而由 HTML 端設定：
 # • /index.html 重複內容    → 由 _redirects 301 轉至 /
 # • UTM/fbclid 等查詢字串    → 由 <link rel="canonical"> 處理
@@ -29,6 +32,7 @@ Disallow: /private/
 User-agent: Googlebot
 Allow: /
 Disallow: /.netlify/
+Disallow: /404.html
 
 # Google 圖片爬蟲（明確允許圖片資源被索引）
 User-agent: Googlebot-Image
@@ -53,6 +57,7 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 Disallow: /.netlify/
+Disallow: /404.html
 Crawl-delay: 2
 
 # Bing 圖片
@@ -65,6 +70,7 @@ Allow: /
 User-agent: Yandex
 Allow: /
 Disallow: /.netlify/
+Disallow: /404.html
 
 User-agent: DuckDuckBot
 Allow: /
@@ -123,6 +129,22 @@ Allow: /
 
 # You.com AI 搜尋
 User-agent: YouBot
+Allow: /
+
+# Amazon AI（Alexa、Amazon Bedrock 訓練）
+User-agent: Amazonbot
+Allow: /
+
+# Diffbot（知識圖譜建構，常被多家 AI 服務使用）
+User-agent: Diffbot
+Allow: /
+
+# Mistral AI
+User-agent: MistralAI-User
+Allow: /
+
+# Common Crawl（多家 LLM 訓練資料來源）
+User-agent: CCBot
 Allow: /
 
 # ============================================================

@@ -12,11 +12,15 @@
     其餘 #schedule、#services、#team 等皆為同頁錨點，
     依 Google Search Central 官方規範不應列為獨立 URL。
 
-    最後更新：2026-05-15
+    注意：
+    • /404.html 不列入 sitemap（404 頁面禁止索引）
+    • /robots.txt、/sitemap.xml 為系統檔案，不列入 sitemap
+
+    最後更新：2026-05-17
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-05-15</lastmod>
+    <lastmod>2026-05-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -29,7 +33,7 @@
     <image:image>
       <image:loc>https://lhpedclinic.com.tw/images/og-image.jpg</image:loc>
       <image:title>立欣診所 LiHsin Clinic — 台南市北區小兒科</image:title>
-      <image:caption>立欣診所｜台南市北區育德路467號｜台南假日兒科・小兒科・兒童過敏氣喘・科學減重</image:caption>
+      <image:caption>立欣診所｜台南市北區育德路467號｜小兒科・台南假日兒科・兒童過敏氣喘・異位性皮膚炎・新生兒照護・公費自費疫苗・科學減重・家庭醫學</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://lhpedclinic.com.tw/images/logo.png</image:loc>
