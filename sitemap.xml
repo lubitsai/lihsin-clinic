@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:image="http://www.google.com/schemas/sitemaps-image/1.1">
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <!--
     ============================================================
@@ -15,6 +15,10 @@
     注意：
     • /404.html 不列入 sitemap（404 頁面禁止索引）
     • /robots.txt、/sitemap.xml 為系統檔案，不列入 sitemap
+
+    命名空間規範（Google 官方）：
+    • xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+      ⚠ 注意是 sitemap-image（單數），不是 sitemaps-image（複數）
 
     Image Sitemap 規範（2022 年更新）：
     Google 已棄用 <image:title>、<image:caption>、<image:geo_location>、
