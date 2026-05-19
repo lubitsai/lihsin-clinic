@@ -490,6 +490,17 @@
  "honorificPrefix": "Dr.",
  "honorificSuffix": "醫師・院長",
  "jobTitle": "院長・小兒科醫師",
+ "telephone": "+886-6-2516086",
+ "address": {
+ "@type": "PostalAddress",
+ "streetAddress": "育德路467號",
+ "addressLocality": "北區",
+ "addressRegion": "台南市",
+ "postalCode": "70457",
+ "addressCountry": "TW"
+ },
+ "worksFor": {"@id": "https://lhpedclinic.com.tw/#organization"},
+ "workLocation": {"@id": "https://lhpedclinic.com.tw/#organization"},
  "image": {
  "@type": "ImageObject",
  "url": "https://lhpedclinic.com.tw/images/og-image.jpg",
@@ -573,6 +584,17 @@
  "honorificPrefix": "Dr.",
  "honorificSuffix": "醫師",
  "jobTitle": "主治醫師・小兒科醫師",
+ "telephone": "+886-6-2516086",
+ "address": {
+ "@type": "PostalAddress",
+ "streetAddress": "育德路467號",
+ "addressLocality": "北區",
+ "addressRegion": "台南市",
+ "postalCode": "70457",
+ "addressCountry": "TW"
+ },
+ "worksFor": {"@id": "https://lhpedclinic.com.tw/#organization"},
+ "workLocation": {"@id": "https://lhpedclinic.com.tw/#organization"},
  "image": {
  "@type": "ImageObject",
  "url": "https://lhpedclinic.com.tw/images/og-image.jpg",
@@ -4108,21 +4130,11 @@
 {
  "@context": "https://schema.org",
  "@type": "SpecialAnnouncement",
- "name": "立欣診所提供台南北區最完整夜間與假日小兒科門診",
+ "name": "立欣診所提供台南北區夜間與假日小兒科門診時段",
  "text": "立欣診所（台南市北區育德路467號）平日週一至週五提供完整三段門診（08:00–12:00、14:30–18:00、18:30–21:30），週六及週日均有門診，方便雙薪家庭及上班族帶孩子就診。台南北區假日小兒科診所，電話 06-2516086，LINE @lhpedclinic。",
  "datePosted": "2026-05-01",
  "expires": "2027-12-31",
- "announcementLocation": {
- "@type": "LocalBusiness",
- "name": "立欣診所",
- "address": {
- "@type": "PostalAddress",
- "streetAddress": "育德路467號",
- "addressLocality": "北區",
- "addressRegion": "台南市",
- "addressCountry": "TW"
- }
- },
+ "announcementLocation": {"@id": "https://lhpedclinic.com.tw/#organization"},
  "spatialCoverage": {"@type": "Place", "name": "台南市北區"},
  "diseaseSpreadStatistics": []
 }
@@ -4251,6 +4263,7 @@
  "email": "lhpedclinic@gmail.com",
  "image": "https://lhpedclinic.com.tw/images/og-image.jpg",
  "logo": "https://lhpedclinic.com.tw/images/logo.png",
+ "priceRange": "$$",
  "address": {
  "@type": "PostalAddress",
  "streetAddress": "育德路467號",
@@ -4275,19 +4288,9 @@
  "recognizedBy": {"@type": "Organization", "name": "衛生福利部中央健康保險署"}
  }
  ],
- "member": [
- {
- "@type": "OrganizationRole",
- "member": {"@id": "https://lhpedclinic.com.tw/#physician-tsai"},
- "roleName": "院長・小兒科醫師",
- "startDate": "2024-07-01"
- },
- {
- "@type": "OrganizationRole",
- "member": {"@id": "https://lhpedclinic.com.tw/#physician-lee"},
- "roleName": "主治醫師・小兒科醫師",
- "startDate": "2024-07-01"
- }
+ "employee": [
+ {"@id": "https://lhpedclinic.com.tw/#physician-tsai"},
+ {"@id": "https://lhpedclinic.com.tw/#physician-lee"}
  ],
  "parentOrganization": {
  "@type": "Organization",
@@ -4447,7 +4450,7 @@
  "name": "立欣診所 LiHsin Clinic"
  },
  "about": [
- {"@type": "MedicalClinic", "@id": "https://lhpedclinic.com.tw/#organization"},
+ {"@id": "https://lhpedclinic.com.tw/#organization"},
  {"@type": "Thing", "name": "台南市北區小兒科診療服務"},
  {"@type": "Thing", "name": "兒童過敏氣喘照護"},
  {"@type": "Thing", "name": "新生兒醫療照護"},
@@ -5005,7 +5008,7 @@
  </div>
  </div>
  <div class="p-6">
- <p class="text-gray-600 leading-relaxed font-chinese mb-5 italic border-l-4 border-[#d97a7a] pl-4">「新生兒的每一個微笑，都是我最大的動力。我致力於提供細心、專業的新生兒照護，讓每位寶寶在生命最初的旅程中，都能獲得最溫暖的守護。」</p>
+ <p class="text-gray-600 leading-relaxed font-chinese mb-5 italic border-l-4 border-[#d97a7a] pl-4">「新生兒的每一個微笑，都是我堅持的動力。我致力於提供細心、專業的新生兒照護，讓每位寶寶在生命最初的旅程中，都能獲得最溫暖的守護。」</p>
  <h4 class="text-lg font-bold text-gray-800 mb-3 font-chinese">學經歷</h4>
  <ul class="space-y-2 text-gray-600 mb-6 font-chinese">
  <li class="flex items-start gap-2">
@@ -5089,7 +5092,7 @@
 
  <p>新冠病毒洗禮後，流感、腸病毒、RSV 等病毒越來越頑強。我不斷透過病人的反饋調整用藥，希望<strong class="text-[#7C9A6E]">減輕不舒服，但又不開太強的藥傷身體</strong>。常有病人說：「您開的藥很有效，但又不會讓我昏昏欲睡。」這份恰到好處，是我一直追求的。</p>
 
- <p class="text-lg md:text-xl text-[#7C9A6E] font-bold pt-2">病患滿意的笑容，是我當醫生最大的原動力。落葉歸根，讓我回到台南，服務我們的台南鄉親——立欣診所，將是您家門口最值得信賴的健康夥伴。<span class="text-3xl">」</span></p>
+ <p class="text-lg md:text-xl text-[#7C9A6E] font-bold pt-2">病患滿意的笑容，是我從醫多年的原動力。落葉歸根，讓我回到台南，服務我們的台南鄉親——立欣診所，將是您家門口最值得信賴的健康夥伴。<span class="text-3xl">」</span></p>
 
  <div class="pt-4 mt-6 border-t border-gray-200 flex items-center gap-3">
  <picture>
@@ -5117,7 +5120,7 @@
  <div class="container mx-auto px-4">
  <div class="text-center mb-16 fade-in-up visible">
  <h2 id="about-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#7C9A6E] mb-4 font-chinese" style="">為什麼選擇 立欣診所</h2>
- <p class="text-xl text-gray-600 font-chinese max-w-3xl mx-auto" style="">我們以專業、親切、便利為核心理念，致力於提供台南市民最優質的醫療服務</p>
+ <p class="text-xl text-gray-600 font-chinese max-w-3xl mx-auto" style="">我們以專業、親切、便利為核心理念，致力於提供台南市民用心、用情的醫療服務</p>
  </div>
 
  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -5303,7 +5306,7 @@
  <p>立欣診所（LiHsin Clinic）是一間位於台灣台南市北區育德路467號的小兒科與家庭醫學診所，於2024年7月1日正式開業。診所由具有馬偕兒童過敏氣喘免疫風濕科研究醫師訓練背景的蔡宗儒院長主持，提供兒童過敏氣喘、新生兒照護、公費與自費疫苗接種、科學減重門診及家庭醫學等服務。診所引進肺功能檢測儀及 InBody 身體組成分析儀，並提供平日晚間至21:30及週六、週日全天門診，是台南北區少數提供假日門診的診所之一。</p>
 
  <h2>立欣診所的門診時間為何？</h2>
- <p>立欣診所週一至週五提供早上08:00至12:00、下午14:30至18:00、晚間18:30至21:30三個時段門診。週六提供早上08:00至11:30及下午14:30至18:00門診。週日提供早上08:00至11:30及晚間18:30至21:00門診。全年七天均有門診服務，是台南北區目前提供最完整時段的小兒科診所之一。</p>
+ <p>立欣診所週一至週五提供早上08:00至12:00、下午14:30至18:00、晚間18:30至21:30三個時段門診。週六提供早上08:00至11:30及下午14:30至18:00門診。週日提供早上08:00至11:30及晚間18:30至21:00門診。全年七天均有門診服務，提供台南北區涵蓋平日三段與週末假日的完整門診時段。</p>
 
  <h2>立欣診所的小兒科假日門診時段為何？台南假日兒科怎麼找？</h2>
  <p>立欣診所（台南市北區育德路467號）提供假日小兒科門診服務，包含週六全天及週日上午與晚間門診。電話：06-2516086。可透過 LINE 官方帳號 @lhpedclinic 預約或查詢即時看診進度。</p>
