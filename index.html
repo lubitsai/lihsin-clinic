@@ -71,6 +71,36 @@
  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" media="all" onload="this.media='all'">
  <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"></noscript>
  <script src="https://cdn.tailwindcss.com"></script>
+ <!-- ═══ Schema.org：完整介紹 PDF 文件（DigitalDocument）═══ -->
+ <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "DigitalDocument",
+ "@id": "https://lhpedclinic.com.tw/docs/lihsin-clinic-intro-2026.pdf",
+ "name": "立欣診所完整介紹",
+ "alternateName": "LiHsin Clinic Complete Introduction",
+ "description": "立欣診所完整介紹文件，內容涵蓋診所簡介、醫療團隊、服務項目、門診時間、預約掛號、常見問題、就診前準備、聯絡資訊等。由蔡宗儒院長審閱。",
+ "url": "https://lhpedclinic.com.tw/docs/lihsin-clinic-intro-2026.pdf",
+ "encodingFormat": "application/pdf",
+ "inLanguage": "zh-TW",
+ "datePublished": "2026-05-21",
+ "dateModified": "2026-05-21",
+ "numberOfPages": 18,
+ "author": {
+ "@type": "Person",
+ "name": "蔡宗儒",
+ "jobTitle": "立欣診所院長"
+ },
+ "publisher": {
+ "@id": "https://lhpedclinic.com.tw/#organization"
+ },
+ "about": {
+ "@id": "https://lhpedclinic.com.tw/#organization"
+ },
+ "keywords": "立欣診所,台南北區,小兒科,兒童過敏氣喘,新生兒照護,疫苗接種,科學減重,蔡宗儒醫師,李佳玲醫師,家庭醫學,台南假日兒科,夜間門診,肺功能檢測,InBody",
+ "isAccessibleForFree": true
+}
+ </script>
  <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -656,7 +686,31 @@
  "name": "如何查詢立欣診所即時看診進度？可以節省排隊時間嗎？",
  "acceptedAnswer": {
  "@type": "Answer",
- "text": "建議善用即時看診進度（MainPI）：https://www.mainpi.com/query?i=2935，是台南假日兒科、夜間門診家長可使用的工具，在家等候快到號再出門，大幅減少孩子候診區交叉感染風險。有疑問請撥打06-2516086。"
+ "text": "建議善用即時看診進度（MainPI 免排雲端）：https://www.mainpi.com/query?i=2935，是台南假日兒科、夜間門診家長可使用的工具，在家等候快到號再出門，大幅減少孩子候診區交叉感染風險。有疑問請撥打06-2516086。"
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "立欣診所有線上掛號或網路掛號嗎？",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "立欣診所提供 LINE（@lhpedclinic）與電話（06-2516086）預約掛號，並使用免排雲端（MainPI）看診進度系統。家長可先預約，再於就診當天查詢即時看診進度 https://www.mainpi.com/query?i=2935，在家等候快到號再出門，達到免排隊久候的就醫體驗。"
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "去立欣診所看診需要現場排隊嗎？可以免排隊嗎？",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "不需要長時間現場排隊。立欣診所導入免排雲端（MainPI）看診進度系統，台南北區家長可透過手機查詢目前看診號碼與等候人數（https://www.mainpi.com/query?i=2935），在家或附近等候，快到號再前往報到，大幅減少候診區停留時間與交叉感染風險。建議提前5個號碼到診所櫃台報到，以免過號。"
+ }
+ },
+ {
+ "@type": "Question",
+ "name": "立欣診所的掛號等候原則為何？預約看診要提早多久到？",
+ "acceptedAnswer": {
+ "@type": "Answer",
+ "text": "立欣診所採預約號與現場號交錯看診。網路或電話預約掛號每半小時一組名額（預約號為偶數號），請於預約時間準時到、建議提早5至10分鐘抵達，即可準時看診。現場掛號抽號碼牌（現場號為奇數號），建議於看診號前3至5位回到現場等候，到號即可看診。若現場號過號，需再等候5位現場號（不含預約號）。建議搭配即時看診進度查詢 https://www.mainpi.com/query?i=2935 掌握叫號狀況。"
  }
  },
  {
@@ -4198,6 +4252,7 @@
  {"@type": "WebPageElement", "name": "醫療團隊", "cssSelector": "section#team"},
  {"@type": "WebPageElement", "name": "院長的話", "cssSelector": "section#director-message"},
  {"@type": "WebPageElement", "name": "衛教知識", "cssSelector": "section#health-tips"},
+ {"@type": "WebPageElement", "name": "免排雲端・即時看診進度", "cssSelector": "section#realtime-progress"},
  {"@type": "WebPageElement", "name": "常見問題", "cssSelector": "section#faq"},
  {"@type": "WebPageElement", "name": "聯絡資訊", "cssSelector": "section#contact"}
  ],
@@ -4464,7 +4519,8 @@
  "#clinic-trust-summary",
  ".eeat-author-block",
  "section#faq",
- "section#schedule"
+ "section#schedule",
+ "section#realtime-progress"
  ]
  },
  "potentialAction": [
@@ -4512,6 +4568,7 @@
  <a href="#team" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">醫療團隊</a>
  <a href="#director-message" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">認識立欣</a>
  <a href="#health-tips" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">衛教知識</a>
+ <a href="#realtime-progress" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">看診進度</a>
  <a href="#faq" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">常見問題</a>
  <a href="#contact" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">聯絡我們</a>
  <a href="https://www.facebook.com/lhpedclinic" target="_blank" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium flex items-center gap-1">
@@ -4538,6 +4595,7 @@
  <a href="#team" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">醫療團隊</a>
  <a href="#director-message" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">認識立欣</a>
  <a href="#health-tips" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">衛教知識</a>
+ <a href="#realtime-progress" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">看診進度</a>
  <a href="#faq" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">常見問題</a>
  <a href="#contact" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">聯絡我們</a>
  <a href="https://www.facebook.com/lhpedclinic" target="_blank" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg flex items-center gap-2">
@@ -4587,7 +4645,7 @@
  <!-- CTA Buttons -->
  <div class="flex flex-col gap-3 mb-3">
  <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" onclick="trackCTA('LINE_Booking_Hero')" class="btn-primary px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center w-full">💬 立即加入 LINE 諮詢／預約</a>
- <a href="https://www.mainpi.com/query?i=2935" target="_blank" onclick="trackCTA('Progress_Query_Hero')" class="bg-[#D4B896] hover:bg-[#c2a785] text-white px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center transition-all duration-300 transform hover:-translate-y-1 shadow-md w-full">⏱️ 即時看診進度查詢</a>
+ <a href="#realtime-progress" onclick="trackCTA('Progress_Query_Hero')" class="bg-[#D4B896] hover:bg-[#c2a785] text-white px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center transition-all duration-300 transform hover:-translate-y-1 shadow-md w-full">⏱️ 免排隊・即時看診進度</a>
  </div>
  <!-- 行動版：電話與導航併排（節省空間）-->
  <div class="grid grid-cols-2 gap-3 mb-6">
@@ -4663,6 +4721,8 @@
  <li><a href="#director-message" class="hover:text-[#7C9A6E] hover:underline">認識立欣</a></li>
  <li aria-hidden="true" class="text-gray-300">·</li>
  <li><a href="#health-tips" class="hover:text-[#7C9A6E] hover:underline">衛教知識</a></li>
+ <li aria-hidden="true" class="text-gray-300">·</li>
+ <li><a href="#realtime-progress" class="hover:text-[#7C9A6E] hover:underline">看診進度</a></li>
  <li aria-hidden="true" class="text-gray-300">·</li>
  <li><a href="#faq" class="hover:text-[#7C9A6E] hover:underline">常見問題</a></li>
  </ol>
@@ -5414,6 +5474,18 @@
  <h2>如何查詢立欣診所即時候診狀況？</h2>
  <p>可透過 mainpi 即時看診進度系統查詢：https://www.mainpi.com/query?i=2935，或掃描診所提供的 QR Code 進入查詢頁面。此系統可顯示目前診間看診進度與等候人數，幫助病患評估抵達時間，避免長時間等候。</p>
 
+ <h2>立欣診所有線上掛號／網路掛號嗎？如何查詢即時看診進度？</h2>
+ <p>立欣診所採用「免排雲端（MainPI）」雲端叫號系統，台南北區家長可在就診前透過手機查詢即時看診進度，不必在現場排隊久候。查詢方式有三種：（1）點選官網首頁的「即時看診進度」按鈕；（2）直接前往 https://www.mainpi.com/query?i=2935；（3）掃描診所櫃台提供的 QR Code。系統會顯示目前看診號碼與現場等候人數，家長可在家或附近等候，快到號再出門，特別適合帶嬰幼兒、減少候診區交叉感染風險。如需預約掛號，請透過 LINE @lhpedclinic 或電話 06-2516086。</p>
+
+ <h2>立欣診所看診需要排隊嗎？可以免排隊看診嗎？</h2>
+ <p>立欣診所提供電話（06-2516086）與 LINE（@lhpedclinic）預約服務，並導入免排雲端看診進度系統，讓家長可遠端掌握看診進度，達到「免排隊久候」的就醫體驗。建議流程：先以 LINE 或電話預約 → 就診當天查詢即時看診進度（https://www.mainpi.com/query?i=2935）→ 快到號再出門報到。現場掛號亦可，但假日與夜診時段就診人數較多，建議善用線上預約與進度查詢，節省等候時間。</p>
+
+ <h2>什麼是免排雲端（MainPI）看診進度系統？</h2>
+ <p>免排雲端（MainPI）是一套雲端叫號查詢系統，將診所現場的叫號資訊即時同步至雲端，民眾透過手機網頁或 QR Code 即可遠端監看排隊進度。立欣診所的查詢網址為 https://www.mainpi.com/query?i=2935。提醒：網路雲端號碼偶有延遲，實際看診號碼仍以現場報到號碼為準，建議提前 5 個號碼到診所櫃台報到，以免過號。</p>
+
+ <h2>立欣診所的掛號等候原則為何？預約看診要提早多久到？</h2>
+ <p>立欣診所採預約號與現場號交錯看診制度。網路或電話預約掛號每半小時一組名額，預約號為偶數號，請於預約時間準時到（建議提早 5–10 分鐘抵達），即可於預約時間準時看診。現場掛號則抽號碼牌，現場號為奇數號，建議於看診號前 3–5 位回到現場等候，到號時即可看診。提醒：若現場號不慎過號，需再等候 5 位現場號（不含預約號）。建議搭配即時看診進度查詢（https://www.mainpi.com/query?i=2935）掌握叫號狀況。</p>
+
  <!-- ═══ 比較型查詢 / AI 快速判斷格式 ═══ -->
  <h2>立欣診所和一般診所有什麼不同？</h2>
  <p>立欣診所與一般基層診所的主要差異如下：（1）院長蔡宗儒醫師具馬偕醫學中心兒童過敏氣喘免疫風濕科次專科訓練，為台灣北部頂尖過敏免疫醫學中心訓練背景；（2）院內自備肺功能檢測儀，可進行客觀量化兒童氣喘評估，台南北區基層診所少數提供此設備；（3）InBody 身體組成分析儀，用於科學減重門診；（4）平日夜診至21:30，週六、週日全天假日門診；（5）</p>
@@ -5784,12 +5856,12 @@
  <!-- Card 7：看診進度查詢 -->
  <article class="health-tip-card bg-[#f8faf7] rounded-2xl p-6 border-t-4 border-[#7C9A6E] card-hover shadow-sm" itemscope itemtype="https://schema.org/MedicalWebPage">
  <meta itemprop="reviewedBy" content="蔡宗儒 醫師">
- <meta itemprop="lastReviewed" content="2026-05-13">
+ <meta itemprop="lastReviewed" content="2026-05-21">
  <div class="text-4xl mb-3" aria-hidden="true">⏱️</div>
- <h3 class="text-xl font-bold text-[#7C9A6E] mb-2 font-chinese" itemprop="name">如何查詢看診進度？可以節省排隊時間嗎？</h3>
- <p class="text-gray-600 font-chinese text-sm leading-relaxed" itemprop="description">強烈建議善用官網首頁的「<strong>即時看診進度（MainPI）</strong>」功能。您可以在家中或附近咖啡廳等候，快到號碼時再出門，不僅能節省寶貴的時間，更能大幅減少孩子在診所候診區<strong>交叉感染的機率</strong>，是台南北區、<strong>永康區</strong>家庭的就醫選擇體驗。</p>
+ <h3 class="text-xl font-bold text-[#7C9A6E] mb-2 font-chinese" itemprop="name">立欣診所看診需要排隊嗎？如何免排隊查看進度？</h3>
+ <p class="text-gray-600 font-chinese text-sm leading-relaxed" itemprop="description">立欣診所導入「<strong>免排雲端（MainPI）</strong>」看診進度系統，台南北區家長不必在現場排隊久候。先以 LINE 或電話<strong>線上預約</strong>，就診當天用手機查詢<strong>即時看診進度</strong>，在家或附近等候，快到號再出門，不僅節省時間，更能大幅減少孩子在候診區<strong>交叉感染的機率</strong>，是台南北區、<strong>永康區</strong>家庭的就醫選擇體驗。</p>
  <div class="mt-4">
- <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" class="text-[#7C9A6E] font-semibold text-sm font-chinese hover:underline">⏱ 立即查詢即時看診進度 →</a>
+ <a href="#realtime-progress" class="text-[#7C9A6E] font-semibold text-sm font-chinese hover:underline">⏱ 查詢即時看診進度 →</a>
  </div>
  </article>
  </div>
@@ -5810,6 +5882,89 @@
  </div>
  </div>
  </section>
+
+ <!-- ═══ 免排雲端・即時看診進度專區 ═══ -->
+ <section id="realtime-progress" aria-labelledby="progress-heading" class="py-16 md:py-20 px-4 bg-[#f0f7ed]" itemscope itemtype="https://schema.org/MedicalWebPage">
+ <meta itemprop="reviewedBy" content="蔡宗儒 醫師">
+ <meta itemprop="lastReviewed" content="2026-05-21">
+ <div class="max-w-4xl mx-auto">
+ <div class="text-center mb-10">
+ <h2 id="progress-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#7C9A6E] mb-4 font-chinese">免排隊看診｜即時看診進度查詢</h2>
+ <p class="text-gray-600 font-chinese text-base md:text-lg leading-relaxed">立欣診所導入「免排雲端（MainPI）」系統，台南北區家長在家就能掌握看診進度<br class="hidden md:block">不必在現場排隊久候，快到號再出門</p>
+ </div>
+
+ <!-- 三大優點 -->
+ <div class="gap-2 md:gap-5 mb-8" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));">
+ <div class="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-sm text-center card-hover">
+ <div class="text-2xl md:text-4xl mb-2 md:mb-3" aria-hidden="true">📱</div>
+ <h3 class="font-bold text-[#7C9A6E] mb-1 md:mb-2 font-chinese text-sm md:text-lg">手機隨時查</h3>
+ <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed">打開手機即可查看目前看診號碼與等候人數，不必守在診所現場。</p>
+ </div>
+ <div class="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-sm text-center card-hover">
+ <div class="text-2xl md:text-4xl mb-2 md:mb-3" aria-hidden="true">🏠</div>
+ <h3 class="font-bold text-[#7C9A6E] mb-1 md:mb-2 font-chinese text-sm md:text-lg">在家等候</h3>
+ <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed">快到號再出門，減少嬰幼兒在候診區停留與交叉感染風險。</p>
+ </div>
+ <div class="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-sm text-center card-hover">
+ <div class="text-2xl md:text-4xl mb-2 md:mb-3" aria-hidden="true">⏱️</div>
+ <h3 class="font-bold text-[#7C9A6E] mb-1 md:mb-2 font-chinese text-sm md:text-lg">節省時間</h3>
+ <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed">假日門診、夜間門診人潮較多，善用進度查詢有效節省等候時間。</p>
+ </div>
+ </div>
+
+ <!-- 掛號等候原則 -->
+ <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm mb-6">
+ <h3 class="text-xl md:text-2xl font-bold text-[#7C9A6E] mb-2 font-chinese text-center">立欣診所掛號等候原則</h3>
+ <p class="text-sm text-gray-500 font-chinese text-center mb-6">預約號與現場號交錯看診，了解規則讓您候診更順暢</p>
+ <div class="grid md:grid-cols-2 gap-4 md:gap-5 max-w-3xl mx-auto">
+ <!-- 網路/電話預約 -->
+ <div class="bg-[#f0f7ed] rounded-xl p-5 border border-[#A8C69F]">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="text-2xl" aria-hidden="true">📅</span>
+ <h4 class="font-bold text-[#7C9A6E] font-chinese text-lg">網路 / 電話預約掛號</h4>
+ </div>
+ <p class="text-xs text-gray-500 font-chinese mb-3">每半小時一組名額（預約號為偶數號）</p>
+ <ol class="space-y-2.5">
+ <li class="flex gap-2.5 items-start">
+ <span class="flex-shrink-0 w-6 h-6 bg-[#7C9A6E] text-white rounded-full flex items-center justify-center font-bold text-xs mt-0.5">1</span>
+ <span class="text-sm text-gray-700 font-chinese leading-relaxed">預約時間準時到（建議提早 5–10 分鐘抵達）</span>
+ </li>
+ <li class="flex gap-2.5 items-start">
+ <span class="flex-shrink-0 w-6 h-6 bg-[#7C9A6E] text-white rounded-full flex items-center justify-center font-bold text-xs mt-0.5">2</span>
+ <span class="text-sm text-gray-700 font-chinese leading-relaxed">可於預約時間準時看診</span>
+ </li>
+ </ol>
+ </div>
+ <!-- 現場掛號 -->
+ <div class="bg-[#fdf6ec] rounded-xl p-5 border border-[#D4B896]">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="text-2xl" aria-hidden="true">🎫</span>
+ <h4 class="font-bold text-[#b8935a] font-chinese text-lg">現場掛號</h4>
+ </div>
+ <p class="text-xs text-gray-500 font-chinese mb-3">抽號碼牌（現場號為奇數號）</p>
+ <ol class="space-y-2.5">
+ <li class="flex gap-2.5 items-start">
+ <span class="flex-shrink-0 w-6 h-6 bg-[#D4B896] text-white rounded-full flex items-center justify-center font-bold text-xs mt-0.5">1</span>
+ <span class="text-sm text-gray-700 font-chinese leading-relaxed">建議於看診號前 3–5 位回到現場等候</span>
+ </li>
+ <li class="flex gap-2.5 items-start">
+ <span class="flex-shrink-0 w-6 h-6 bg-[#D4B896] text-white rounded-full flex items-center justify-center font-bold text-xs mt-0.5">2</span>
+ <span class="text-sm text-gray-700 font-chinese leading-relaxed">到號時即可看診</span>
+ </li>
+ </ol>
+ <p class="text-xs text-[#b8935a] font-chinese mt-3 pt-3 border-t border-[#D4B896]">※ 如不慎過號，需再等候 5 位現場號（不含預約號）</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- 外連 MainPI 查詢按鈕 -->
+ <div class="text-center">
+ <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" onclick="trackCTA('Progress_Query_Section')" class="inline-flex items-center justify-center gap-2 bg-[#7C9A6E] hover:bg-[#5a7a50] text-white px-8 py-4 rounded-full font-chinese font-bold text-lg shadow-md transition-all hover:-translate-y-0.5">⏱️ 立即查詢即時看診進度</a>
+ <p class="text-xs text-gray-500 font-chinese mt-3">※ 雲端號碼偶有延遲，實際看診號碼以現場報到號碼為準</p>
+ </div>
+ </div>
+ </section>
+
 
  <section id="faq" aria-labelledby="faq-heading" class="py-20 bg-[#f8faf7]">
  <div class="container mx-auto px-4">
@@ -5871,7 +6026,20 @@
  </svg>
  </button>
  <div class="faq-answer font-chinese leading-relaxed">
- 建議善用官網首頁的 <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" class="text-[#7C9A6E] font-bold hover:underline">⏱ 即時看診進度（MainPI）</a> 功能，在家等候快到號再出門，是<strong>台南假日兒科・台南夜間門診</strong>家長可使用的工具，大幅減少孩子候診區交叉感染風險。有疑問請撥打 <a href="tel:062516086" class="text-[#7C9A6E] font-bold hover:underline">06-2516086</a>。
+ 建議善用官網首頁的 <a href="#realtime-progress" class="text-[#7C9A6E] font-bold hover:underline">⏱ 即時看診進度（免排雲端 MainPI）</a> 功能，在家等候快到號再出門，是<strong>台南假日兒科・台南夜間門診</strong>家長可使用的工具，大幅減少孩子候診區交叉感染風險。有疑問請撥打 <a href="tel:062516086" class="text-[#7C9A6E] font-bold hover:underline">06-2516086</a>。
+ 
+ </div>
+ </div>
+
+ <div class="faq-item">
+ <button class="faq-question font-chinese font-bold text-base md:text-lg text-gray-800">
+ <h3 class="faq-question-title">立欣診所有線上掛號嗎？看診需要排隊嗎？</h3>
+ <svg class="faq-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+ </svg>
+ </button>
+ <div class="faq-answer font-chinese leading-relaxed">
+ 立欣診所提供 <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" class="text-[#7C9A6E] font-bold hover:underline">LINE @lhpedclinic</a> 與電話 <a href="tel:062516086" class="text-[#7C9A6E] font-bold hover:underline">06-2516086</a> 預約掛號，並導入<strong>免排雲端（MainPI）</strong>看診進度系統。建議流程：先<strong>線上預約</strong> → 就診當天查詢 <a href="#realtime-progress" class="text-[#7C9A6E] font-bold hover:underline">即時看診進度</a> → 快到號再出門報到，達到<strong>免排隊久候</strong>的就醫體驗。現場掛號亦可，但假日與夜診人潮較多，建議善用線上預約與進度查詢。
  
  </div>
  </div>
@@ -6693,6 +6861,33 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  </div>
  </section>
 
+ <!-- ═══ 完整介紹 PDF 下載區塊 ═══ -->
+ <section id="clinic-intro-pdf" aria-labelledby="pdf-heading" class="py-8 px-4 bg-[#f8faf7]">
+ <div class="max-w-3xl mx-auto">
+ <div class="bg-gradient-to-r from-[#f0f7ed] to-[#e8f4e8] rounded-xl border border-[#A8C69F] px-5 py-4 shadow-sm flex flex-col sm:flex-row items-center gap-4">
+ <!-- PDF 圖示 -->
+ <div class="flex-shrink-0 w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center" aria-hidden="true">
+ <svg width="28" height="28" viewBox="0 0 24 24" fill="#7C9A6E">
+ <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+ <text x="12" y="17" font-size="5.5" font-weight="bold" fill="white" text-anchor="middle" font-family="sans-serif">PDF</text>
+ </svg>
+ </div>
+ <!-- 說明文字 -->
+ <div class="flex-1 text-center sm:text-left">
+ <h2 id="pdf-heading" class="text-base md:text-lg font-bold text-[#7C9A6E] font-chinese">立欣診所完整介紹（PDF）</h2>
+ <p class="text-xs md:text-sm text-gray-600 font-chinese">服務項目、醫師資歷、門診時間、常見問答一次看懂（18 頁・院長審閱）</p>
+ </div>
+ <!-- 下載按鈕 -->
+ <a href="/docs/lihsin-clinic-intro-2026.pdf" download="立欣診所完整介紹.pdf" onclick="trackCTA('PDF_Download')" class="flex-shrink-0 inline-flex items-center gap-2 bg-[#7C9A6E] text-white px-5 py-2.5 rounded-full font-bold font-chinese text-sm hover:bg-[#5a7a50] transition-all hover:-translate-y-0.5 shadow-md">
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+ <path d="M19,9H15V3H9V9H5L12,16L19,9M5,18V20H19V18H5Z"/>
+ </svg>
+ <span>下載 PDF</span>
+ </a>
+ </div>
+ </div>
+ </section>
+
 
  </main>
  <!-- /main -->
@@ -6725,7 +6920,8 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  <a href="#team" class="block hover:underline font-chinese">醫療團隊</a>
  <a href="#director-message" class="block hover:underline font-chinese">認識立欣</a>
  <a href="#health-tips" class="block hover:underline font-chinese">衛教知識</a>
- <a href="#faq" class="block hover:underline font-chinese">常見問題 FAQ</a>
+ <a href="#realtime-progress" class="block hover:underline font-chinese">看診進度</a>
+ <a href="#faq" class="block hover:underline font-chinese">常見問題</a>
  <a href="#contact" class="block hover:underline font-chinese">聯絡我們</a>
  </div>
  </div>

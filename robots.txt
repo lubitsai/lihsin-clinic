@@ -1,7 +1,7 @@
 # ============================================================
 # robots.txt for lhpedclinic.com.tw
 # 立欣診所 LiHsin Clinic｜台南市北區小兒科
-# 最後更新：2026-05-17
+# 最後更新：2026-05-21
 # ============================================================
 
 # ============================================================
@@ -9,6 +9,11 @@
 # ============================================================
 User-agent: *
 Allow: /
+
+# 明確允許 PDF 文件與 /docs/ 目錄被索引
+# （診所完整介紹 PDF 等高權重資源）
+Allow: /docs/
+Allow: /*.pdf$
 
 # 封鎖 Netlify 平台內部路徑（系統檔案，非網頁內容）
 Disallow: /.netlify/
@@ -31,6 +36,8 @@ Disallow: /404.html
 # ============================================================
 User-agent: Googlebot
 Allow: /
+Allow: /docs/
+Allow: /*.pdf$
 Disallow: /.netlify/
 Disallow: /404.html
 
@@ -56,6 +63,8 @@ Allow: /
 # ============================================================
 User-agent: Bingbot
 Allow: /
+Allow: /docs/
+Allow: /*.pdf$
 Disallow: /.netlify/
 Disallow: /404.html
 Crawl-delay: 2
@@ -82,6 +91,8 @@ Allow: /
 # AI 爬蟲（明確允許索引以利 AI 搜尋曝光）
 # 2026 年 AI 搜尋已成為重要流量來源，明確允許可提升被引用機率。
 # 包含：OpenAI、Anthropic、Perplexity、Google AI、Meta、Apple 等
+# ※ 通用規則 User-agent:* 已 Allow: /docs/ 與 /*.pdf$，
+#   AI 爬蟲沿用通用規則即可完整抓取 PDF。
 # ============================================================
 
 # OpenAI（ChatGPT）

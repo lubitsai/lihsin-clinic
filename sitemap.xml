@@ -26,11 +26,16 @@
     圖片標題與說明請改由 HTML 端的 alt 屬性處理。
     參考：https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps
 
-    最後更新：2026-05-20
+    PDF 文件索引（2026-05-21 新增）：
+    /docs/lihsin-clinic-intro-2026.pdf 為診所完整介紹文件，
+    可被 Google 與 AI 爬蟲索引，屬高權重內容資源。
+    PDF 同樣可列入 sitemap（Google 官方支援非 HTML 文件）。
+
+    最後更新：2026-05-21
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-05-20</lastmod>
+    <lastmod>2026-05-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -49,6 +54,17 @@
     <image:image>
       <image:loc>https://lhpedclinic.com.tw/images/hero-mascot.png</image:loc>
     </image:image>
+  </url>
+
+  <!-- ============================================================
+       PDF 文件：立欣診所完整介紹
+       高權重資源，便於 Google 與 AI 引擎索引引用
+       ============================================================ -->
+  <url>
+    <loc>https://lhpedclinic.com.tw/docs/lihsin-clinic-intro-2026.pdf</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.9</priority>
   </url>
 
 </urlset>
