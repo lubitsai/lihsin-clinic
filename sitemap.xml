@@ -26,11 +26,11 @@
     圖片標題與說明請改由 HTML 端的 alt 屬性處理。
     參考：https://developers.google.com/search/docs/crawling-indexing/sitemaps/image-sitemaps
 
-    最後更新：2026-05-17
+    最後更新：2026-05-20
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-05-17</lastmod>
+    <lastmod>2026-05-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
