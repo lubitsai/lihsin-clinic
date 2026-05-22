@@ -201,3 +201,11 @@ Disallow: /
 # Google、Bing、Yandex 等主流搜尋引擎都會自動偵測此宣告
 # ============================================================
 Sitemap: https://lhpedclinic.com.tw/sitemap.xml
+
+# ============================================================
+# LLM 知識庫宣告（供 AI 引擎發現）
+# llms.txt：診所首頁摘要｜llms-full.txt：完整診所知識庫
+# 協助 ChatGPT、Claude、Perplexity、Gemini 等正確理解與引用
+# ============================================================
+LLM: https://lhpedclinic.com.tw/llms.txt
+LLM-Full: https://lhpedclinic.com.tw/llms-full.txt
