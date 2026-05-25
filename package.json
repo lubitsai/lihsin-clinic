@@ -1,0 +1,8 @@
+{
+  "name": "lihsin-clinic",
+  "private": true,
+  "description": "立欣診所 LiHsin Clinic website",
+  "devDependencies": {
+    "@netlify/functions": "^3.0.0"
+  }
+}
