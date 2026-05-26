@@ -171,6 +171,32 @@
 
 <body>
 
+  <!-- 頂部導覽列（與首頁一致）-->
+  <nav role="navigation" aria-label="主選單" class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <a href="/" class="flex items-center gap-3">
+          <img src="/images/logo.png" alt="立欣診所 LOGO" style="width:40px;height:40px;object-fit:contain" onerror="this.style.display='none'">
+          <div>
+            <div class="text-xl md:text-2xl font-bold text-[#7C9A6E] font-chinese">立欣診所</div>
+            <p class="text-xs md:text-sm text-gray-600 font-english">LiHsin Clinic</p>
+          </div>
+        </a>
+        <div class="hidden md:flex items-center gap-6">
+          <a href="/#schedule" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">門診時間</a>
+          <a href="/#services" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">服務項目</a>
+          <a href="/#team" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">醫療團隊</a>
+          <a href="/#health-tips" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">衛教知識</a>
+          <a href="/#faq" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">常見問題</a>
+          <a href="/#contact" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">聯絡我們</a>
+          <a href="tel:062516086" class="px-5 py-2.5 rounded-full font-chinese font-medium text-white" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">📞 06-2516086</a>
+        </div>
+        <a href="tel:062516086" class="md:hidden px-4 py-2 rounded-full font-chinese text-sm text-white" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">📞 來電</a>
+      </div>
+    </div>
+  </nav>
+  <div style="height:76px"></div>
+
   <!-- 背景裝飾 -->
   <div class="deco-circle deco-1"></div>
   <div class="deco-circle deco-2"></div>
@@ -306,6 +332,17 @@
     </p>
 
   </main>
+
+<!-- 右下角浮動按鈕（與首頁一致）-->
+<div id="fab-group" style="position:fixed;bottom:max(1.5rem, calc(env(safe-area-inset-bottom, 0px) + 1rem));right:1rem;z-index:50;display:flex;flex-direction:column;align-items:flex-end;gap:0.6rem;">
+  <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" aria-label="即時看診進度" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:52px;height:52px;border-radius:9999px;background:linear-gradient(135deg,#7C9A6E,#5a7a50);color:#fff;box-shadow:0 6px 18px rgba(124,154,110,0.45);text-decoration:none;gap:2px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+    <span style="font-size:10px;font-weight:700;line-height:1.1;font-family:'Noto Sans TC',sans-serif;">看診進度</span>
+  </a>
+  <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" aria-label="LINE 聯繫立欣診所" style="display:flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:9999px;background:linear-gradient(135deg,#06C755,#00B900);color:#fff;box-shadow:0 6px 18px rgba(6,199,85,0.45);text-decoration:none;">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"></path></svg>
+  </a>
+</div>
 
 </body>
 </html>
