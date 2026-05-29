@@ -1,0 +1,29 @@
+# ===== 立欣診所網站 _headers（Netlify 安全標頭設定）=====
+# 套用到全站所有頁面，提升安全性與專業度
+
+/*
+  # 防止網站被嵌入他人 iframe（避免點擊劫持 clickjacking）
+  X-Frame-Options: SAMEORIGIN
+  # 防止瀏覽器誤判檔案類型（MIME 混淆攻擊）
+  X-Content-Type-Options: nosniff
+  # 控制 referrer 資訊外洩程度（保護使用者隱私）
+  Referrer-Policy: strict-origin-when-cross-origin
+  # 強制瀏覽器後續一律走 HTTPS（含子網域），效期一年
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # 限制可使用的瀏覽器功能（診所網站不需要這些感測器/裝置權限）
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
+
+# ── 靜態資源快取（圖片、PDF）：加速回訪載入 ──
+/images/*
+  Cache-Control: public, max-age=2592000
+
+/docs/*
+  Cache-Control: public, max-age=2592000
+
+# ── IndexNow 金鑰檔：確保純文字、可被搜尋引擎讀取 ──
+/631da727697dc88a64a8f0b76042c891.txt
+  Content-Type: text/plain; charset=utf-8
+
+# 註：未設定 Content-Security-Policy(CSP)，因為網站使用 Tailwind CDN、
+# Google Fonts、cdnjs 等外部資源，貿然加嚴格 CSP 可能導致樣式或字型失效。
+# 若日後要加 CSP，需先盤點所有外部來源並完整測試，建議由工程師處理。
