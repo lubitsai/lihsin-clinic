@@ -42,6 +42,7 @@
  "name": "塵蟎怎麼除？防蟎寢具與居家環境整理完整指南",
  "headline": "塵蟎怎麼除？防蟎寢具與居家環境整理",
  "description": "台灣大部分過敏都與塵蟎有關。塵蟎愛溫暖潮濕，最常藏在床墊、枕頭、棉被。除蟎重點：防蟎寢具、55度熱水洗寢具、濕度維持50-60%、避免布製品。",
+  "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["h1", ".speakable-summary"]},
  "inLanguage": "zh-TW",
  "lastReviewed": "2026-05-12",
  "datePublished": "2026-05-12",
@@ -55,6 +56,41 @@
  "mainContentOfPage": "塵蟎習性、塵蟎與過敏關聯、防蟎寢具選擇、居家環境整理方法"
 }
 </script>
+<!-- FAQPage Schema（供 Google 精選摘要與 AI 問答引用）-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+ {
+ "@type": "Question",
+ "name": "塵蟎為什麼會引起過敏？",
+ "acceptedAnswer": {"@type": "Answer", "text": "引發過敏的是塵蟎身上的蛋白質，除了活的塵蟎，其屍體、碎屑、卵和排泄物都是常見過敏原。台灣屬溫暖潮濕的亞熱帶氣候，最適合塵蟎繁殖，故大部分國人都對塵蟎過敏。"}
+ },
+ {
+ "@type": "Question",
+ "name": "塵蟎喜歡什麼環境？家裡哪裡最多？",
+ "acceptedAnswer": {"@type": "Answer", "text": "塵蟎最適合生長於溫暖（22～26℃）、潮濕（濕度70～80%）環境。家中與人接觸的織品最多，尤其床墊、棉被及枕頭，以及灰塵堆積處如牆角、窗框、地毯邊緣。"}
+ },
+ {
+ "@type": "Question",
+ "name": "防蟎寢具有效嗎？怎麼選？",
+ "acceptedAnswer": {"@type": "Answer", "text": "建議選用具IBT防蟎認證的六面全包式防蟎套，包覆無法定期清洗的床墊與枕頭，阻絕塵蟎養分來源並避免接觸排泄物，減少過敏機會。"}
+ },
+ {
+ "@type": "Question",
+ "name": "怎麼清洗寢具才能除塵蟎？",
+ "acceptedAnswer": {"@type": "Answer", "text": "每1～2週定期清洗寢具，先以55℃以上熱水浸泡10分鐘，或用洗烘脫三合一洗衣機先烘過，使塵蟎屍體吸盤脫落後再行清洗。並維持室內濕度50～60%、保持通風。"}
+ },
+ {
+ "@type": "Question",
+ "name": "除塵蟎對過敏性鼻炎與氣喘有幫助嗎？",
+ "acceptedAnswer": {"@type": "Answer", "text": "有。塵蟎糞便酵素可懸浮空氣中達20分鐘，吸入後引起免疫反應，導致早晨打噴嚏、夜咳、鼻塞、過敏性鼻炎、異位性皮膚炎及氣喘。文獻指出做好環境控制可大幅改善過敏症狀。"}
+ }
+ ]
+}
+</script>
+
 <style>
  body { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
  .font-chinese { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
@@ -181,6 +217,22 @@
  </div>
 
  <p class="text-xs text-gray-400 font-chinese text-center mt-6 leading-relaxed">本文由立欣診所蔡宗儒院長編撰審閱，僅供一般衛教參考，不構成醫療診斷建議；實際病情與用藥請由醫師面診後評估。</p>
+
+ 
+ <!-- 延伸閱讀（文章互連，強化主題網絡）-->
+ <div class="mt-10 pt-6 border-t border-gray-100">
+  <h2 class="text-base font-bold text-gray-700 font-chinese mb-4">📚 延伸閱讀</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;">
+   <a href="/health/allergy.html" class="block bg-[#f8faf7] rounded-xl border border-gray-100 hover:border-[#A8C69F] hover:shadow-sm transition p-4">
+    <span class="text-xs text-[#7C9A6E] font-chinese">延伸閱讀</span>
+    <p class="text-sm font-bold text-gray-800 font-chinese mt-1 leading-snug">什麼是過敏？症狀、原因與保養</p>
+   </a>
+   <a href="/health/atopic-dermatitis.html" class="block bg-[#f8faf7] rounded-xl border border-gray-100 hover:border-[#A8C69F] hover:shadow-sm transition p-4">
+    <span class="text-xs text-[#7C9A6E] font-chinese">延伸閱讀</span>
+    <p class="text-sm font-bold text-gray-800 font-chinese mt-1 leading-snug">異位性皮膚炎怎麼照顧？</p>
+   </a>
+  </div>
+ </div>
 
  <div class="text-center mt-6">
  <a href="/#health-tips" class="text-sm font-chinese text-[#7C9A6E] hover:underline">← 返回衛教文章列表</a>

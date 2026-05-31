@@ -42,6 +42,7 @@
  "name": "什麼是麻疹？症狀、傳染力與 MMR 疫苗完整解析（含出國前接種提醒）",
  "headline": "什麼是麻疹？症狀、傳染力與 MMR 疫苗",
  "description": "麻疹傳染力極強，一人可傳染12～18人。症狀為發燒、紅疹、咳嗽、結膜炎。MMR疫苗預防效果達95%。計畫出國至流行地區建議出發前2～4週諮詢接種。",
+  "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["h1", ".speakable-summary"]},
  "inLanguage": "zh-TW",
  "lastReviewed": "2026-05-12",
  "datePublished": "2026-05-12",
@@ -55,6 +56,41 @@
  "mainContentOfPage": "麻疹症狀、傳染力、併發症、MMR疫苗、出國前接種建議"
 }
 </script>
+<!-- FAQPage Schema（供 Google 精選摘要與 AI 問答引用）-->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+ {
+ "@type": "Question",
+ "name": "麻疹有哪些症狀？",
+ "acceptedAnswer": {"@type": "Answer", "text": "感染後約7～18天發病，前驅症狀為發高燒、咳嗽、流鼻水、結膜炎，口腔內頰可能出現白色柯氏斑點；接著紅疹從臉部、耳後開始蔓延到軀幹四肢。出疹前後4天都具傳染力。"}
+ },
+ {
+ "@type": "Question",
+ "name": "麻疹傳染力有多強？",
+ "acceptedAnswer": {"@type": "Answer", "text": "麻疹傳染力極強，主要透過空氣中飛沫傳播，一名患者可傳染給12～18位沒有免疫力的人。出疹前後4天都有傳染力，常在不知情時已傳染他人。"}
+ },
+ {
+ "@type": "Question",
+ "name": "出國前需要補打MMR疫苗嗎？",
+ "acceptedAnswer": {"@type": "Answer", "text": "若計畫前往麻疹流行地區，建議出發前2～4週諮詢醫師評估補接種，因疫苗接種後約需2週才產生足夠抗體。1981年後出生者多數可能只接種過一劑，保護力或許不足。"}
+ },
+ {
+ "@type": "Question",
+ "name": "MMR疫苗要打幾劑？",
+ "acceptedAnswer": {"@type": "Answer", "text": "MMR是預防麻疹、腮腺炎、德國麻疹的混合疫苗，預防效果平均達95%以上。台灣幼兒常規接種為出生滿12個月一劑、滿5歲至入小學前一劑，完成兩劑保護力佳。"}
+ },
+ {
+ "@type": "Question",
+ "name": "台南北區哪裡可以打MMR疫苗？",
+ "acceptedAnswer": {"@type": "Answer", "text": "立欣診所位於台南市北區育德路467號，提供MMR疫苗諮詢與接種。若計畫出國或不確定麻疹免疫力，歡迎出國前提早來診評估。電話06-2516086，LINE @lhpedclinic。"}
+ }
+ ]
+}
+</script>
+
 <style>
  body { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
  .font-chinese { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
@@ -189,6 +225,22 @@
  </div>
 
  <p class="text-xs text-gray-400 font-chinese text-center mt-6 leading-relaxed">本文衛教資訊參考衛生福利部疾病管制署資料整理，由立欣診所蔡宗儒院長審閱。麻疹流行地區與疫情等級請以疾管署最新公告為準。內容僅供一般衛教參考，不構成醫療診斷建議；實際接種需求與病情請由醫師面診後評估。</p>
+
+ 
+ <!-- 延伸閱讀（文章互連，強化主題網絡）-->
+ <div class="mt-10 pt-6 border-t border-gray-100">
+  <h2 class="text-base font-bold text-gray-700 font-chinese mb-4">📚 延伸閱讀</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.75rem;">
+   <a href="/health/enterovirus.html" class="block bg-[#f8faf7] rounded-xl border border-gray-100 hover:border-[#A8C69F] hover:shadow-sm transition p-4">
+    <span class="text-xs text-[#7C9A6E] font-chinese">延伸閱讀</span>
+    <p class="text-sm font-bold text-gray-800 font-chinese mt-1 leading-snug">腸病毒症狀有哪些？重症前兆一次看</p>
+   </a>
+   <a href="/health/allergy.html" class="block bg-[#f8faf7] rounded-xl border border-gray-100 hover:border-[#A8C69F] hover:shadow-sm transition p-4">
+    <span class="text-xs text-[#7C9A6E] font-chinese">延伸閱讀</span>
+    <p class="text-sm font-bold text-gray-800 font-chinese mt-1 leading-snug">什麼是過敏？症狀、原因與保養</p>
+   </a>
+  </div>
+ </div>
 
  <div class="text-center mt-6">
  <a href="/#health-tips" class="text-sm font-chinese text-[#7C9A6E] hover:underline">← 返回衛教文章列表</a>
