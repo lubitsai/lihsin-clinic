@@ -1,6 +1,7 @@
 # 立欣診所 LiHsin Clinic
 
 > 立欣診所是位於台灣台南市北區育德路467號的小兒科與家庭醫學診所，於2024年7月開業，為衛生福利部健保特約醫療機構。由具馬偕兒童醫院兒童過敏氣喘免疫風濕科研究醫師訓練背景的蔡宗儒院長領軍，並有具國泰醫院新生兒次專科訓練的李佳玲醫師。提供台南北區少數的完整假日門診（週六、週日皆有診）與平日夜診至21:30，是雙薪家庭與週末就醫的便利選擇。
+  醫師完整學經歷：https://lhpedclinic.com.tw/team/dr-tsai.html
 
 ## 基本資訊
 
@@ -61,6 +62,7 @@
 - 認識塵蟎與居家環境整理（防蟎）：https://lhpedclinic.com.tw/health/dust-mite.html
 - 異位性皮膚炎照護（保濕、清潔與藥膏）：https://lhpedclinic.com.tw/health/atopic-dermatitis.html
 - hMPV 人類間質肺炎病毒（症狀、警訊與預防）：https://lhpedclinic.com.tw/health/hmpv.html
+- 過敏與偏頭痛（過敏如何誘發頭痛、兒童頭痛評估）：https://lhpedclinic.com.tw/health/allergy-headache.html
 
 ## 使用須知
 
