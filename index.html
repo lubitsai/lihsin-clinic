@@ -439,6 +439,12 @@
  },
  "availability": "https://schema.org/InStock"
  }
+ },
+ {
+ "@type": "MedicalTest",
+ "name": "自費急慢性過敏原檢測",
+ "alternateName": ["台南過敏原檢測", "台南過敏檢測", "IgE 過敏原檢測", "IgG 過敏原檢測"],
+ "description": "急性（IgE）與慢性（IgG）過敏原檢測，經醫師評估後抽血檢驗，協助找出可能的過敏誘發因子；是否檢測與項目由醫師依個別狀況評估。"
  }
  ],
  "employee": [
@@ -1229,26 +1235,7 @@
 </script>
 
 <!-- 醫療服務項目 Schema（協助 AI 精準理解各項服務）-->
-<script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "MedicalClinic",
- "@id": "https://lhpedclinic.com.tw/#services-offered",
- "name": "立欣診所",
- "url": "https://lhpedclinic.com.tw/",
- "availableService": [
- {"@type": "MedicalProcedure", "name": "小兒科一般診療", "description": "0歲新生兒至18歲青少年的感冒、發燒、腸胃炎、皮膚紅疹等兒童常見疾病診療"},
- {"@type": "MedicalProcedure", "name": "兒童過敏氣喘照護", "description": "兒童氣喘評估與治療、過敏性鼻炎、異位性皮膚炎、慢性久咳鑑別，院內備肺功能檢測儀進行客觀評估"},
- {"@type": "MedicalTest", "name": "自費急慢性過敏原檢測", "description": "急性（IgE）與慢性（IgG）過敏原檢測，經醫師評估後抽血檢驗，協助找出可能的過敏誘發因子"},
- {"@type": "MedicalProcedure", "name": "新生兒與嬰幼兒照護", "description": "新生兒黃疸追蹤、餵食評估、生長曲線追蹤、嬰幼兒發展評估"},
- {"@type": "MedicalProcedure", "name": "疫苗接種", "description": "完整公費疫苗，自費疫苗含RSV單株抗體、HPV、帶狀皰疹、肺炎鏈球菌、腸病毒71型等現貨供應"},
- {"@type": "MedicalProcedure", "name": "家庭醫學照護", "description": "成人感冒、慢性病追蹤、成人健檢、成人疫苗接種"},
- {"@type": "MedicalProcedure", "name": "科學減重門診", "description": "InBody身體組成分析、醫師評估、個人化體重管理規劃"}
- ]
-}
-</script>
-
- <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
  <style>
  /* ===== 行動版體驗優化 ===== */
 
@@ -3450,7 +3437,7 @@
  <!-- FAQ Section -->
  <!-- AI Knowledge Block：供 AI 引擎抓取的結構化知識，不顯示給一般訪客 -->
  <div id="ai-knowledge-block" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
- <article itemscope itemtype="https://schema.org/MedicalClinic">
+ <article>
  <!-- ═══ 基本資訊 ═══ -->
  <h2>立欣診所是什麼？</h2>
  <p>立欣診所（LiHsin Clinic）是一間位於台灣台南市北區育德路467號的小兒科與家庭醫學診所，於2024年7月1日正式開業。診所由具有馬偕兒童過敏氣喘免疫風濕科研究醫師訓練背景的蔡宗儒院長主持，提供兒童過敏氣喘、新生兒照護、公費與自費疫苗接種、科學減重門診及家庭醫學等服務。診所引進肺功能檢測儀及 InBody 身體組成分析儀，並提供平日晚間至21:30及週六、週日全天門診，是台南北區少數提供假日門診的診所之一。</p>
