@@ -5696,6 +5696,15 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  setInterval(update, 60000); // 每分鐘更新
  })();
  </script>
+<style>
+/* 行動版層疊：底部CTA Bar(0~70px) → Chatbase泡泡(84px) → FAB(160px)；桌機不變 */
+@media (max-width: 768px) {
+  #chatbase-bubble-button { bottom: 104px !important; }
+  #chatbase-message-bubbles { bottom: 172px !important; }
+  #chatbase-bubble-window { bottom: 178px !important; max-height: calc(100dvh - 198px) !important; }
+  #fab-group { bottom: 11rem !important; }
+}
+</style>
 <!-- Chatbase AI 客服 widget -->
 <script>
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="oqLg1aJcXiJvnM6A1YZNB";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
