@@ -67,7 +67,6 @@
  <link rel="preload" as="image" href="images/hero-mascot.png" type="image/png" fetchpriority="high">
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
- <link rel="preconnect" href="https://cdn.tailwindcss.com">
  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
  <link rel="dns-prefetch" href="https://www.google-analytics.com">
  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -76,7 +75,7 @@
  <link rel="dns-prefetch" href="https://maps.google.com">
  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" media="all" onload="this.media='all'">
  <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"></noscript>
- <script src="https://cdn.tailwindcss.com"></script>
+ <link rel="stylesheet" href="/tailwind.css">
  <!-- ═══ Schema.org：完整介紹 PDF 文件（DigitalDocument）═══ -->
  <script type="application/ld+json">
 {
@@ -1529,8 +1528,8 @@
 
  /* Pulse Animation */
  @keyframes pulse {
- 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(124, 154, 110, 0.7); }
- 50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(124, 154, 110, 0); }
+ 0%, 100% { transform: scale(1); opacity: 1; }
+ 50% { transform: scale(1.05); opacity: 0.92; }
  }
 
  .pulse-animation {
