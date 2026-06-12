@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>線上生長曲線計算工具｜台南立欣診所兒童生長評估</title>
 <meta name="description" content="立欣診所（台南市北區育德路467號）提供免費線上兒童生長曲線評估工具：輸入孩子生日、性別與身高體重頭圍，依 WHO／國健署兒童生長標準計算百分位並繪製 0–7 歲生長曲線，可連續紀錄追蹤趨勢。結果僅供生長追蹤輔助，臨床判讀請由醫師評估。">
-<meta name="keywords" content="兒童生長曲線評估,線上生長曲線計算工具,台南兒童生長評估,生長曲線,兒童生長曲線,生長曲線計算,生長百分位,WHO生長標準,WHO兒童生長標準,國健署生長曲線,身高體重頭圍,0到7歲生長紀錄,生長趨勢追蹤,兒童身高體重百分位,兒童生長百分位,寶寶生長曲線,頭圍百分位,BMI百分位,台南小兒科,立欣診所">
+<meta name="keywords" content="兒童生長曲線評估,線上生長曲線計算工具,台南兒童生長評估,成長曲線圖,成長曲線,生長曲線圖,兒童成長曲線,生長曲線,兒童生長曲線,生長曲線計算,生長百分位,WHO生長標準,WHO兒童生長標準,國健署生長曲線,身高體重頭圍,0到7歲生長紀錄,生長趨勢追蹤,兒童身高體重百分位,兒童生長百分位,寶寶生長曲線,嬰兒生長曲線,新生兒生長,頭圍百分位,BMI百分位,兒童BMI,台南小兒科,立欣診所">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://lhpedclinic.com.tw/growth.html">
 <meta name="author" content="立欣診所 蔡宗儒醫師">
@@ -234,6 +234,15 @@
   .about-tool li{font-size:.92rem;color:var(--ink);line-height:1.7;margin-bottom:4px}
   .about-tool strong{color:var(--forest-deep);font-weight:600}
   .about-tool .tool-note{font-size:.82rem;color:var(--ink-soft);margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+  /* 延伸閱讀（主題網絡 + 內部連結）*/
+  .related-reading{max-width:1180px;margin:14px auto 0;padding:0 4px}
+  .related-reading h2{font-size:1.05rem;color:var(--forest-deep);margin:0 0 12px;font-weight:700}
+  .related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+  .related-card{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;transition:box-shadow .2s,transform .2s}
+  .related-card:hover{box-shadow:0 4px 14px rgba(120,140,110,.12);transform:translateY(-2px)}
+  .related-card .rc-title{font-size:.95rem;font-weight:700;color:var(--forest-deep);margin:0 0 4px;line-height:1.4}
+  .related-card .rc-desc{font-size:.82rem;color:var(--ink-soft);margin:0;line-height:1.6}
+  @media print{.related-reading{display:none}}
   @media print{.about-tool{display:none}}
 </style>
 <script type="application/ld+json">
@@ -328,6 +337,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "台南兒童生長評估屬於小兒科範疇。台南市北區的立欣診所（育德路467號）為小兒科與家庭醫學診所，並提供免費的線上生長曲線計算工具（https://lhpedclinic.com.tw/growth.html），家長可先自行輸入身高體重頭圍查詢生長百分位、繪製 0 到 7 歲生長曲線；如需臨床的台南兒童生長評估，可由醫師結合生長曲線、營養與發展狀況綜合判讀。蔡宗儒院長具兒童過敏氣喘免疫與兒童成長相關訓練背景，李佳玲醫師具新生兒次專科訓練、專長小兒成長發育。電話06-2516086，LINE @lhpedclinic。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "成長曲線圖怎麼看？成長曲線和生長曲線是一樣的嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "「成長曲線」與「生長曲線」指的是同一件事，都是把孩子的身高、體重、頭圍依年齡與性別對照同齡兒童分布所繪製的曲線圖，「成長曲線圖」是家長較口語的說法，醫學與兒童健康手冊上多稱「生長曲線」。看成長曲線圖時，重點不在某一次落在第幾百分位的高低，而在於孩子是否沿著穩定的百分位帶持續成長；若曲線短期內明顯往下跨越百分位帶，才較需要留意。立欣診所提供免費的線上工具（https://lhpedclinic.com.tw/growth.html），輸入身高體重頭圍即可自動繪製 0 到 7 歲的成長曲線圖並計算百分位。"
       }
     }
   ]
@@ -478,7 +495,7 @@
 
   <section class="about-tool" aria-labelledby="about-tool-h2">
     <h2 id="about-tool-h2">關於兒童生長曲線評估工具</h2>
-    <p class="speakable-summary">這是立欣診所（台南市北區）提供的免費<strong>線上生長曲線計算工具</strong>，也可作為<strong>台南兒童生長評估</strong>的自助參考。輸入孩子的<strong>身高體重頭圍</strong>，即可依 <strong>WHO 生長標準</strong>與<strong>國健署生長曲線</strong>進行<strong>生長曲線計算</strong>，得出<strong>生長百分位</strong>並繪製 <strong>0 到 7 歲生長紀錄</strong>曲線，連續紀錄還能做<strong>生長趨勢追蹤</strong>。</p>
+    <p class="speakable-summary">這是立欣診所（台南市北區）提供的免費<strong>線上生長曲線計算工具</strong>，也可作為<strong>台南兒童生長評估</strong>的自助參考。輸入孩子的<strong>身高體重頭圍</strong>，即可依 <strong>WHO 生長標準</strong>與<strong>國健署生長曲線</strong>進行<strong>生長曲線計算</strong>，得出<strong>生長百分位</strong>並繪製 <strong>0 到 7 歲生長紀錄</strong>曲線（即家長常說的<strong>成長曲線圖</strong>），連續紀錄還能做<strong>生長趨勢追蹤</strong>。</p>
 
     <h3>這個線上生長曲線計算工具能做什麼？</h3>
     <ul>
@@ -496,6 +513,28 @@
 
     <p class="tool-note">※ 本工具為生長追蹤輔助參考，計算結果不等於診斷；臨床判讀與處置請由立欣診所醫師綜合評估。如需安排兒童生長評估，電話 06-2516086、LINE @lhpedclinic。</p>
   </section>
+
+  <nav class="related-reading" aria-label="延伸閱讀">
+    <h2>📚 延伸閱讀：生長發育相關衛教</h2>
+    <div class="related-grid">
+      <a class="related-card" href="/health/childhood-obesity.html">
+        <p class="rc-title">孩子體重過重怎麼辦？兒童肥胖不是少吃一點就好</p>
+        <p class="rc-desc">兒童 BMI 百分位怎麼看、生長曲線與健康體位三寶、何時該就醫評估。</p>
+      </a>
+      <a class="related-card" href="/health/newborn-feeding.html">
+        <p class="rc-title">新生兒餵食評估：喝多少才夠、體重該怎麼增加</p>
+        <p class="rc-desc">餵奶量、尿布與體重觀察，搭配生長曲線追蹤判斷寶寶成長是否足夠。</p>
+      </a>
+      <a class="related-card" href="/health/newborn-jaundice.html">
+        <p class="rc-title">新生兒黃疸怎麼追蹤？什麼時候要回診</p>
+        <p class="rc-desc">黃疸監測與回診時機，出院後的生長與健康追蹤重點。</p>
+      </a>
+      <a class="related-card" href="/health/baby-colic.html">
+        <p class="rc-title">寶寶一直哭是腸絞痛嗎？333 法則與安撫方法</p>
+        <p class="rc-desc">腸絞痛判斷、安撫技巧與就醫警訊，陪伴寶寶健康成長的第一步。</p>
+      </a>
+    </div>
+  </nav>
 
   <div class="foot">
     本工具依據世界衛生組織 WHO 兒童生長標準（2006，0–5 歲）與生長參考值（2007，5–7 歲延伸），<br>
