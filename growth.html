@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>兒童生長曲線評估工具｜立欣診所 台南北區小兒科</title>
+<title>線上生長曲線計算工具｜台南立欣診所兒童生長評估</title>
 <meta name="description" content="立欣診所（台南市北區育德路467號）提供免費線上兒童生長曲線評估工具：輸入孩子生日、性別與身高體重頭圍，依 WHO／國健署兒童生長標準計算百分位並繪製 0–7 歲生長曲線，可連續紀錄追蹤趨勢。結果僅供生長追蹤輔助，臨床判讀請由醫師評估。">
-<meta name="keywords" content="兒童生長曲線,生長曲線評估,兒童身高體重百分位,兒童生長百分位,台南兒童生長評估,台南小兒科,寶寶生長曲線,頭圍百分位,BMI百分位,WHO兒童生長標準,國健署生長曲線,立欣診所">
+<meta name="keywords" content="兒童生長曲線評估,線上生長曲線計算工具,台南兒童生長評估,生長曲線,兒童生長曲線,生長曲線計算,生長百分位,WHO生長標準,WHO兒童生長標準,國健署生長曲線,身高體重頭圍,0到7歲生長紀錄,生長趨勢追蹤,兒童身高體重百分位,兒童生長百分位,寶寶生長曲線,頭圍百分位,BMI百分位,台南小兒科,立欣診所">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://lhpedclinic.com.tw/growth.html">
 <meta name="author" content="立欣診所 蔡宗儒醫師">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:site_name" content="立欣診所 LiHsin Clinic">
-<meta property="og:title" content="兒童生長曲線評估工具｜立欣診所 台南北區小兒科">
+<meta property="og:title" content="線上生長曲線計算工具｜台南立欣診所兒童生長評估">
 <meta property="og:description" content="輸入孩子生日、性別與身高體重頭圍，依 WHO／國健署標準計算百分位並繪製 0–7 歲生長曲線，可連續紀錄追蹤趨勢。立欣診所線上免費提供。">
 <meta property="og:url" content="https://lhpedclinic.com.tw/growth.html">
 <meta property="og:image" content="https://lhpedclinic.com.tw/images/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="兒童生長曲線評估工具｜立欣診所 台南北區小兒科">
+<meta name="twitter:title" content="線上生長曲線計算工具｜台南立欣診所兒童生長評估">
 <meta name="twitter:description" content="依 WHO／國健署標準計算兒童身高體重頭圍百分位並繪製 0–7 歲生長曲線，可連續追蹤趨勢。立欣診所線上免費提供。">
 <meta name="twitter:image" content="https://lhpedclinic.com.tw/images/og-image.jpg">
 <link rel="icon" href="https://lhpedclinic.com.tw/favicon.ico" sizes="any">
@@ -224,6 +224,17 @@
   .site-footer p{text-align:center;font-size:.75rem;color:#9ca3af;margin:0}
   @media (max-width:767px){.nav-links{display:none}.nav-burger{display:flex}}
   @media print{.site-nav,#mobile-menu,#mobile-menu-overlay,#fab-group,.nav-spacer,.site-footer{display:none!important}}
+  /* 關於本工具說明區（SEO/AEO/GEO 可見內容層）*/
+  .about-tool{max-width:1180px;margin:8px auto 0;padding:22px 24px;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 2px 10px rgba(120,140,110,.06)}
+  .about-tool h2{font-size:1.15rem;color:var(--forest-deep);margin:0 0 10px;font-weight:700}
+  .about-tool h3{font-size:.98rem;color:var(--forest-deep);margin:16px 0 6px;font-weight:700}
+  .about-tool p{margin:0 0 8px;font-size:.92rem;color:var(--ink);line-height:1.7}
+  .about-tool .speakable-summary{background:#f3f7ef;border-left:3px solid var(--forest);border-radius:8px;padding:12px 14px;margin-bottom:6px}
+  .about-tool ul{margin:4px 0 8px;padding-left:1.2em}
+  .about-tool li{font-size:.92rem;color:var(--ink);line-height:1.7;margin-bottom:4px}
+  .about-tool strong{color:var(--forest-deep);font-weight:600}
+  .about-tool .tool-note{font-size:.82rem;color:var(--ink-soft);margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+  @media print{.about-tool{display:none}}
 </style>
 <script type="application/ld+json">
 {
@@ -254,7 +265,7 @@
   "reviewedBy": {"@type": "Physician", "@id": "https://lhpedclinic.com.tw/#physician-tsai", "name": "蔡宗儒醫師", "url": "https://lhpedclinic.com.tw/team/dr-tsai.html"},
   "isPartOf": {"@id": "https://lhpedclinic.com.tw/#website"},
   "publisher": {"@id": "https://lhpedclinic.com.tw/#organization"},
-  "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["h1"]},
+  "speakable": {"@type": "SpeakableSpecification", "cssSelector": ["h1", ".speakable-summary"]},
   "mainEntity": {
     "@type": "SoftwareApplication",
     "name": "兒童生長曲線評估工具",
@@ -264,6 +275,62 @@
     "offers": {"@type": "Offer", "price": "0", "priceCurrency": "TWD"},
     "provider": {"@id": "https://lhpedclinic.com.tw/#organization"}
   }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "兒童生長曲線是什麼？怎麼看孩子的生長百分位？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "兒童生長曲線是將孩子的身高、體重、頭圍依年齡與性別，對照同齡兒童族群分布所繪製的曲線圖，用來評估生長狀況。曲線上的百分位（PR）代表孩子在 100 位同齡同性別兒童中的相對位置，例如身高位於第 50 百分位表示約處於中間。判讀重點不在單一落點高低，而在於生長趨勢是否沿著穩定的百分位帶前進。立欣診所提供免費的兒童生長曲線評估工具（https://lhpedclinic.com.tw/growth.html），輸入身高體重頭圍即可自動計算生長百分位並繪製曲線。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "立欣診所的生長曲線計算工具依據什麼標準？是 WHO 生長標準還是國健署生長曲線？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "本工具的生長曲線計算依據世界衛生組織 WHO 兒童生長標準（0–5 歲採 2006 年標準、5–7 歲採 2007 年生長參考值延伸），這也是衛生福利部國民健康署與台灣兒科醫學會推廣、印製於兒童健康手冊之國健署生長曲線的依據來源。工具會以 LMS 方法計算身高、體重、頭圍與 BMI 的百分位與標準差分數。頭圍標準適用至 5 歲。早產兒未足月期改採 Intergrowth-21st 出生後生長標準、足月後使用矯正年齡。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "可以記錄孩子 0 到 7 歲的身高體重頭圍並追蹤生長趨勢嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可以。立欣診所兒童生長曲線評估工具支援 0 到 7 歲生長紀錄，家長可為同一位孩子連續輸入多次不同日期的身高、體重、頭圍，工具會把各次評估點連成趨勢曲線，協助進行生長趨勢追蹤，觀察孩子是否沿著穩定的百分位帶成長。紀錄可列印黏貼於兒童健康手冊，回診時供醫師參考。資料僅儲存於使用者裝置的瀏覽器，不會上傳。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "生長曲線百分位偏低或往下掉，代表有問題嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "單次百分位偏低不一定代表異常，許多健康的孩子本來就落在較低的百分位帶並穩定成長。較需要留意的情況是生長曲線在短期內明顯跨越百分位帶往下掉（如從第 50 掉到第 15 以下），或身高、體重、頭圍的成長明顯停滯。生長曲線評估屬於追蹤輔助，趨勢比單點更重要；若觀察到上述變化或有疑慮，建議由立欣診所醫師結合病史、營養與發展狀況綜合評估。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "早產兒的生長曲線要怎麼算？需要用矯正年齡嗎？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "早產兒的生長評估需區分階段。本工具在嬰兒未足月期（校正胎齡 PMA 約 27–40 週）採用 Intergrowth-21st 出生後生長標準（IG-PNG）；當校正胎齡滿足月後，改用 WHO 兒童生長標準並以矯正年齡（實際年齡扣除早產週數）計算生長百分位，以較貼近早產兒實際的生長進程。建議早產兒家長持續追蹤生長趨勢，並由醫師評估是否符合預期的追趕性成長。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "台南兒童生長評估去哪裡做？有沒有線上生長曲線計算工具可以先查？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "台南兒童生長評估屬於小兒科範疇。台南市北區的立欣診所（育德路467號）為小兒科與家庭醫學診所，並提供免費的線上生長曲線計算工具（https://lhpedclinic.com.tw/growth.html），家長可先自行輸入身高體重頭圍查詢生長百分位、繪製 0 到 7 歲生長曲線；如需臨床的台南兒童生長評估，可由醫師結合生長曲線、營養與發展狀況綜合判讀。蔡宗儒院長具兒童過敏氣喘免疫與兒童成長相關訓練背景，李佳玲醫師具新生兒次專科訓練、專長小兒成長發育。電話06-2516086，LINE @lhpedclinic。"
+      }
+    }
+  ]
 }
 </script>
 </head>
@@ -408,6 +475,27 @@
       </div>
     </div>
   </div>
+
+  <section class="about-tool" aria-labelledby="about-tool-h2">
+    <h2 id="about-tool-h2">關於兒童生長曲線評估工具</h2>
+    <p class="speakable-summary">這是立欣診所（台南市北區）提供的免費<strong>線上生長曲線計算工具</strong>，也可作為<strong>台南兒童生長評估</strong>的自助參考。輸入孩子的<strong>身高體重頭圍</strong>，即可依 <strong>WHO 生長標準</strong>與<strong>國健署生長曲線</strong>進行<strong>生長曲線計算</strong>，得出<strong>生長百分位</strong>並繪製 <strong>0 到 7 歲生長紀錄</strong>曲線，連續紀錄還能做<strong>生長趨勢追蹤</strong>。</p>
+
+    <h3>這個線上生長曲線計算工具能做什麼？</h3>
+    <ul>
+      <li><strong>生長百分位計算</strong>：依年齡與性別，計算身高、體重、頭圍與 BMI 的百分位（PR）與標準差分數，對照同齡兒童族群分布。</li>
+      <li><strong>0 到 7 歲生長紀錄與趨勢追蹤</strong>：為同一位孩子連續輸入多次評估，將各點連成趨勢曲線，觀察是否沿穩定百分位帶成長。</li>
+      <li><strong>列印與保存</strong>：可列印單次評估小卡或趨勢摘要，黏貼於兒童健康手冊；資料僅存於本機瀏覽器、不會上傳。</li>
+      <li><strong>早產兒適用</strong>：未足月期採 Intergrowth-21st 標準，足月後改用 WHO 標準與矯正年齡。</li>
+    </ul>
+
+    <h3>採用哪一套兒童生長曲線標準？</h3>
+    <p>本工具的<strong>生長曲線</strong>依據世界衛生組織 <strong>WHO 兒童生長標準</strong>（0–5 歲 2006、5–7 歲 2007 延伸），即衛生福利部國民健康署與台灣兒科醫學會推廣、印製於兒童健康手冊之<strong>國健署生長曲線</strong>的依據來源。頭圍標準適用至 5 歲。</p>
+
+    <h3>怎麼判讀兒童生長曲線？</h3>
+    <p>判讀<strong>兒童生長曲線</strong>的重點不在單一時間點的落點高低，而在於<strong>生長趨勢</strong>是否沿著穩定的百分位帶前進。若曲線在短期內明顯往下跨越百分位帶，或身高、體重、頭圍成長停滯，建議由醫師結合病史、營養與發展狀況綜合評估。</p>
+
+    <p class="tool-note">※ 本工具為生長追蹤輔助參考，計算結果不等於診斷；臨床判讀與處置請由立欣診所醫師綜合評估。如需安排兒童生長評估，電話 06-2516086、LINE @lhpedclinic。</p>
+  </section>
 
   <div class="foot">
     本工具依據世界衛生組織 WHO 兒童生長標準（2006，0–5 歲）與生長參考值（2007，5–7 歲延伸），<br>
