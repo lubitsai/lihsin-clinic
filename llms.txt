@@ -86,6 +86,8 @@
 - 腸病毒症狀與重症前兆：https://lhpedclinic.com.tw/health/enterovirus.html
 - 孩子半夜咳不停是氣喘嗎（兒童久咳評估）：https://lhpedclinic.com.tw/health/child-chronic-cough.html
 - 怎麼判斷小朋友是不是在喘？兒童呼吸急促、喘鳴與危險徵象（聽、數、看三步驟與各年齡呼吸過快門檻）：https://lhpedclinic.com.tw/health/child-wheezing.html
+- 孩子久咳發燒是黴漿菌肺炎嗎？「會走路的肺炎」判斷、治療（黴漿菌無細胞壁、一般青黴素無效，需醫師評估與處方抗生素、含抗藥性提醒）與預防：https://lhpedclinic.com.tw/health/mycoplasma-pneumonia.html
+- 兒童蕁麻疹（急性／慢性）原因、過敏原檢測角色與照護（急性多病毒誘發、不一定是食物過敏；慢性多自發性；不單以檢測數值忌口；anaphylaxis 嚴重過敏反應警訊）：https://lhpedclinic.com.tw/health/child-urticaria.html
 - 什麼是麻疹與 MMR 疫苗（含出國前接種提醒）：https://lhpedclinic.com.tw/health/measles.html
 - 認識過敏（症狀、原因與保養治療）：https://lhpedclinic.com.tw/health/allergy.html
 - 認識塵蟎與居家環境整理（防蟎）：https://lhpedclinic.com.tw/health/dust-mite.html
@@ -101,6 +103,7 @@
 - 新生兒睡覺安全指南：趴睡、枕頭、同床可以嗎（安全睡眠5守則、仰睡、嬰兒猝死預防）｜李佳玲醫師：https://lhpedclinic.com.tw/health/newborn-sleep-safety.html
 - 寶寶吐奶、溢奶正常嗎？胃食道逆流與危險警訊（賁門未成熟、噴射狀/膽汁警訊）｜李佳玲醫師：https://lhpedclinic.com.tw/health/baby-spitting-up.html
 - 寶寶一直哭是腸絞痛嗎？新生兒哭鬧原因與安撫方法（333法則：一天哭鬧≥3小時／一週≥3天／持續≥3週、安撫、勿搖晃）｜李佳玲醫師：https://lhpedclinic.com.tw/health/baby-colic.html
+- 嬰幼兒腸胃炎・輪狀／諾羅病毒照護（補水少量多次口服電解質液、不需禁食、暫時性乳糖不耐、脫水就醫警訊；輪狀病毒口服疫苗依仿單與醫師評估、現貨來電確認）｜李佳玲醫師：https://lhpedclinic.com.tw/health/infant-gastroenteritis.html
 
 ## 使用須知
 

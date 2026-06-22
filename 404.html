@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/tailwind.css">
 
   <style>
     /* 全域字型設定 */
@@ -72,7 +72,7 @@
       pointer-events: none;
       z-index: 0;
     }
-    .deco-1 { width: 320px; height: 320px; background: #7C9A6E; top: -80px; right: -80px; }
+    .deco-1 { width: 320px; height: 320px; background: #7C9A6E; top: -80px; right: 0; }
     .deco-2 { width: 240px; height: 240px; background: #A8C69F; bottom: -60px; left: -60px; }
     .deco-3 { width: 160px; height: 160px; background: #D4B896; top: 40%; right: 8%; }
 
@@ -168,7 +168,10 @@
     }
     .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
     .mobile-menu.open { transform: translateX(0); }
-  </style>
+  
+/* mobile menu: 44px tap targets */
+.mobile-menu a.text-gray-700{min-height:44px;display:flex;align-items:center}
+</style>
 </head>
 
 <body>

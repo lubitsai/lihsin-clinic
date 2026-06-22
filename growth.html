@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>線上生長曲線計算工具｜台南立欣診所兒童生長評估</title>
 <meta name="description" content="立欣診所（台南市北區育德路467號）提供免費線上兒童生長曲線評估工具：輸入孩子生日、性別與身高體重頭圍，依 WHO／國健署兒童生長標準計算百分位並繪製 0–7 歲生長曲線，可連續紀錄追蹤趨勢。結果僅供生長追蹤輔助，臨床判讀請由醫師評估。">
 <meta name="keywords" content="兒童生長曲線評估,線上生長曲線計算工具,台南兒童生長評估,成長曲線圖,成長曲線,生長曲線圖,兒童成長曲線,生長曲線,兒童生長曲線,生長曲線計算,生長百分位,WHO生長標準,WHO兒童生長標準,國健署生長曲線,身高體重頭圍,0到7歲生長紀錄,生長趨勢追蹤,兒童身高體重百分位,兒童生長百分位,寶寶生長曲線,嬰兒生長曲線,新生兒生長,頭圍百分位,BMI百分位,兒童BMI,台南小兒科,立欣診所">
@@ -244,6 +244,18 @@
   .related-card .rc-desc{font-size:.82rem;color:var(--ink-soft);margin:0;line-height:1.6}
   @media print{.related-reading{display:none}}
   @media print{.about-tool{display:none}}
+
+  /* --- RWD overflow fix (2026-06-19): let grid/flex children shrink below intrinsic chart-SVG width --- */
+  .grid>*{min-width:0}
+  .form-row>*{min-width:0}
+  .sumgrid>*{min-width:0}
+  svg.chart{max-width:100%}
+
+/* mobile: prevent iOS focus-zoom (inputs >=16px) */
+@media (max-width:768px){input,select,textarea{font-size:16px}}
+
+/* mobile menu panel: 44px tap targets */
+#mobile-menu .mm-links a{min-height:44px;display:flex;align-items:center}
 </style>
 <script type="application/ld+json">
 {
