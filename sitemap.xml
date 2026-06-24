@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-06-20</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -54,6 +54,12 @@
     <image:image>
       <image:loc>https://lhpedclinic.com.tw/images/hero-mascot.png</image:loc>
     </image:image>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/visit-guide.html</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
@@ -208,55 +214,55 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/pediatric-allergy-asthma.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/weekend-pediatrics.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/newborn-care.html</loc>
-    <lastmod>2026-06-20</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/vaccination.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/services/allergy-testing.html</loc>
-    <lastmod>2026-06-20</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/weight-management.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/family-medicine.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/infant-gastroenteritis.html</loc>
-    <lastmod>2026-06-20</lastmod>
+    <lastmod>2026-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
