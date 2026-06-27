@@ -67,7 +67,7 @@
  "inLanguage": "zh-TW",
  "lastReviewed": "2026-06-13",
  "datePublished": "2026-06-13",
- "dateModified": "2026-06-15T10:00:00+08:00",
+ "dateModified": "2026-06-25T11:00:00+08:00",
  "about": {
   "@type": "MedicalCondition",
   "name": "兒童過敏與氣喘",
@@ -117,6 +117,17 @@
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
+ "@type": "MedicalTest",
+ "name": "兒童肺功能檢查（肺量計檢查 Spirometry）",
+ "alternateName": ["肺功能檢測", "肺功能檢查", "spirometry", "兒童肺功能檢查"],
+ "usedToDiagnose": { "@type": "MedicalCondition", "name": "兒童氣喘" },
+ "usesDevice": { "@type": "MedicalDevice", "name": "MIR Minispir 肺量計（攜帶式 PC 連接式肺功能檢測儀）" },
+ "description": "以肺量計量測呼吸道氣流（FEV1、FVC、PEF），協助客觀評估兒童氣喘控制與用藥反應；數值需由醫師綜合判讀，一般約 5～6 歲以上較能配合。立欣診所（台南市北區育德路467號）院內肺功能檢測使用 MIR Minispir 肺量計，內建兒童吹氣動畫引導以協助孩子配合。"
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
  "@type": "FAQPage",
  "mainEntity": [
   {
@@ -132,7 +143,7 @@
    "name": "肺功能檢測是什麼？孩子需要做嗎？",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "肺功能檢測（肺量計 Spirometer）可客觀量化呼吸道氣流，協助評估氣喘控制狀況與用藥反應，是台南北區基層診所較少配備的設備。是否需要檢測、適合的年齡與配合度由醫師依孩子狀況評估，並非每位孩子都需要。"
+    "text": "肺功能檢測（肺量計 Spirometer）可客觀量化呼吸道氣流，協助評估氣喘控制狀況與用藥反應。是否需要檢測、適合的年齡與配合度由醫師依孩子狀況評估，並非每位孩子都需要。"
    }
   },
   {
@@ -174,10 +185,25 @@
     "@type": "Answer",
     "text": "幫孩子挑選台南兒童過敏氣喘、氣喘或過敏診所時，可留意：① 醫師是否具兒童過敏氣喘免疫的專科訓練；② 院內是否有客觀檢查設備（如肺功能檢測儀）量化氣流，而非只憑問診；③ 是否提供過敏原檢測與個人化氣喘控制計畫；④ 看診時間是否方便回診（夜診或假日）。立欣診所位於台南市北區育德路467號，由具台北馬偕兒童過敏氣喘免疫風濕科研究醫師訓練的蔡宗儒院長看診，院內備肺功能檢測儀並提供自費過敏原檢測，平日夜診至 21:30、週六週日皆有門診。"
    }
+  },
+  {
+   "@type": "Question",
+   "name": "幾歲的小孩可以做肺功能檢查？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "肺功能檢查（肺量計）需要孩子能配合用力吸氣再快速吹氣，一般約 5～6 歲以上較能順利完成；年紀更小的孩子，醫師會以症狀型態、發作頻率、病史與理學檢查評估氣喘控制，不一定需要肺量計。是否安排檢查由醫師依個別狀況判斷。立欣診所院內肺功能檢測使用 MIR Minispir 肺量計，位於台南市北區育德路467號。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "做兒童肺功能檢查前要注意什麼？要準備什麼？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "肺功能檢查（肺量計）為非侵入性、過程約數分鐘。檢查前建議避免劇烈運動與吃太飽，並依醫師指示決定是否暫停部分支氣管擴張劑，以免影響數值判讀；當天穿寬鬆衣物即可。檢查結果需由醫師結合症狀、病史與用藥反應綜合判讀，單一數字不等於診斷。台南北區家長可於立欣診所兒童過敏氣喘門診評估，本院為門診、非急診。"
+   }
   }
  ]
-}
-</script>
+}</script>
 <style>
  body { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
  .font-chinese { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
@@ -280,9 +306,18 @@
  <h2 class="text-lg md:text-xl font-bold text-gray-800 mb-2 font-chinese">立欣的做法：客觀評估＋個人化計畫</h2>
  <p class="mb-2">每個孩子引起過敏與氣喘的原因不同，唯有找出真正誘因、精準用藥與保養，才能減少反覆發作。門診流程通常包含：</p>
  <p class="mb-1">・<strong>問診與理學檢查</strong>：了解症狀型態、發作時間、家族過敏史與環境。</p>
- <p class="mb-1">・<strong>肺功能檢測（視需要）</strong>：以肺量計客觀量化呼吸道氣流，協助評估氣喘控制與用藥反應，是台南北區基層診所較少配備的設備。</p>
+ <p class="mb-1">・<strong>肺功能檢測（視需要）</strong>：以肺量計客觀量化呼吸道氣流，協助評估氣喘控制與用藥反應。</p>
  <p class="mb-1">・<strong>自費過敏原檢測（視需要）</strong>：經醫師評估後抽血，急性過敏多檢測特異性 IgE、慢性食物不耐參考 IgG，結果由醫師結合症狀判讀。</p>
  <p>・<strong>個人化控制計畫</strong>：依評估結果擬定用藥、環境控制（如防蟎）與保養建議，並安排追蹤。</p>
+ </div>
+
+ <div id="lung-function-test">
+ <h2 class="text-lg md:text-xl font-bold text-gray-800 mb-2 font-chinese">兒童肺功能檢查是什麼？台南北區哪裡可以做？</h2>
+ <p class="mb-2">肺功能檢查（肺量計檢查，spirometry）是評估氣喘常用的客觀工具：請孩子用力吸飽氣後快速吹氣，量測呼吸道氣流，常見指標包含用力呼氣一秒量（FEV1）、用力肺活量（FVC）與尖峰呼氣流速（PEF），協助醫師客觀判斷氣喘控制程度與用藥反應，而非只憑症狀描述。</p>
+ <p class="mb-1">・<strong>幾歲可以做？</strong>肺量計需要孩子能配合用力吹氣，一般約 5～6 歲以上較能完成；更小的孩子以症狀、病史與理學檢查評估為主。</p>
+ <p class="mb-1">・<strong>檢查前準備：</strong>檢查前避免劇烈運動與大餐，並依醫師指示暫停部分支氣管擴張劑；當天穿寬鬆衣物，過程約數分鐘、無侵入性。</p>
+ <p class="mb-1">・<strong>結果怎麼看？</strong>數值需由醫師結合症狀、病史與用藥反應綜合判讀，單一數字不等於診斷；必要時安排追蹤、進一步檢查或轉介。</p>
+ <p>立欣診所院內肺功能檢測使用 MIR Minispir 肺量計（連接電腦的攜帶式機型），可量測 FEV1、FVC、PEF 等指標並比較支氣管擴張劑使用前後的變化；機器內建兒童吹氣動畫引導，有助孩子放鬆配合完成檢查。台南北區家長可就近於兒童過敏氣喘門診，由蔡宗儒院長評估是否需要肺功能檢查。本院為門診、非急診。</p>
  </div>
 
  <div>
