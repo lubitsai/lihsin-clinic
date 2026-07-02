@@ -881,69 +881,59 @@
 </head>
 <body>
 <div id="page-wrapper">
- <nav id="navbar" role="navigation" aria-label="主選單" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white" style="">
+ <nav role="navigation" aria-label="主選單" class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
  <div class="container mx-auto px-4 py-4">
- <div class="flex items-center justify-between" style="">
- <!-- Logo -->
- <div class="flex items-center gap-3">
- <picture><source srcset="https://lhpedclinic.com.tw/images/logo.png?format=webp" type="image/webp"><img src="https://lhpedclinic.com.tw/images/logo.png" alt="立欣診所 LOGO" loading="eager" fetchpriority="high" decoding="async" style="width: 40px; height: 40px; object-fit: contain; padding-bottom: 0px;"></picture>
+ <div class="flex items-center justify-between">
+ <a href="/" class="flex items-center gap-3">
+ <img src="/images/logo.png" alt="立欣診所 LOGO" style="width:40px;height:40px;object-fit:contain" onerror="this.style.display='none'">
  <div>
- <div class="text-2xl font-bold text-[#7C9A6E] font-chinese">立欣診所</div>
- <p class="text-sm text-gray-600 font-english" style="">LiHsin Clinic</p>
+ <div class="text-xl md:text-2xl font-bold text-[#7C9A6E] font-chinese">立欣診所</div>
+ <p class="text-xs md:text-sm text-gray-600">LiHsin Clinic</p>
  </div>
- </div>
-
- <!-- Desktop Menu -->
- <div class="hidden md:flex items-center gap-6">
+ </a>
+ <div class="hidden md:flex items-center gap-5">
  <a href="/#schedule" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">門診時間</a>
  <a href="/#services" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">服務項目</a>
  <a href="/#team" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">醫療團隊</a>
  <a href="/#director-message" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">認識立欣</a>
  <a href="/#health-tips" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">衛教知識</a>
- <a href="/#realtime-progress" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">看診進度</a>
+ <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">看診進度</a>
  <a href="/#faq" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">常見問題</a>
  <a href="/#contact" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">聯絡我們</a>
- <a href="/growth.html" onclick="trackCTA('GrowthTool_Nav')" class="btn-outline font-chinese font-medium" style="padding:0.4rem 0.9rem;border-radius:9999px;font-size:0.95rem;white-space:nowrap;min-height:auto;">📈 生長評估</a>
- <a href="https://www.facebook.com/lhpedclinic" target="_blank" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium flex items-center gap-1">
- <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
- 官方臉書
+ <a href="/growth.html" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">📈生長評估</a>
+ <a href="https://www.facebook.com/lhpedclinic" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium flex items-center gap-1" aria-label="官方臉書">
+ <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
  </a>
- <a href="tel:062516086" class="btn-primary px-6 py-3 rounded-full font-chinese font-medium">📞 電話掛號: 06-2516086</a>
+ <a href="tel:062516086" class="px-5 py-2.5 rounded-full font-chinese font-medium text-white" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">📞 06-2516086</a>
  </div>
+ <button id="mobile-menu-btn" class="md:hidden text-3xl text-[#7C9A6E]" style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;" aria-label="開啟選單">☰</button>
+ </div>
+ </div>
+</nav>
 
- <!-- Mobile Menu Button -->
- <button id="mobile-menu-btn" class="md:hidden text-3xl text-[#7C9A6E] min-w-[44px] min-h-[44px] flex items-center justify-center">
- ☰
- </button>
- </div>
- </div>
-
- <!-- Mobile Menu -->
- <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 z-40 hidden"></div>
- <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto">
- <button id="mobile-menu-close" class="text-3xl text-gray-600 mb-8 min-w-[44px] min-h-[44px] flex items-center justify-center">✕</button>
+<!-- Mobile Menu（手機側滑選單）-->
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 z-40 hidden"></div>
+<div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto">
+ <button id="mobile-menu-close" class="text-3xl text-gray-600 mb-8" style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;" aria-label="關閉選單">✕</button>
  <div class="flex flex-col gap-6">
  <a href="/#schedule" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">門診時間</a>
  <a href="/#services" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">服務項目</a>
  <a href="/#team" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">醫療團隊</a>
  <a href="/#director-message" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">認識立欣</a>
  <a href="/#health-tips" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">衛教知識</a>
- <a href="/#realtime-progress" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">看診進度</a>
+ <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">看診進度</a>
  <a href="/#faq" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">常見問題</a>
  <a href="/#contact" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">聯絡我們</a>
- <a href="/growth.html" onclick="trackCTA('GrowthTool_Nav')" class="text-[#7C9A6E] hover:text-[#5a7a50] transition font-chinese font-bold text-lg">📈 兒童生長曲線評估</a>
- <a href="https://www.facebook.com/lhpedclinic" target="_blank" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg flex items-center gap-2">
- <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
- 官方臉書
- </a>
- <a href="tel:062516086" class="btn-primary px-6 py-3 rounded-full font-chinese font-medium text-center">📞 06-2516086</a>
+ <a href="/growth.html" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">📈生長評估</a>
+ <a href="https://www.facebook.com/lhpedclinic" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">官方臉書</a>
+ <a href="tel:062516086" class="px-6 py-3 rounded-full font-chinese font-medium text-center text-white" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">📞 06-2516086</a>
  </div>
- </div>
- </nav>
+</div>
+<div style="height:76px"></div>
 <main id="main-content" role="main">
 
 <!-- 視覺麵包屑 -->
-<nav aria-label="頁面位置" class="bg-[#f8faf7] border-y border-gray-200 py-3" style="margin-top:84px;">
+<nav aria-label="頁面位置" class="bg-[#f8faf7] border-y border-gray-200 py-3">
  <div class="container mx-auto px-4">
   <ol class="flex items-center gap-2 text-sm font-chinese text-gray-600">
    <li><a href="/" class="hover:text-[#7C9A6E]">首頁</a></li>
@@ -964,7 +954,7 @@
  </div>
 </section>
 
-<div class="container mx-auto px-4 max-w-4xl pb-16 font-chinese text-gray-700 leading-relaxed">
+<div class="container mx-auto px-4 max-w-4xl font-chinese text-gray-700 leading-relaxed" style="padding-bottom:2.5rem;">
 
  <!-- 門診時間 -->
  <section class="mt-10" id="hours">
@@ -1087,57 +1077,9 @@
 
 </div>
 </main>
- <footer class="bg-gradient-to-r from-[#7C9A6E] to-[#A8C69F] text-white py-12" style="">
- <div class="container mx-auto px-4">
- <div class="grid md:grid-cols-3 gap-8 mb-8">
- <div>
- <div class="flex items-center gap-2 mb-4">
- <img src="images/logo.png" alt="立欣診所 LOGO" loading="lazy" decoding="async" style="width: 36px; height: 36px; object-fit: contain;">
- <h3 class="text-2xl font-bold font-chinese">立欣診所</h3>
- </div>
- <p class="font-chinese" style="">小鹿醫師團隊</p>
- <p class="font-english text-base opacity-90">The Little Deer Doctor Team</p>
- </div>
- <div>
- <h4 class="text-lg font-bold mb-4 font-chinese">聯絡資訊</h4>
- <p class="mb-2 font-chinese">📍 <a href="https://www.google.com/maps?q=台南市北區育德路467號" target="_blank" class="hover:underline">台南市北區育德路467號</a></p>
- <p class="mb-2 font-english">📞 <a href="tel:062516086" class="hover:underline">06-2516086</a></p>
- <p class="mb-2 font-english">💬 LINE: <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" class="hover:underline">@lhpedclinic</a></p>
- <p class="mb-2 font-chinese">📱 FB: <a href="https://www.facebook.com/lhpedclinic" target="_blank" class="hover:underline">立欣診所</a></p>
- <p class="font-chinese">📸 IG: <a href="https://www.instagram.com/lhpedclinic/" target="_blank" class="hover:underline">@lhpedclinic</a></p>
- </div>
- <div>
- <h4 class="text-lg font-bold mb-4 font-chinese">快速連結</h4>
- <div class="space-y-2">
- <a href="/#schedule" class="block hover:underline font-chinese">門診時間</a>
- <a href="/#services" class="block hover:underline font-chinese">服務項目</a>
- <a href="/#team" class="block hover:underline font-chinese">醫療團隊</a>
- <a href="/#director-message" class="block hover:underline font-chinese">認識立欣</a>
- <a href="/#health-tips" class="block hover:underline font-chinese">衛教知識</a>
- <a href="/#realtime-progress" class="block hover:underline font-chinese">看診進度</a>
- <a href="/#faq" class="block hover:underline font-chinese">常見問題</a>
- <a href="/#contact" class="block hover:underline font-chinese">聯絡我們</a>
- </div>
- </div>
- </div>
- <div class="border-t border-white border-opacity-30 pt-8 text-center">
- <p class="font-chinese" style="">© 2024–<span id="footer-year"></span> 立欣診所 LiHsin Clinic. All rights reserved.</p>
- <script>document.getElementById('footer-year').textContent = new Date().getFullYear();</script>
- <p class="font-chinese text-sm mt-2 opacity-80">台南市北區｜小兒科・台南假日兒科・兒童過敏氣喘・異位性皮膚炎・久咳評估・新生兒照護・公費自費疫苗・疫苗接種・家庭醫學・科學減重</p>
- <p class="text-base opacity-75 mt-2 flex items-center justify-center gap-2"><picture><source srcset="https://lhpedclinic.com.tw/images/logo.png?format=webp" type="image/webp"><img src="https://lhpedclinic.com.tw/images/logo.png" alt="立欣診所 LOGO" loading="lazy" decoding="async" style="width: 20px; height: 20px; object-fit: contain; display: inline-block;"></picture> 醫學中心級的專業，家門口的暖心照護</p>
-
- <!-- 醫療廣告法規警語（依《醫療法》第 85、86 條及《醫療廣告管理辦法》）-->
- <div class="mt-6 pt-6 border-t border-white border-opacity-20 max-w-4xl mx-auto">
- <p class="text-xs opacity-70 font-chinese leading-relaxed">
- ⚠️ <strong>醫療廣告暨衛教資訊聲明</strong>：本網站為衛福部健保特約醫療機構立欣診所之資訊網站，所有衛教資訊僅供一般醫學知識參考，不構成醫療診斷建議；實際病情評估、診斷與治療請至診所由醫師面診後判斷。所有疫苗、藥物之保護效力與副作用依原廠仿單記載，個別效果因人而異。本站所載自費藥物（含減重藥物）資訊屬醫療衛教，非藥品廣告，且不得作為民眾自行用藥之依據；所有處方藥物均須經醫師完整評估後依處方使用。
- </p>
- <p class="text-xs opacity-60 font-chinese mt-2">
- 衛生福利部健保特約醫療機構｜開業日期：2024年7月1日｜本網站內容由蔡宗儒院長審閱。
- </p>
- </div>
- </div>
- </div>
- </footer>
+ <footer class="bg-white border-t border-gray-100 py-6 mt-8">
+ <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086</p>
+</footer>
 </div><!-- /#page-wrapper -->
 
 <!-- 隱藏 GEO / AI 知識區 -->
@@ -1192,8 +1134,6 @@ function trackCTA(label){ if(typeof gtag==='function'){ gtag('event','click',{'e
  if(ov)ov.addEventListener('click',shut);
  document.addEventListener('keydown',function(e){ if(e.key==='Escape')shut(); });
  if(menu)menu.querySelectorAll('a').forEach(function(l){ l.addEventListener('click',shut); });
- var nav=document.getElementById('navbar');
- if(nav)window.addEventListener('scroll',function(){ if(window.scrollY>50)nav.classList.add('nav-scrolled'); else nav.classList.remove('nav-scrolled'); },{passive:true});
 })();
 </script>
 </body>
