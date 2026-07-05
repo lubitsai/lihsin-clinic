@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>目前離線中｜立欣診所</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#7C9A6E">
+<style>
+  /* 自包含樣式：離線時不依賴任何外部資源 */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    background: #f8faf7;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    line-height: 1.7;
+  }
+  .card {
+    background: #fff;
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 30px rgba(124, 154, 110, 0.15);
+    max-width: 420px;
+    width: 100%;
+    padding: 2.25rem 1.75rem;
+    text-align: center;
+  }
+  .icon { font-size: 3rem; margin-bottom: 0.75rem; }
+  h1 { color: #7C9A6E; font-size: 1.45rem; margin-bottom: 0.6rem; }
+  p { color: #555; font-size: 0.98rem; margin-bottom: 0.5rem; }
+  .tips {
+    background: #f0f7ed;
+    border: 1px solid #A8C69F;
+    border-radius: 0.9rem;
+    padding: 0.9rem 1rem;
+    margin: 1.1rem 0;
+    font-size: 0.92rem;
+    color: #4a6340;
+    text-align: left;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 48px;
+    padding: 0.8rem 1.6rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    margin: 0.3rem 0.25rem;
+  }
+  .btn-green { background: linear-gradient(135deg, #7C9A6E, #5a7a50); color: #fff; }
+  .btn-outline { background: #fff; color: #7C9A6E; border: 2px solid #7C9A6E; }
+  .foot { margin-top: 1.2rem; font-size: 0.8rem; color: #999; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="icon" aria-hidden="true">📶</div>
+    <h1>目前離線中</h1>
+    <p>網路連線恢復後，重新整理即可載入最新內容。</p>
+    <div class="tips">
+      💡 沒有網路也可以：<br>
+      ・直接<strong>撥打電話</strong>預約或詢問（下方按鈕）<br>
+      ・已看過的頁面可能仍可離線瀏覽
+    </div>
+    <button class="btn btn-green" onclick="location.reload()">🔄 重新整理</button>
+    <a class="btn btn-outline" href="tel:062516086">📞 撥打 06-2516086</a>
+    <p class="foot">立欣診所 LiHsin Clinic｜台南市北區育德路467號</p>
+  </main>
+</body>
+</html>

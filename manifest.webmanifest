@@ -1,0 +1,39 @@
+{
+  "name": "立欣診所・小鹿醫師",
+  "short_name": "立欣診所",
+  "description": "台南市北區育德路的小兒科與家庭醫學診所官網捷徑：查門診時間、即時看診進度、LINE 預約、兒童生長曲線工具與衛教文章。",
+  "id": "/",
+  "start_url": "/?utm_source=pwa&utm_medium=homescreen",
+  "scope": "/",
+  "display": "standalone",
+  "lang": "zh-TW",
+  "dir": "ltr",
+  "background_color": "#FFFFFF",
+  "theme_color": "#7C9A6E",
+  "categories": ["medical", "health"],
+  "icons": [
+    { "src": "/images/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/images/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/images/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "即時看診進度",
+      "short_name": "看診進度",
+      "description": "查詢目前看診號碼與等候狀況",
+      "url": "/?utm_source=pwa&utm_medium=shortcut#realtime-progress"
+    },
+    {
+      "name": "兒童生長曲線工具",
+      "short_name": "生長曲線",
+      "description": "輸入身高體重頭圍，查看百分位與趨勢",
+      "url": "/growth.html?utm_source=pwa&utm_medium=shortcut"
+    },
+    {
+      "name": "就診指南",
+      "short_name": "就診指南",
+      "description": "門診時間、預約方式、初診攜帶物品",
+      "url": "/visit-guide.html?utm_source=pwa&utm_medium=shortcut"
+    }
+  ]
+}

@@ -27,3 +27,13 @@
 # 註：未設定 Content-Security-Policy(CSP)，因為網站使用 Tailwind CDN、
 # Google Fonts、cdnjs 等外部資源，貿然加嚴格 CSP 可能導致樣式或字型失效。
 # 若日後要加 CSP，需先盤點所有外部來源並完整測試，建議由工程師處理。
+
+# ── PWA（2026-07-04 新增）──
+# Service Worker 必須即時更新，不可久快取（否則舊版 SW 可能長期滯留）
+/sw.js
+  Cache-Control: no-cache
+
+# Manifest 明確標型別；1 小時快取足矣
+/manifest.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=3600
