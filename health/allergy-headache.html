@@ -98,6 +98,18 @@
 
 /* mobile menu: 44px tap targets */
 .mobile-menu a.text-gray-700{min-height:44px;display:flex;align-items:center}
+
+/* Sticky 底部 CTA bar（行動版）*/
+#mobile-cta-bar{display:none}
+@media (max-width:768px){
+#mobile-cta-bar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:49;background:#fff;box-shadow:0 -4px 16px rgba(0,0,0,.08);padding:.5rem .5rem max(.5rem,env(safe-area-inset-bottom));gap:.5rem}
+#mobile-cta-bar .mobile-cta{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.85rem .5rem;border-radius:9999px;font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;color:#fff;min-height:48px;transition:transform .15s,box-shadow .15s}
+#mobile-cta-bar .mobile-cta:active{transform:scale(.97)}
+#mobile-cta-bar .mobile-cta-phone{background:linear-gradient(135deg,#7C9A6E 0%,#5a7a50 100%);box-shadow:0 4px 12px rgba(124,154,110,.4)}
+#mobile-cta-bar .mobile-cta-line{background:linear-gradient(135deg,#06C755 0%,#00B900 100%);box-shadow:0 4px 12px rgba(6,199,85,.4)}
+body{padding-bottom:76px}
+#fab-group{bottom:88px!important}
+}
 </style>
 </head>
 <body class="bg-[#f8faf7]">
@@ -271,8 +283,13 @@
 </article>
 </main>
 
+
+<section aria-labelledby="clinic-info-h2" style="max-width:56rem;margin:2.5rem auto 0;padding:1.5rem 1.5rem;background:#f0f7ec;border:1px solid #dcead2;border-radius:16px;font-family:'Noto Sans TC',sans-serif;">
+<h2 id="clinic-info-h2" style="font-size:1.15rem;color:#5f7a52;margin:0 0 .6rem;">📍 預約與看診資訊</h2>
+<p style="color:#444;font-size:.97rem;line-height:1.8;margin:0;">立欣診所位於台南市北區育德路 467 號（鄰近成大醫院、台南公園），是健保特約小兒科與家庭醫學診所，提供兒童過敏氣喘、新生兒照護、公費與自費疫苗接種、家庭醫學與科學減重服務。平日設有夜間門診至 21:30，週六、週日皆有門診；可透過 LINE（@lhpedclinic）線上預約，並查詢<a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" style="color:#5f7a52;">即時看診進度</a>。初次就診請參考<a href="/visit-guide.html" style="color:#5f7a52;">就診指南</a>。</p>
+</section>
 <footer class="bg-white border-t border-gray-100 py-6 mt-8">
- <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086</p>
+ <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086｜<a href="/privacy.html" style="color:inherit;text-decoration:underline;">隱私權政策</a></p>
 </footer>
 
 <!-- 右下角浮動按鈕 -->
@@ -302,5 +319,19 @@
  })();
 </script>
 
+<div id="mobile-cta-bar" aria-label="快速聯絡按鈕">
+ <a href="tel:062516086" class="mobile-cta mobile-cta-phone" aria-label="撥打電話 06-2516086">
+ <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+ <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.58l2.2-2.21c.28-.27.36-.66.25-1.01C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM19 12h2c0-4.97-4.03-9-9-9v2c3.87 0 7 3.13 7 7zm-4 0h2c0-2.76-2.24-5-5-5v2c1.66 0 3 1.34 3 3z"/>
+ </svg>
+ <span>撥打電話</span>
+ </a>
+ <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" class="mobile-cta mobile-cta-line" aria-label="加入 LINE 預約">
+ <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+ <path d="M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
+ </svg>
+ <span>LINE 預約</span>
+ </a>
+ </div>
 </body>
 </html>
