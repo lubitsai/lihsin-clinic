@@ -44,3 +44,15 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #      ✗ 切勿使用 /* / 200 之類的 fallback，會造成「軟性 404」
 #         （Soft 404）讓 Google 將任意錯字 URL 視為重複首頁內容
 # ------------------------------------------------------------
+
+# ------------------------------------------------------------
+# 4. 無 .html 網址 → .html canonical（2026-07-03 新增）
+#    有人手打或外部連結省略 .html 時，301 收斂到既有 canonical，
+#    避免潛在雙版本。非強制（無驚嘆號）：實體檔案存在時不攔截。
+# ------------------------------------------------------------
+/growth        /growth.html        301
+/visit-guide   /visit-guide.html   301
+/404           /404.html           301
+/services/:p   /services/:p.html   301
+/health/:p     /health/:p.html     301
+/team/:p       /team/:p.html       301
