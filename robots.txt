@@ -106,6 +106,8 @@ User-agent: OAI-SearchBot
 Allow: /
 
 # Anthropic（Claude）
+User-agent: Claude-User
+User-agent: Claude-SearchBot
 User-agent: ClaudeBot
 Allow: /
 
@@ -116,6 +118,7 @@ User-agent: anthropic-ai
 Allow: /
 
 # Perplexity AI 搜尋
+User-agent: Perplexity-User
 User-agent: PerplexityBot
 Allow: /
 
