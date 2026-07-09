@@ -37,3 +37,15 @@
 - 樣式一律沿用 Tailwind utility class,避免另寫獨立 CSS。
 - 新增或修改頁面時,同步檢查 SEO(title、meta description、canonical、sitemap)是否需要更新。
 - 保持既有的靜態多頁架構,不要改成 SPA 或引入建置工具鏈,除非事先討論。
+
+## 爬蟲工具偏好
+
+- **工具設定**:MCP server 設定於根目錄 `.mcp.json`,已安裝 **Playwright** 與 **Firecrawl** 兩個爬蟲工具。
+- **工具選擇原則**:
+  - 需登入、點擊、處理 JavaScript 動態內容的頁面(多數社群網站)→ 用 **Playwright**(真實瀏覽器)。
+  - 批量抓取、整站爬取、把網頁轉成乾淨 Markdown → 用 **Firecrawl**。
+- **API key**:Firecrawl 需 `FIRECRAWL_API_KEY`,一律以環境變數提供,**不得**寫入 `.mcp.json` 或任何 commit。
+- **爬取須遵守**:
+  - 尊重目標網站的 `robots.txt` 與服務條款(ToS)。
+  - 控制請求頻率、避免高頻大量請求造成對方負擔。
+  - 留意個資與著作權;抓取的內容僅供整理分析,引用時註明來源。
