@@ -12,6 +12,8 @@
 | `internal/01_新對話接續提示詞.md` | 開工程序:防呆兩層、版本指紋比對、標準工作流 |
 | `internal/02_優化決策手冊.md` | 判斷手冊:優先序、決策樹 R1–R7、反模式 AP1–AP12、內容行事曆 |
 | `internal/03_量測與回饋制度.md` | 月度量測 SOP、AI 引用測試 12 題、行動門檻 |
+| `internal/tools/validate_site.py` | 全站驗證器:**任何批次交付前必跑**(`--stage deploy`,ERROR 清零才 push) |
+| `internal/tools/patch_pwa.py` | PWA 三件頭冪等掛載(排除 offline/404) |
 
 **鐵律摘要**(詳見文件):可見文字(title/desc/H1/正文)逐字經院長核可才改;合規紅線見 00 §4;dateModified 判準見 02 R4;文件維護協議見 00 §8(改 00/01 前備份至 archive/、合規規則與待決狀態需院長核可)。
 
