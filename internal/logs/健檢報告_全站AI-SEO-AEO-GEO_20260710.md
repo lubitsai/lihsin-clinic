@@ -88,3 +88,9 @@
 ## 八、教訓(三段式,已同步 00)
 
 - 無點重複檔 `mcp.json`/`gitignore` 公開部署數日且 §5 攔截失手(現象)→ 網頁上傳會把 dotfile 產出無點副本,而攔截規則按「已知檔名」逐字列舉、不含變體(根因)→ **§5 攔截內部檔案時,同時列 dotfile 與無點變體;每次健檢用 `git ls-files` 對照 §5 清單找漏網檔**(規則)。
+
+---
+
+## 補記:線上抽測已完成(2026-07-10 同日,GitHub Actions 通道)
+
+§4 清單已由 `.github/workflows/spot-check.yml`(新資產,在 GitHub runner 上跑、不受 session 網路政策限制)執行完畢:P1 封鎖全數生效(/mcp.json /gitignore /_gitignore=404)、既有攔截與站點資產全綠、visit-guide og:locale 上線。兩項修正:空 README 佔位檔直接刪除(佔位符攔截不生效);**勘誤=§4 無副檔名 301 從未觸發**(Netlify 隱含 .html 解析優先回 200,canonical 收斂雙版本、無實害、勿改強制 301!)。詳見 00〈本批 2026-07-10b〉續 2。

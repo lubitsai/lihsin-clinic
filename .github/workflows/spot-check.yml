@@ -39,10 +39,12 @@ jobs:
           check /health/README.md 404
           check /internal/00_%E5%B0%88%E6%A1%88%E7%B8%BD%E8%A6%BD%E7%B4%A2%E5%BC%95.md 404
           check /.github/workflows/spot-check.yml 404
-          echo "=== 無副檔名 301 ==="
-          check /app 301
-          check /privacy 301
-          check /growth 301
+          # 2026-07-10 實測:Netlify 隱含 .html 解析先於非強制轉址,
+          # 無副檔名網址回 200(服務 .html 內容),非 301;canonical 收斂雙版本。
+          echo "=== 無副檔名網址(Netlify 隱含解析,應 200)==="
+          check /app 200
+          check /privacy 200
+          check /growth 200
           echo "=== 站點資產(應 200)==="
           check / 200
           check /llms.txt 200
