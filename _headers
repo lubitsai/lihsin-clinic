@@ -24,6 +24,8 @@
 /631da727697dc88a64a8f0b76042c891.txt
   Content-Type: text/plain; charset=utf-8
 
-# 註：未設定 Content-Security-Policy(CSP)，因為網站使用 Tailwind CDN、
-# Google Fonts、cdnjs 等外部資源，貿然加嚴格 CSP 可能導致樣式或字型失效。
-# 若日後要加 CSP，需先盤點所有外部來源並完整測試，建議由工程師處理。
+# 註：Content-Security-Policy(CSP) 尚未上線。外部相依現況（2026-07-10）：
+# CDN Tailwind 已於 2026-06-20 遷移為自載 /tailwind.css、cdnjs(Font Awesome)
+# 已於 2026-07-04 移除；現存外部來源為 Google Fonts、Google Analytics(gtag)、
+# Chatbase widget。CSP 草案（_headers_proposed.txt，院長留存；internal/00 §6
+# 待辦）需先過 Netlify Deploy Preview 驗證後才可 merge，勿直接上線。
