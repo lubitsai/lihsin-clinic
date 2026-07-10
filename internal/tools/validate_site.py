@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-validate_site.py — 立欣診所全站驗證器 v1.0（2026-07-07）
+validate_site.py — 立欣診所全站驗證器 v1.0.1（2026-07-10；v1.0＝2026-07-07）
+    v1.0.1：W-SITEMAP 首頁 loc「/」對映修正（院長核可待決⑨），無其他變更。
 =========================================================
 把《00_專案總覽索引.md》第四節合規規則與歷批驗證協議「程式化」。
 任何未來 session（Claude Opus/Sonnet、GPT/Codex 系）在交付或部署前必跑本工具，
@@ -416,7 +417,9 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
                     if not (root / relp).exists():
                         rep.err("sitemap.xml", "E-SITEMAP", f"列出但檔案不存在：{relp}")
             # noindex 頁不得入 sitemap；可索引頁應入 sitemap（反向覆蓋）
-            in_map = {l[len(SITE_ORIGIN):].lstrip("/") for l in page_locs}
+            # v1.0.1（2026-07-10 院長核可待決⑨）：首頁 loc「/」正規化為 index.html，
+            # 與上方存在性檢查的對映一致，消除必然誤報。
+            in_map = {l[len(SITE_ORIGIN):].lstrip("/") or "index.html" for l in page_locs}
             for rel, noindex in html_files.items():
                 if noindex and rel in in_map:
                     rep.err("sitemap.xml", "E-NOIDXMAP", f"noindex 頁被列入：{rel}")
