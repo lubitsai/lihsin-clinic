@@ -49,6 +49,11 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 # 4. 無 .html 網址 → .html canonical（2026-07-03 新增）
 #    有人手打或外部連結省略 .html 時，301 收斂到既有 canonical，
 #    避免潛在雙版本。非強制（無驚嘆號）：實體檔案存在時不攔截。
+#    ⚠️ 2026-07-10 GitHub Actions 線上實測：Netlify 的隱含 .html
+#    解析先於非強制轉址，無副檔名網址實際回 200 直接服務 .html
+#    內容（非 301）——本節規則實務上不觸發。雙版本由各頁
+#    canonical 收斂，SEO 無實害；勿改強制（301!）——會把
+#    /xxx.html 本體也捲入迴圈。規則保留作文件與後備。
 # ------------------------------------------------------------
 /growth        /growth.html        301
 /visit-guide   /visit-guide.html   301
@@ -75,5 +80,7 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 /gitignore     /404.html  404!
 /_gitignore    /404.html  404!
 /README.md     /404.html  404!
-/:dir/README.md  /404.html  404!
 /.github/*     /404.html  404!
+# 註：各子目錄空 README.md 佔位檔已於 2026-07-10 直接刪除
+#（實測 /:dir/README.md 佔位符規則不生效——隱含檔案服務優先；
+#  消滅檔案本身比攔截規則可靠）。
