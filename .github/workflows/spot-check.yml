@@ -31,12 +31,18 @@ jobs:
             printf "%s  %-3s (expect %s)  %-45s %s\n" "$mark" "$code" "$2" "$1" "$loc"
           }
           echo "=== 內部檔案攔截(應 404)==="
+          check_gone() {  # $1=path;跟隨轉址後最終須為 404(如 /health/README.md
+                          # 已刪檔,經 §4 通用規則 301 至不存在的 .html 再 404)
+            code=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 20 "$BASE$1")
+            if [ "$code" = "404" ]; then mark="OK  "; else mark="FAIL"; fail=1; fi
+            printf "%s  %-3s (expect 404 final)  %s\n" "$mark" "$code" "$1"
+          }
           check /mcp.json 404
           check /gitignore 404
           check /_gitignore 404
           check /.mcp.json 404
           check /CLAUDE.md 404
-          check /health/README.md 404
+          check_gone /health/README.md
           check /internal/00_%E5%B0%88%E6%A1%88%E7%B8%BD%E8%A6%BD%E7%B4%A2%E5%BC%95.md 404
           check /.github/workflows/spot-check.yml 404
           # 2026-07-10 實測:Netlify 隱含 .html 解析先於非強制轉址,
