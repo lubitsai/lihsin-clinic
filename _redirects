@@ -76,3 +76,4 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 /_gitignore    /404.html  404!
 /README.md     /404.html  404!
 /:dir/README.md  /404.html  404!
+/.github/*     /404.html  404!
