@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "deny": [
+      "Bash(: >*)",
+      "Bash(chmod -R 777 *)",
+      "Bash(chmod 777 *)",
+      "Bash(dd *)",
+      "Bash(diskutil erase*)",
+      "Bash(git branch -D*)",
+      "Bash(git clean -f*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard*)",
+      "Bash(mkfs*)",
+      "Bash(reboot*)",
+      "Bash(rm -R *)",
+      "Bash(rm -f *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -r *)",
+      "Bash(rm -rf *)",
+      "Bash(shutdown*)",
+      "Bash(sudo *)",
+      "Bash(truncate *)"
+    ]
+  }
+}
