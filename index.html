@@ -1107,12 +1107,12 @@
  animation: fadeInUp 0.8s ease-out forwards;
  }
 
- /* 最新消息卡片（圖左文右，手機上下堆疊）*/
+ /* 最新消息卡片（正方形預覽圖完整顯示；手機圖在上、桌面圖在左）*/
  .news-card .news-media { width: 100%; }
- .news-card .news-media img { width: 100%; height: 220px; object-fit: cover; object-position: center; display: block; }
+ .news-card .news-media img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; object-position: center; display: block; }
  @media (min-width: 640px) {
- .news-card .news-media { flex: 0 0 16rem; width: 16rem; }
- .news-card .news-media img { height: 100%; min-height: 210px; }
+ .news-card .news-media { flex: 0 0 18rem; width: 18rem; }
+ .news-card .news-media img { height: 18rem; }
  }
 
  /* Smooth Scroll */
