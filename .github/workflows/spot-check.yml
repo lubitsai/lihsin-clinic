@@ -1,0 +1,67 @@
+# 部署後線上抽測(Post-deploy spot check)
+# 用途:Claude Code session 的網路政策常不含本站網域,無法直接驗證線上狀態;
+#       本 workflow 在 GitHub Actions runner 上對正式站抽測 HTTP 狀態,
+#       session 可透過 GitHub API 觸發並讀取結果。
+# 觸發:手動(workflow_dispatch)或 push 到 main(Netlify 部署後自動複驗;
+#       等待 90 秒讓 Netlify 完成部署)。
+# 維護:預期清單與 _redirects 規則同步;新增攔截規則時記得在此補一行。
+name: Post-deploy spot check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  spot-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Netlify deploy (push trigger only)
+        if: github.event_name == 'push'
+        run: sleep 90
+
+      - name: Check live URL statuses
+        run: |
+          BASE="https://lhpedclinic.com.tw"
+          fail=0
+          check() {  # $1=path $2=expected_code
+            out=$(curl -s -o /dev/null -w "%{http_code} %{redirect_url}" --max-time 20 "$BASE$1")
+            code="${out%% *}"; loc="${out#* }"
+            if [ "$code" = "$2" ]; then mark="OK  "; else mark="FAIL"; fail=1; fi
+            printf "%s  %-3s (expect %s)  %-45s %s\n" "$mark" "$code" "$2" "$1" "$loc"
+          }
+          echo "=== 內部檔案攔截(應 404)==="
+          check_gone() {  # $1=path;跟隨轉址後最終須為 404(如 /health/README.md
+                          # 已刪檔,經 §4 通用規則 301 至不存在的 .html 再 404)
+            code=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 20 "$BASE$1")
+            if [ "$code" = "404" ]; then mark="OK  "; else mark="FAIL"; fail=1; fi
+            printf "%s  %-3s (expect 404 final)  %s\n" "$mark" "$code" "$1"
+          }
+          check /mcp.json 404
+          check /gitignore 404
+          check /_gitignore 404
+          check /.mcp.json 404
+          check /CLAUDE.md 404
+          check_gone /health/README.md
+          check /internal/00_%E5%B0%88%E6%A1%88%E7%B8%BD%E8%A6%BD%E7%B4%A2%E5%BC%95.md 404
+          check /.github/workflows/spot-check.yml 404
+          echo "=== 打錯字網址應乾淨 404(迴圈回歸防護)==="
+          check_gone /health/no-such-page
+          check_gone /services/no-such-page
+          # 2026-07-10 實測:Netlify 隱含 .html 解析先於非強制轉址,
+          # 無副檔名網址回 200(服務 .html 內容),非 301;canonical 收斂雙版本。
+          echo "=== 無副檔名網址(Netlify 隱含解析,應 200)==="
+          check /app 200
+          check /privacy 200
+          check /growth 200
+          echo "=== 站點資產(應 200)==="
+          check / 200
+          check /llms.txt 200
+          check /sitemap.xml 200
+          check /robots.txt 200
+          check /app.html 200
+          check /visit-guide.html 200
+          echo "=== 內容抽驗 ==="
+          n=$(curl -s --max-time 20 "$BASE/visit-guide.html" | grep -c 'og:locale' || true)
+          if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
+          exit $fail
