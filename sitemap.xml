@@ -320,5 +320,19 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/shingles-vaccine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/shingles-vaccine-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/hpv-vaccine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/hpv-vaccine-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
 </urlset>
