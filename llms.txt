@@ -108,6 +108,7 @@
 - 兒童蕁麻疹（急性／慢性）原因、過敏原檢測角色與照護（急性多病毒誘發、不一定是食物過敏；慢性多自發性；不單以檢測數值忌口；anaphylaxis 嚴重過敏反應警訊）：https://lhpedclinic.com.tw/health/child-urticaria.html
 - 什麼是麻疹與 MMR 疫苗（含出國前接種提醒）：https://lhpedclinic.com.tw/health/measles.html
 - 認識過敏（症狀、原因與保養治療）：https://lhpedclinic.com.tw/health/allergy.html
+- 過敏原檢測報告怎麼看？IgE／IgG 數值判讀與要不要忌口（報告數值換算0-6級＝致敏程度，數值高不等於一定過敏；急性IgE對應立即型、慢性IgG常反映曾接觸且國際對其診斷價值有保留；不單以數值忌口、對照實際反應由醫師判讀、避免大範圍忌口影響營養；陰性不能完全排除；可帶檢驗所或他院報告來門診判讀）｜蔡宗儒院長：https://lhpedclinic.com.tw/health/allergy-test-results.html
 - 認識塵蟎與居家環境整理（防蟎）：https://lhpedclinic.com.tw/health/dust-mite.html
 - 異位性皮膚炎照護（保濕、清潔與藥膏）：https://lhpedclinic.com.tw/health/atopic-dermatitis.html
 - hMPV 人類間質肺炎病毒（症狀、警訊與預防）：https://lhpedclinic.com.tw/health/hmpv.html
