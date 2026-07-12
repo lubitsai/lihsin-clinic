@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-07-11</lastmod>
+    <lastmod>2026-07-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -303,6 +303,18 @@
   <url>
     <loc>https://lhpedclinic.com.tw/health/child-urticaria.html</loc>
     <lastmod>2026-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/health-checkup.html</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/metabolic-syndrome.html</loc>
+    <lastmod>2026-07-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
