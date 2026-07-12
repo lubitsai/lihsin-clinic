@@ -308,12 +308,14 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/health-checkup.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/health-checkup-infographic.jpg</image:loc></image:image>
     <lastmod>2026-07-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/metabolic-syndrome.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/metabolic-syndrome-infographic.jpg</image:loc></image:image>
     <lastmod>2026-07-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
