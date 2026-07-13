@@ -1,14 +1,12 @@
-# 網站健檢:線上檢測(臨時 workflow,健檢批專用)
-# 用途:session 網路政策不含本站網域,借 GitHub Actions runner 對正式站
-#       做 SSL/安全標頭/全 sitemap 狀態/外部連結/PageSpeed Insights 檢測。
-# 觸發:push 到健檢分支(workflow_dispatch 需檔案存在於 main 才可用,
-#       故以 push 觸發);檢測完成後本檔可移除。
+# 網站健檢:線上深度檢測(手動觸發)
+# 用途:對正式站做 SSL/TLS、安全標頭、全 sitemap 狀態、內部檔案攔截、
+#       外部連結、Lighthouse CWV(runner 直跑)、線上內容指紋等健檢。
+#       比 spot-check.yml 更完整,供定期或部署後深度複測。
+# 觸發:僅手動(workflow_dispatch);在 GitHub Actions 頁面「Run workflow」。
 name: Website health check (live)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [claude/website-health-check-0sht03]
 
 jobs:
   health-check:
