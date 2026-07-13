@@ -141,6 +141,8 @@ TAILWIND_IGNORE = {
     "faq-category", "faq-cat-body", "faq-cat-icon",                # 首頁 FAQ 分類元件
     "eeat-author-block",                                           # 首頁 EEAT 卡
     "fab-btn", "fab-line", "fab-progress",                         # FAB 語意標記（樣式在各頁 <style>/#fab-group）
+    # --- 2026-07-13 首頁 speakable AP9 修復：schema cssSelector 掛鉤（無樣式，僅供 JSON-LD 對 DOM 命中）---
+    "clinic-address", "clinic-phone", "doctor-intro", "health-tip-summary",
 }
 
 # llms 雙檔必須在場的條目（07-06 回退攔截的機器化）
