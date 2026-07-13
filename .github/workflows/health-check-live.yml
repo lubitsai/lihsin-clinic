@@ -73,8 +73,8 @@ jobs:
       - name: 5. External links status
         run: |
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
-          check() {
-            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 25 -L -A "$UA" "$1")
+          check() {  # curl 失敗(如對方憑證鏈不完整)回 000,不中斷整個 job
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 25 -L -A "$UA" "$1" || true)
             echo "$code $1"
           }
           echo "=== 站內引用之外部連結 ==="
