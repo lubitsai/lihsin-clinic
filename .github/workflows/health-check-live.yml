@@ -94,32 +94,34 @@ jobs:
           check "https://zh.wikipedia.org/wiki/%E9%81%8E%E6%95%8F"
           check "https://en.wikipedia.org/wiki/Human_metapneumovirus"
 
-      - name: 6. PageSpeed Insights (CWV)
+      - name: 6. Lighthouse CWV (runner-local, PSI API 無金鑰配額不可用)
         run: |
-          psi() {  # $1=url $2=strategy
-            echo "──── PSI $2: $1 ────"
-            for i in 1 2 3; do
-              curl -s --max-time 180 "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$1&strategy=$2&category=performance" > /tmp/psi.json
-              if jq -e '.lighthouseResult' /tmp/psi.json >/dev/null 2>&1; then break; fi
-              echo "  (retry $i)"; sleep 10
-            done
+          # 先印一次 PSI API 錯誤原因供紀錄
+          curl -s --max-time 60 "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://lhpedclinic.com.tw/&strategy=mobile" | head -c 400 || true
+          echo ""
+          npm i -g lighthouse@12 >/dev/null 2>&1
+          lh() {  # $1=url $2=mobile|desktop
+            echo "──── Lighthouse $2: $1 ────"
+            preset=""
+            [ "$2" = "desktop" ] && preset="--preset=desktop"
+            lighthouse "$1" $preset --only-categories=performance \
+              --output=json --output-path=/tmp/lh.json --quiet \
+              --chrome-flags="--headless --no-sandbox" >/dev/null 2>&1 || true
             jq -r '
-              "Lighthouse 效能分數: \((.lighthouseResult.categories.performance.score // 0) * 100 | round)",
-              "FCP: \(.lighthouseResult.audits["first-contentful-paint"].displayValue // "n/a")",
-              "LCP: \(.lighthouseResult.audits["largest-contentful-paint"].displayValue // "n/a")",
-              "CLS: \(.lighthouseResult.audits["cumulative-layout-shift"].displayValue // "n/a")",
-              "TBT: \(.lighthouseResult.audits["total-blocking-time"].displayValue // "n/a")",
-              "SpeedIndex: \(.lighthouseResult.audits["speed-index"].displayValue // "n/a")",
-              "─ 實測欄位資料(CrUX): \(.loadingExperience.overall_category // "資料不足")",
-              (.loadingExperience.metrics // {} | to_entries[] | "  \(.key): \(.value.percentile) (\(.value.category))")
-            ' /tmp/psi.json || echo "PSI 取得失敗"
+              "效能分數: \((.categories.performance.score // 0) * 100 | round)",
+              "FCP: \(.audits["first-contentful-paint"].displayValue // "n/a")",
+              "LCP: \(.audits["largest-contentful-paint"].displayValue // "n/a")",
+              "CLS: \(.audits["cumulative-layout-shift"].displayValue // "n/a")",
+              "TBT: \(.audits["total-blocking-time"].displayValue // "n/a")",
+              "SpeedIndex: \(.audits["speed-index"].displayValue // "n/a")"
+            ' /tmp/lh.json || echo "Lighthouse 取得失敗"
             echo "─ 改善機會(>100ms):"
-            jq -r '.lighthouseResult.audits | to_entries[] | select(.value.details.type=="opportunity" and .value.details.overallSavingsMs>100) | "  \(.value.title): 可省 \(.value.details.overallSavingsMs|round)ms"' /tmp/psi.json 2>/dev/null || true
+            jq -r '.audits | to_entries[] | select(.value.details.type=="opportunity" and .value.details.overallSavingsMs>100) | "  \(.value.title): 可省 \(.value.details.overallSavingsMs|round)ms"' /tmp/lh.json 2>/dev/null || true
           }
-          psi "https://lhpedclinic.com.tw/" mobile
-          psi "https://lhpedclinic.com.tw/" desktop
-          psi "https://lhpedclinic.com.tw/health/shingles-vaccine.html" mobile
-          psi "https://lhpedclinic.com.tw/growth.html" mobile
+          lh "https://lhpedclinic.com.tw/" mobile
+          lh "https://lhpedclinic.com.tw/" desktop
+          lh "https://lhpedclinic.com.tw/health/shingles-vaccine.html" mobile
+          lh "https://lhpedclinic.com.tw/growth.html" mobile
 
       - name: 7. Live content fingerprint
         run: |
