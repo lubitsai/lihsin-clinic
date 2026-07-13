@@ -1,0 +1,128 @@
+# 網站健檢:線上檢測(臨時 workflow,健檢批專用)
+# 用途:session 網路政策不含本站網域,借 GitHub Actions runner 對正式站
+#       做 SSL/安全標頭/全 sitemap 狀態/外部連結/PageSpeed Insights 檢測。
+# 觸發:僅手動(workflow_dispatch);檢測完成後本檔可移除。
+name: Website health check (live)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. SSL certificate and TLS
+        run: |
+          H=lhpedclinic.com.tw
+          echo "=== SSL 憑證 ==="
+          echo | openssl s_client -connect $H:443 -servername $H 2>/dev/null > /tmp/cert.pem || true
+          openssl x509 -in /tmp/cert.pem -noout -subject -issuer -startdate -enddate || true
+          end=$(openssl x509 -in /tmp/cert.pem -noout -enddate | cut -d= -f2)
+          echo "剩餘天數: $(( ($(date -d "$end" +%s) - $(date +%s)) / 86400 ))"
+          echo "=== SAN ==="
+          openssl x509 -in /tmp/cert.pem -noout -ext subjectAltName || true
+          echo "=== TLS 協定支援(舊版應不支援)==="
+          for v in tls1 tls1_1 tls1_2 tls1_3; do
+            if echo | openssl s_client -$v -connect $H:443 -servername $H >/dev/null 2>&1; then
+              echo "$v: 支援"
+            else
+              echo "$v: 不支援"
+            fi
+          done
+
+      - name: 2. Security headers
+        run: |
+          B=https://lhpedclinic.com.tw
+          echo "=== 首頁回應標頭 ==="
+          curl -sI --max-time 20 "$B/" | tr -d '\r'
+          echo "=== http→https 轉址 ==="
+          curl -sI --max-time 20 "http://lhpedclinic.com.tw/" | tr -d '\r' | head -6
+          echo "=== www→非 www 轉址 ==="
+          curl -sI --max-time 20 "https://www.lhpedclinic.com.tw/" | tr -d '\r' | head -6
+          echo "=== 圖片快取標頭 ==="
+          curl -sI --max-time 20 "$B/images/logo.png" | tr -d '\r' | grep -iE 'cache-control|content-type|age' || true
+
+      - name: 3. All sitemap URLs status
+        run: |
+          B=https://lhpedclinic.com.tw
+          curl -s --max-time 20 "$B/sitemap.xml" > /tmp/sitemap.xml
+          urls=$(grep -oE '<loc>[^<]+</loc>' /tmp/sitemap.xml | sed 's/<[^>]*>//g')
+          echo "sitemap URL 數: $(echo "$urls" | wc -l)"
+          fail=0
+          for u in $urls; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "$u")
+            if [ "$code" = "200" ]; then mark="OK  "; else mark="FAIL"; fail=1; fi
+            echo "$mark $code $u"
+          done
+          echo "sitemap 狀態檢查 fail=$fail"
+
+      - name: 4. Internal file interception (should 404)
+        run: |
+          B=https://lhpedclinic.com.tw
+          for p in /CLAUDE.md /.mcp.json /internal/00_%E5%B0%88%E6%A1%88%E7%B8%BD%E8%A6%BD%E7%B4%A2%E5%BC%95.md /.github/workflows/health-check-live.yml /_gitignore; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "$B$p")
+            [ "$code" = "404" ] && mark="OK  " || mark="FAIL"
+            echo "$mark $code (expect 404) $p"
+          done
+          code=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 20 "$B/health/no-such-page")
+          [ "$code" = "404" ] && echo "OK   $code (expect 404) /health/no-such-page" || echo "FAIL $code /health/no-such-page"
+
+      - name: 5. External links status
+        run: |
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
+          check() {
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 25 -L -A "$UA" "$1")
+            echo "$code $1"
+          }
+          echo "=== 站內引用之外部連結 ==="
+          check "https://g.page/r/Cf4ZUvGDLbD3EBM/review"
+          check "https://line.me/R/ti/p/@lhpedclinic"
+          check "https://www.facebook.com/lhpedclinic"
+          check "https://www.instagram.com/lhpedclinic/"
+          check "https://www.mainpi.com/query?i=2935"
+          check "https://www.cdc.gov.tw/"
+          check "https://www.hpa.gov.tw/"
+          check "https://www.air.org.tw/"
+          check "https://www.pediatr.org.tw/"
+          check "https://www.google.com/maps/dir/?api=1&destination=%E7%AB%8B%E6%AC%A3%E8%A8%BA%E6%89%80+%E5%8F%B0%E5%8D%97%E5%B8%82%E5%8C%97%E5%8D%80%E8%82%B2%E5%BE%B7%E8%B7%AF467%E8%99%9F"
+          check "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+          echo "=== JSON-LD sameAs 維基實體(抽測)==="
+          check "https://zh.wikipedia.org/wiki/%E4%BB%A3%E8%AC%9D%E7%97%87%E5%80%99%E7%BE%A4"
+          check "https://zh.wikipedia.org/wiki/%E9%81%8E%E6%95%8F"
+          check "https://en.wikipedia.org/wiki/Human_metapneumovirus"
+
+      - name: 6. PageSpeed Insights (CWV)
+        run: |
+          psi() {  # $1=url $2=strategy
+            echo "──── PSI $2: $1 ────"
+            for i in 1 2 3; do
+              curl -s --max-time 180 "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$1&strategy=$2&category=performance" > /tmp/psi.json
+              if jq -e '.lighthouseResult' /tmp/psi.json >/dev/null 2>&1; then break; fi
+              echo "  (retry $i)"; sleep 10
+            done
+            jq -r '
+              "Lighthouse 效能分數: \((.lighthouseResult.categories.performance.score // 0) * 100 | round)",
+              "FCP: \(.lighthouseResult.audits["first-contentful-paint"].displayValue // "n/a")",
+              "LCP: \(.lighthouseResult.audits["largest-contentful-paint"].displayValue // "n/a")",
+              "CLS: \(.lighthouseResult.audits["cumulative-layout-shift"].displayValue // "n/a")",
+              "TBT: \(.lighthouseResult.audits["total-blocking-time"].displayValue // "n/a")",
+              "SpeedIndex: \(.lighthouseResult.audits["speed-index"].displayValue // "n/a")",
+              "─ 實測欄位資料(CrUX): \(.loadingExperience.overall_category // "資料不足")",
+              (.loadingExperience.metrics // {} | to_entries[] | "  \(.key): \(.value.percentile) (\(.value.category))")
+            ' /tmp/psi.json || echo "PSI 取得失敗"
+            echo "─ 改善機會(>100ms):"
+            jq -r '.lighthouseResult.audits | to_entries[] | select(.value.details.type=="opportunity" and .value.details.overallSavingsMs>100) | "  \(.value.title): 可省 \(.value.details.overallSavingsMs|round)ms"' /tmp/psi.json 2>/dev/null || true
+          }
+          psi "https://lhpedclinic.com.tw/" mobile
+          psi "https://lhpedclinic.com.tw/" desktop
+          psi "https://lhpedclinic.com.tw/health/shingles-vaccine.html" mobile
+          psi "https://lhpedclinic.com.tw/growth.html" mobile
+
+      - name: 7. Live content fingerprint
+        run: |
+          B=https://lhpedclinic.com.tw
+          html=$(curl -s --max-time 20 "$B/team/dr-tsai.html")
+          echo "$html" | grep -q "19篇" && echo "OK   dr-tsai 19篇(07-13 批已上線)" || echo "FAIL dr-tsai 19篇 未見"
+          idx=$(curl -s --max-time 20 "$B/")
+          echo "$idx" | grep -q "speakable-summary" && echo "OK   index speakable hook 已上線" || echo "FAIL index speakable hook 未見"
+          echo "$idx" | grep -qi "googletagmanager" && echo "OK   GA4 已掛載" || echo "FAIL GA4 未見"
