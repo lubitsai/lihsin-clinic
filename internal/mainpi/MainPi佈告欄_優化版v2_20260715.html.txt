@@ -1,0 +1,532 @@
+<!-- ============================================================
+  MainPi 佈告欄訊息｜立欣診所（2026-07-15 優化版 v2：AI SEO/AEO/GEO 強化）
+  貼入位置：MainPi 後台「佈告欄訊息」欄位（QR Code 以上為系統固定區，本內容顯示於其下）
+  變更說明見同資料夾《MainPi_AI-SEO強化v2_交付說明_20260715.md》
+  ⏰ 時效區塊：「最新消息」流感疫苗預購段落請於 2026-09-15 後移除
+  ⚠️ 文末含 JSON-LD 結構化資料 <script> 區塊：貼上後請檢視頁面原始碼確認未被平台剝除
+============================================================ -->
+<div style="font-family: 'Noto Sans TC', Arial, sans-serif; line-height: 1.8; color: #333; max-width: 900px; margin: 0 auto; box-sizing: border-box;">
+
+  <!-- 開頭段落：核心服務定位 -->
+  <section style="background: #FFF8EE; border-radius: 18px; padding: 22px; border: 1px solid #F2D7B6; margin-bottom: 24px; box-sizing: border-box;">
+    <h1 style="color: #8B5A2B; font-size: 26px; margin: 0 0 12px; line-height: 1.4;">
+      立欣診所｜台南市北區小兒科・兒童過敏氣喘・假日兒科・新生兒照護・疫苗接種・科學減重
+    </h1>
+
+    <p style="font-size: 17px; margin: 0 0 12px;">
+      <strong>立欣診所</strong>位於<strong>台南市北區育德路 467 號</strong>（鄰近成大醫院、台南公園、長榮中學），為<strong>衛生福利部健保特約醫療機構</strong>，2024 年 7 月開業。提供
+      <strong>台南北區小兒科、兒童過敏氣喘、新生兒照護、假日與夜間兒科、疫苗接種、家庭醫學與科學減重</strong>
+      等醫療服務，由蔡宗儒院長與李佳玲醫師為全家提供溫柔、細心、友善的健康照護。
+    </p>
+
+    <p style="font-size: 17px; margin: 0 0 12px;">
+      本頁可查詢<strong>立欣診所即時看診進度</strong>，協助您了解目前叫號與候診狀況，在家等候快到號再出門。若需預約看診、詢問門診時間、疫苗現貨或看診注意事項，歡迎加入官方 LINE：<strong>@lhpedclinic</strong>，或來電 <strong>06-2516086</strong>。
+    </p>
+
+    <p style="font-size: 17px; margin: 0;">
+      實際門診、醫師排班與疫苗施打時段可能依現場狀況、國定假日或臨時異動調整，建議看診前先透過 LINE 或電話確認。
+    </p>
+  </section>
+
+
+  <!-- ⏰ 最新消息（時效區塊：2026-09-15 後請整段移除） -->
+  <section style="background: #FDF3E7; border: 2px solid #D9A441; border-radius: 16px; padding: 20px; margin-bottom: 24px; box-sizing: border-box;">
+    <h2 style="color: #8B5A2B; margin-top: 0;">
+      📢 最新消息：2026 自費流感疫苗早鳥預購中（至 9/15）
+    </h2>
+    <p style="margin: 0 0 10px;">
+      立欣診所 2026 自費流感疫苗即日起至 <strong>9/15</strong> 開放早鳥預購，共 5 款廠牌（含鼻噴免針與熟齡佐劑劑型），今年皆為三價疫苗。可於門診時間至櫃檯預購，或洽官方 LINE：<strong>@lhpedclinic</strong>。
+    </p>
+    <p style="margin: 0;">
+      各廠牌適用年齡、劑型與費用依原廠仿單與醫師評估，實際供貨請以現場公告為準。詳細介紹：
+      <a href="https://lhpedclinic.com.tw/news/flu-vaccine-2026.html" target="_blank" rel="noopener" style="color: #A0662F;">2026 自費流感疫苗預購說明</a>
+    </p>
+  </section>
+
+
+  <!-- 看診進度與叫號規則：本頁核心意圖 -->
+  <section style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 16px; padding: 20px; margin-bottom: 28px; box-sizing: border-box;">
+    <h2 style="color: #8B5A2B; margin-top: 0;">
+      看診進度怎麼看？叫號規則說明
+    </h2>
+
+    <p style="margin: 0 0 10px;">
+      <strong>預約號為偶數號、現場號為奇數號，看診時兩者交錯進行</strong>——因此本頁進度號碼「跳號」屬正常現象，不是漏叫。網路、電話與 LINE 預約每半小時一組名額（偶數號）；未預約者到診抽號碼牌（奇數號）。
+    </p>
+
+    <p style="margin: 0 0 10px;">
+      <strong>預約時間僅保留 10 分鐘</strong>，逾時將取消預約、改依現場情況等候；建議提早 5–10 分鐘抵達報到。若不慎過號，請至櫃檯告知，由現場人員協助安排。
+    </p>
+
+    <p style="margin: 0;">
+      善用本頁即時進度：出門前先查目前叫號與等候人數，<strong>快到號再出門</strong>，減少現場等候時間，也降低候診區交叉感染風險。雲端號碼偶有延遲，實際仍以現場報到與叫號為準。
+    </p>
+  </section>
+
+
+  <!-- AI 摘要區塊：方便 AEO / GEO 擷取 -->
+  <section style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 16px; padding: 20px; margin-bottom: 28px; box-sizing: border-box;">
+    <h2 style="color: #8B5A2B; margin-top: 0;">
+      立欣診所快速摘要
+    </h2>
+
+    <p style="margin: 0 0 10px;">
+      <strong>立欣診所是位於台南市北區育德路 467 號的小兒科與家庭醫學診所，為衛生福利部健保特約醫療機構。</strong>
+      由具台北馬偕兒童過敏氣喘免疫風濕科研究醫師訓練的蔡宗儒院長，與具國泰醫院新生兒次專科訓練的李佳玲醫師主診。
+    </p>
+
+    <p style="margin: 0 0 10px;">
+      服務內容包含小兒科一般診療、兒童過敏氣喘、新生兒與嬰幼兒照護、家庭醫學、疫苗接種、自費過敏原檢測（IgE／IgG）與科學減重門診。院內備有肺功能檢測儀、InBody 身體組成分析儀等設備（檢查項目由醫師依病情評估）。
+    </p>
+
+    <p style="margin: 0 0 10px;">
+      門診設有平日早、午、晚三段，並提供週六上午、週六下午、週日上午與週日夜間門診，平日夜診至 21:30，方便雙薪家庭與上班族安排就診。Google 商家評論為 5.0 星。本院為門診、非急診。
+    </p>
+
+    <p style="margin: 0;">
+      常見就診需求包含小孩發燒、咳嗽流鼻水、腸胃炎、久咳不癒、過敏性鼻炎、氣喘、異位性皮膚炎、新生兒黃疸、兒童疫苗與成人疫苗諮詢。
+    </p>
+  </section>
+
+
+  <!-- 快速資訊 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      快速連結與診所資訊
+    </h2>
+
+    <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <p style="margin: 6px 0;"><strong>診所名稱：</strong>立欣診所｜LiHsin Clinic</p>
+      <p style="margin: 6px 0;"><strong>機構性質：</strong>衛生福利部健保特約醫療機構</p>
+      <p style="margin: 6px 0;"><strong>地址：</strong>台南市北區育德路 467 號</p>
+      <p style="margin: 6px 0;"><strong>電話：</strong><a href="tel:062516086" style="color: #A0662F;">06-251-6086</a></p>
+      <p style="margin: 6px 0;"><strong>LINE 預約／詢問：</strong>@lhpedclinic</p>
+      <p style="margin: 6px 0;"><strong>官方網站：</strong><a href="https://lhpedclinic.com.tw" target="_blank" rel="noopener" style="color: #A0662F;">https://lhpedclinic.com.tw</a></p>
+      <p style="margin: 6px 0;"><strong>就診指南：</strong><a href="https://lhpedclinic.com.tw/visit-guide.html" target="_blank" rel="noopener" style="color: #A0662F;">預約掛號・看診進度・初診準備</a></p>
+      <p style="margin: 6px 0;"><strong>即時看診進度：</strong>本頁可查詢立欣診所目前叫號與候診進度</p>
+      <p style="margin: 6px 0;"><strong>Google 評價：</strong>5.0 ★（Google 商家評論）<a href="https://g.page/r/Cf4ZUvGDLbD3EBM/review" target="_blank" rel="noopener" style="color: #A0662F;">查看 / 撰寫評論</a></p>
+      <p style="margin: 6px 0;"><strong>鄰近地標：</strong>成大醫院、台南公園、長榮中學、育德路、長榮路周邊</p>
+      <p style="margin: 6px 0;"><strong>服務區域：</strong>台南北區、東區、中西區、永康區、安南區、南區、仁德區等鄰近生活圈</p>
+    </div>
+  </section>
+
+
+  <!-- 門診時間 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      門診時間
+    </h2>
+
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse; background: #FFFFFF; border: 1px solid #E8D6C0; min-width: 320px;">
+        <thead>
+          <tr style="background: #F7E7D0; color: #5B3A1D;">
+            <th style="padding: 12px; border: 1px solid #E8D6C0;">時段</th>
+            <th style="padding: 12px; border: 1px solid #E8D6C0;">平日</th>
+            <th style="padding: 12px; border: 1px solid #E8D6C0;">週六</th>
+            <th style="padding: 12px; border: 1px solid #E8D6C0;">週日</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;"><strong>上午</strong></td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">08:00–12:00</td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">08:00–11:30</td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">08:00–11:30</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;"><strong>下午</strong></td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">14:30–18:00</td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">14:30–18:00</td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">休診</td>
+          </tr>
+          <tr>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;"><strong>晚上</strong></td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">18:30–21:30</td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">休診</td>
+            <td style="padding: 12px; border: 1px solid #E8D6C0; text-align: center;">18:30–21:00</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size: 15px; color: #666; margin-top: 12px;">
+      ※ 平日（週一至週五）夜診至 21:30；週六上午與下午看診、無夜診；週日上午與夜間看診、無下午診。國定假日、連假門診時段可能調整；颱風天門診以台南市政府停班停課公告為準。實際門診、醫師排班與疫苗施打時段可能依現場狀況異動，請以診所最新公告、LINE 回覆或現場說明為準，建議先以 LINE @lhpedclinic 或電話 06-2516086 確認當日門診。
+    </p>
+  </section>
+
+
+  <!-- 交通、停車與初診準備 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      交通、停車與初診準備
+    </h2>
+
+    <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <p style="margin: 6px 0;">
+        <strong>地址與地標：</strong>台南市北區育德路 467 號，鄰近成大醫院、台南公園（步行約 5 分鐘）、長榮中學；距台南火車站步行約 15 分鐘。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>停車：</strong>診所周邊有路邊停車格與民營停車場，可以 Google 地圖導航「立欣診所」直接帶路。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>初診準備：</strong>請攜帶健保卡；兒童就診請一併攜帶兒童健康手冊（含疫苗黃卡），方便醫師核對生長紀錄與接種時程。
+      </p>
+    </div>
+  </section>
+
+
+  <!-- 主要服務項目 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      主要服務項目
+    </h2>
+
+    <div style="display: grid; gap: 14px;">
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">兒科門診與小兒常見疾病</h3>
+        <p style="margin-bottom: 0;">
+          提供兒童感冒、發燒、咳嗽、流鼻水、喉嚨痛、腸胃炎、腹痛、嘔吐、腹瀉、皮膚疹、久咳不癒與兒童常見疾病評估。腸胃炎照護重點在預防脫水（少量多次補水與電解質、清淡飲食）；是否需要抗生素或止瀉藥須由醫師評估，請勿自行使用。
+        </p>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">兒童過敏氣喘與慢性咳嗽</h3>
+        <p style="margin-bottom: 0;">
+          提供兒童氣喘、過敏性鼻炎、異位性皮膚炎、食物過敏、夜咳、運動後咳嗽、反覆喘鳴與慢性咳嗽評估，院內備有肺功能檢測儀協助客觀量化評估，並提供個人化氣喘控制計畫。蔡宗儒院長具台北馬偕兒童過敏氣喘免疫風濕科研究醫師訓練背景。
+        </p>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">自費過敏原檢測（IgE／IgG）</h3>
+        <p style="margin-bottom: 0;">
+          經醫師評估後抽血，提供急性 IgE 與慢性 IgG 過敏原檢測，涵蓋塵蟎、花粉、黴菌、動物皮毛等吸入性過敏原與奶蛋、海鮮、堅果等食物過敏原。檢測結果由醫師結合症狀與病史判讀，不單以數值決定忌口，避免不必要的飲食限制。
+        </p>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">新生兒照護與兒童健康檢查</h3>
+        <p style="margin-bottom: 0;">
+          提供新生兒黃疸追蹤、餵食評估、體重與生長曲線追蹤、安全睡眠衛教、發展評估、兒童健康檢查與疫苗時程諮詢。李佳玲醫師具國泰醫院新生兒次專科研究醫師訓練。提醒：3 個月以下嬰兒發燒建議立即就醫。
+        </p>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">疫苗接種與預防保健</h3>
+        <p style="margin-bottom: 0;">
+          提供完整公費疫苗與多項自費疫苗諮詢，含嬰幼兒、兒童、青少年、成人與長輩疫苗。公費依疾管署國家接種時程，自費適用對象與劑數依原廠仿單與醫師評估。疫苗現貨品項會變動，建議先透過 LINE 或來電確認當日庫存，每日最後一診前 1 小時停止施打。
+        </p>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">耳鼻喉相關症狀處理</h3>
+        <p style="margin-bottom: 0;">
+          本院為小兒科與家庭醫學診所（非耳鼻喉專科），可處理兒童常見耳鼻喉相關症狀，如鼻塞、流鼻水、鼻過敏、鼻涕倒流、喉嚨痛、扁桃腺發炎，以及中耳、鼻竇等不適。院內備有耳鼻喉治療台與超音波噴霧治療器，實際使用由醫師評估；需專科進一步處置者協助轉介。
+        </p>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">家庭醫學與成人照護</h3>
+        <p style="margin-bottom: 0;">
+          提供成人感冒、急性腸胃不適等一般診療，高血壓／糖尿病／高血脂等慢性病的長期追蹤與用藥管理（目標為穩定控制、非治癒），以及成人預防保健（公費健檢，資格依國健署規定）與成人疫苗。本院為門診、非急診，危急狀況請逕赴急診或撥 119。
+        </p>
+      </div>
+
+      <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 16px; box-sizing: border-box;">
+        <h3 style="color: #A0662F; margin-top: 0;">科學減重與身體組成分析</h3>
+        <p style="margin-bottom: 0;">
+          提供 InBody 身體組成分析、BMI 與代謝風險評估、醫師面診與個人化生活型態調整建議。減重相關醫療處置皆需由醫師面診評估後，依個人健康狀況、病史與用藥安全規劃。成長中兒童不採嚴格節食或減重藥物，以健康飲食、規律活動、充足睡眠（健康體位三寶）為主。
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- 線上工具 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      免費線上工具：兒童生長曲線評估
+    </h2>
+
+    <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <p style="margin: 6px 0;">
+        立欣診所提供免費的<strong>兒童生長曲線評估工具</strong>，依 WHO／國健署兒童生長標準計算 0–7 歲兒童的身高、體重、頭圍與 BMI 百分位並繪製生長曲線（即家長常說的成長曲線圖），可連續紀錄同一孩子多筆評估以追蹤趨勢，早產兒採 Intergrowth-21st 標準與矯正年齡。
+      </p>
+      <p style="margin: 6px 0;">
+        結果僅供生長追蹤的輔助參考，臨床判讀請由醫師評估。工具連結：
+        <a href="https://lhpedclinic.com.tw/growth.html" target="_blank" rel="noopener" style="color: #A0662F;">https://lhpedclinic.com.tw/growth.html</a>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- 適合就診情況 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      適合就診的常見情況
+    </h2>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <p style="margin: 6px 0;">小孩發燒、咳嗽、流鼻水、喉嚨痛、腸胃炎、嘔吐、腹瀉。</p>
+      <p style="margin: 6px 0;">孩子夜咳、久咳不癒、運動後咳嗽、反覆喘鳴，想評估是否與氣喘或過敏有關。</p>
+      <p style="margin: 6px 0;">嬰幼兒需要新生兒照護、黃疸追蹤、體重追蹤、餵食諮詢或兒童健康檢查。</p>
+      <p style="margin: 6px 0;">需要公費疫苗、自費疫苗、嬰幼兒疫苗、成人疫苗或長輩疫苗諮詢。</p>
+      <p style="margin: 6px 0;">想查詢假日門診、週末門診、週六門診、週日門診或即時看診進度。</p>
+    </div>
+  </section>
+
+
+  <!-- 醫療團隊 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      醫療團隊
+    </h2>
+
+    <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">蔡宗儒 院長</h3>
+      <p style="margin-bottom: 0;">
+        中國醫藥大學醫學士暨公共衛生碩士，具台北馬偕兒童過敏氣喘免疫風濕科研究醫師訓練背景，台灣肥胖醫學會會員。專長：兒童過敏、氣喘、異位性皮膚炎、久咳評估、一般兒科與肥胖醫學。
+      </p>
+    </div>
+
+    <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">李佳玲 醫師</h3>
+      <p style="margin-bottom: 0;">
+        國防醫學院醫學士，具國泰醫院新生兒次專科研究醫師訓練背景。專長：新生兒照護、一般兒科、小兒成長發育。提供嬰幼兒照護、兒童常見疾病與成長發育相關評估。
+      </p>
+    </div>
+  </section>
+
+
+  <!-- FAQ：搜尋意圖問答，採客觀中性語句 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      常見搜尋問題 FAQ
+    </h2>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：看診進度的號碼為什麼會跳號？預約號和現場號怎麼分？</h3>
+      <p style="margin-bottom: 0;">
+        A：立欣診所的預約號為偶數號（網路、電話、LINE 預約，每半小時一組名額）、現場抽號為奇數號，看診時兩者交錯進行，因此進度號碼跳號屬正常現象。預約時間僅保留 10 分鐘，逾時將取消預約、依現場情況等候，建議提早 5–10 分鐘抵達報到；出門前先查本頁即時進度，快到號再出門可減少等候。
+      </p>
+    </div>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：現在看到幾號？還要等多久才輪到我？</h3>
+      <p style="margin-bottom: 0;">
+        A：本頁即時顯示立欣診所目前叫號與等候狀況。每位病人的看診時間因初診、複診與檢查項目而不同，無法準確預估等候時間；建議以本頁進度與自己號碼的差距估算，快到號再出門。預約者請於預約時間前 5–10 分鐘報到（預約僅保留 10 分鐘）。雲端號碼偶有延遲，實際以現場叫號為準。
+      </p>
+    </div>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：搜尋台南兒科或台南小兒科時，可以注意哪些資訊？</h3>
+      <p style="margin-bottom: 0;">
+        A：建議可注意診所位置、門診時間、醫師專科訓練、是否有客觀檢查設備（如評估氣喘的肺功能檢測儀）、是否提供兒童過敏氣喘與新生兒照護、疫苗是否完整，以及是否提供線上預約與即時看診進度查詢。立欣診所位於台南市北區育德路 467 號，為健保特約小兒科與家庭醫學診所。
+      </p>
+    </div>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：尋找台南北區兒科時，立欣診所有提供哪些兒科服務？</h3>
+      <p style="margin-bottom: 0;">
+        A：立欣診所提供兒童感冒、發燒、咳嗽、流鼻水、腸胃炎、久咳不癒、新生兒照護、兒童健康檢查、疫苗接種、自費過敏原檢測與兒童過敏氣喘評估。院內備有肺功能檢測儀等設備，檢查項目由醫師依病情評估。
+      </p>
+    </div>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：尋找台南假日診所或台南假日兒科時，立欣診所週末有看診嗎？</h3>
+      <p style="margin-bottom: 0;">
+        A：立欣診所週六、週日皆有門診——週六上午 08:00–11:30、下午 14:30–18:00（無夜診）；週日上午 08:00–11:30、夜間 18:30–21:00（無下午診）。平日夜診至 21:30。國定假日、連假時段可能調整，颱風天以台南市政府停班停課公告為準，實際請以診所最新公告或 LINE 回覆為準。
+      </p>
+    </div>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：兒童過敏、氣喘、異位性皮膚炎或久咳，可以到立欣診所評估嗎？</h3>
+      <p style="margin-bottom: 0;">
+        A：可以。立欣診所提供兒童過敏氣喘、過敏性鼻炎、慢性咳嗽、夜咳、反覆喘鳴、異位性皮膚炎與肺功能檢查評估，並提供自費過敏原檢測（IgE／IgG）。實際診斷與治療仍需由醫師面診判斷。
+      </p>
+    </div>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：台南的孩子或大人腸胃炎可以看立欣診所嗎？看哪一科？</h3>
+      <p style="margin-bottom: 0;">
+        A：可以。兒童與嬰幼兒急性腸胃炎（常見輪狀病毒、諾羅病毒等）由小兒科評估，成人腸胃炎與急性腹瀉、嘔吐由家庭醫學門診評估。照護重點在預防脫水——少量多次補水與電解質、清淡飲食；是否需抗生素或止瀉藥須由醫師評估，勿自行使用。若出現血便、持續高燒、嚴重脫水或 3 個月以下嬰兒發燒請儘速就醫。本院為門診、非急診。
+      </p>
+    </div>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <h3 style="color: #A0662F; margin-top: 0;">Q：想了解台南減重諮詢，立欣診所有提供相關服務嗎？</h3>
+      <p style="margin-bottom: 0;">
+        A：立欣診所提供科學減重門診，由台灣肥胖醫學會醫師蔡宗儒院長主持，結合 InBody 身體組成分析與醫師面診。醫師會依個人健康狀況、BMI、代謝指標與生活型態進行評估，相關醫療處置需面診後規劃。GLP-1 類腸泌素受體促效劑在台灣核准適應症為第 2 型糖尿病，用於體重管理屬仿單外（off-label）使用，須經醫師完整評估後依處方使用，效果因人而異，本資訊為衛教、不構成藥品廣告。
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- 疫苗段落 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      疫苗接種與預防保健
+    </h2>
+
+    <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <p style="margin: 6px 0;">
+        立欣診所提供完整公費疫苗與多項自費疫苗諮詢，含嬰幼兒、兒童、青少年、成人與長輩疫苗。常見諮詢項目如流感疫苗、HPV 疫苗、帶狀皰疹疫苗、肺炎鏈球菌疫苗、RSV 與腸病毒 71 型疫苗等。
+      </p>
+
+      <p style="margin: 6px 0;">
+        公費疫苗依衛福部疾管署國家接種時程與對象接種；自費疫苗的適用對象、劑數與時程依原廠仿單與醫師評估安排。疫苗接種需依年齡、過去接種紀錄、身體狀況與醫師評估規劃。
+      </p>
+
+      <p style="margin: 6px 0;">
+        疫苗現貨品項、接種資格與施打時段可能依現場狀況調整，接種前建議先加入官方 LINE：<strong>@lhpedclinic</strong> 或來電 06-2516086 確認當日庫存；每日最後一診前 1 小時停止施打，接種後請於診所觀察 15–30 分鐘。
+      </p>
+    </div>
+  </section>
+
+
+  <!-- 減重段落 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      科學減重與代謝健康諮詢
+    </h2>
+
+    <div style="background: #FFFFFF; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <p style="margin: 6px 0;">
+        立欣診所科學減重門診由台灣肥胖醫學會醫師蔡宗儒院長主持，提供 InBody 身體組成分析、BMI 評估、代謝風險評估與醫師面診諮詢，並依個別狀況提供個人化飲食、運動與生活型態調整建議。
+      </p>
+
+      <p style="margin: 6px 0;">
+        減重藥物與相關醫療處置需由醫師依個人病史、用藥安全、身體狀況與適應症進行評估。GLP-1 類腸泌素受體促效劑在台灣核准適應症為第 2 型糖尿病，用於體重管理屬仿單外（off-label）使用，須經醫師完整評估後依處方使用，效果因人而異，本資訊為一般醫學衛教、不構成藥品廣告。
+      </p>
+
+      <p style="margin: 6px 0;">
+        請勿自行購買或使用減重藥物；實際是否適合使用，仍需由醫師面診後判斷。
+      </p>
+    </div>
+  </section>
+
+
+  <!-- 搜尋意圖總整理：自然語句 -->
+  <section style="margin-bottom: 28px;">
+    <h2 style="color: #8B5A2B; border-left: 6px solid #D9A441; padding-left: 12px;">
+      您可能正在搜尋的台南醫療服務
+    </h2>
+
+    <div style="background: #FFFDF8; border: 1px solid #E8D6C0; border-radius: 14px; padding: 18px; box-sizing: border-box;">
+      <p style="margin: 6px 0;">
+        <strong>看診進度與候診：</strong>立欣診所現在看幾號、還要等多久、叫號進度、線上候診查詢、台南診所即時看診進度。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>兒科與小兒科：</strong>兒童感冒、發燒、咳嗽、腸胃炎、久咳不癒、新生兒照護與兒童健康檢查。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>假日與週末門診：</strong>週六上午、週六下午、週日上午與週日夜間設有門診時段，平日夜診至 21:30，方便家庭安排就診。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>過敏、氣喘、異膚與久咳：</strong>提供兒童過敏氣喘、異位性皮膚炎、過敏性鼻炎、慢性咳嗽、肺功能檢查與自費過敏原檢測（IgE／IgG）評估。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>疫苗與預防保健：</strong>提供公費疫苗、自費疫苗、嬰幼兒疫苗、青少年疫苗、成人疫苗與長輩疫苗諮詢。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>家庭醫學與成人照護：</strong>成人感冒、慢性病追蹤（穩定控制非治癒）、成人健檢與成人疫苗。
+      </p>
+      <p style="margin: 6px 0;">
+        <strong>減重與健康管理：</strong>提供 InBody 身體組成分析、醫師評估與個人化健康管理建議。
+      </p>
+    </div>
+  </section>
+
+
+  <!-- 更多資訊 -->
+  <section style="background: #F7E7D0; border-radius: 18px; padding: 22px; text-align: center; margin-bottom: 28px; box-sizing: border-box;">
+    <h2 style="color: #8B5A2B; margin-top: 0;">更多立欣診所資訊</h2>
+    <p style="font-size: 17px;">
+      更多醫師介紹、服務項目、衛教文章、疫苗資訊與最新公告，請參考立欣診所官方網站。
+    </p>
+    <p style="font-size: 18px; font-weight: bold;">
+      <a href="https://lhpedclinic.com.tw" target="_blank" rel="noopener" style="color: #8B5A2B; text-decoration: underline;">
+        https://lhpedclinic.com.tw
+      </a>
+    </p>
+  </section>
+
+
+  <!-- 醫療聲明 -->
+  <section style="font-size: 14px; color: #777; border-top: 1px solid #E8D6C0; padding-top: 14px;">
+    <p style="margin: 0 0 8px;">
+      本頁資訊由立欣診所整理，提供門診資訊、即時看診進度與一般衛教參考。實際診斷、治療、疫苗接種、減重醫療與相關醫療處置仍需由醫師面診評估。本院為門診、非急診，危急狀況請逕赴急診或撥 119。
+    </p>
+    <p style="margin: 0;">
+      門診時間、醫師排班、疫苗現貨與看診規則可能依現場狀況、國定假日或臨時異動調整，颱風天門診以台南市政府停班停課公告為準，請以立欣診所最新公告、LINE 回覆或現場說明為準。
+    </p>
+  </section>
+
+  <!-- JSON-LD 結構化資料（AI SEO/AEO）：若 MainPi 平台剝除 <script> 則本區無效、亦無害；貼上後請檢視頁面原始碼驗證 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "MedicalClinic",
+        "@id": "https://lhpedclinic.com.tw/#organization",
+        "name": "立欣診所",
+        "alternateName": ["LiHsin Clinic", "立欣小兒科", "台南立欣診所"],
+        "url": "https://lhpedclinic.com.tw",
+        "telephone": "+886-6-2516086",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "育德路467號",
+          "addressLocality": "北區",
+          "addressRegion": "台南市",
+          "postalCode": "704",
+          "addressCountry": "TW"
+        },
+        "medicalSpecialty": ["Pediatric", "PrimaryCare"],
+        "sameAs": [
+          "https://www.facebook.com/lhpedclinic",
+          "https://line.me/R/ti/p/@lhpedclinic",
+          "https://www.instagram.com/lhpedclinic/",
+          "https://maps.app.goo.gl/i2yaH7yPD2jLymzP8",
+          "https://lhpedclinic.booknow.com.tw/",
+          "https://www.mainpi.com/query?i=2935"
+        ],
+        "openingHoursSpecification": [
+          {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "12:00"},
+          {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "14:30", "closes": "18:00"},
+          {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "18:30", "closes": "21:30"},
+          {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "08:00", "closes": "11:30"},
+          {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "14:30", "closes": "18:00"},
+          {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "08:00", "closes": "11:30"},
+          {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "18:30", "closes": "21:00"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "看診進度的號碼為什麼會跳號？預約號和現場號怎麼分？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "立欣診所的預約號為偶數號（網路、電話、LINE 預約，每半小時一組名額）、現場抽號為奇數號，看診時兩者交錯進行，因此進度號碼跳號屬正常現象。預約時間僅保留 10 分鐘，逾時將取消預約、依現場情況等候，建議提早 5–10 分鐘抵達報到。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "現在看到幾號？還要等多久才輪到我？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "本頁即時顯示立欣診所目前叫號與等候狀況。每位病人的看診時間因初診、複診與檢查項目而不同，無法準確預估等候時間；建議以本頁進度與自己號碼的差距估算，快到號再出門。雲端號碼偶有延遲，實際以現場叫號為準。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+</div>
