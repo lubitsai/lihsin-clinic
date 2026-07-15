@@ -21,13 +21,16 @@
 <meta property="og:description" content="立欣診所就診指南：現場、電話與LINE三種掛號方式，預約號與現場號叫號原則，即時看診進度查詢，初診攜帶物品與交通停車。門診時間表一頁看懂；本院為門診、非急診。">
 <meta property="og:url" content="https://lhpedclinic.com.tw/visit-guide.html">
 <meta property="og:image" content="https://lhpedclinic.com.tw/images/logo.png">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="立欣診所 LiHsin Clinic">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="立欣診所就診指南｜預約掛號・看診進度・初診準備（台南北區）">
 <meta name="twitter:description" content="立欣診所就診指南：現場、電話與LINE三種掛號方式，預約號與現場號叫號原則，即時看診進度查詢，初診攜帶物品與交通停車。門診時間表一頁看懂；本院為門診、非急診。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/tailwind.css">
 <noscript></noscript>
 <style>
@@ -862,6 +865,14 @@
   },
   {
    "@type": "Question",
+   "name": "孩子很怕看醫生、第一次看診會不會一直哭鬧？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "孩子對看診緊張、哭鬧很常見。看診時醫師與護理師會耐心安撫、以孩子能接受的步調進行檢查，看診後通常也會準備小貼紙或小禮物鼓勵孩子、緩解對看診的抗拒。建議家長事先以 LINE 預約並查詢即時看診進度以減少等待、帶上孩子熟悉的安撫物，並以平常心向孩子說明看醫生。多次就診、熟悉之後，孩子多半會逐漸適應。"
+   }
+  },
+  {
+   "@type": "Question",
    "name": "診所附近怎麼停車？鄰近哪些地標？",
    "acceptedAnswer": {
     "@type": "Answer",
@@ -882,6 +893,7 @@
  <link rel="manifest" href="/manifest.webmanifest">
  <meta name="theme-color" content="#7C9A6E">
  <script src="/pwa-register.js" defer></script>
+ <script src="/cta-track.js" defer></script>
 </head>
 <body>
 <div id="page-wrapper">
@@ -1058,6 +1070,10 @@
    <details class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
     <summary class="font-semibold text-gray-800 cursor-pointer">第一次帶孩子來看診，要準備什麼？</summary>
     <p class="mt-3 text-sm text-gray-600 leading-relaxed">建議攜帶健保卡、兒童健康手冊（含疫苗接種黃卡紀錄）；若有過敏史、長期用藥或他院檢查報告也請一併帶來，有助醫師完整評估。初診資料齊全可加快看診流程。</p>
+   </details>
+   <details class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+    <summary class="font-semibold text-gray-800 cursor-pointer">孩子很怕看醫生、第一次看診會不會一直哭鬧？</summary>
+    <p class="mt-3 text-sm text-gray-600 leading-relaxed">孩子對看診緊張、哭鬧很常見。看診時醫師與護理師會耐心安撫、以孩子能接受的步調進行檢查，看診後通常也會準備小貼紙或小禮物鼓勵孩子、緩解對看診的抗拒。建議家長事先以 LINE 預約並查詢即時看診進度以減少等待、帶上孩子熟悉的安撫物，並以平常心向孩子說明看醫生。多次就診、熟悉之後，孩子多半會逐漸適應。</p>
    </details>
    <details class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
     <summary class="font-semibold text-gray-800 cursor-pointer">診所附近怎麼停車？鄰近哪些地標？</summary>

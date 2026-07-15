@@ -49,20 +49,40 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 # 4. 無 .html 網址 → .html canonical（2026-07-03 新增）
 #    有人手打或外部連結省略 .html 時，301 收斂到既有 canonical，
 #    避免潛在雙版本。非強制（無驚嘆號）：實體檔案存在時不攔截。
+#    ⚠️ 2026-07-10 GitHub Actions 線上實測：Netlify 的隱含 .html
+#    解析先於非強制轉址，無副檔名網址實際回 200 直接服務 .html
+#    內容（非 301）——本節規則對「存在的頁面」實務上不觸發。
+#    雙版本由各頁 canonical 收斂，SEO 無實害；勿改強制（301!）
+#    ——會把 /xxx.html 本體也捲入迴圈。
+#    ⚠️ 同日實測第二發現：目錄佔位符規則（/health/:p 型）只會在
+#    「路徑不存在」時觸發，且會無限自我循環（p → p.html →
+#    p.html.html …，curl 錯誤 47）——打錯字的網址因此拿不到乾淨
+#    404。三條佔位符規則已移除；下方單頁規則對既存頁面無作用、
+#    留作 Netlify 行為改變時的後備。
 # ------------------------------------------------------------
 /growth        /growth.html        301
 /visit-guide   /visit-guide.html   301
+/app           /app.html           301
+/privacy       /privacy.html       301
 /404           /404.html           301
-/services/:p   /services/:p.html   301
-/health/:p     /health/:p.html     301
-/team/:p       /team/:p.html       301
 
 # ------------------------------------------------------------
-# 5. 內部文件攔截（2026-07-10 新增）
+# 5. 內部文件攔截（2026-07-10 新增；2026-07-10 健檢批擴充）
 #    internal/（專案制度文件 00–03）、CLAUDE.md、.mcp.json 為
 #    開發與 AI 協作用內部檔案：入版控供接續 session 使用，
 #    但不對外提供。強制（!）回 404，渲染既有品牌化 404 頁。
+#    健檢批擴充：攔截 dotfile 的無點重複檔（網頁上傳副產物，
+#    repo 已刪除，此處防未來再度混入）、_gitignore、目錄占位
+#    README.md 與根目錄 README.md。
 # ------------------------------------------------------------
-/internal/*  /404.html  404!
-/CLAUDE.md   /404.html  404!
-/.mcp.json   /404.html  404!
+/internal/*    /404.html  404!
+/CLAUDE.md     /404.html  404!
+/.mcp.json     /404.html  404!
+/mcp.json      /404.html  404!
+/gitignore     /404.html  404!
+/_gitignore    /404.html  404!
+/README.md     /404.html  404!
+/.github/*     /404.html  404!
+# 註：各子目錄空 README.md 佔位檔已於 2026-07-10 直接刪除
+#（實測 /:dir/README.md 佔位符規則不生效——隱含檔案服務優先；
+#  消滅檔案本身比攔截規則可靠）。

@@ -21,7 +21,8 @@
 <meta property="og:site_name" content="立欣診所 LiHsin Clinic">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="/tailwind.css">
 
 <script type="application/ld+json">
@@ -196,6 +197,7 @@ body{padding-bottom:76px}
 </style>
  <meta name="theme-color" content="#7C9A6E">
  <script src="/pwa-register.js" defer></script>
+ <script src="/cta-track.js" defer></script>
 </head>
 <body class="bg-[#f8faf7]">
 
@@ -272,7 +274,7 @@ body{padding-bottom:76px}
 
  <figure class="mb-8">
  <picture>
- <source type="image/webp" srcset="/images/sleep-safety-infographic.webp">
+ <source type="image/webp" srcset="/images/sleep-safety-infographic-768.webp 768w, /images/sleep-safety-infographic.webp 1254w" sizes="(max-width: 767px) 82vw, 700px">
  <img src="/images/sleep-safety-infographic.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="新生兒睡覺安全指南懶人包：嬰兒安全睡眠 5 守則——①不趴睡（1 歲以下每次睡覺都要仰睡）②不用枕（不放枕頭）③不鬆軟（不放棉被、玩偶、防撞護墊）④不悶熱（不要過度保暖）⑤不同床（建議同室不同床）。家長要記得：嬰兒床要堅實平坦、避免二手菸、側睡與趴睡都不安全，趴睡是嬰兒猝死的重要危險因子。並澄清常見迷思：仰睡不會增加嗆奶風險。" class="w-full max-w-2xl mx-auto rounded-2xl shadow-md">
  </picture>
  <figcaption class="text-xs text-gray-400 text-center mt-2 font-chinese">圖｜新生兒睡覺安全指南：嬰兒安全睡眠 5 守則（資料整理自衛生福利部國民健康署）。本圖為一般衛教資訊，無法取代醫師面診與個別評估。</figcaption>
