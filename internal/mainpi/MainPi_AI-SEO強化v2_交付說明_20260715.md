@@ -7,12 +7,25 @@
 
 ---
 
-## 一、先講清楚：站外頁面的真實限制
+## 一、廠商三題已回覆（2026-07-15，院長轉述 MainPi），據此定策
 
-MainPi 是第三方平台，我們**只能控制三個欄位的內容**，不能動它的 `<head>`（title／meta description／canonical）、robots、sitemap。因此：
+| # | 問題 | MainPi 回覆 | 對策略的意義 |
+|---|---|---|---|
+| 1 | query 頁是否有 noindex？ | **無 noindex** | ✅ Google 可索引本頁，內容/結構化優化會反映到搜尋結果，SEO 天花板打開 |
+| 2 | 佈告欄可否放 `<script>`？ | **可放 script** | ✅ v2 佈告欄文末 JSON-LD **確定生效**（不會被剝除），rich result 與 AI 引用價值成立 |
+| 3 | title／meta 可否自訂？ | **不可自訂**（系統產生） | ⚠️ 唯一限制。補救＝把「我們自己撰寫的頁面描述」放進**已確認可用的 JSON-LD**（見 v2.1 WebPage 節點）＋正文首段（Google snippet 來源） |
 
-1. **這個頁面的搜尋曝光天花板由 MainPi 平台決定**——若平台對 query 頁設了 `noindex`，所有內容優化都不會反映在 Google 搜尋結果（AI 爬蟲則不一定受限，AEO/GEO 價值仍在）。此事無法由內容端解決，已列入 §4「向 MainPi 廠商確認清單」。
-2. 正確的策略比重：**內容欄位做滿（本批 v2）＋站外訊號佈建（§3，多數已完成）＋平台面問題向廠商確認（§4）**。
+**結論**：三題把不確定性清掉了——SEO 有效（無 noindex）＋結構化資料生效（script 可放），策略上值得對本頁多投資結構化資料；唯一缺口（title/meta 不可控）已用 v2.1 的 WebPage 節點精準補位。這不是「站外頁面天花板很低只能將就」，而是「可控欄位＋JSON-LD 幾乎能覆蓋 head 不可控的大部分損失」。
+
+## 一之二、v2.1 微補強（因應第三題：title/meta 不可自訂）
+
+- **佈告欄 JSON-LD `@graph` 最前新增 `WebPage` 節點**：`name`＝「立欣診所即時看診進度查詢｜台南市北區小兒科・家庭醫學」、`description`＝一句含關鍵字的頁面定位（看診進度／叫號規則／假日兒科／夜診至21:30／過敏氣喘／新生兒／疫苗／非急診），`about` 以 @id 指向 MedicalClinic、`isPartOf` 指向官網 WebSite、`significantLink` 帶官網與就診指南。
+- **理由**：title/meta 既不可改，`WebPage.description` 是**唯一能放我們自撰頁面描述的受控欄位**；Google 在系統 meta 不佳時可能改用結構化描述，AI 引用（GEO）更是直接讀 JSON-LD。此節點與 MedicalClinic/FAQPage 同屬已確認可放的 script 區塊、零額外風險。
+- **合規**：description 無自稱超級詞；「非急診」但書在內；事實與 v2 一致。
+
+## 二、站外頁面的真實限制（保留備查）
+
+MainPi 是第三方平台，我們**只能控制三個欄位的內容**，不能動它的 `<head>`（title／meta description／canonical）、robots、sitemap——第三題已證實 title/meta 不可自訂。正確的策略比重：**內容欄位做滿（v2/v2.1）＋站外訊號佈建（§3，多數已完成）＋平台面已由廠商三題釐清**。
 
 ## 二、v2 內容變更清單（相對已核可 v1）
 
@@ -46,12 +59,12 @@ MainPi 是第三方平台，我們**只能控制三個欄位的內容**，不能
 | LINE 圖文選單掛「看診進度」鍵 | ⬜ 既有 L1 待辦 | 併入 LINE 深度化批次 |
 | FB／IG 個人檔案或置頂貼文放本頁連結 | ⬜ 建議院長操作 | 低成本、順手做 |
 
-## 四、向 MainPi 廠商確認清單（併入既有《廠商API詢問清單》脈絡）
+## 四、向 MainPi 廠商確認清單（2026-07-15 已回覆 1–3）
 
-1. query 頁是否允許搜尋引擎索引（有無 `noindex`／robots.txt 限制）？——決定 SEO 天花板。
-2. 佈告欄欄位是否允許 `<script type="application/ld+json">`（或有無官方結構化資料欄位）？
-3. 頁面 `<title>`／meta description 可否自訂（目前推測為系統產生）？
-4. 跑馬燈是否支援多條輪播與字數上限？
+1. ✅ query 頁允許索引（**無 noindex**）——SEO 天花板已打開。
+2. ✅ 佈告欄**允許 `<script type="application/ld+json">`**——JSON-LD 生效。
+3. ✅ 頁面 `<title>`／meta description **不可自訂**（系統產生）——已用 v2.1 WebPage 節點補位。
+4. ⬜ 跑馬燈是否支援多條輪播與字數上限？（尚未回覆；決定跑馬燈用單條 A 或輪播 B＋C＋D）
 
 ## 五、合規自查（v2 新增內容）
 
