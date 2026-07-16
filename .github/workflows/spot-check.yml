@@ -61,6 +61,10 @@ jobs:
           check /robots.txt 200
           check /app.html 200
           check /visit-guide.html 200
+          check /health/enterovirus71-vaccine.html 200
+          check /health/rsv-immunization.html 200
+          check /images/enterovirus71-vaccine-infographic.jpg 200
+          check /images/rsv-immunization-infographic.jpg 200
           echo "=== 內容抽驗 ==="
           n=$(curl -s --max-time 20 "$BASE/visit-guide.html" | grep -c 'og:locale' || true)
           if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
