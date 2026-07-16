@@ -179,7 +179,7 @@
 - **07-07 衍生待決**：⑥ ✅ 已完成（visit-guide twitter:card→summary_large_image、twitter:description 同步內文，院長核可）⑦ ✅ 已完成（app.html 對齊：lang→zh-Hant-TW、desc 98→75 字採既有 og 文案、og 同步；院長核可）。
 - **07-10 衍生待決**：⑧ ✅ 已完成（院長裁示採 (a)：35 處無副檔名內連統一 `.html` 直連，23 檔外科式替換、目標檔案逐一驗證存在；消 301 hop、對齊「保 .html canonical」）⑨ ✅ 已完成（院長核可：驗證器 v1.0.1 首頁 loc「/」→index.html 對映修正，一行＋註記）。修正後全站 deploy 驗證 **ERROR 0／WARN 0**。
 - **MainPi 進度頁優化（v1／v2／v2.1，2026-07-15～16c，稿存 `internal/mainpi/`）**：三欄位內容（佈告欄／AI 搜尋提示詞／跑馬燈）＋v2 JSON-LD（MedicalClinic＋FAQPage）＋v2.1 WebPage 節點，院長已逐字核可並併入 main。廠商四題全回覆：query 頁無 noindex／佈告欄可放 script／title-meta 不可自訂（v2.1 補位）／跑馬燈不支援輪播·無字數上限（→單條整合版）。
-- **MainPi 落地完成（2026-07-16 院長回報）**：✅①已貼入後台三欄位（佈告欄 v2.1／AI 提示詞 v2／跑馬燈定案 A）✅②佈告欄 JSON-LD **實測存活**（＝MainPi 佈告欄確實可放 script、結構化資料在站外平台生效可被 Google/AI 讀取）✅③GBP 預約連結已加 mainpi 網址（曝光最有力一步落地）。**唯一殘餘＝④9/15 後跑馬燈換定案 B、佈告欄／AI 提示詞流感段下架（已排程 trig_01NTVvdcLVUH1dK3AQbSdTkZ）；FB/IG 連結為選配。**
+- **MainPi 殘餘總表（院長線下執行；v1／v2／v2.1／跑馬燈定案 A 皆已核可）**：①以 v2.1 佈告欄／AI 提示詞 v2／跑馬燈定案 A 貼入 MainPi 後台三欄位 ②佈告欄貼後檢視原始碼回報 JSON-LD 是否存活（被剝除＝無效無害）③**GBP 預約連結欄位加 mainpi 網址（曝光最有力）**＋FB/IG 連結 ④9/15 後跑馬燈換定案 B、佈告欄／AI 提示詞流感段下架（已排程 trig_01NTVvdcLVUH1dK3AQbSdTkZ）。
 - **07-13 衍生（歷批附錄 §8-4 壓縮）**：✅ 首輪完成（2026-07-13b）——最舊批次 07-06 附錄壓成 5 行精華併入〈歷批決策與教訓精華〉，原文存 `archive/00_歷批附錄_20260706_原文.md`。**殘餘**：壓縮後附錄仍有 12 批（07-07～07-13b）>8 門檻 → 後續 session 依同法逐批壓最舊批次（下一個＝07-07），每次單獨處理、不與網站修改混批。
 
 ## 七、檔案部署對照
@@ -734,5 +734,3 @@ robots.txt AI 爬蟲名單完整（OpenAI×3、Anthropic×5、Perplexity×2、Go
 - **驗證**：`validate_site.py --root . --stage deploy`（43 檔）＝ERROR 0／WARN 0（網站樹零變更）。
 - **殘餘（MainPi 總表）**：①院長以 v2.1 佈告欄／AI 提示詞 v2／跑馬燈定案 A 貼入 MainPi 後台三欄位 ②佈告欄貼後檢視原始碼回報 JSON-LD 是否存活（被剝除＝無效無害）③**GBP 預約連結欄位加 mainpi 網址（曝光最有力）**＋FB/IG 連結 ④9/15 後跑馬燈換定案 B、佈告欄／AI 提示詞流感段下架（已排程 trig_01NTVvdcLVUH1dK3AQbSdTkZ）。
 - **結案（2026-07-16 同日）**：院長回覆「merge」＝逐字核可跑馬燈定案 A（單條整合版可見文字）；連同 v2.1（已併 main）＝MainPi 全部提案（v1／v2／v2.1／跑馬燈）核可完畢。餘為院長線下動作（貼入後台三欄位＋GBP 預約連結），無 IndexNow（站外平台）。追加備份 `archive/*_backup_20260716c-mainpi-b.md`。
-- **落地完成（2026-07-16 院長回報）**：①三欄位已貼入 MainPi 後台 ②**佈告欄 JSON-LD 實測存活**（檢視原始碼確認未被平台剝除）③GBP 預約連結已加 mainpi 網址。MainPi 站外頁優化全案落地，僅餘 9/15 時效下架（已排程）。追加備份 `archive/*_backup_20260716c-mainpi-c.md`。
-- **教訓（三段式）**：站外第三方平台（如 MainPi 進度頁）常被預設「head/結構化資料不可控、只能放純文字」（現象）→ 實際「向廠商確認四題＋貼後檢視原始碼」證實佈告欄可放 `<script type=ld+json>` 且 JSON-LD 存活生效、WebPage 節點可補 title/meta 不可自訂的缺口（根因/實證）→ **站外平台的結構化資料能力要實測不預設；「廠商四題（noindex／script／title-meta／欄位限制）＋貼後看原始碼」是可複用 SOP，本次 MainPi 佈告欄放 JSON-LD 的模式可套用於未來其他平台或分院（規則）**。
