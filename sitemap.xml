@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-07-12</lastmod>
+    <lastmod>2026-07-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -82,13 +82,13 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-07-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-lee.html</loc>
-    <lastmod>2026-06-25</lastmod>
+    <lastmod>2026-07-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -331,6 +331,20 @@
     <loc>https://lhpedclinic.com.tw/health/hpv-vaccine.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/hpv-vaccine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-07-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/enterovirus71-vaccine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/enterovirus71-vaccine-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/rsv-immunization.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/rsv-immunization-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-07-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
