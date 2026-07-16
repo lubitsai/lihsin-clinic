@@ -1,5 +1,5 @@
 <!-- ============================================================
-  MainPi 佈告欄訊息｜立欣診所（2026-07-15 優化版 v2：AI SEO/AEO/GEO 強化）
+  MainPi 佈告欄訊息｜立欣診所（2026-07-15 優化版 v2.1：AI SEO/AEO/GEO 強化 + WebPage 描述節點）
   貼入位置：MainPi 後台「佈告欄訊息」欄位（QR Code 以上為系統固定區，本內容顯示於其下）
   變更說明見同資料夾《MainPi_AI-SEO強化v2_交付說明_20260715.md》
   ⏰ 時效區塊：「最新消息」流感疫苗預購段落請於 2026-09-15 後移除
@@ -470,6 +470,20 @@
   {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.mainpi.com/query?i=2935#webpage",
+        "name": "立欣診所即時看診進度查詢｜台南市北區小兒科・家庭醫學",
+        "description": "查詢立欣診所（台南市北區育德路467號）即時看診進度與目前叫號；預約號為偶數、現場號為奇數交錯看診，跳號屬正常。立欣診所提供假日兒科（週六週日皆有門診）、平日夜診至21:30、兒童過敏氣喘、新生兒照護與疫苗接種。本院為門診、非急診。",
+        "url": "https://www.mainpi.com/query?i=2935",
+        "inLanguage": "zh-Hant-TW",
+        "about": {"@id": "https://lhpedclinic.com.tw/#organization"},
+        "isPartOf": {"@type": "WebSite", "name": "立欣診所", "url": "https://lhpedclinic.com.tw"},
+        "significantLink": [
+          "https://lhpedclinic.com.tw",
+          "https://lhpedclinic.com.tw/visit-guide.html"
+        ]
+      },
       {
         "@type": "MedicalClinic",
         "@id": "https://lhpedclinic.com.tw/#organization",
