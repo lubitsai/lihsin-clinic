@@ -5235,9 +5235,10 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  var txt = document.getElementById('clinic-status-text');
  if (!badge) return;
 
- var now = new Date();
- var day = now.getDay();
- var nowMin = now.getHours()*60 + now.getMinutes();
+ // 鎖定台灣時區 UTC+8（台灣無日光節約時間，固定偏移即可），避免海外訪客以當地時間誤判
+ var now = new Date(Date.now() + 8*60*60000);
+ var day = now.getUTCDay();
+ var nowMin = now.getUTCHours()*60 + now.getUTCMinutes();
  var sessions = SCHEDULE[day] || [];
 
  var color, dotColor, message;
