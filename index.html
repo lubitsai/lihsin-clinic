@@ -5277,20 +5277,37 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  };
  var DAY_NAMES = ['週日','週一','週二','週三','週四','週五','週六'];
 
+ // 單日特例表（鍵＝UTC+8 日期 YYYY-MM-DD，值＝當日完整時段表，整筆取代該日 SCHEDULE；
+ // 整日休診給空陣列 []）。過期條目不影響運作，下次更新公告時順手清除即可。
+ var EXCEPTIONS = {
+ '2026-07-19': [[480,660,'早診'],[1110,1260,'晚診']] // 李醫師進修：早診提早 11:00 截止掛號，晚診正常
+ };
+
  function fmt(mins) {
  var h = Math.floor(mins/60), m = mins%60;
  return (h<10?'0':'')+h+':'+(m<10?'0':'')+m;
  }
 
- // 從某天某時刻起，找下一個開診時段（往後最多7天）
- function findNextSession(day, nowMin) {
+ function dateKey(d) {
+ var pad = function (n) { return (n<10?'0':'')+n; };
+ return d.getUTCFullYear()+'-'+pad(d.getUTCMonth()+1)+'-'+pad(d.getUTCDate());
+ }
+
+ // 取某日時段表：先查單日特例，無特例才用固定週班表
+ function sessionsFor(d) {
+ var ex = EXCEPTIONS[dateKey(d)];
+ return ex !== undefined ? ex : (SCHEDULE[d.getUTCDay()] || []);
+ }
+
+ // 從某天某時刻起，找下一個開診時段（往後最多7天，逐日含特例判斷）
+ function findNextSession(now, nowMin) {
  for (var d=0; d<=7; d++) {
- var checkDay = (day+d)%7;
- var sessions = SCHEDULE[checkDay] || [];
+ var checkDate = new Date(now.getTime() + d*86400000);
+ var sessions = sessionsFor(checkDate);
  for (var i=0;i<sessions.length;i++) {
  var s = sessions[i];
  if (d===0 && s[0] <= nowMin) continue; // 今天已過的時段跳過
- return { dayOffset:d, day:checkDay, start:s[0], end:s[1], name:s[2] };
+ return { dayOffset:d, day:checkDate.getUTCDay(), start:s[0], end:s[1], name:s[2] };
  }
  }
  return null;
@@ -5304,9 +5321,8 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
 
  // 鎖定台灣時區 UTC+8（台灣無日光節約時間，固定偏移即可），避免海外訪客以當地時間誤判
  var now = new Date(Date.now() + 8*60*60000);
- var day = now.getUTCDay();
  var nowMin = now.getUTCHours()*60 + now.getUTCMinutes();
- var sessions = SCHEDULE[day] || [];
+ var sessions = sessionsFor(now);
 
  var color, dotColor, message;
 
@@ -5321,7 +5337,7 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  message = '今日'+current[2]+' '+fmt(current[0])+'–'+fmt(current[1])+' 開診中，點此查詢進度';
  } else {
  // 2) 找下一個開診時段
- var nxt = findNextSession(day, nowMin);
+ var nxt = findNextSession(now, nowMin);
  if (!nxt) {
  dotColor = '#9ca3af'; color = '#f3f4f6';
  message = '門診時間請洽 06-2516086';
