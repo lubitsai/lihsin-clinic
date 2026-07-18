@@ -2394,6 +2394,73 @@
  </div>
  </nav>
 
+ <!-- 最新門診異動 Section（data-expires：公告適用末日，翌日起自動隱藏，以 UTC+8 判斷） -->
+ <section id="clinic-notice" aria-labelledby="clinic-notice-heading" data-expires="2026-07-19" class="py-12 bg-white">
+ <div class="container mx-auto px-4">
+ <div class="text-center mb-8 fade-in-up">
+ <h2 id="clinic-notice-heading" class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-3 font-chinese">最新門診異動</h2>
+ <p class="text-gray-600 font-chinese">適用日期：<time datetime="2026-07-19">2026/7/19（日）</time></p>
+ </div>
+ <div class="max-w-md mx-auto fade-in-up">
+ <button type="button" id="clinic-notice-zoom" aria-label="放大檢視門診異動公告圖" class="block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" style="padding:0;cursor:zoom-in;">
+ <picture>
+ <source type="image/webp" srcset="/images/notice/clinic-notice-20260719.webp">
+ <img src="/images/notice/clinic-notice-20260719.jpg" width="1000" height="1000" loading="lazy" decoding="async" alt="門診臨時異動公告：7/19（日）早診維持雙診，蔡醫師 08:00–11:00、李醫師 08:00–11:00（李醫師進修，提早於 11:00 截止掛號）；晚診維持正常門診。造成不便敬請見諒——立欣診所 小鹿醫師團隊" class="w-full h-auto">
+ </picture>
+ </button>
+ <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
+ <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">7/19（日）早診維持雙診：蔡醫師 08:00–11:00、李醫師 08:00–11:00（李醫師進修，提早於 11:00 截止掛號）；晚診維持正常門診。</p>
+ <div class="text-center mt-5">
+ <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" onclick="trackCTA('Notice_LINE')" class="btn-primary inline-block px-8 py-3 rounded-full font-chinese font-semibold">💬 有疑問？LINE 諮詢立欣診所</a>
+ </div>
+ </div>
+ </div>
+ </section>
+
+ <!-- 門診異動公告：放大檢視 Lightbox -->
+ <div id="notice-lightbox" role="dialog" aria-modal="true" aria-label="門診異動公告放大檢視" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.78);align-items:center;justify-content:center;padding:20px;">
+ <div style="position:relative;max-width:min(92vw,86vh);width:100%;">
+ <button type="button" id="notice-lightbox-close" aria-label="關閉放大檢視" style="position:absolute;top:-14px;right:-6px;width:40px;height:40px;border-radius:50%;background:#fff;color:#333;font-size:20px;font-weight:700;line-height:1;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35);">✕</button>
+ <picture>
+ <source type="image/webp" srcset="/images/notice/clinic-notice-20260719.webp">
+ <img src="/images/notice/clinic-notice-20260719.jpg" width="1000" height="1000" loading="lazy" decoding="async" alt="門診臨時異動公告放大圖：7/19（日）早診維持雙診，蔡醫師 08:00–11:00、李醫師 08:00–11:00（李醫師進修，提早於 11:00 截止掛號）；晚診維持正常門診" style="width:100%;height:auto;border-radius:16px;display:block;">
+ </picture>
+ <div style="text-align:center;margin-top:14px;">
+ <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" onclick="trackCTA('Notice_Lightbox_LINE')" class="btn-primary inline-block px-8 py-3 rounded-full font-chinese font-semibold">💬 LINE 諮詢立欣診所</a>
+ </div>
+ </div>
+ </div>
+ <script>
+ (function () {
+ var sec = document.getElementById('clinic-notice');
+ if (!sec) return;
+ // 過期自動隱藏：data-expires 當日（含）仍顯示，翌日起隱藏；以 UTC+8 判斷
+ var exp = sec.getAttribute('data-expires');
+ if (exp) {
+ var tw = new Date(Date.now() + 8*60*60000);
+ var pad = function (n) { return (n<10?'0':'')+n; };
+ var today = tw.getUTCFullYear()+'-'+pad(tw.getUTCMonth()+1)+'-'+pad(tw.getUTCDate());
+ if (today > exp) { sec.style.display = 'none'; return; }
+ }
+ var lb = document.getElementById('notice-lightbox');
+ var openBtn = document.getElementById('clinic-notice-zoom');
+ var closeBtn = document.getElementById('notice-lightbox-close');
+ function openLb() {
+ lb.style.display = 'flex';
+ document.body.style.overflow = 'hidden';
+ if (typeof trackCTA === 'function') trackCTA('Notice_Enlarge');
+ }
+ function closeLb() {
+ lb.style.display = 'none';
+ document.body.style.overflow = '';
+ }
+ openBtn.addEventListener('click', openLb);
+ closeBtn.addEventListener('click', closeLb);
+ lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+ document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && lb.style.display === 'flex') closeLb(); });
+ })();
+ </script>
+
  <!-- 最新消息 Section -->
  <section id="news" aria-labelledby="news-heading" class="py-16 bg-gradient-to-b from-white to-[#f8faf7]">
  <div class="container mx-auto px-4">
