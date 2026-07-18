@@ -14,10 +14,11 @@
 | `internal/03_量測與回饋制度.md` | 月度量測 SOP、AI 引用測試 12 題、行動門檻 |
 | `internal/tools/validate_site.py` | 全站驗證器:**任何批次交付前必跑**(`--stage deploy`,ERROR 清零才 push) |
 | `internal/tools/patch_pwa.py` | PWA 三件頭冪等掛載(排除 offline/404) |
+| `.claude/skills/seo-geo-content/` | **專案 Skill**:SEO＋GEO 關鍵字研究與內容生成 SOP(四層補強/新頁生產);遇相關任務自動觸發,流程層以此為入口、事實層仍以 internal/ 為準 |
 
 **鐵律摘要**(詳見文件):可見文字(title/desc/H1/正文)逐字經院長核可才改;合規紅線見 00 §4;dateModified 判準見 02 R4;文件維護協議見 00 §8(改 00/01 前備份至 archive/、合規規則與待決狀態需院長核可)。
 
-**注意**:本 repo 整棵樹由 Netlify 公開部署;`internal/`、`CLAUDE.md`、`.mcp.json` 已由 `_redirects` 第 5 節強制 404 攔截,新增內部檔案時記得同步攔截規則。
+**注意**:本 repo 整棵樹由 Netlify 公開部署;`internal/`、`.claude/`、`CLAUDE.md`、`.mcp.json` 已由 `_redirects` 第 5 節強制 404 攔截,新增內部檔案時記得同步攔截規則。
 
 ## 使用者偏好
 

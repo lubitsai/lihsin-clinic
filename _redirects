@@ -76,6 +76,7 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #    README.md 與根目錄 README.md。
 # ------------------------------------------------------------
 /internal/*    /404.html  404!
+/.claude/*     /404.html  404!
 /CLAUDE.md     /404.html  404!
 /.mcp.json     /404.html  404!
 /mcp.json      /404.html  404!
