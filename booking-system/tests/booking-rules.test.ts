@@ -238,4 +238,25 @@ describe("開放日期範圍", () => {
     const dates = await getOpenDates(general.id);
     expect(dates).toHaveLength(14);
   });
+
+  it("開放時間可調整：open_time 未到前，最新一天（第 14 天）不可預約", async () => {
+    const { drTsai, general } = await seedBase();
+    const { clearSettingsCache } = await import("@/lib/settings");
+    await prisma.systemSetting.create({
+      data: { key: "booking.open_time", value: "23:59" },
+    });
+    clearSettingsCache();
+    const book = (date: string) =>
+      createAppointment({
+        clinicTypeId: general.id, doctorId: drTsai.id, date, startTime: "09:00",
+        patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      });
+    // 第 14 天要等到 23:59 才開放 → 現在被拒絕；第 13 天不受影響
+    await expectBookingError(book(futureDate(13)), "DATE_NOT_OPEN");
+    const ok = await book(futureDate(12));
+    expect(ok.appointment.status).toBe("CONFIRMED");
+    // 前台日曆同步顯示未開放
+    const dates = await getOpenDates(general.id);
+    expect(dates[13].open).toBe(false);
+  });
 });

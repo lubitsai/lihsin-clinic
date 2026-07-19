@@ -23,6 +23,7 @@ import {
   setSlotBlocked,
   setSlotCapacity,
   findAffectedAppointments,
+  copyWeekExceptions,
   type ExceptionInput,
 } from "@/lib/schedule-admin";
 import {
@@ -554,6 +555,24 @@ export async function adminCreateException(
     void dispatchPendingNotifications().catch(() => {});
     revalidatePath("/admin/schedule");
     return { ok: true, data: { created: true, affectedCount: 0 } };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
+/** 一鍵複製某週的例外設定到另一週（週班表本身每週自動重複，複製對象為例外） */
+export async function adminCopyWeekExceptions(
+  fromWeekStart: string,
+  toWeekStart: string,
+): Promise<ActionResult<{ copied: number }>> {
+  try {
+    const ctx = requirePermission(await getStaffContext(), PERMISSIONS.SCHEDULE_WRITE);
+    dateStrSchema.parse(fromWeekStart);
+    dateStrSchema.parse(toWeekStart);
+    if (fromWeekStart === toWeekStart) return { ok: false, message: "來源週與目標週相同" };
+    const copied = await copyWeekExceptions(fromWeekStart, toWeekStart, await actorOf(ctx));
+    revalidatePath("/admin/schedule");
+    return { ok: true, data: { copied } };
   } catch (e) {
     return toUserError(e);
   }

@@ -15,6 +15,7 @@ export default async function SettingsPage() {
   ]);
   const settings = {
     openDays: await getSetting("booking.open_days"),
+    openTime: await getSetting("booking.open_time"),
     sameDayCutoff: await getSetting("booking.same_day_cutoff_minutes"),
     windowDays: await getSetting("booking.window_days"),
     windowMax: await getSetting("booking.window_max"),

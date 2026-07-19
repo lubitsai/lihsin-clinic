@@ -15,6 +15,7 @@ import {
   adminPreviewException,
   adminDeleteException,
   adminSetSlotCapacity,
+  adminCopyWeekExceptions,
 } from "@/app/actions/admin";
 import { Card, Alert } from "@/components/ui";
 import { formatDateTw, todayStr } from "@/lib/tw-time";
@@ -69,7 +70,7 @@ interface Props {
 
 export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }: Props) {
   const router = useRouter();
-  const [tab, setTab] = useState<"weekly" | "exceptions" | "capacity">("weekly");
+  const [tab, setTab] = useState<"weekly" | "exceptions" | "month" | "capacity">("weekly");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [pending, startTransition] = useTransition();
@@ -83,6 +84,7 @@ export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }:
           [
             ["weekly", "固定週班表"],
             ["exceptions", "日期例外（休診/代診/加診）"],
+            ["month", "月曆檢視"],
             ["capacity", "時段名額調整"],
           ] as const
         ).map(([key, label]) => (
@@ -146,6 +148,23 @@ export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }:
             setMessage(msg);
             router.refresh();
           }}
+        />
+      )}
+
+      {tab === "month" && (
+        <MonthCalendar
+          exceptions={exceptions}
+          doctorName={doctorName}
+          pending={pending}
+          onCopyWeek={(from, to) =>
+            startTransition(async () => {
+              const r = await adminCopyWeekExceptions(from, to);
+              if (!r.ok) return setError(r.message);
+              setError("");
+              setMessage(`已複製 ${r.data?.copied ?? 0} 筆例外設定`);
+              router.refresh();
+            })
+          }
         />
       )}
 
@@ -481,6 +500,133 @@ function ExceptionEditor({
       </Card>
     </div>
   );
+}
+
+/** 月曆式排班檢視：每格顯示當日例外；含一鍵複製上週例外 */
+function MonthCalendar({
+  exceptions,
+  doctorName,
+  pending,
+  onCopyWeek,
+}: {
+  exceptions: ExceptionDto[];
+  doctorName: (id: string | null) => string;
+  pending: boolean;
+  onCopyWeek: (fromWeekStart: string, toWeekStart: string) => void;
+}) {
+  const today = todayStr();
+  const [month, setMonth] = useState(today.slice(0, 7)); // YYYY-MM
+
+  const first = `${month}-01`;
+  const firstDay = new Date(`${first}T00:00:00Z`);
+  const daysInMonth = new Date(
+    Date.UTC(firstDay.getUTCFullYear(), firstDay.getUTCMonth() + 1, 0),
+  ).getUTCDate();
+  const leadingBlanks = firstDay.getUTCDay(); // 0=日
+
+  const shiftMonth = (delta: number) => {
+    const d = new Date(`${month}-01T00:00:00Z`);
+    d.setUTCMonth(d.getUTCMonth() + delta);
+    setMonth(d.toISOString().slice(0, 7));
+  };
+
+  const byDate = new Map<string, ExceptionDto[]>();
+  for (const e of exceptions) {
+    const list = byDate.get(e.date) ?? [];
+    list.push(e);
+    byDate.set(e.date, list);
+  }
+
+  // 本週週一（複製上週例外用）
+  const todayDow = new Date(`${today}T00:00:00Z`).getUTCDay();
+  const thisMonday = addDaysLocal(today, todayDow === 0 ? -6 : 1 - todayDow);
+  const lastMonday = addDaysLocal(thisMonday, -7);
+  const nextMonday = addDaysLocal(thisMonday, 7);
+
+  const cellDate = (day: number) => `${month}-${String(day).padStart(2, "0")}`;
+
+  return (
+    <div className="space-y-3">
+      <Card className="space-y-3">
+        <div className="flex items-center gap-2 flex-wrap">
+          <button onClick={() => shiftMonth(-1)} className="btn-secondary !py-1.5 !px-3">
+            ← 上月
+          </button>
+          <h3 className="font-bold text-forest-700 text-lg">
+            {month.replace("-", " 年 ")} 月
+          </h3>
+          <button onClick={() => shiftMonth(1)} className="btn-secondary !py-1.5 !px-3">
+            下月 →
+          </button>
+          <span className="flex-1" />
+          <button
+            onClick={() => onCopyWeek(lastMonday, thisMonday)}
+            disabled={pending}
+            className="btn-secondary !py-1.5 !px-3 text-sm"
+            title={`${formatDateTw(lastMonday)} 起一週 → ${formatDateTw(thisMonday)} 起一週`}
+          >
+            複製上週例外 → 本週
+          </button>
+          <button
+            onClick={() => onCopyWeek(thisMonday, nextMonday)}
+            disabled={pending}
+            className="btn-secondary !py-1.5 !px-3 text-sm"
+            title={`${formatDateTw(thisMonday)} 起一週 → ${formatDateTw(nextMonday)} 起一週`}
+          >
+            複製本週例外 → 下週
+          </button>
+        </div>
+
+        <div className="grid grid-cols-7 gap-1 text-center text-sm font-medium text-stone-500">
+          {WEEKDAYS.map((w) => (
+            <div key={w}>週{w}</div>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 gap-1">
+          {Array.from({ length: leadingBlanks }, (_, i) => (
+            <div key={`b${i}`} />
+          ))}
+          {Array.from({ length: daysInMonth }, (_, i) => {
+            const date = cellDate(i + 1);
+            const dayExceptions = byDate.get(date) ?? [];
+            const isToday = date === today;
+            return (
+              <div
+                key={date}
+                className={`min-h-20 rounded-lg border p-1 text-left ${
+                  isToday ? "border-forest-600 bg-forest-500/5" : "border-cream-200 bg-white"
+                } ${date < today ? "opacity-50" : ""}`}
+              >
+                <p className={`text-xs font-bold ${isToday ? "text-forest-700" : "text-stone-500"}`}>
+                  {i + 1}
+                </p>
+                {dayExceptions.map((e) => (
+                  <p
+                    key={e.id}
+                    className="mt-0.5 rounded bg-persimmon-500/10 text-persimmon-600 px-1 py-0.5 text-[11px] leading-tight"
+                    title={`${e.reason}${e.doctorId ? `｜${doctorName(e.doctorId)}` : ""}`}
+                  >
+                    {EXCEPTION_LABEL[e.type]}
+                    {e.doctorId ? `·${doctorName(e.doctorId)}` : ""}
+                  </p>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-sm text-stone-500">
+          固定週班表每週自動重複，毋需複製；「複製」針對例外設定（休診、代診、加診等）。
+          新增或刪除例外請至「日期例外」分頁。
+        </p>
+      </Card>
+    </div>
+  );
+}
+
+function addDaysLocal(dateStr: string, n: number): string {
+  const d = new Date(`${dateStr}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
 }
 
 function CapacityEditor({

@@ -2,7 +2,7 @@
  * 可預約性查詢（前台顯示用；實際成立與否仍以預約引擎交易內檢查為準）。
  */
 import { prisma } from "./db";
-import { addDays, dateToDb, minutesFromNow, todayStr, weekdayOf } from "./tw-time";
+import { addDays, dateToDb, minutesFromNow, nowTimeStr, todayStr, weekdayOf } from "./tw-time";
 import { getSetting } from "./settings";
 import {
   getDayScheduleBlocks,
@@ -30,12 +30,18 @@ export interface DayAvailability {
 /** 開放範圍內每天是否有空位（前台日曆用） */
 export async function getOpenDates(clinicTypeId: string, doctorId?: string): Promise<DayAvailability[]> {
   const openDays = await getSetting("booking.open_days");
+  const openTime = await getSetting("booking.open_time");
   const allowSameDay = await getSetting("booking.allow_same_day");
   const today = todayStr();
   const out: DayAvailability[] = [];
   for (let i = 0; i < openDays; i++) {
     const date = addDays(today, i);
     if (i === 0 && !allowSameDay) {
+      out.push({ date, open: false, hasFreeSlot: false });
+      continue;
+    }
+    // 最新一天於每日 open_time（預設 00:00）才開放
+    if (i === openDays - 1 && nowTimeStr() < openTime) {
       out.push({ date, open: false, hasFreeSlot: false });
       continue;
     }

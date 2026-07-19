@@ -1,9 +1,15 @@
 import Link from "next/link";
-import { fetchPortalStatus, fetchMyAppointments, fetchClinicTypes } from "@/app/actions/portal";
+import {
+  fetchPortalStatus,
+  fetchMyAppointments,
+  fetchMyBindings,
+  fetchClinicTypes,
+} from "@/app/actions/portal";
 import { isLineLoginConfigured } from "@/lib/line";
 import { DeerMascot } from "@/components/ui";
 import { MyAppointments } from "./my-appointments";
 import { IdentityLoginForm } from "./identity-login";
+import { LineBindings } from "./line-bindings";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "查詢我的預約" };
@@ -22,7 +28,7 @@ export default async function MyPage() {
       </header>
 
       {status.loggedIn ? (
-        <LoggedIn />
+        <LoggedIn viaLine={status.viaLine} />
       ) : (
         <div className="space-y-5">
           {lineConfigured && (
@@ -43,10 +49,22 @@ export default async function MyPage() {
   );
 }
 
-async function LoggedIn() {
-  const [result, clinicTypes] = await Promise.all([fetchMyAppointments(), fetchClinicTypes()]);
-  if (!result.ok) {
-    return <p className="text-stone-600">{result.message}</p>;
-  }
-  return <MyAppointments initial={result.data ?? []} clinicTypes={clinicTypes} />;
+async function LoggedIn({ viaLine }: { viaLine: boolean }) {
+  const [result, clinicTypes, bindings] = await Promise.all([
+    fetchMyAppointments(),
+    fetchClinicTypes(),
+    viaLine ? fetchMyBindings() : Promise.resolve(null),
+  ]);
+  return (
+    <div className="space-y-5">
+      {viaLine && bindings?.ok && <LineBindings initial={bindings.data ?? []} />}
+      {result.ok ? (
+        <MyAppointments initial={result.data ?? []} clinicTypes={clinicTypes} />
+      ) : viaLine ? (
+        <p className="text-stone-600">尚無綁定成員的預約紀錄。綁定家庭成員後即可在此管理預約。</p>
+      ) : (
+        <p className="text-stone-600">{result.message}</p>
+      )}
+    </div>
+  );
 }

@@ -37,6 +37,7 @@ interface DoctorDto {
 
 interface SettingsDto {
   openDays: number;
+  openTime: string;
   sameDayCutoff: number;
   windowDays: number;
   windowMax: number;
@@ -72,6 +73,7 @@ export function SettingsManager({
     startTransition(async () => {
       const r = await adminUpdateSettings([
         { key: "booking.open_days", value: s.openDays },
+        { key: "booking.open_time", value: s.openTime },
         { key: "booking.same_day_cutoff_minutes", value: s.sameDayCutoff },
         { key: "booking.window_days", value: s.windowDays },
         { key: "booking.window_max", value: s.windowMax },
@@ -98,6 +100,10 @@ export function SettingsManager({
         <h2 className="font-bold text-forest-700">預約規則</h2>
         <div className="grid sm:grid-cols-2 gap-3">
           <NumField label="滾動開放天數（含今天）" value={s.openDays} onChange={(v) => setS({ ...s, openDays: v })} />
+          <label className="block">
+            <span className="text-sm text-stone-600">每日開放最新一天的時間</span>
+            <input type="time" className="input" value={s.openTime} onChange={(e) => setS({ ...s, openTime: e.target.value })} />
+          </label>
           <NumField label="7 天視窗天數" value={s.windowDays} onChange={(v) => setS({ ...s, windowDays: v })} />
           <NumField label="視窗內預約上限（筆）" value={s.windowMax} onChange={(v) => setS({ ...s, windowMax: v })} />
           <NumField label="未到限制門檻（超過 N 次自動限制）" value={s.noShowThreshold} onChange={(v) => setS({ ...s, noShowThreshold: v })} />

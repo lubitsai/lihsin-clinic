@@ -3,6 +3,7 @@ import { prisma, type Tx } from "./db";
 /** 系統設定：後台可調，程式碼提供預設值 */
 export const SETTING_DEFAULTS = {
   "booking.open_days": 14, // 滾動開放天數（含今天）
+  "booking.open_time": "00:00", // 每日開放「第 N 天」時段的時間（台灣時間）
   "booking.same_day_cutoff_minutes": 30, // 當日時段開始前 N 分鐘停止預約
   "booking.window_days": 7, // 連續視窗天數
   "booking.window_max": 3, // 視窗內有效預約上限

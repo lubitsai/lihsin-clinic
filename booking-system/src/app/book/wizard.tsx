@@ -21,6 +21,8 @@ interface ClinicTypeDto {
   color: string;
   icon: string;
   requiresReview: boolean;
+  needsQuestionnaire: boolean;
+  questionnaireUrl: string | null;
   doctors: { id: string; name: string; title: string | null }[];
 }
 
@@ -218,6 +220,20 @@ export function BookingWizard({
         <div className="space-y-3">
           <h1 className="text-xl font-bold text-forest-700">請選擇醫師</h1>
           {clinicType.notice && <Alert tone="info">{clinicType.notice}</Alert>}
+          {clinicType.needsQuestionnaire && clinicType.questionnaireUrl && (
+            <Alert tone="warn">
+              此門診需先填寫問卷：
+              <a
+                href={clinicType.questionnaireUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 font-bold ml-1"
+              >
+                開啟問卷
+              </a>
+              （可於看診前完成）
+            </Alert>
+          )}
           <button
             onClick={() => pickDoctor("any")}
             disabled={pending}
@@ -497,6 +513,21 @@ export function BookingWizard({
           <p className="text-stone-600 text-sm px-4">
             已透過 LINE 或簡訊發送預約通知。線上預約不等於實際看診號碼，請依現場狀況候診。
           </p>
+          {clinicType?.needsQuestionnaire && clinicType.questionnaireUrl && (
+            <div className="px-4">
+              <Alert tone="warn">
+                提醒：請於看診前完成
+                <a
+                  href={clinicType.questionnaireUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2 font-bold mx-1"
+                >
+                  門診問卷
+                </a>
+              </Alert>
+            </div>
+          )}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/my" className="btn-secondary">
               查詢我的預約

@@ -8,7 +8,7 @@
 import { randomUUID } from "node:crypto";
 import { Prisma, type Appointment, type AppointmentSource, type Patient } from "@prisma/client";
 import { prisma, type Tx } from "./db";
-import { addDays, dateToDb, dbToDate, minutesFromNow, todayStr } from "./tw-time";
+import { addDays, dateToDb, dbToDate, minutesFromNow, nowTimeStr, todayStr } from "./tw-time";
 import { getSetting } from "./settings";
 import { BookingError, MSG } from "./errors";
 import { doctorBlockAt, getDayScheduleBlocks, getSuspendedClinicTypes } from "./schedule";
@@ -233,14 +233,17 @@ async function runCreateTransaction(
   );
 }
 
-/** 開放日期檢查：滾動開放 N 天＋當日截止 */
+/** 開放日期檢查：滾動開放 N 天（最新一天於 open_time 才開放）＋當日截止 */
 async function assertDateOpen(tx: Tx, date: string, startTime: string) {
   const openDays = await getSetting("booking.open_days", tx);
+  const openTime = await getSetting("booking.open_time", tx);
   const allowSameDay = await getSetting("booking.allow_same_day", tx);
   const cutoffMin = await getSetting("booking.same_day_cutoff_minutes", tx);
   const today = todayStr();
   const lastOpen = addDays(today, openDays - 1);
   if (date < today || date > lastOpen) throw new BookingError("DATE_NOT_OPEN", MSG.dateNotOpen);
+  if (date === lastOpen && nowTimeStr() < openTime)
+    throw new BookingError("DATE_NOT_OPEN", MSG.dateNotOpen);
   if (date === today) {
     if (!allowSameDay) throw new BookingError("DATE_NOT_OPEN", MSG.dateNotOpen);
     if (minutesFromNow(date, startTime) < cutoffMin)

@@ -61,6 +61,8 @@ export async function fetchClinicTypes() {
     color: t.color,
     icon: t.icon,
     requiresReview: t.requiresReview,
+    needsQuestionnaire: t.needsQuestionnaire,
+    questionnaireUrl: t.questionnaireUrl,
     doctors: t.doctors
       .filter((d) => d.doctor.isActive)
       .map((d) => ({ id: d.doctor.id, name: d.doctor.name, title: d.doctor.title })),
@@ -316,6 +318,123 @@ export async function rescheduleMyAppointment(input: {
     });
     void dispatchPendingNotifications().catch(() => {});
     return { ok: true, data: { bookingNumber: newAppointment.bookingNumber } };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
+// ── LINE 家庭成員綁定管理 ─────────────────────────────
+
+export interface LineBindingDto {
+  patientId: string;
+  name: string;
+  idNumberMasked: string;
+  relation: string | null;
+}
+
+export async function fetchMyBindings(): Promise<ActionResult<LineBindingDto[]>> {
+  const portal = await getPortalContext();
+  if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
+  const links = await prisma.linePatientLink.findMany({
+    where: { lineAccountId: portal.lineAccountId },
+    include: { patient: true },
+    orderBy: { createdAt: "asc" },
+  });
+  return {
+    ok: true,
+    data: links.map((l) => ({
+      patientId: l.patientId,
+      name: l.patient.name,
+      idNumberMasked: l.patient.idNumberMasked,
+      relation: l.relation,
+    })),
+  };
+}
+
+export async function requestBindingOtp(phone: string): Promise<ActionResult<{ devCode?: string }>> {
+  try {
+    const portal = await getPortalContext();
+    if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
+    const p = phoneSchema.parse(phone);
+    if (!rateLimit(`otp-ip:${await clientIp()}`, 10, 10 * 60_000))
+      return { ok: false, message: "請求過於頻繁，請稍後再試" };
+    const { devCode } = await issueOtp(p, "LINE_BINDING");
+    return { ok: true, data: { devCode } };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
+const bindSchema = z.object({
+  idType: idTypeSchema,
+  idNumber: z.string().trim().min(4).max(20),
+  birthDate: dateStrSchema,
+  phone: phoneSchema,
+  otpCode: z.string().min(4).max(8),
+  relation: z.string().trim().max(20).optional(),
+});
+
+/** 綁定家庭成員：證件＋生日＋手機 OTP 全數通過才建立（首次綁定需安全驗證） */
+export async function bindFamilyMember(
+  input: z.infer<typeof bindSchema>,
+): Promise<ActionResult<LineBindingDto>> {
+  try {
+    const portal = await getPortalContext();
+    if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
+    const parsed = bindSchema.parse(input);
+    const okOtp = await verifyOtp(parsed.phone, "LINE_BINDING", parsed.otpCode);
+    if (!okOtp) return { ok: false, message: "手機驗證碼錯誤或已過期" };
+    const patientId = await verifyPatientIdentity(
+      parsed.idType,
+      parsed.idNumber,
+      parsed.birthDate,
+      parsed.phone,
+    );
+    const link = await prisma.linePatientLink.upsert({
+      where: { lineAccountId_patientId: { lineAccountId: portal.lineAccountId, patientId } },
+      create: {
+        lineAccountId: portal.lineAccountId,
+        patientId,
+        relation: parsed.relation,
+        verifiedAt: new Date(),
+      },
+      update: { relation: parsed.relation },
+      include: { patient: true },
+    });
+    await writeAudit(
+      { type: "PATIENT", id: patientId, ip: await clientIp() },
+      "line.bind_patient",
+      { type: "line_patient_link", id: link.id },
+    );
+    return {
+      ok: true,
+      data: {
+        patientId,
+        name: link.patient.name,
+        idNumberMasked: link.patient.idNumberMasked,
+        relation: link.relation,
+      },
+    };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
+export async function unbindFamilyMember(patientId: string): Promise<ActionResult> {
+  try {
+    const portal = await getPortalContext();
+    if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
+    const deleted = await prisma.linePatientLink.deleteMany({
+      where: { lineAccountId: portal.lineAccountId, patientId },
+    });
+    if (deleted.count > 0) {
+      await writeAudit(
+        { type: "PATIENT", id: patientId, ip: await clientIp() },
+        "line.unbind_patient",
+        { type: "patient", id: patientId },
+      );
+    }
+    return { ok: true };
   } catch (e) {
     return toUserError(e);
   }

@@ -15,7 +15,8 @@ export default async function SchedulePage() {
       include: { doctor: true },
     }),
     prisma.scheduleException.findMany({
-      where: { date: { gte: new Date(`${todayStr()}T00:00:00Z`) } },
+      // 月曆檢視需含當月月初；取當月 1 日起的所有例外
+      where: { date: { gte: new Date(`${todayStr().slice(0, 7)}-01T00:00:00Z`) } },
       orderBy: { date: "asc" },
     }),
     prisma.doctor.findMany({ where: { isActive: true }, orderBy: { displayOrder: "asc" } }),
