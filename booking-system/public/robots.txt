@@ -1,0 +1,3 @@
+# 預約系統不需被搜尋引擎索引（官網 SEO 由 lhpedclinic.com.tw 主站經營）
+User-agent: *
+Disallow: /
