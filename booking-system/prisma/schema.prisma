@@ -1,0 +1,557 @@
+// 立欣診所線上預約系統 — Prisma schema
+// 時區：所有「日期」「時間」欄位一律以台灣時間 (Asia/Taipei) 解讀；
+// appointment_date 使用 @db.Date、start/end 使用 "HH:mm" 字串，避免時區換算誤差。
+// partial unique index（有效預約唯一性）定義於 migration raw SQL，Prisma 不支援宣告式表達。
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── 列舉 ────────────────────────────────────────────────
+
+enum IdType {
+  NATIONAL_ID   // 台灣身分證
+  RESIDENT_CERT // 居留證（新式統一證號）
+  PASSPORT      // 護照
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum SessionPeriod {
+  MORNING   // 早診
+  AFTERNOON // 午診
+  EVENING   // 晚診
+}
+
+enum ExceptionType {
+  CLINIC_CLOSED_DAY    // 全日休診
+  SESSION_CLOSED       // 單一診別休診
+  DOCTOR_OFF           // 單一醫師休診
+  DOCTOR_SUBSTITUTE    // 換班/代診
+  SPECIAL_HOURS        // 特殊營業時間（覆蓋當日該診別時間）
+  EXTRA_SESSION        // 臨時加診
+  SLOT_BLOCKED         // 封鎖單一時段
+  CLINIC_TYPE_SUSPENDED // 暫停特定門診類型
+}
+
+enum SlotSource {
+  AUTO   // 依班表自動生成
+  MANUAL // 後台手動加開
+}
+
+enum AppointmentStatus {
+  PENDING              // 待確認
+  CONFIRMED            // 已確認
+  CHECKED_IN           // 已報到
+  COMPLETED            // 已完成
+  CANCELLED_BY_PATIENT // 病人取消
+  CANCELLED_BY_CLINIC  // 診所取消
+  NO_SHOW              // 未到
+  RESCHEDULED          // 已改期（原單）
+}
+
+enum AppointmentSource {
+  WEB
+  LINE
+  STAFF
+}
+
+enum VisitType {
+  FIRST_VISIT  // 初診
+  RETURN_VISIT // 複診
+}
+
+enum RestrictionType {
+  AUTO_NO_SHOW // 未到累計自動限制
+  MANUAL       // 人工加入
+}
+
+enum RestrictionStatus {
+  ACTIVE    // 生效中
+  SUSPENDED // 暫時解除（至 suspended_until）
+  LIFTED    // 已解除
+}
+
+enum NotificationChannel {
+  LINE
+  SMS
+}
+
+enum NotificationType {
+  BOOKED
+  MODIFIED
+  CANCELLED
+  REMINDER_DAY_BEFORE
+  REMINDER_SAME_DAY
+  CLINIC_NOTICE
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  FAILED
+  SKIPPED
+}
+
+enum ActorType {
+  STAFF
+  PATIENT
+  SYSTEM
+}
+
+enum OtpPurpose {
+  BOOKING       // 預約時驗證手機
+  QUERY         // 查詢/取消預約
+  LINE_BINDING  // LINE 首次綁定病人
+}
+
+// ── 病人 ────────────────────────────────────────────────
+
+model Patient {
+  id                String    @id @default(cuid())
+  name              String
+  birthDate         DateTime  @map("birth_date") @db.Date
+  gender            Gender?
+  idType            IdType    @default(NATIONAL_ID) @map("id_type")
+  /// AES-256-GCM 加密後密文（iv:tag:cipher base64）
+  idNumberEncrypted String    @map("id_number_encrypted")
+  /// HMAC-SHA256(正規化證件號)，查詢索引；不可回推原文
+  idNumberHash      String    @map("id_number_hash")
+  /// 顯示用遮罩（如 A12****789），避免列表頁重複解密
+  idNumberMasked    String    @map("id_number_masked")
+  phone             String
+  noShowCount       Int       @default(0) @map("no_show_count")
+  cancelCount       Int       @default(0) @map("cancel_count")
+  staffNote         String?   @map("staff_note")
+  mergedIntoId      String?   @map("merged_into_id")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  contacts      PatientContact[]
+  lineLinks     LinePatientLink[]
+  appointments  Appointment[]
+  noShowRecords NoShowRecord[]
+  restrictions  BookingRestriction[]
+  notifications Notification[]
+
+  @@unique([idType, idNumberHash], name: "uniq_patient_identity")
+  @@index([phone])
+  @@index([name])
+  @@map("patients")
+}
+
+model PatientContact {
+  id        String   @id @default(cuid())
+  patientId String   @map("patient_id")
+  type      String // PHONE / EMAIL / GUARDIAN_PHONE
+  value     String
+  label     String? // 例如「媽媽」「爸爸」
+  isPrimary Boolean  @default(false) @map("is_primary")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  patient Patient @relation(fields: [patientId], references: [id])
+
+  @@index([patientId])
+  @@map("patient_contacts")
+}
+
+// ── LINE ────────────────────────────────────────────────
+
+model LineAccount {
+  id          String    @id @default(cuid())
+  lineUserId  String    @unique @map("line_user_id")
+  displayName String?   @map("display_name")
+  pictureUrl  String?   @map("picture_url")
+  isFollowing Boolean   @default(true) @map("is_following") // 是否仍為好友（可推播）
+  createdAt   DateTime  @default(now()) @map("created_at")
+  lastLoginAt DateTime? @map("last_login_at")
+
+  patientLinks LinePatientLink[]
+
+  @@map("line_accounts")
+}
+
+/// 一個 LINE 帳號可綁定多位家庭成員；首次綁定需手機 OTP 驗證
+model LinePatientLink {
+  id            String   @id @default(cuid())
+  lineAccountId String   @map("line_account_id")
+  patientId     String   @map("patient_id")
+  relation      String? // 本人/子女/家屬
+  verifiedAt    DateTime @map("verified_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  lineAccount LineAccount @relation(fields: [lineAccountId], references: [id])
+  patient     Patient     @relation(fields: [patientId], references: [id])
+
+  @@unique([lineAccountId, patientId])
+  @@map("line_patient_links")
+}
+
+// ── 醫師與門診類型 ──────────────────────────────────────
+
+model Doctor {
+  id           String  @id @default(cuid())
+  name         String
+  title        String? // 例如 院長、主治醫師
+  bio          String?
+  isActive     Boolean @default(true) @map("is_active")
+  displayOrder Int     @default(0) @map("display_order")
+  color        String? // 後台識別色
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  appointments      Appointment[]
+  slots             AppointmentSlot[]
+  weeklyTemplates   WeeklyScheduleTemplate[]
+  clinicTypeDoctors ClinicTypeDoctor[]
+  staffUsers        StaffUser[]
+
+  @@map("doctors")
+}
+
+model ClinicType {
+  id               String  @id @default(cuid())
+  code             String  @unique // GENERAL / DEVELOPMENT / WEIGHT / ALLERGY
+  name             String
+  description      String?
+  notice           String? // 預約前注意事項
+  isActive         Boolean @default(true) @map("is_active") // 是否開放預約
+  requiresReview   Boolean @default(false) @map("requires_review") // 需櫃檯審核（成立為待確認）
+  needsQuestionnaire Boolean @default(false) @map("needs_questionnaire")
+  questionnaireUrl String? @map("questionnaire_url")
+  minAgeMonths     Int?    @map("min_age_months")
+  maxAgeMonths     Int?    @map("max_age_months")
+  notifyLine       Boolean @default(true) @map("notify_line")
+  color            String  @default("#2F5D3A")
+  icon             String  @default("stethoscope")
+  displayOrder     Int     @default(0) @map("display_order")
+  /// 可預約星期（0=日…6=六）；空陣列＝依醫師班表全部開放
+  allowedWeekdays  Int[]   @map("allowed_weekdays")
+  /// 可預約診別；空陣列＝全部診別
+  allowedSessions  SessionPeriod[] @map("allowed_sessions")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  doctors      ClinicTypeDoctor[]
+  appointments Appointment[]
+
+  @@map("clinic_types")
+}
+
+model ClinicTypeDoctor {
+  clinicTypeId String @map("clinic_type_id")
+  doctorId     String @map("doctor_id")
+
+  clinicType ClinicType @relation(fields: [clinicTypeId], references: [id])
+  doctor     Doctor     @relation(fields: [doctorId], references: [id])
+
+  @@id([clinicTypeId, doctorId])
+  @@map("clinic_type_doctors")
+}
+
+// ── 班表 ────────────────────────────────────────────────
+
+model WeeklyScheduleTemplate {
+  id           String        @id @default(cuid())
+  weekday      Int // 0=日 … 6=六
+  session      SessionPeriod
+  startTime    String        @map("start_time") // "08:00"
+  endTime      String        @map("end_time")
+  doctorId     String        @map("doctor_id")
+  slotCapacity Int           @default(1) @map("slot_capacity") // 每 30 分鐘線上名額
+  allowOnline  Boolean       @default(true) @map("allow_online")
+  isActive     Boolean       @default(true) @map("is_active")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  doctor Doctor @relation(fields: [doctorId], references: [id])
+
+  @@unique([weekday, session, doctorId])
+  @@map("weekly_schedule_templates")
+}
+
+model ScheduleException {
+  id                 String        @id @default(cuid())
+  date               DateTime      @db.Date
+  type               ExceptionType
+  session            SessionPeriod?
+  doctorId           String?       @map("doctor_id")
+  substituteDoctorId String?       @map("substitute_doctor_id")
+  startTime          String?       @map("start_time")
+  endTime            String?       @map("end_time")
+  slotCapacity       Int?          @map("slot_capacity")
+  clinicTypeId       String?       @map("clinic_type_id")
+  reason             String
+  createdBy          String        @map("created_by")
+  createdAt          DateTime      @default(now()) @map("created_at")
+
+  @@index([date])
+  @@map("schedule_exceptions")
+}
+
+// ── 時段與預約 ──────────────────────────────────────────
+
+model AppointmentSlot {
+  id        String     @id @default(cuid())
+  doctorId  String     @map("doctor_id")
+  date      DateTime   @db.Date
+  startTime String     @map("start_time")
+  endTime   String     @map("end_time")
+  capacity  Int        @default(1)
+  isBlocked Boolean    @default(false) @map("is_blocked")
+  source    SlotSource @default(AUTO)
+  reason    String? // 手動加開/封鎖原因
+  createdBy String?    @map("created_by")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  doctor       Doctor        @relation(fields: [doctorId], references: [id])
+  appointments Appointment[]
+
+  @@unique([doctorId, date, startTime], name: "uniq_doctor_slot")
+  @@index([date])
+  @@map("appointment_slots")
+}
+
+model Appointment {
+  id                 String            @id @default(cuid())
+  bookingNumber      String            @unique @map("booking_number")
+  patientId          String            @map("patient_id")
+  doctorId           String            @map("doctor_id")
+  clinicTypeId       String            @map("clinic_type_id")
+  slotId             String            @map("slot_id")
+  appointmentDate    DateTime          @map("appointment_date") @db.Date
+  startTime          String            @map("start_time")
+  endTime            String            @map("end_time")
+  /// 同時段第幾個名額（1..capacity），配合 partial unique index 防超賣
+  capacitySlotNo     Int               @default(1) @map("capacity_slot_no")
+  status             AppointmentStatus @default(CONFIRMED)
+  source             AppointmentSource
+  visitType          VisitType?        @map("visit_type")
+  patientNote        String?           @map("patient_note")
+  staffNote          String?           @map("staff_note")
+  /// 櫃檯覆寫同日/7天/黑名單限制時的必填理由
+  overrideReason     String?           @map("override_reason")
+  /// 前端一次性 token，防重複送出
+  requestId          String?           @unique @map("request_id")
+  rescheduledFromId  String?           @map("rescheduled_from_id")
+  rescheduledToId    String?           @map("rescheduled_to_id")
+  createdAt          DateTime          @default(now()) @map("created_at")
+  updatedAt          DateTime          @updatedAt @map("updated_at")
+  cancelledAt        DateTime?         @map("cancelled_at")
+  cancellationReason String?           @map("cancellation_reason")
+  createdBy          String?           @map("created_by") // staff_user id 或 "patient"
+  updatedBy          String?           @map("updated_by")
+
+  patient       Patient                    @relation(fields: [patientId], references: [id])
+  doctor        Doctor                     @relation(fields: [doctorId], references: [id])
+  clinicType    ClinicType                 @relation(fields: [clinicTypeId], references: [id])
+  slot          AppointmentSlot            @relation(fields: [slotId], references: [id])
+  statusHistory AppointmentStatusHistory[]
+  noShowRecord  NoShowRecord?
+  notifications Notification[]
+
+  @@index([appointmentDate])
+  @@index([patientId, appointmentDate])
+  @@index([doctorId, appointmentDate])
+  @@index([status])
+  @@map("appointments")
+}
+
+model AppointmentStatusHistory {
+  id             String             @id @default(cuid())
+  appointmentId  String             @map("appointment_id")
+  fromStatus     AppointmentStatus? @map("from_status")
+  toStatus       AppointmentStatus  @map("to_status")
+  changedByType  ActorType          @map("changed_by_type")
+  changedById    String?            @map("changed_by_id")
+  reason         String?
+  createdAt      DateTime           @default(now()) @map("created_at")
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+
+  @@index([appointmentId])
+  @@map("appointment_status_history")
+}
+
+// ── 未到與限制 ──────────────────────────────────────────
+
+model NoShowRecord {
+  id            String    @id @default(cuid())
+  patientId     String    @map("patient_id")
+  appointmentId String    @unique @map("appointment_id")
+  markedBy      String    @map("marked_by")
+  note          String?
+  revokedAt     DateTime? @map("revoked_at")
+  revokedBy     String?   @map("revoked_by")
+  revokeReason  String?   @map("revoke_reason")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  patient     Patient     @relation(fields: [patientId], references: [id])
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+
+  @@index([patientId])
+  @@map("no_show_records")
+}
+
+model BookingRestriction {
+  id             String            @id @default(cuid())
+  patientId      String            @map("patient_id")
+  type           RestrictionType
+  status         RestrictionStatus @default(ACTIVE)
+  reason         String
+  suspendedUntil DateTime?         @map("suspended_until")
+  createdBy      String?           @map("created_by") // null = 系統自動
+  createdAt      DateTime          @default(now()) @map("created_at")
+  liftedAt       DateTime?         @map("lifted_at")
+  liftedBy       String?           @map("lifted_by")
+  liftReason     String?           @map("lift_reason")
+
+  patient Patient @relation(fields: [patientId], references: [id])
+
+  @@index([patientId, status])
+  @@map("booking_restrictions")
+}
+
+// ── 員工與權限 ──────────────────────────────────────────
+
+model StaffRole {
+  id          String   @id @default(cuid())
+  code        String   @unique // ADMIN / STAFF / DOCTOR_READONLY
+  name        String
+  /// 權限字串陣列，如 appointments:write, schedule:write, admin:all, pii:full
+  permissions String[]
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  users StaffUser[]
+
+  @@map("staff_roles")
+}
+
+model StaffUser {
+  id               String    @id @default(cuid())
+  username         String    @unique
+  passwordHash     String    @map("password_hash") // bcrypt
+  displayName      String    @map("display_name")
+  roleId           String    @map("role_id")
+  doctorId         String?   @map("doctor_id") // 醫師唯讀帳號對應醫師
+  isActive         Boolean   @default(true) @map("is_active")
+  totpSecret       String?   @map("totp_secret") // 加密儲存
+  totpEnabled      Boolean   @default(false) @map("totp_enabled")
+  failedLoginCount Int       @default(0) @map("failed_login_count")
+  lockedUntil      DateTime? @map("locked_until")
+  lastLoginAt      DateTime? @map("last_login_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  role     StaffRole      @relation(fields: [roleId], references: [id])
+  doctor   Doctor?        @relation(fields: [doctorId], references: [id])
+  sessions StaffSession[]
+
+  @@map("staff_users")
+}
+
+model StaffSession {
+  id          String   @id @default(cuid())
+  tokenHash   String   @unique @map("token_hash")
+  staffUserId String   @map("staff_user_id")
+  ip          String?
+  expiresAt   DateTime @map("expires_at")
+  lastSeenAt  DateTime @default(now()) @map("last_seen_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  staffUser StaffUser @relation(fields: [staffUserId], references: [id])
+
+  @@map("staff_sessions")
+}
+
+// ── 民眾 session 與 OTP ────────────────────────────────
+
+model PortalSession {
+  id            String   @id @default(cuid())
+  tokenHash     String   @unique @map("token_hash")
+  lineAccountId String?  @map("line_account_id")
+  /// OTP 驗證通過的手機號（非 LINE 登入時）
+  verifiedPhone String?  @map("verified_phone")
+  /// OTP 驗證通過的病人（證件+生日查詢流程）
+  patientId     String?  @map("patient_id")
+  expiresAt     DateTime @map("expires_at")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  @@map("portal_sessions")
+}
+
+model OtpCode {
+  id         String     @id @default(cuid())
+  phone      String
+  codeHash   String     @map("code_hash")
+  purpose    OtpPurpose
+  attempts   Int        @default(0)
+  expiresAt  DateTime   @map("expires_at")
+  consumedAt DateTime?  @map("consumed_at")
+  createdAt  DateTime   @default(now()) @map("created_at")
+
+  @@index([phone, purpose])
+  @@map("otp_codes")
+}
+
+// ── 通知、設定、稽核 ────────────────────────────────────
+
+model Notification {
+  id            String              @id @default(cuid())
+  patientId     String?             @map("patient_id")
+  appointmentId String?             @map("appointment_id")
+  channel       NotificationChannel
+  type          NotificationType
+  /// LINE userId 或手機號（遮罩前不落一般 log）
+  recipient     String
+  /// 訊息內容（不含完整證件號）
+  payload       Json
+  status        NotificationStatus  @default(PENDING)
+  error         String?
+  sentAt        DateTime?           @map("sent_at")
+  createdAt     DateTime            @default(now()) @map("created_at")
+
+  patient     Patient?     @relation(fields: [patientId], references: [id])
+  appointment Appointment? @relation(fields: [appointmentId], references: [id])
+
+  @@index([status])
+  @@index([appointmentId])
+  @@map("notifications")
+}
+
+model SystemSetting {
+  key       String   @id
+  value     Json
+  updatedBy String?  @map("updated_by")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("system_settings")
+}
+
+model AuditLog {
+  id         String    @id @default(cuid())
+  actorType  ActorType @map("actor_type")
+  actorId    String?   @map("actor_id")
+  actorName  String?   @map("actor_name")
+  action     String // 例如 appointment.create / restriction.lift / schedule.exception.create
+  targetType String?   @map("target_type")
+  targetId   String?   @map("target_id")
+  detail     Json?
+  ip         String?
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([action])
+  @@index([targetType, targetId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
