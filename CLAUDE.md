@@ -18,7 +18,7 @@
 
 **鐵律摘要**(詳見文件):可見文字(title/desc/H1/正文)逐字經院長核可才改;合規紅線見 00 §4;dateModified 判準見 02 R4;文件維護協議見 00 §8(改 00/01 前備份至 archive/、合規規則與待決狀態需院長核可)。
 
-**注意**:本 repo 整棵樹由 Netlify 公開部署;`internal/`、`.claude/`、`CLAUDE.md`、`.mcp.json` 已由 `_redirects` 第 5 節強制 404 攔截,新增內部檔案時記得同步攔截規則。
+**注意**:本 repo 整棵樹由 Netlify 公開部署;`internal/`、`.claude/`、`CLAUDE.md`、`.mcp.json`、`booking-system/` 已由 `_redirects` 第 5 節強制 404 攔截,新增內部檔案時記得同步攔截規則。
 
 ## 使用者偏好
 
@@ -42,6 +42,7 @@
 - `services/` — 服務項目頁(過敏檢測、疫苗、假日兒科等)。
 - `team/` — 醫師介紹(`dr-lee.html`、`dr-tsai.html`)。
 - `docs/` — 內部文件與簡介 PDF。
+- `booking-system/` — **自有線上預約系統**（獨立 Next.js＋PostgreSQL 應用,非官網頁面;正式部署走 Docker 至獨立網域,Netlify 端由 `_redirects` 攔截不對外;說明見其 README 與 docs/）。
 - `images/` — 圖片資源(logo 等)。
 - `app.html`、`growth.html`、`visit-guide.html`、`privacy.html`、`404.html`、`offline.html` — 其他功能頁。
 
