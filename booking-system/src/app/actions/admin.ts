@@ -417,20 +417,49 @@ export async function adminMergePatients(
     if (confirmText !== "合併") return { ok: false, message: "請輸入「合併」二字確認" };
     if (keepId === mergeId) return { ok: false, message: "不可合併同一筆病歷" };
     await prisma.$transaction(async (tx) => {
+      // 依 id 順序鎖定兩筆病人列，避免與預約交易死鎖，並序列化合併期間的預約檢查
+      for (const id of [keepId, mergeId].sort()) {
+        await tx.$queryRaw`SELECT id FROM patients WHERE id = ${id} FOR UPDATE`;
+      }
       const [keep, merge] = await Promise.all([
         tx.patient.findUnique({ where: { id: keepId } }),
         tx.patient.findUnique({ where: { id: mergeId } }),
       ]);
       if (!keep || !merge) throw new BookingError("NOT_FOUND", "查無病歷");
+
+      // 兩筆病歷同一天各有有效預約時，合併會違反「同日僅一筆」不變量——先擋下請櫃檯處理
+      const { ACTIVE_STATUSES } = await import("@/lib/booking");
+      const { dbToDate } = await import("@/lib/tw-time");
+      const active = await tx.appointment.findMany({
+        where: { patientId: { in: [keepId, mergeId] }, status: { in: [...ACTIVE_STATUSES] } },
+        select: { patientId: true, appointmentDate: true },
+      });
+      const keepDates = new Set(
+        active.filter((a) => a.patientId === keepId).map((a) => dbToDate(a.appointmentDate)),
+      );
+      const conflict = active.find(
+        (a) => a.patientId === mergeId && keepDates.has(dbToDate(a.appointmentDate)),
+      );
+      if (conflict) {
+        throw new BookingError(
+          "VALIDATION",
+          `兩筆病歷在 ${dbToDate(conflict.appointmentDate)} 都有有效預約，合併後會同日重複。請先取消或改期其中一筆再合併。`,
+        );
+      }
+
       await tx.appointment.updateMany({ where: { patientId: mergeId }, data: { patientId: keepId } });
       await tx.noShowRecord.updateMany({ where: { patientId: mergeId }, data: { patientId: keepId } });
       await tx.bookingRestriction.updateMany({ where: { patientId: mergeId }, data: { patientId: keepId } });
       await tx.linePatientLink.updateMany({ where: { patientId: mergeId }, data: { patientId: keepId } });
+      const mergedNoShowCount = keep.noShowCount + merge.noShowCount;
       await tx.patient.update({
         where: { id: keepId },
-        data: { noShowCount: keep.noShowCount + merge.noShowCount, cancelCount: keep.cancelCount + merge.cancelCount },
+        data: { noShowCount: mergedNoShowCount, cancelCount: keep.cancelCount + merge.cancelCount },
       });
       await tx.patient.update({ where: { id: mergeId }, data: { mergedIntoId: keepId } });
+      // 合併後未到累計可能跨過門檻，需觸發自動限制（未到標記路徑之外的另一個計數來源）
+      const { maybeAutoRestrict } = await import("@/lib/restrictions");
+      await maybeAutoRestrict(tx, keepId, mergedNoShowCount);
       await writeAudit(
         await actorOf(ctx),
         "patient.merge",

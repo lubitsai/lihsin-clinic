@@ -4,22 +4,10 @@
  */
 import { PrismaClient, type SessionPeriod } from "@prisma/client";
 import bcrypt from "bcryptjs";
+// 權限矩陣單一來源：authz.ts（此檔與 create-admin 腳本皆由此匯入，避免三份副本漂移）
+import { ROLE_PERMISSIONS } from "../src/lib/auth/authz";
 
 const prisma = new PrismaClient();
-
-const ROLE_PERMISSIONS: Record<string, string[]> = {
-  ADMIN: [
-    "appointments:read", "appointments:write", "appointments:override",
-    "schedule:write", "patients:read", "patients:write", "patients:merge",
-    "restrictions:read", "restrictions:manage", "staff:manage",
-    "settings:manage", "audit:read", "pii:full", "doctor:self_read",
-  ],
-  STAFF: [
-    "appointments:read", "appointments:write", "appointments:override",
-    "schedule:write", "patients:read", "patients:write", "restrictions:read",
-  ],
-  DOCTOR_READONLY: ["doctor:self_read"],
-};
 
 async function main() {
   // 醫師

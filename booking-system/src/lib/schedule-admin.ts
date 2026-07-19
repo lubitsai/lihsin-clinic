@@ -6,8 +6,8 @@
 import { randomUUID } from "node:crypto";
 import type { Appointment, Patient, ScheduleException } from "@prisma/client";
 import { prisma } from "./db";
-import { dateToDb, dbToDate } from "./tw-time";
-import { getDayScheduleBlocks } from "./schedule";
+import { addDays, dateToDb, dbToDate, slotEnd } from "./tw-time";
+import { applyExceptions, getDayScheduleBlocks } from "./schedule";
 import { writeAudit, type AuditActor } from "./audit";
 import { cancelAppointment } from "./booking";
 import { BookingError } from "./errors";
@@ -40,9 +40,9 @@ export async function findAffectedAppointments(
   if (appts.length === 0) return [];
   if (input.type === "CLINIC_TYPE_SUSPENDED") return appts;
 
-  // 現況與套用例外後的班表比對
+  // 現況與套用例外後的班表比對（與 getDayScheduleBlocks 共用同一套例外邏輯，避免模擬結果漂移）
   const current = await getDayScheduleBlocks(input.date);
-  const simulated = applyExceptionToBlocks(current, input);
+  const simulated = applyExceptions(current, [input]);
   return appts.filter((a) => {
     const stillCovered = simulated.some(
       (b) => b.doctorId === a.doctorId && b.startTime <= a.startTime && a.startTime < b.endTime,
@@ -56,36 +56,6 @@ export async function findAffectedAppointments(
       return true;
     return false;
   });
-}
-
-function applyExceptionToBlocks(
-  blocks: Awaited<ReturnType<typeof getDayScheduleBlocks>>,
-  e: ExceptionInput,
-) {
-  switch (e.type) {
-    case "CLINIC_CLOSED_DAY":
-      return [];
-    case "SESSION_CLOSED":
-      return blocks.filter((b) => b.session !== e.session);
-    case "DOCTOR_OFF":
-      return blocks.filter(
-        (b) => !(b.doctorId === e.doctorId && (!e.session || b.session === e.session)),
-      );
-    case "DOCTOR_SUBSTITUTE":
-      return blocks.map((b) =>
-        b.doctorId === e.doctorId && (!e.session || b.session === e.session)
-          ? { ...b, doctorId: e.substituteDoctorId ?? b.doctorId }
-          : b,
-      );
-    case "SPECIAL_HOURS":
-      return blocks.map((b) =>
-        (!e.session || b.session === e.session) && (!e.doctorId || b.doctorId === e.doctorId)
-          ? { ...b, startTime: e.startTime ?? b.startTime, endTime: e.endTime ?? b.endTime }
-          : b,
-      );
-    default:
-      return blocks;
-  }
 }
 
 export interface CreateExceptionResult {
@@ -177,7 +147,7 @@ export async function setSlotBlocked(
     });
     if (affected.length > 0) return { affected };
   }
-  const endTime = calcEnd(opts.startTime);
+  const endTime = slotEnd(opts.startTime);
   await prisma.$executeRaw`
     INSERT INTO appointment_slots
       (id, doctor_id, date, start_time, end_time, capacity, is_blocked, source, reason, created_by, created_at, updated_at)
@@ -202,7 +172,7 @@ export async function setSlotCapacity(
 ) {
   if (opts.capacity < 1 || opts.capacity > 10)
     throw new BookingError("VALIDATION", "名額需在 1–10 之間");
-  const endTime = calcEnd(opts.startTime);
+  const endTime = slotEnd(opts.startTime);
   await prisma.$executeRaw`
     INSERT INTO appointment_slots
       (id, doctor_id, date, start_time, end_time, capacity, is_blocked, source, reason, created_by, created_at, updated_at)
@@ -224,13 +194,13 @@ export async function setSlotCapacity(
 export async function copyWeekExceptions(fromWeekStart: string, toWeekStart: string, actor: AuditActor) {
   const from = dateToDb(fromWeekStart);
   const rows = await prisma.scheduleException.findMany({
-    where: { date: { gte: from, lte: dateToDb(addDaysStr(fromWeekStart, 6)) } },
+    where: { date: { gte: from, lte: dateToDb(addDays(fromWeekStart, 6)) } },
   });
   for (const r of rows) {
     const offset = Math.round((r.date.getTime() - from.getTime()) / 86400000);
     await prisma.scheduleException.create({
       data: {
-        date: dateToDb(addDaysStr(toWeekStart, offset)),
+        date: dateToDb(addDays(toWeekStart, offset)),
         type: r.type,
         session: r.session,
         doctorId: r.doctorId,
@@ -248,14 +218,4 @@ export async function copyWeekExceptions(fromWeekStart: string, toWeekStart: str
   return rows.length;
 }
 
-function addDaysStr(dateStr: string, n: number): string {
-  const d = dateToDb(dateStr);
-  d.setUTCDate(d.getUTCDate() + n);
-  return dbToDate(d);
-}
 
-function calcEnd(startTime: string): string {
-  const [h, m] = startTime.split(":").map(Number);
-  const total = h * 60 + m + 30;
-  return `${String(Math.floor(total / 60) % 24).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
-}

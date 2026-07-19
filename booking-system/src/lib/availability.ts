@@ -8,6 +8,8 @@ import {
   getDayScheduleBlocks,
   getBlockedSlotKeys,
   getSuspendedClinicTypes,
+  isSlotKeyBlocked,
+  sessionOfTime,
   type WorkingBlock,
 } from "./schedule";
 import { OCCUPYING_STATUSES } from "./booking";
@@ -29,27 +31,25 @@ export interface DayAvailability {
 
 /** 開放範圍內每天是否有空位（前台日曆用） */
 export async function getOpenDates(clinicTypeId: string, doctorId?: string): Promise<DayAvailability[]> {
-  const openDays = await getSetting("booking.open_days");
-  const openTime = await getSetting("booking.open_time");
-  const allowSameDay = await getSetting("booking.allow_same_day");
+  const [openDays, openTime, allowSameDay] = await Promise.all([
+    getSetting("booking.open_days"),
+    getSetting("booking.open_time"),
+    getSetting("booking.allow_same_day"),
+  ]);
   const today = todayStr();
-  const out: DayAvailability[] = [];
-  for (let i = 0; i < openDays; i++) {
-    const date = addDays(today, i);
-    if (i === 0 && !allowSameDay) {
-      out.push({ date, open: false, hasFreeSlot: false });
-      continue;
-    }
-    // 最新一天於每日 open_time（預設 00:00）才開放
-    if (i === openDays - 1 && nowTimeStr() < openTime) {
-      out.push({ date, open: false, hasFreeSlot: false });
-      continue;
-    }
-    const slots = await getDaySlotAvailability(date, clinicTypeId, doctorId);
-    const hasFree = slots.some((s) => s.doctors.some((d) => d.remaining > 0));
-    out.push({ date, open: slots.length > 0, hasFreeSlot: hasFree });
-  }
-  return out;
+  // 各日期彼此獨立，平行查詢（14 天逐日序列查會拖慢每次開日曆）
+  return Promise.all(
+    Array.from({ length: openDays }, async (_, i): Promise<DayAvailability> => {
+      const date = addDays(today, i);
+      if (i === 0 && !allowSameDay) return { date, open: false, hasFreeSlot: false };
+      // 最新一天於每日 open_time（預設 00:00）才開放
+      if (i === openDays - 1 && nowTimeStr() < openTime)
+        return { date, open: false, hasFreeSlot: false };
+      const slots = await getDaySlotAvailability(date, clinicTypeId, doctorId);
+      const hasFree = slots.some((s) => s.doctors.some((d) => d.remaining > 0));
+      return { date, open: slots.length > 0, hasFreeSlot: hasFree };
+    }),
+  );
 }
 
 /** 某日某門診類型的時段與各醫師剩餘名額 */
@@ -67,20 +67,23 @@ export async function getDaySlotAvailability(
   const weekday = weekdayOf(date);
   if (clinicType.allowedWeekdays.length > 0 && !clinicType.allowedWeekdays.includes(weekday))
     return [];
-  const suspended = await getSuspendedClinicTypes(date);
+  const [suspended, allBlocks, blocked] = await Promise.all([
+    getSuspendedClinicTypes(date),
+    getDayScheduleBlocks(date),
+    getBlockedSlotKeys(date),
+  ]);
   if (suspended.has(clinicType.id)) return [];
 
   const allowedDoctorIds = clinicType.doctors.map((d) => d.doctorId);
-  let blocks = (await getDayScheduleBlocks(date)).filter(
+  const blocks = allBlocks.filter(
     (b) =>
       b.allowOnline &&
       (allowedDoctorIds.length === 0 || allowedDoctorIds.includes(b.doctorId)) &&
       (clinicType.allowedSessions.length === 0 || clinicType.allowedSessions.includes(b.session)) &&
       (!doctorId || doctorId === "any" || b.doctorId === doctorId),
   );
-  if (blocks.length === 0) return [];
+  // 注意：blocks 為空仍需繼續——手動加開（MANUAL）時段可能落在班表之外
 
-  const blocked = await getBlockedSlotKeys(date);
   const [doctors, slotRows, counts, cutoffMin] = await Promise.all([
     prisma.doctor.findMany({ where: { isActive: true } }),
     prisma.appointmentSlot.findMany({ where: { date: dateToDb(date) } }),
@@ -122,21 +125,23 @@ export async function getDaySlotAvailability(
     }
   }
 
-  // 手動加開時段（MANUAL slot，可能不在班表內）
+  // 手動加開時段（MANUAL slot，可能不在班表內）；診別與封鎖規則同樣適用（與引擎一致）
   for (const s of slotRows) {
     if (s.source !== "MANUAL" || s.isBlocked) continue;
     if (doctorId && doctorId !== "any" && s.doctorId !== doctorId) continue;
     if (allowedDoctorIds.length > 0 && !allowedDoctorIds.includes(s.doctorId)) continue;
+    if (
+      clinicType.allowedSessions.length > 0 &&
+      !clinicType.allowedSessions.includes(sessionOfTime(s.startTime))
+    )
+      continue;
+    if (isSlotKeyBlocked(blocked, s.doctorId, s.startTime)) continue;
     if (isToday && minutesFromNow(date, s.startTime) < cutoffMin) continue;
     const key = `${s.doctorId}|${s.startTime}`;
     const remaining = Math.max(0, s.capacity - (usedCount.get(key) ?? 0));
     let entry = byTime.get(s.startTime);
     if (!entry) {
-      entry = {
-        startTime: s.startTime,
-        session: s.startTime < "13:00" ? "MORNING" : s.startTime < "18:00" ? "AFTERNOON" : "EVENING",
-        doctors: [],
-      };
+      entry = { startTime: s.startTime, session: sessionOfTime(s.startTime), doctors: [] };
       byTime.set(s.startTime, entry);
     }
     if (!entry.doctors.some((d) => d.doctorId === s.doctorId)) {

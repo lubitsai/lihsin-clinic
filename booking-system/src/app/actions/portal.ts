@@ -25,6 +25,7 @@ import { maskPhone } from "@/lib/masking";
 import { dbToDate } from "@/lib/tw-time";
 import { rateLimit } from "@/lib/rate-limit";
 import { writeAudit } from "@/lib/audit";
+import { CLINIC } from "@/lib/clinic-info";
 import { z } from "zod";
 
 type ActionResult<T = undefined> =
@@ -41,7 +42,7 @@ function toUserError(e: unknown): { ok: false; message: string } {
   if (e instanceof z.ZodError)
     return { ok: false, message: e.issues[0]?.message ?? "輸入資料有誤，請重新確認" };
   console.error("[portal action]", e);
-  return { ok: false, message: "系統忙碌中，請稍後再試，或致電立欣診所 (06) 251-6086" };
+  return { ok: false, message: `系統忙碌中，請稍後再試，或致電立欣診所 ${CLINIC.phone}` };
 }
 
 // ── 預約流程資料 ──────────────────────────────────────

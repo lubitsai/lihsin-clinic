@@ -18,11 +18,10 @@ import {
   adminCopyWeekExceptions,
 } from "@/app/actions/admin";
 import { Card, Alert } from "@/components/ui";
-import { formatDateTw, todayStr } from "@/lib/tw-time";
+import { addDays, formatDateTw, todayStr, WEEKDAY_ZH as WEEKDAYS } from "@/lib/tw-time";
 import { SESSION_META } from "@/lib/status-labels";
 import type { SessionPeriod, ExceptionType } from "@prisma/client";
 
-const WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"];
 const SESSIONS: SessionPeriod[] = ["MORNING", "AFTERNOON", "EVENING"];
 
 const EXCEPTION_LABEL: Record<ExceptionType, string> = {
@@ -539,9 +538,9 @@ function MonthCalendar({
 
   // 本週週一（複製上週例外用）
   const todayDow = new Date(`${today}T00:00:00Z`).getUTCDay();
-  const thisMonday = addDaysLocal(today, todayDow === 0 ? -6 : 1 - todayDow);
-  const lastMonday = addDaysLocal(thisMonday, -7);
-  const nextMonday = addDaysLocal(thisMonday, 7);
+  const thisMonday = addDays(today, todayDow === 0 ? -6 : 1 - todayDow);
+  const lastMonday = addDays(thisMonday, -7);
+  const nextMonday = addDays(thisMonday, 7);
 
   const cellDate = (day: number) => `${month}-${String(day).padStart(2, "0")}`;
 
@@ -623,11 +622,6 @@ function MonthCalendar({
   );
 }
 
-function addDaysLocal(dateStr: string, n: number): string {
-  const d = new Date(`${dateStr}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + n);
-  return d.toISOString().slice(0, 10);
-}
 
 function CapacityEditor({
   doctors,

@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { adminUpdateSettings, adminUpdateClinicType, adminUpsertDoctor } from "@/app/actions/admin";
 import { Card, Alert } from "@/components/ui";
 import { SESSION_META } from "@/lib/status-labels";
+import { WEEKDAY_ZH as WEEKDAYS } from "@/lib/tw-time";
 import type { SessionPeriod } from "@prisma/client";
 
-const WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"];
 
 interface ClinicTypeDto {
   id: string;

@@ -6,15 +6,11 @@
  */
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { ROLE_PERMISSIONS } from "../src/lib/auth/authz";
 
 const prisma = new PrismaClient();
 
-const ADMIN_PERMISSIONS = [
-  "appointments:read", "appointments:write", "appointments:override",
-  "schedule:write", "patients:read", "patients:write", "patients:merge",
-  "restrictions:read", "restrictions:manage", "staff:manage",
-  "settings:manage", "audit:read", "pii:full", "doctor:self_read",
-];
+const ADMIN_PERMISSIONS = ROLE_PERMISSIONS.ADMIN;
 
 async function main() {
   const username = process.env.ADMIN_USERNAME ?? process.argv[2];

@@ -75,7 +75,13 @@ export function slotTimes(start: string, end: string, stepMinutes = 30): string[
   return out;
 }
 
-const WEEKDAY_ZH = ["日", "一", "二", "三", "四", "五", "六"];
+export const WEEKDAY_ZH = ["日", "一", "二", "三", "四", "五", "六"];
+
+/** 30 分鐘時段的結束時間；給定 blockEnd 時以其為上限（班表區間尾端的短時段） */
+export function slotEnd(startTime: string, blockEnd?: string): string {
+  const end = addMinutes(startTime, 30);
+  return blockEnd && end > blockEnd ? blockEnd : end;
+}
 
 /** 台灣常用格式：2026/07/20（一） */
 export function formatDateTw(dateStr: string): string {

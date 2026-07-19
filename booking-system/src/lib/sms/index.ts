@@ -5,6 +5,8 @@
  * 其他程式碼一律透過 getSmsProvider().send() 呼叫，不直接依賴特定廠商。
  */
 
+import { maskPhone } from "../masking";
+
 export interface SmsProvider {
   readonly name: string;
   send(phone: string, message: string): Promise<void>;
@@ -14,8 +16,7 @@ export interface SmsProvider {
 class ConsoleSmsProvider implements SmsProvider {
   readonly name = "console";
   async send(phone: string, message: string): Promise<void> {
-    const masked = phone.length >= 7 ? `${phone.slice(0, 4)}***${phone.slice(-3)}` : "***";
-    console.log(`[SMS→${masked}] ${message.replaceAll("\n", " / ")}`);
+    console.log(`[SMS→${maskPhone(phone)}] ${message.replaceAll("\n", " / ")}`);
   }
 }
 

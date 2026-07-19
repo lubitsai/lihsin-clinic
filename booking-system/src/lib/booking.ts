@@ -8,10 +8,25 @@
 import { randomUUID } from "node:crypto";
 import { Prisma, type Appointment, type AppointmentSource, type Patient } from "@prisma/client";
 import { prisma, type Tx } from "./db";
-import { addDays, dateToDb, dbToDate, minutesFromNow, nowTimeStr, todayStr } from "./tw-time";
+import {
+  addDays,
+  dateToDb,
+  dbToDate,
+  minutesFromNow,
+  nowTimeStr,
+  slotEnd,
+  slotTimes,
+  todayStr,
+} from "./tw-time";
 import { getSetting } from "./settings";
 import { BookingError, MSG } from "./errors";
-import { doctorBlockAt, getDayScheduleBlocks, getSuspendedClinicTypes } from "./schedule";
+import {
+  getBlockedSlotKeys,
+  getDayScheduleBlocks,
+  getSuspendedClinicTypes,
+  isSlotKeyBlocked,
+  sessionOfTime,
+} from "./schedule";
 import { upsertPatientForBooking, lockPatientRow } from "./patients";
 import { isPatientRestricted, maybeAutoRestrict } from "./restrictions";
 import { writeAudit, type AuditActor } from "./audit";
@@ -110,20 +125,8 @@ async function runCreateTransaction(
         include: { doctors: true },
       });
       if (!clinicType) throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
-      if (!clinicType.isActive && !params.isStaff)
-        throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
-
-      // 門診類型當日暫停
-      const suspended = await getSuspendedClinicTypes(params.date, tx);
-      if (suspended.has(clinicType.id) && !params.isStaff)
-        throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
-
-      // 門診類型可預約星期／診別
-      if (!params.isStaff) {
-        const weekday = dateToDb(params.date).getUTCDay();
-        if (clinicType.allowedWeekdays.length > 0 && !clinicType.allowedWeekdays.includes(weekday))
-          throw new BookingError("SLOT_UNAVAILABLE", MSG.slotUnavailable);
-      }
+      // 門診類型：停用／當日暫停／可預約星期（改期路徑共用同一檢查）
+      await assertClinicTypeBookable(tx, clinicType, params.date, !!params.isStaff);
 
       // 開放日期範圍（櫃檯不受限）
       if (!params.isStaff) await assertDateOpen(tx, params.date, params.startTime);
@@ -168,12 +171,7 @@ async function runCreateTransaction(
 
       // 建立預約
       const status = clinicType.requiresReview && params.source !== "STAFF" ? "PENDING" : "CONFIRMED";
-      let bookingNumber = genBookingNumber(params.date);
-      for (let i = 0; i < 3; i++) {
-        const clash = await tx.appointment.findUnique({ where: { bookingNumber } });
-        if (!clash) break;
-        bookingNumber = genBookingNumber(params.date);
-      }
+      const bookingNumber = await issueBookingNumber(tx, params.date);
 
       const appointment = await tx.appointment.create({
         data: {
@@ -233,12 +231,42 @@ async function runCreateTransaction(
   );
 }
 
+/** 產生不重複的預約編號（含碰撞重試；建立與改期共用） */
+async function issueBookingNumber(tx: Tx, date: string): Promise<string> {
+  let bookingNumber = genBookingNumber(date);
+  for (let i = 0; i < 3; i++) {
+    const clash = await tx.appointment.findUnique({ where: { bookingNumber } });
+    if (!clash) break;
+    bookingNumber = genBookingNumber(date);
+  }
+  return bookingNumber;
+}
+
+/** 門診類型是否可於該日期預約：停用／當日暫停／可預約星期（櫃檯不受限） */
+async function assertClinicTypeBookable(
+  tx: Tx,
+  clinicType: { id: string; isActive: boolean; allowedWeekdays: number[] },
+  date: string,
+  isStaff: boolean,
+) {
+  if (isStaff) return;
+  if (!clinicType.isActive) throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
+  const suspended = await getSuspendedClinicTypes(date, tx);
+  if (suspended.has(clinicType.id))
+    throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
+  const weekday = dateToDb(date).getUTCDay();
+  if (clinicType.allowedWeekdays.length > 0 && !clinicType.allowedWeekdays.includes(weekday))
+    throw new BookingError("SLOT_UNAVAILABLE", MSG.slotUnavailable);
+}
+
 /** 開放日期檢查：滾動開放 N 天（最新一天於 open_time 才開放）＋當日截止 */
 async function assertDateOpen(tx: Tx, date: string, startTime: string) {
-  const openDays = await getSetting("booking.open_days", tx);
-  const openTime = await getSetting("booking.open_time", tx);
-  const allowSameDay = await getSetting("booking.allow_same_day", tx);
-  const cutoffMin = await getSetting("booking.same_day_cutoff_minutes", tx);
+  const [openDays, openTime, allowSameDay, cutoffMin] = await Promise.all([
+    getSetting("booking.open_days", tx),
+    getSetting("booking.open_time", tx),
+    getSetting("booking.allow_same_day", tx),
+    getSetting("booking.same_day_cutoff_minutes", tx),
+  ]);
   const today = todayStr();
   const lastOpen = addDays(today, openDays - 1);
   if (date < today || date > lastOpen) throw new BookingError("DATE_NOT_OPEN", MSG.dateNotOpen);
@@ -289,8 +317,10 @@ async function assertNoSameDay(tx: Tx, patientId: string, date: string, excludeI
 
 /** 任意連續 N 天內最多 M 筆（病人列已鎖定） */
 async function assertWeeklyLimit(tx: Tx, patientId: string, date: string, excludeId?: string) {
-  const windowDays = await getSetting("booking.window_days", tx);
-  const max = await getSetting("booking.window_max", tx);
+  const [windowDays, max] = await Promise.all([
+    getSetting("booking.window_days", tx),
+    getSetting("booking.window_max", tx),
+  ]);
   const rangeStart = addDays(date, -(windowDays - 1));
   const rangeEnd = addDays(date, windowDays - 1);
   const appts = await tx.appointment.findMany({
@@ -320,101 +350,133 @@ interface AllocateParams {
   isStaff: boolean;
 }
 
+interface SlotCandidate {
+  doctorId: string;
+  capacity: number;
+  endTime: string;
+}
+
 /**
- * 名額配發：鎖定時段列 → 找出可用序號。
- * 「不限醫師」時優先分配當日預約數較少的醫師以平衡人數。
+ * 名額配發：班表候選（須落在 30 分鐘格點上）＋手動加開時段 → 鎖定時段列 → 配發序號。
+ * - SLOT_BLOCKED 日期例外在此層強制（不只前台隱藏）
+ * - 手動加開的 MANUAL 時段即使落在班表區間外也可預約（與前台顯示一致）
+ * - 「不限醫師」時優先分配當日預約數較少的醫師以平衡人數
  */
 async function allocateSlot(tx: Tx, p: AllocateParams) {
-  const blocks = await getDayScheduleBlocks(p.date, tx);
-  const candidateBlocks = blocks.filter(
-    (b) =>
-      b.startTime <= p.startTime &&
-      p.startTime < b.endTime &&
-      (p.isStaff || b.allowOnline) &&
-      (p.allowedSessions.length === 0 || p.allowedSessions.includes(b.session)) &&
-      (p.clinicTypeDoctorIds.length === 0 || p.clinicTypeDoctorIds.includes(b.doctorId)) &&
-      (p.doctorId === "any" || b.doctorId === p.doctorId),
-  );
-  if (candidateBlocks.length === 0)
+  const [blocks, blocked] = await Promise.all([
+    getDayScheduleBlocks(p.date, tx),
+    getBlockedSlotKeys(p.date, tx),
+  ]);
+
+  const allowedDoctor = (id: string) =>
+    (p.clinicTypeDoctorIds.length === 0 || p.clinicTypeDoctorIds.includes(id)) &&
+    (p.doctorId === "any" || id === p.doctorId);
+  const sessionAllowed = (s: import("@prisma/client").SessionPeriod) =>
+    p.allowedSessions.length === 0 || p.allowedSessions.includes(s);
+
+  // 班表候選：slotTimes 產生的格點才有效，防止自創時間（如 09:01）繞過名額上限
+  const candidates: SlotCandidate[] = blocks
+    .filter(
+      (b) =>
+        slotTimes(b.startTime, b.endTime).includes(p.startTime) &&
+        (p.isStaff || b.allowOnline) &&
+        sessionAllowed(b.session) &&
+        allowedDoctor(b.doctorId) &&
+        !isSlotKeyBlocked(blocked, b.doctorId, p.startTime),
+    )
+    .map((b) => ({
+      doctorId: b.doctorId,
+      capacity: b.slotCapacity,
+      endTime: slotEnd(p.startTime, b.endTime),
+    }));
+
+  // 手動加開時段（可能在班表區間外）；門診類型與封鎖規則同樣適用
+  const manualRows = await tx.appointmentSlot.findMany({
+    where: {
+      date: dateToDb(p.date),
+      startTime: p.startTime,
+      source: "MANUAL",
+      isBlocked: false,
+    },
+  });
+  for (const row of manualRows) {
+    if (!allowedDoctor(row.doctorId)) continue;
+    if (!sessionAllowed(sessionOfTime(row.startTime))) continue;
+    if (isSlotKeyBlocked(blocked, row.doctorId, p.startTime)) continue;
+    if (candidates.some((c) => c.doctorId === row.doctorId)) continue; // 班表候選已涵蓋
+    candidates.push({ doctorId: row.doctorId, capacity: row.capacity, endTime: row.endTime });
+  }
+
+  if (candidates.length === 0)
     throw new BookingError("SLOT_UNAVAILABLE", MSG.slotUnavailable);
 
-  // 平衡分配：當日各候選醫師的有效預約數（少者優先）
-  let ordered = candidateBlocks;
-  if (p.doctorId === "any" && candidateBlocks.length > 1) {
-    const counts = await tx.appointment.groupBy({
-      by: ["doctorId"],
-      where: {
-        appointmentDate: dateToDb(p.date),
-        doctorId: { in: candidateBlocks.map((b) => b.doctorId) },
-        status: { in: [...OCCUPYING_STATUSES] },
-      },
-      _count: { id: true },
-    });
+  // 平衡分配：當日各候選醫師的預約數（少者優先），平手依顯示順序
+  let ordered = candidates;
+  if (p.doctorId === "any" && candidates.length > 1) {
+    const doctorIds = candidates.map((c) => c.doctorId);
+    const [counts, doctors] = await Promise.all([
+      tx.appointment.groupBy({
+        by: ["doctorId"],
+        where: {
+          appointmentDate: dateToDb(p.date),
+          doctorId: { in: doctorIds },
+          status: { in: [...OCCUPYING_STATUSES] },
+        },
+        _count: { id: true },
+      }),
+      tx.doctor.findMany({ where: { id: { in: doctorIds } } }),
+    ]);
     const countMap = new Map(counts.map((c) => [c.doctorId, c._count.id]));
-    const doctors = await tx.doctor.findMany({
-      where: { id: { in: candidateBlocks.map((b) => b.doctorId) } },
-    });
     const orderMap = new Map(doctors.map((d) => [d.id, d.displayOrder]));
-    ordered = [...candidateBlocks].sort(
+    ordered = [...candidates].sort(
       (a, b) =>
         (countMap.get(a.doctorId) ?? 0) - (countMap.get(b.doctorId) ?? 0) ||
         (orderMap.get(a.doctorId) ?? 0) - (orderMap.get(b.doctorId) ?? 0),
     );
   }
 
-  for (const block of ordered) {
-    // 建立（若不存在）並鎖定時段列
-    await tx.$executeRaw`
-      INSERT INTO appointment_slots
-        (id, doctor_id, date, start_time, end_time, capacity, is_blocked, source, created_at, updated_at)
-      VALUES
-        (${randomUUID()}, ${block.doctorId}, ${dateToDb(p.date)}, ${p.startTime},
-         ${endOf(p.startTime, block.endTime)}, ${block.slotCapacity}, false, 'AUTO'::"SlotSource", now(), now())
-      ON CONFLICT (doctor_id, date, start_time) DO NOTHING`;
-    const slotRows = await tx.$queryRaw<
-      { id: string; capacity: number; is_blocked: boolean; end_time: string }[]
-    >`
-      SELECT id, capacity, is_blocked, end_time FROM appointment_slots
-      WHERE doctor_id = ${block.doctorId} AND date = ${dateToDb(p.date)} AND start_time = ${p.startTime}
-      FOR UPDATE`;
-    const slot = slotRows[0];
-    if (!slot || slot.is_blocked) continue;
-
-    const used = await tx.appointment.findMany({
-      where: {
-        doctorId: block.doctorId,
-        appointmentDate: dateToDb(p.date),
-        startTime: p.startTime,
-        status: { in: [...OCCUPYING_STATUSES] },
-      },
-      select: { capacitySlotNo: true },
-    });
-    const usedSeqs = new Set(used.map((u) => u.capacitySlotNo));
-    let seq: number | null = null;
-    for (let i = 1; i <= slot.capacity; i++) {
-      if (!usedSeqs.has(i)) {
-        seq = i;
-        break;
-      }
-    }
-    if (seq == null) continue; // 額滿，換下一位候選醫師
-
-    return {
-      doctorId: block.doctorId,
-      slotId: slot.id,
-      endTime: slot.end_time,
-      capacitySlotNo: seq,
-    };
+  for (const candidate of ordered) {
+    const allocated = await tryAllocateSeq(tx, p.date, p.startTime, candidate);
+    if (allocated) return allocated;
   }
 
   throw new BookingError("SLOT_FULL", MSG.slotFull);
 }
 
-function endOf(startTime: string, blockEnd: string): string {
-  const [h, m] = startTime.split(":").map(Number);
-  const total = h * 60 + m + 30;
-  const end = `${String(Math.floor(total / 60) % 24).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
-  return end < blockEnd ? end : blockEnd;
+/** 建立（若不存在）並鎖定時段列，配發最小可用序號；額滿回 null */
+async function tryAllocateSeq(tx: Tx, date: string, startTime: string, c: SlotCandidate) {
+  await tx.$executeRaw`
+    INSERT INTO appointment_slots
+      (id, doctor_id, date, start_time, end_time, capacity, is_blocked, source, created_at, updated_at)
+    VALUES
+      (${randomUUID()}, ${c.doctorId}, ${dateToDb(date)}, ${startTime},
+       ${c.endTime}, ${c.capacity}, false, 'AUTO'::"SlotSource", now(), now())
+    ON CONFLICT (doctor_id, date, start_time) DO NOTHING`;
+  const slotRows = await tx.$queryRaw<
+    { id: string; capacity: number; is_blocked: boolean; end_time: string }[]
+  >`
+    SELECT id, capacity, is_blocked, end_time FROM appointment_slots
+    WHERE doctor_id = ${c.doctorId} AND date = ${dateToDb(date)} AND start_time = ${startTime}
+    FOR UPDATE`;
+  const slot = slotRows[0];
+  if (!slot || slot.is_blocked) return null;
+
+  const used = await tx.appointment.findMany({
+    where: {
+      doctorId: c.doctorId,
+      appointmentDate: dateToDb(date),
+      startTime,
+      status: { in: [...OCCUPYING_STATUSES] },
+    },
+    select: { capacitySlotNo: true },
+  });
+  const usedSeqs = new Set(used.map((u) => u.capacitySlotNo));
+  for (let i = 1; i <= slot.capacity; i++) {
+    if (!usedSeqs.has(i)) {
+      return { doctorId: c.doctorId, slotId: slot.id, endTime: slot.end_time, capacitySlotNo: i };
+    }
+  }
+  return null; // 額滿，換下一位候選醫師
 }
 
 // ── 取消 ────────────────────────────────────────────────
@@ -511,6 +573,9 @@ export async function rescheduleAppointment(opts: {
         await assertDateOpen(tx, opts.newDate, opts.newStartTime);
       }
 
+      // 新日期需重新通過門診類型檢查（停用／暫停／可預約星期），與建立預約一致
+      await assertClinicTypeBookable(tx, appt.clinicType, opts.newDate, !opts.byPatient);
+
       await lockPatientRow(tx, appt.patientId);
 
       // 受限病人不可線上改期（櫃檯可覆寫）
@@ -531,12 +596,7 @@ export async function rescheduleAppointment(opts: {
         isStaff: !opts.byPatient,
       });
 
-      let bookingNumber = genBookingNumber(opts.newDate);
-      for (let i = 0; i < 3; i++) {
-        const clash = await tx.appointment.findUnique({ where: { bookingNumber } });
-        if (!clash) break;
-        bookingNumber = genBookingNumber(opts.newDate);
-      }
+      const bookingNumber = await issueBookingNumber(tx, opts.newDate);
 
       const newAppointment = await tx.appointment.create({
         data: {
@@ -640,12 +700,21 @@ export async function updateAppointmentStatus(opts: {
     });
 
     if (opts.toStatus === "NO_SHOW") {
-      await tx.noShowRecord.create({
-        data: {
+      // upsert：曾誤標後撤銷的預約可再次標記（unique on appointmentId）
+      await tx.noShowRecord.upsert({
+        where: { appointmentId: appt.id },
+        create: {
           patientId: appt.patientId,
           appointmentId: appt.id,
           markedBy: opts.actor.id ?? "unknown",
           note: opts.note,
+        },
+        update: {
+          markedBy: opts.actor.id ?? "unknown",
+          note: opts.note,
+          revokedAt: null,
+          revokedBy: null,
+          revokeReason: null,
         },
       });
       const patient = await tx.patient.update({
@@ -699,13 +768,13 @@ export async function revokeNoShow(opts: {
     }
     const updated = await tx.appointment.update({
       where: { id: appt.id },
-      data: { status: "COMPLETED", updatedBy: opts.actor.id },
+      data: { status: "CONFIRMED", updatedBy: opts.actor.id },
     });
     await tx.appointmentStatusHistory.create({
       data: {
         appointmentId: appt.id,
         fromStatus: "NO_SHOW",
-        toStatus: "COMPLETED",
+        toStatus: "CONFIRMED",
         changedByType: opts.actor.type,
         changedById: opts.actor.id,
         reason: opts.reason,

@@ -1,3 +1,5 @@
+import { CLINIC } from "./clinic-info";
+
 /** 預約業務錯誤：code 供程式判斷、userMessage 為可直接顯示給使用者的繁中訊息 */
 export type BookingErrorCode =
   | "DATE_NOT_OPEN"          // 未開放的日期（過去或超過滾動開放範圍）
@@ -35,7 +37,7 @@ export const MSG = {
   slotFull: "此時段名額已滿，請選擇其他時段。",
   slotUnavailable: "此時段目前無法預約，請重新選擇時段。",
   dateNotOpen: "此日期尚未開放預約，請選擇開放範圍內的日期。",
-  cutoffPassed: "已超過線上取消／改期的截止時間，如需協助請致電立欣診所 (06) 251-6086。",
+  cutoffPassed: `已超過線上取消／改期的截止時間，如需協助請致電立欣診所 ${CLINIC.phone}。`,
   notFound: "查無符合的預約資料，請確認輸入內容。",
   identityMismatch: "查無符合的預約資料，請確認輸入內容。", // 與 notFound 相同,避免身分探測
   clinicTypeClosed: "此門診目前未開放線上預約，請致電立欣診所詢問。",

@@ -98,7 +98,29 @@ export default async function AdminDashboard({
 
       <DayBoard
         date={date}
-        appointments={JSON.parse(JSON.stringify(appointments))}
+        appointments={appointments.map((a) => ({
+          // 僅送出畫面需要的欄位——完整病人列（含證件密文/雜湊）不得進入 RSC payload
+          id: a.id,
+          bookingNumber: a.bookingNumber,
+          startTime: a.startTime,
+          status: a.status,
+          source: a.source,
+          visitType: a.visitType,
+          patientNote: a.patientNote,
+          staffNote: a.staffNote,
+          doctorId: a.doctorId,
+          doctor: { name: a.doctor.name },
+          clinicType: { name: a.clinicType.name, color: a.clinicType.color },
+          patient: {
+            id: a.patient.id,
+            name: a.patient.name,
+            phone: a.patient.phone,
+            idNumberMasked: a.patient.idNumberMasked,
+            noShowCount: a.patient.noShowCount,
+            staffNote: a.patient.staffNote,
+            restrictions: a.patient.restrictions.map((r) => ({ id: r.id })),
+          },
+        }))}
         doctors={doctors.map((d) => ({ id: d.id, name: d.name }))}
         clinicTypes={clinicTypes.map((t) => ({ id: t.id, name: t.name, color: t.color }))}
         filters={{
