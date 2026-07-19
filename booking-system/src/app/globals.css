@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+/* 立欣診所品牌色系：奶油底＋深綠/暖棕/橘紅，溫暖親切、非冰冷醫院系統 */
+@theme {
+  --color-cream-50: #fdfaf3;
+  --color-cream-100: #faf5e9;
+  --color-cream-200: #f3ead6;
+  --color-forest-500: #3d7a4e;
+  --color-forest-600: #2f5d3a;
+  --color-forest-700: #24482d;
+  --color-forest-800: #1a3521;
+  --color-bark-400: #a97c50;
+  --color-bark-500: #8b5e3c;
+  --color-bark-600: #6f4a2f;
+  --color-persimmon-400: #ef7a4a;
+  --color-persimmon-500: #e0592a;
+  --color-persimmon-600: #c44a1f;
+
+  --font-sans: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+
+  --radius-card: 1.25rem;
+}
+
+body {
+  background-color: var(--color-cream-100);
+  color: #2d2a24;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 長輩友善：預設字級略大、觸控目標夠大 */
+html {
+  font-size: 17px;
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-xl border-2 border-cream-200 bg-white px-3 py-2.5 text-stone-800 focus:border-forest-500 focus:outline-none;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-forest-600 px-5 py-3 font-bold text-white transition hover:bg-forest-700 disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl border-2 border-cream-200 bg-white px-5 py-3 font-bold text-stone-700 transition hover:border-forest-500;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center rounded-xl bg-persimmon-500 px-5 py-3 font-bold text-white transition hover:bg-persimmon-600 disabled:opacity-50;
+  }
+  .qbtn {
+    @apply inline-flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition disabled:opacity-50;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white;
+  }
+}
