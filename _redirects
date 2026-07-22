@@ -74,6 +74,9 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #    健檢批擴充：攔截 dotfile 的無點重複檔（網頁上傳副產物，
 #    repo 已刪除，此處防未來再度混入）、_gitignore、目錄占位
 #    README.md 與根目錄 README.md。
+#    多代理批擴充(2026-07-22):/.claude/* 已涵蓋新增的 agents/
+#    與 multi-agent skill;另攔截 /workflow/*(多代理流水線交接
+#    文件落點,純內部、不對外)。
 # ------------------------------------------------------------
 /internal/*    /404.html  404!
 /.claude/*     /404.html  404!
@@ -84,6 +87,7 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 /_gitignore    /404.html  404!
 /README.md     /404.html  404!
 /.github/*     /404.html  404!
+/workflow/*    /404.html  404!
 # 註：各子目錄空 README.md 佔位檔已於 2026-07-10 直接刪除
 #（實測 /:dir/README.md 佔位符規則不生效——隱含檔案服務優先；
 #  消滅檔案本身比攔截規則可靠）。
