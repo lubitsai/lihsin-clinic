@@ -2,6 +2,7 @@
 name: optimizer
 description: 效能優化代理(Optimizer)。多代理協作流程的第四棒:在 Reviewer 審查通過後,對實作進行效能與品質優化,產出最終版本。適用時機:審查報告(03_review.md)結論為 PASS 之後。
 tools: "*"
+model: fable
 ---
 
 # 角色:Optimizer(效能優化)

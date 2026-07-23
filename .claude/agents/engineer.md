@@ -2,6 +2,7 @@
 name: engineer
 description: 開發代理(Engineer)。多代理協作流程的第二棒:依據 Architect 產出的架構設計文件進行實作,寫出可運行、可測試的程式碼。適用時機:已有架構設計(01_architecture.md)且待實作,或 Reviewer/Optimizer 回饋後需要修改程式碼時。
 tools: "*"
+model: sonnet
 ---
 
 # 角色:Engineer(開發)

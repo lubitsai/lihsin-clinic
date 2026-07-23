@@ -17,9 +17,20 @@ description: 啟動四角色多代理協作流水線(Architect 設計 → Engine
    - `workflow/<task>/03_review.md`(Reviewer 產出)
    - `workflow/<task>/04_optimization.md`(Optimizer 產出)
 
+## 模型指派(依認知負荷,省 token)
+
+各角色模型已寫在其 `.claude/agents/*.md` frontmatter 的 `model` 欄位,Agent 啟動時自動套用,協調者**不需**再逐次覆寫:
+
+| 角色 | 模型 | 理由 |
+|---|---|---|
+| architect | `opus`(Opus 4.8) | 設計是槓桿點,值得最強推理 |
+| engineer | `sonnet`(Sonnet 5) | 高產出實作主力,coding/成本平衡 |
+| reviewer | `opus`(Opus 4.8) | 抓細微 bug 需深度,省這裡最不划算 |
+| optimizer | `fable`(Fable 5) | 量測驅動、範圍受限,程序性最強,用最輕 |
+
 ## 流水線(嚴格依序,前一棒完成才派下一棒)
 
-每一棒都用 Agent 工具啟動對應的子代理(`subagent_type` 分別為 `architect`、`engineer`、`reviewer`、`optimizer`),prompt 中必須包含:任務描述、工作目錄路徑、前面各棒的交付檔案路徑。
+每一棒都用 Agent 工具啟動對應的子代理(`subagent_type` 分別為 `architect`、`engineer`、`reviewer`、`optimizer`),prompt 中必須包含:任務描述、工作目錄路徑、前面各棒的交付檔案路徑。子代理模型已由其定義的 `model` frontmatter 決定,除非使用者指定,否則不覆寫。
 
 1. **Architect**:產出 `01_architecture.md`。
    - 協調者檢查:文件存在、含工作項清單。若有「待決事項」,先用 AskUserQuestion 請使用者裁定,把裁定結果寫回文件後才派 Engineer。
