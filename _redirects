@@ -77,11 +77,16 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #    多代理批擴充(2026-07-22):/.claude/* 已涵蓋新增的 agents/
 #    與 multi-agent skill;另攔截 /workflow/*(多代理流水線交接
 #    文件落點,純內部、不對外)。
+#    Codex Skill 批擴充(2026-07-23):新增 Codex 進入點 /AGENTS.md
+#    與 Codex skill 目錄 /.codex/*(SEO/GEO SOP 的 Codex 可執行版),
+#    純內部開發/AI 協作用,不對外。
 # ------------------------------------------------------------
 /internal/*    /404.html  404!
 /booking-system/*  /404.html  404!
 /.claude/*     /404.html  404!
+/.codex/*      /404.html  404!
 /CLAUDE.md     /404.html  404!
+/AGENTS.md     /404.html  404!
 /.mcp.json     /404.html  404!
 /mcp.json      /404.html  404!
 /gitignore     /404.html  404!
