@@ -1,4 +1,4 @@
-# 01_新對話接續提示詞（2026-07-22）
+# 01_新對話接續提示詞（2026-07-21）
 
 > **Claude Code session（repo 直連）**：本套文件（00–03）與 tools 已在 repo `internal/`，開啟 repo 即自動接手，不需上傳任何檔案。
 > **claude.ai 對話介面**：開新對話時，把本檔連同 `00_專案總覽索引.md`、`AI客服知識庫_立欣診所.md` 一起貼上或上傳；並上傳 `site/` 內需要動到的 HTML 原檔。
@@ -9,9 +9,7 @@
 
 你是立欣診所（台南北區小兒科・家醫；lhpedclinic.com.tw；GitHub→Netlify 靜態站、canonical 非 www）的技術 SEO／AEO／GEO 顧問兼執行者。全程繁體中文、顧問對院長口吻；**可見內容變更一律先提案、經院長逐字核可後才執行**。單一事實來源＝`00_專案總覽索引.md`（最新 2026-07-19，存於 repo `internal/`）。
 
-## 現在狀態（2026-07-22）
-
-- **✅ 新冠 COVID-19 最新消息新頁＋「對話上傳圖」轉檔 SOP/Skill 化（2026-07-22，院長「Merge」→ 已併入 main〔merge commit `b85ed04`〕、Netlify 自動部署、IndexNow 已提交 50 條 HTTP 200）**：院長指示整理近期新冠趨勢與症狀、做成一篇放最新消息「流感疫苗預購」下方（第 2 篇、流感預購期間置頂）、用附圖衛教圖、參考院長貼文。Mode B 新頁。**落筆前 web_search 查證疾管署 2026 現況**（firecrawl 遭 egress 403 → 依規改 WebSearch）：貼文數字屬實（第 28 週門急診 4,766 人次 +66.5%、進入流行期、本土主流 NB.1.8.1、推估 8 月中旬高峰）。**新增 `news/covid-19-2026.html`**（疫情現況數字導疾管署→潛伏期 2–5 天→最近常見症狀→只看症狀難分辨/快篩陰性不排除→高風險儘早就醫→🚑危險徵象紅框→台南就醫）、3 Schema（FAQPage 7 題）、蔡宗儒醫師審閱、about COVID-19 sameAs 維基、NB.1.8.1 照 WHO 誠實框架、抗病毒藥須醫師評估、可見禁語 0。**院長補傳衛教圖**（小鹿團隊 poster、內容逐項吻合），以新工具產 5 標準衍生檔。六步整合：首頁 news +第 2 卡（流感置頂第 1）、index dateModified→07-22×2、sitemap +covid（weekly）＋首頁 lastmod→07-22、llms 雙檔 +COVID **durable 條目（時效數字導疾管署）**、flu 反向連結卡；dr-tsai 不動（作者頁不收 news 時效頁）。**院長追加指示固化上傳流程**：新增 `internal/tools/make_infographic.py`（一鍵 5 檔衍生、置中裁切正方、冪等、缺 Pillow 自動安裝、純 Pillow）＋Skill `.claude/skills/infographic-upload/`（讀圖驗證→產檔→掛載〔附標準 `<picture>` 片段〕→驗證→commit/push→IndexNow；換圖 dateModified 依 R4 不跳）。deploy 53 檔 ERROR 0／WARN 0（修 desc 92→≤80、`pl-5`→inline padding）。**⚠️ Playwright 本 session 起不來**（MCP 找 `/opt/google/chrome`、與環境 chromium 不符）→ 以「flu 模板忠實複製、無 table/固定寬度」判讀無溢出、限制如實標註。**往後院長在對話直接貼圖→自動觸發 infographic-upload Skill 走完轉檔上傳。** 詳見 00 文末〈本批（2026-07-22）〉。
+## 現在狀態（2026-07-21b）
 
 - **✅ 輪狀病毒改掛李佳玲醫師＋首頁移至李醫師專欄（2026-07-21b 續，院長「merge」→ 已併入 main〔merge commit `0f7c539`〕、Netlify 自動部署、IndexNow 已提交 49 條 HTTP 200）**：院長指示「輪狀病毒移到李醫師『嬰幼兒腸胃炎』後面、改李醫師撰寫」。`health/rotavirus-vaccine.html` 全篇作者/審閱蔡→**李佳玲醫師**（author+reviewedBy @id→#physician-lee、byline/FAQ/正文/隱藏區/footer，8 處，0 殘留）；首頁 rotavirus 卡由專欄一移至**專欄二（李醫師）緊接嬰幼兒腸胃炎卡後**（總篇數 29 不變）；dr-tsai 27→**26**、dr-lee 8→**9**（dateModified/最後更新→07-21、sitemap lastmod→07-21）；llms 雙檔 rotavirus 掛名改李醫師。deploy 52 檔全綠、Playwright 390px 零溢出。**待 merge＝逐字核可；merge 後補送 IndexNow（rotavirus＋index＋dr-tsai＋dr-lee）。** 詳見 00〈續（2026-07-21b，輪狀病毒改掛李醫師）〉。
 
