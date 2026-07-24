@@ -108,7 +108,7 @@
 
 - 腸病毒症狀與重症前兆（手足口病與疱疹性咽峽炎、重症四大前兆〔嗜睡、肌躍型抽搐、持續嘔吐、呼吸急促或心跳加快〕、酒精幾乎無效需肥皂洗手與含氯漂白水消毒、建議隔離約7天、沒有特效藥以支持療法為主、腸病毒71型疫苗可諮詢醫師）：https://lhpedclinic.com.tw/health/enterovirus.html
 - 孩子半夜咳不停是氣喘嗎（兒童久咳評估）：https://lhpedclinic.com.tw/health/child-chronic-cough.html
-- 怎麼判斷小朋友是不是在喘？兒童呼吸急促、喘鳴與危險徵象（聽、數、看三步驟與各年齡呼吸過快門檻）：https://lhpedclinic.com.tw/health/child-wheezing.html
+- 什麼是喘？小朋友喘怎麼辦（兒童喘、喘鳴、呼吸急促觀察與危險徵象）：喘是症狀不是單一疾病，分喘鳴（呼氣咻咻聲）、呼吸急促、呼吸費力三種；小朋友喘常見原因依年齡不同——嬰兒多為細支氣管炎（RSV）、幼兒病毒誘發喘鳴或哮吼、學齡多為氣喘與運動誘發，也可能是肺炎、過敏或異物吸入。在家用聽、數、看三步驟觀察（各年齡呼吸過快門檻：未滿2個月≥60、2–11個月≥50、1–5歲≥40次/分）；出現嘴唇發紫、明顯凹陷、叫不太醒等危險徵象立即就醫或撥119。反覆喘不一定是氣喘、由醫師綜合判斷，院內備肺功能檢測儀：https://lhpedclinic.com.tw/health/child-wheezing.html
 - 孩子久咳發燒是黴漿菌肺炎嗎？「會走路的肺炎」判斷、治療（黴漿菌無細胞壁、一般青黴素無效，需醫師評估與處方抗生素、含抗藥性提醒）與預防：https://lhpedclinic.com.tw/health/mycoplasma-pneumonia.html
 - 兒童蕁麻疹（急性／慢性）原因、過敏原檢測角色與照護（急性多病毒誘發、不一定是食物過敏；慢性多自發性；不單以檢測數值忌口；anaphylaxis 嚴重過敏反應警訊）：https://lhpedclinic.com.tw/health/child-urticaria.html
 - 什麼是麻疹與 MMR 疫苗（含出國前接種提醒）：https://lhpedclinic.com.tw/health/measles.html
