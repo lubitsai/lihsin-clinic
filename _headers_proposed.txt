@@ -1,0 +1,68 @@
+# ===== 立欣診所 CSP 草案（_headers_proposed.txt）=====
+# 建立：2026-07-28｜狀態：草稿，**尚未上線**
+#
+# ⚠️ 這個檔 Netlify 不讀（只讀 `_headers`），放在這裡純粹是讓草案進版控。
+#    要上線＝把下面「正式版」那段貼進 `_headers` 的 `/*` 區塊。
+#
+# ⚠️ 上線程序（internal/00 §6 既有裁示，勿跳過）：
+#    ① 先以 Report-Only 版跑 Netlify Deploy Preview
+#    ② 開 DevTools Console 逐頁看有沒有 CSP 違規回報
+#    ③ 確認零違規後才換成正式版並 merge
+#    直接上正式版會有「靜默擋掉 GA/Clarity/Chatbase/字型」的風險。
+#
+# ── 來源依據（2026-07-28 程式化盤點，非憑印象）──
+# 掃全站 60 個 HTML＋根目錄 js，依標籤類型分別抓外部主機：
+#   script src=       → www.googletagmanager.com
+#   js 動態 .src=     → www.chatbase.co、www.clarity.ms、www.googletagmanager.com
+#   link href=(css)   → fonts.googleapis.com
+#   字型實際下載      → fonts.gstatic.com
+#   iframe src=       → maps.google.com（首頁地圖，1 處）
+#   img src=          → 僅自家網域
+#   fetch/XHR         → 無
+# 其餘外部網域（cdc.gov.tw、hpa.gov.tw、pediatr.org.tw、wikipedia、
+# line.me、mainpi.com、facebook、instagram、g.page、booknow…）**全是
+# <a href> 超連結**，CSP 不管轄，無須列入。
+#
+# ── 各來源對應的指令 ──
+#   Google Fonts   → style-src（CSS）＋ font-src（字型檔）
+#   GA4 gtag       → script-src（googletagmanager）＋ connect-src（google-analytics）
+#   Microsoft Clarity → script-src（www.clarity.ms 載 tag）
+#                     ＋ connect-src（*.clarity.ms 回傳錄影／c.bing.com）
+#   Chatbase       → script-src ＋ connect-src ＋ frame-src（widget 內嵌）
+#   Google Maps    → frame-src（首頁 iframe）
+#
+# ⚠️ 'unsafe-inline' 兩處都拿不掉的原因：
+#   script-src：各頁的 JSON-LD（<script type="application/ld+json">）**受
+#     script-src 管轄**，加上 gtag config 與頁內 inline script，靜態多頁站
+#     沒有 nonce 機制 → 只能保留，或改走 hash（60 頁維護成本過高）。
+#   style-src：各頁有 inline style 屬性與頁內 <style> 區塊。
+#   → 這是靜態站的已知取捨；CSP 在此的價值主要在 object-src/base-uri/
+#     form-action/frame-ancestors 與限制外連白名單，不是擋 XSS 的全部。
+
+
+# ────────────────────────────────────────────────
+# 【第一階段】Report-Only：只回報、不阻擋。先上這個。
+# ────────────────────────────────────────────────
+# 貼進 `_headers` 的 /* 區塊，觀察 Deploy Preview 的 Console：
+
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.chatbase.co https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com https://www.chatbase.co; frame-src 'self' https://maps.google.com https://www.google.com https://www.chatbase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
+
+
+# ────────────────────────────────────────────────
+# 【第二階段】正式版：確認零違規後才換上
+# ────────────────────────────────────────────────
+
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.chatbase.co https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com https://www.chatbase.co; frame-src 'self' https://maps.google.com https://www.google.com https://www.chatbase.co; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
+
+
+# ── 驗收抽測點（Deploy Preview，逐項看 Console 有無違規）──
+#   1. 任一頁：Google Fonts 字型正常載入（版面沒變回系統字）
+#   2. 任一頁 Network：clarity.ms/tag/x1upcbb7fw 有送出、無 CSP 阻擋
+#   3. 任一頁 Network：googletagmanager gtag.js 正常
+#   4. 首頁：右下角 Chatbase 客服對話框開得起來
+#   5. 首頁：Google 地圖 iframe 顯示正常
+#   6. 任一頁：PWA service worker 正常註冊（Application → Service Workers）
+#
+# ── 新增外部服務時記得回來改這裡 ──
+#   加任何第三方 script／iframe／API，都要同步補對應指令，
+#   否則上線後會被靜默擋掉。盤點指令見本檔開頭「來源依據」。
