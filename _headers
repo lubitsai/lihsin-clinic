@@ -24,8 +24,11 @@
 /631da727697dc88a64a8f0b76042c891.txt
   Content-Type: text/plain; charset=utf-8
 
-# 註：Content-Security-Policy(CSP) 尚未上線。外部相依現況（2026-07-10）：
+# 註：Content-Security-Policy(CSP) 尚未上線。外部相依現況（2026-07-28）：
 # CDN Tailwind 已於 2026-06-20 遷移為自載 /tailwind.css、cdnjs(Font Awesome)
 # 已於 2026-07-04 移除；現存外部來源為 Google Fonts、Google Analytics(gtag)、
-# Chatbase widget。CSP 草案（_headers_proposed.txt，院長留存；internal/00 §6
+# Chatbase widget、Microsoft Clarity(www.clarity.ms，2026-07-28 新增)。
+# CSP 草案（_headers_proposed.txt，院長留存；internal/00 §6
 # 待辦）需先過 Netlify Deploy Preview 驗證後才可 merge，勿直接上線。
+# ⚠️ CSP 上線時 script-src／connect-src 須一併放行 https://www.clarity.ms
+# 與 https://*.clarity.ms（Clarity 錄影資料回傳走子網域）。
