@@ -28,7 +28,8 @@
 # CDN Tailwind 已於 2026-06-20 遷移為自載 /tailwind.css、cdnjs(Font Awesome)
 # 已於 2026-07-04 移除；現存外部來源為 Google Fonts、Google Analytics(gtag)、
 # Chatbase widget、Microsoft Clarity(www.clarity.ms，2026-07-28 新增)。
-# CSP 草案（_headers_proposed.txt，院長留存；internal/00 §6
-# 待辦）需先過 Netlify Deploy Preview 驗證後才可 merge，勿直接上線。
-# ⚠️ CSP 上線時 script-src／connect-src 須一併放行 https://www.clarity.ms
-# 與 https://*.clarity.ms（Clarity 錄影資料回傳走子網域）。
+# CSP 草案自 2026-07-28 起入版控：見 repo 根目錄 /_headers_proposed.txt
+#（已由 _redirects 第 5 節攔成 404、不對外）。該檔含 Report-Only 與正式
+# 兩版、來源盤點依據與驗收抽測點，Clarity 放行已含在內。
+# 上線程序（internal/00 §6 裁示）：先貼 Report-Only 版跑 Netlify Deploy
+# Preview 確認零違規，才換正式版 merge，**勿直接上正式版**。
