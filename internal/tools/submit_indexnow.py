@@ -10,9 +10,13 @@ api.indexnow.org（IndexNow 協定會自動分享給所有參與的搜尋引擎�
 上線後執行；純技術層批次（href、schema class 等）不需執行。
 
 用法：
-  python3 internal/tools/submit_indexnow.py [--root .] [--dry]
+  python3 internal/tools/submit_indexnow.py [--root .] [--dry] [--only URL ...]
 
-  --dry  只列出將提交的 payload，不實際送出。
+  --dry   只列出將提交的 payload，不實際送出。
+  --only  只提交指定的 URL（可給多個），不送全站。每個 URL 都必須在
+          sitemap.xml 內，否則直接中止——避免送出站上不存在的位址。
+          用於「單頁實質更新、其餘頁面沒動」的批次，例如 2026-07-29
+          首頁頁面層節點整併批只需要重抓首頁一頁。
 
 環境需求：執行環境的網路政策須允許 api.indexnow.org
 （Claude Code 環境設定 → Network access → Custom → Allowed domains；
@@ -36,6 +40,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=".")
     ap.add_argument("--dry", action="store_true")
+    ap.add_argument("--only", nargs="+", metavar="URL",
+                    help="只提交指定 URL（須在 sitemap 內），不送全站")
     args = ap.parse_args()
     root = Path(args.root).resolve()
 
@@ -52,6 +58,14 @@ def main():
              and not (u in seen or seen.add(u))]
     if not pages:
         sys.exit("❌ sitemap 未解析出任何頁面 URL")
+
+    if args.only:
+        missing = [u for u in args.only if u not in pages]
+        if missing:
+            sys.exit("❌ 下列 URL 不在 sitemap 內，拒絕提交：\n  "
+                     + "\n  ".join(missing))
+        pages = list(dict.fromkeys(args.only))
+        print(f"（--only）僅提交指定的 {len(pages)} 條，不送全站")
 
     payload = {
         "host": "lhpedclinic.com.tw",
