@@ -1759,52 +1759,6 @@
 }
  </script>
 
- <!-- 5. MedicalAudience 分眾定義（GEO 強化，幫助 AI 精準推薦給對的族群）-->
- <script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "MedicalWebPage",
- "@id": "https://lhpedclinic.com.tw/#webpage-audience",
- "url": "https://lhpedclinic.com.tw/",
- "name": "立欣診所服務對象說明",
- "audience": [
- {
- "@type": "MedicalAudience",
- "audienceType": "新手父母・新生兒家庭",
- "healthCondition": {"@type": "MedicalCondition", "name": "新生兒照護・黃疸・餵食評估"},
- "suggestedMinAge": 0,
- "suggestedMaxAge": 1
- },
- {
- "@type": "MedicalAudience",
- "audienceType": "過敏氣喘兒童家長",
- "healthCondition": {"@type": "MedicalCondition", "name": "兒童氣喘・過敏性鼻炎・異位性皮膚炎"},
- "suggestedMinAge": 0,
- "suggestedMaxAge": 18
- },
- {
- "@type": "MedicalAudience",
- "audienceType": "疫苗接種需求者",
- "healthCondition": {"@type": "MedicalCondition", "name": "公費疫苗・自費疫苗・帶狀疱疹疫苗・HPV疫苗"},
- "suggestedMinAge": 0,
- "suggestedMaxAge": 99
- },
- {
- "@type": "MedicalAudience",
- "audienceType": "成人體重管理需求者",
- "healthCondition": {"@type": "MedicalCondition", "name": "肥胖・代謝症候群・BMI≧24"},
- "suggestedMinAge": 18,
- "suggestedMaxAge": 65
- },
- {
- "@type": "MedicalAudience",
- "audienceType": "台南北區上班族家庭",
- "description": "需要平日夜診（至21:30）及週末假日門診的雙薪家庭，就診地點為台南市北區育德路467號"
- }
- ]
-}
- </script>
-
  <!-- 7. SpecialAnnouncement：夜診與假日門診特色聲明 -->
  <script type="application/ld+json">
 {
@@ -1817,117 +1771,6 @@
  "announcementLocation": {"@id": "https://lhpedclinic.com.tw/#organization"},
  "spatialCoverage": {"@type": "Place", "name": "台南市北區"},
  "diseaseSpreadStatistics": []
-}
- </script>
-
- <!-- 8. 強化 MedicalWebPage speakable（GEO 語音＆AI 引用擴充）-->
- <script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "MedicalWebPage",
- "@id": "https://lhpedclinic.com.tw/#medical-webpage",
- "url": "https://lhpedclinic.com.tw/",
- "name": "立欣診所 — 台南北區小兒科・兒童過敏氣喘・假日兒科・疫苗接種・科學減重",
- "description": "立欣診所位於台南市北區育德路467號（鄰近成大醫院、台南公園、長榮中學），是一間提供台南假日兒科服務（週六、週日均有門診，平日上午/下午/夜診三段，含夜診至21:30）的基層醫療機構。由馬偕兒童過敏氣喘免疫風濕科訓練背景的蔡宗儒院長主持，搭配具國泰醫院新生兒次專科訓練的李佳玲醫師。服務內容涵蓋：小兒科一般診療、兒童過敏氣喘評估（含院內肺功能檢測）、新生兒照護、慢性久咳鑑別、異位性皮膚炎照護、完整公費自費疫苗（RSV 單株抗體樂唯初 Beyfortus、HPV 嘉喜 9 價、帶狀皰疹疫苗欣剋疹 Shingrix 等）、科學減重門診（InBody 體組成分析）、家庭醫學成人慢性病追蹤。服務範圍涵蓋台南市北區、東區、中西區、永康區、安南區、南區、仁德區。",
- "specialty": ["Pediatrics", "Allergy and Immunology", "Family Medicine", "Obesity Medicine", "Preventive Medicine"],
- "lastReviewed": "2026-05-15T09:00:00+08:00",
- "dateModified": "2026-07-27T12:00:00+08:00",
- "reviewedBy": {
- "@type": "Person",
- "name": "蔡宗儒",
- "honorificSuffix": "醫師・院長",
- "jobTitle": "小兒科醫師・台灣肥胖醫學會醫師",
- "url": "https://lhpedclinic.com.tw/#physician-tsai",
- "hasCredential": [
- {"@type": "EducationalOccupationalCredential", "name": "醫學士暨公共衛生碩士", "recognizedBy": {"@type": "Organization", "name": "中國醫藥大學"}},
- {"@type": "EducationalOccupationalCredential", "name": "兒童過敏氣喘免疫風濕科研究醫師", "recognizedBy": {"@type": "Organization", "name": "馬偕兒童醫院"}},
- {"@type": "EducationalOccupationalCredential", "name": "兒科主治醫師", "recognizedBy": {"@type": "Organization", "name": "天主教輔仁大學醫院"}},
- {"@type": "EducationalOccupationalCredential", "name": "兒科臨床進修", "recognizedBy": {"@type": "Organization", "name": "日本順天堂大學醫院"}}
- ],
- "memberOf": [
- {"@type": "Organization", "name": "台灣肥胖醫學會"},
- {"@type": "Organization", "name": "台灣兒科醫學會"},
- {"@type": "Organization", "name": "台灣兒童過敏氣喘免疫及風濕病醫學會"}
- ]
- },
- "speakable": {
- "@type": "SpeakableSpecification",
- "cssSelector": [
- "h1", "h2", "h3",
- ".faq-question-title",
- ".faq-answer",
- "#ai-knowledge-block",
- "#eeat-credentials",
- ".health-tip-summary",
- "section#schedule",
- "section#team",
- "section#faq",
- "section#services",
- "section#contact",
- ".hero-bg p",
- "#clinic-trust-summary",
- ".speakable-summary",
- ".clinic-address",
- ".clinic-phone",
- ".doctor-intro"
- ],
- "xpath": [
- "/html/body//*[@id='schedule']//table",
- "/html/body//*[@id='contact']//*[contains(@class,'font-chinese')]"
- ]
- },
- "inLanguage": {"@type": "Language", "name": "Chinese", "alternateName": "zh-TW"},
- "isPartOf": {"@type": "WebSite", "@id": "https://lhpedclinic.com.tw/#website"},
- "about": [
- {"@type": "Thing", "name": "台南北區小兒科"},
- {"@type": "Thing", "name": "台南假日兒科"},
- {"@type": "Thing", "name": "台南夜間門診"},
- {"@type": "Thing", "name": "兒童過敏氣喘"},
- {"@type": "Thing", "name": "兒童慢性久咳評估"},
- {"@type": "Thing", "name": "新生兒照護"},
- {"@type": "Thing", "name": "新生兒黃疸追蹤"},
- {"@type": "Thing", "name": "自費疫苗"},
- {"@type": "Thing", "name": "RSV 長效型單株抗體（樂唯初 Beyfortus）"},
- {"@type": "Thing", "name": "HPV 疫苗（嘉喜 9 價）"},
- {"@type": "Thing", "name": "帶狀皰疹疫苗（欣剋疹 Shingrix）"},
- {"@type": "Thing", "name": "科學減重門診"},
- {"@type": "Thing", "name": "InBody 身體組成分析"},
- {"@type": "Thing", "name": "家庭醫學・成人慢性病追蹤"},
- {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
- {"@type": "MedicalCondition", "name": "過敏性鼻炎"},
- {"@type": "MedicalCondition", "name": "兒童氣喘"}
- ],
- "primaryImageOfPage": {
- "@type": "ImageObject",
- "url": "https://lhpedclinic.com.tw/images/og-image.jpg",
- "width": 1200,
- "height": 630
- },
- "mainContentOfPage": [
- {"@type": "WebPageElement", "name": "門診時間表", "cssSelector": "section#schedule"},
- {"@type": "WebPageElement", "name": "服務項目", "cssSelector": "section#services"},
- {"@type": "WebPageElement", "name": "醫療團隊", "cssSelector": "section#team"},
- {"@type": "WebPageElement", "name": "院長的話", "cssSelector": "section#director-message"},
- {"@type": "WebPageElement", "name": "衛教知識", "cssSelector": "section#health-tips"},
- {"@type": "WebPageElement", "name": "免排雲端・即時看診進度", "cssSelector": "section#realtime-progress"},
- {"@type": "WebPageElement", "name": "常見問題", "cssSelector": "section#faq"},
- {"@type": "WebPageElement", "name": "聯絡資訊", "cssSelector": "section#contact"}
- ],
- "significantLink": [
- "https://lhpedclinic.com.tw/#schedule",
- "https://lhpedclinic.com.tw/#services",
- "https://lhpedclinic.com.tw/#team",
- "https://lhpedclinic.com.tw/#faq",
- "https://lhpedclinic.com.tw/#contact"
- ],
- "audience": {
- "@type": "PeopleAudience",
- "audienceType": "兒童家長、新生兒父母、雙薪家庭、成人慢性病患者、有減重需求之民眾",
- "geographicArea": {
- "@type": "AdministrativeArea",
- "name": "台南市"
- }
- }
 }
  </script>
 
@@ -2111,89 +1954,132 @@
 }
  </script>
 
- <!-- ══ 14. WebPage + Speakable（GEO/AEO：供 AI 語音與 Overview 直接引用）══ -->
+ <!-- ══ 14. MedicalWebPage（本頁唯一頁面層節點；2026-07-29 由原 5. MedicalAudience 分眾、8. MedicalWebPage speakable、14. WebPage 三節點整併而成）══ -->
  <script type="application/ld+json">
 {
  "@context": "https://schema.org",
- "@type": "WebPage",
+ "@type": "MedicalWebPage",
  "@id": "https://lhpedclinic.com.tw/#webpage",
  "url": "https://lhpedclinic.com.tw/",
  "name": "立欣診所｜台南北區小兒科・兒童過敏氣喘・疫苗接種・假日夜診",
+ "alternateName": "立欣診所 — 台南北區小兒科・兒童過敏氣喘・假日兒科・疫苗接種・科學減重",
  "headline": "立欣診所 LiHsin Clinic — 台南市北區小兒科診所",
  "description": "立欣診所位於台南市北區育德路467號，提供台南假日兒科服務（週六、週日均有門診，平日三段門診含夜診至21:30）。院長蔡宗儒醫師具馬偕兒童過敏氣喘免疫風濕科訓練背景，李佳玲醫師具國泰醫院新生兒次專科訓練。服務項目含小兒科、兒童過敏氣喘、新生兒照護、公費自費疫苗接種、科學減重及家庭醫學。鄰近成大醫院、台南公園、長榮中學。",
- "inLanguage": "zh-TW",
- "isPartOf": {
- "@type": "WebSite",
- "@id": "https://lhpedclinic.com.tw/#website",
- "url": "https://lhpedclinic.com.tw/",
- "name": "立欣診所 LiHsin Clinic"
- },
- "about": [
- {"@id": "https://lhpedclinic.com.tw/#organization"},
- {"@type": "Thing", "name": "台南市北區小兒科診療服務"},
- {"@type": "Thing", "name": "兒童過敏氣喘照護"},
- {"@type": "Thing", "name": "新生兒醫療照護"},
- {"@type": "Thing", "name": "公費及自費疫苗接種"},
- {"@type": "Thing", "name": "家庭醫學與預防保健"},
- {"@type": "Thing", "name": "科學減重門診"}
- ],
- "mentions": [
- {"@type": "Substance", "name": "RSV 長效型單株抗體（樂唯初 Beyfortus，nirsevimab）"},
- {"@type": "Substance", "name": "HPV 9 價疫苗（嘉喜 Gardasil 9）"},
- {"@type": "Substance", "name": "帶狀皰疹疫苗（欣剋疹 Shingrix）"},
- {"@type": "Substance", "name": "B 型腦脊髓膜炎疫苗（Bexsero 必思諾）"},
- {"@type": "Substance", "name": "15 價肺炎鏈球菌疫苗"},
- {"@type": "Substance", "name": "輪狀病毒疫苗"},
- {"@type": "Substance", "name": "腸病毒 71 型疫苗"},
- {"@type": "Substance", "name": "麻疹腮腺炎德國麻疹疫苗（MMR）"},
- {"@type": "MedicalCondition", "name": "兒童氣喘"},
- {"@type": "MedicalCondition", "name": "過敏性鼻炎"},
- {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
- {"@type": "MedicalCondition", "name": "兒童慢性久咳"},
- {"@type": "MedicalCondition", "name": "新生兒黃疸"}
- ],
- "primaryImageOfPage": {
- "@type": "ImageObject",
- "url": "https://lhpedclinic.com.tw/images/og-image.jpg",
- "width": 1200,
- "height": 630
- },
+ "abstract": "立欣診所位於台南市北區育德路467號（鄰近成大醫院、台南公園、長榮中學），是一間提供台南假日兒科服務（週六、週日均有門診，平日上午/下午/夜診三段，含夜診至21:30）的基層醫療機構。由馬偕兒童過敏氣喘免疫風濕科訓練背景的蔡宗儒院長主持，搭配具國泰醫院新生兒次專科訓練的李佳玲醫師。服務內容涵蓋：小兒科一般診療、兒童過敏氣喘評估（含院內肺功能檢測）、新生兒照護、慢性久咳鑑別、異位性皮膚炎照護、完整公費自費疫苗（RSV 單株抗體樂唯初 Beyfortus、HPV 嘉喜 9 價、帶狀皰疹疫苗欣剋疹 Shingrix 等）、科學減重門診（InBody 體組成分析）、家庭醫學成人慢性病追蹤。服務範圍涵蓋台南市北區、東區、中西區、永康區、安南區、南區、仁德區。",
+ "specialty": ["Pediatrics", "Allergy and Immunology", "Family Medicine", "Obesity Medicine", "Preventive Medicine"],
+ "inLanguage": {"@type": "Language", "name": "Chinese", "alternateName": "zh-TW"},
+ "isPartOf": {"@type": "WebSite", "@id": "https://lhpedclinic.com.tw/#website", "url": "https://lhpedclinic.com.tw/", "name": "立欣診所 LiHsin Clinic"},
  "datePublished": "2024-07-01",
  "dateModified": "2026-07-27T12:00:00+08:00",
+ "lastReviewed": "2026-05-15T09:00:00+08:00",
+ "reviewedBy": {
+  "@type": "Person",
+  "@id": "https://lhpedclinic.com.tw/#physician-tsai",
+  "name": "蔡宗儒",
+  "honorificSuffix": "醫師・院長",
+  "jobTitle": "小兒科醫師・台灣肥胖醫學會醫師",
+  "url": "https://lhpedclinic.com.tw/#physician-tsai",
+  "hasCredential": [
+   {"@type": "EducationalOccupationalCredential", "name": "醫學士暨公共衛生碩士", "recognizedBy": {"@type": "Organization", "name": "中國醫藥大學"}},
+   {"@type": "EducationalOccupationalCredential", "name": "兒童過敏氣喘免疫風濕科研究醫師", "recognizedBy": {"@type": "Organization", "name": "馬偕兒童醫院"}},
+   {"@type": "EducationalOccupationalCredential", "name": "兒科主治醫師", "recognizedBy": {"@type": "Organization", "name": "天主教輔仁大學醫院"}},
+   {"@type": "EducationalOccupationalCredential", "name": "兒科臨床進修", "recognizedBy": {"@type": "Organization", "name": "日本順天堂大學醫院"}}
+  ],
+  "memberOf": [{"@type": "Organization", "name": "台灣肥胖醫學會"}, {"@type": "Organization", "name": "台灣兒科醫學會"}, {"@type": "Organization", "name": "台灣兒童過敏氣喘免疫及風濕病醫學會"}]
+ },
+ "about": [
+  {"@id": "https://lhpedclinic.com.tw/#organization"},
+  {"@type": "Thing", "name": "台南北區小兒科"},
+  {"@type": "Thing", "name": "台南假日兒科"},
+  {"@type": "Thing", "name": "台南夜間門診"},
+  {"@type": "Thing", "name": "兒童過敏氣喘"},
+  {"@type": "Thing", "name": "兒童慢性久咳評估"},
+  {"@type": "Thing", "name": "新生兒照護"},
+  {"@type": "Thing", "name": "新生兒黃疸追蹤"},
+  {"@type": "Thing", "name": "自費疫苗"},
+  {"@type": "Thing", "name": "RSV 長效型單株抗體（樂唯初 Beyfortus）"},
+  {"@type": "Thing", "name": "HPV 疫苗（嘉喜 9 價）"},
+  {"@type": "Thing", "name": "帶狀皰疹疫苗（欣剋疹 Shingrix）"},
+  {"@type": "Thing", "name": "科學減重門診"},
+  {"@type": "Thing", "name": "InBody 身體組成分析"},
+  {"@type": "Thing", "name": "家庭醫學・成人慢性病追蹤"},
+  {"@type": "Thing", "name": "台南市北區小兒科診療服務"},
+  {"@type": "Thing", "name": "兒童過敏氣喘照護"},
+  {"@type": "Thing", "name": "新生兒醫療照護"},
+  {"@type": "Thing", "name": "公費及自費疫苗接種"},
+  {"@type": "Thing", "name": "家庭醫學與預防保健"},
+  {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
+  {"@type": "MedicalCondition", "name": "過敏性鼻炎"},
+  {"@type": "MedicalCondition", "name": "兒童氣喘"}
+ ],
+ "mentions": [
+  {"@type": "Substance", "name": "RSV 長效型單株抗體（樂唯初 Beyfortus，nirsevimab）"},
+  {"@type": "Substance", "name": "HPV 9 價疫苗（嘉喜 Gardasil 9）"},
+  {"@type": "Substance", "name": "帶狀皰疹疫苗（欣剋疹 Shingrix）"},
+  {"@type": "Substance", "name": "B 型腦脊髓膜炎疫苗（Bexsero 必思諾）"},
+  {"@type": "Substance", "name": "15 價肺炎鏈球菌疫苗"},
+  {"@type": "Substance", "name": "輪狀病毒疫苗"},
+  {"@type": "Substance", "name": "腸病毒 71 型疫苗"},
+  {"@type": "Substance", "name": "麻疹腮腺炎德國麻疹疫苗（MMR）"},
+  {"@type": "MedicalCondition", "name": "兒童氣喘"},
+  {"@type": "MedicalCondition", "name": "過敏性鼻炎"},
+  {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
+  {"@type": "MedicalCondition", "name": "兒童慢性久咳"},
+  {"@type": "MedicalCondition", "name": "新生兒黃疸"}
+ ],
+ "audience": [
+  {"@type": "PeopleAudience", "audienceType": "兒童家長、新生兒父母、雙薪家庭、成人慢性病患者、有減重需求之民眾", "geographicArea": {"@type": "AdministrativeArea", "name": "台南市"}},
+  {"@type": "MedicalAudience", "audienceType": "新手父母・新生兒家庭", "healthCondition": {"@type": "MedicalCondition", "name": "新生兒照護・黃疸・餵食評估"}, "suggestedMinAge": 0, "suggestedMaxAge": 1},
+  {"@type": "MedicalAudience", "audienceType": "過敏氣喘兒童家長", "healthCondition": {"@type": "MedicalCondition", "name": "兒童氣喘・過敏性鼻炎・異位性皮膚炎"}, "suggestedMinAge": 0, "suggestedMaxAge": 18},
+  {"@type": "MedicalAudience", "audienceType": "疫苗接種需求者", "healthCondition": {"@type": "MedicalCondition", "name": "公費疫苗・自費疫苗・帶狀疱疹疫苗・HPV疫苗"}, "suggestedMinAge": 0, "suggestedMaxAge": 99},
+  {"@type": "MedicalAudience", "audienceType": "成人體重管理需求者", "healthCondition": {"@type": "MedicalCondition", "name": "肥胖・代謝症候群・BMI≧24"}, "suggestedMinAge": 18, "suggestedMaxAge": 65},
+  {"@type": "MedicalAudience", "audienceType": "台南北區上班族家庭", "description": "需要平日夜診（至21:30）及週末假日門診的雙薪家庭，就診地點為台南市北區育德路467號"}
+ ],
+ "primaryImageOfPage": {"@type": "ImageObject", "url": "https://lhpedclinic.com.tw/images/og-image.jpg", "width": 1200, "height": 630},
+ "mainContentOfPage": [
+  {"@type": "WebPageElement", "name": "門診時間表", "cssSelector": "section#schedule"},
+  {"@type": "WebPageElement", "name": "服務項目", "cssSelector": "section#services"},
+  {"@type": "WebPageElement", "name": "醫療團隊", "cssSelector": "section#team"},
+  {"@type": "WebPageElement", "name": "院長的話", "cssSelector": "section#director-message"},
+  {"@type": "WebPageElement", "name": "衛教知識", "cssSelector": "section#health-tips"},
+  {"@type": "WebPageElement", "name": "免排雲端・即時看診進度", "cssSelector": "section#realtime-progress"},
+  {"@type": "WebPageElement", "name": "常見問題", "cssSelector": "section#faq"},
+  {"@type": "WebPageElement", "name": "聯絡資訊", "cssSelector": "section#contact"}
+ ],
+ "significantLink": ["https://lhpedclinic.com.tw/#schedule", "https://lhpedclinic.com.tw/#services", "https://lhpedclinic.com.tw/#team", "https://lhpedclinic.com.tw/#faq", "https://lhpedclinic.com.tw/#contact"],
  "speakable": {
- "@type": "SpeakableSpecification",
- "cssSelector": [
- "h1",
- "h2",
- "h3",
- ".faq-question-title",
- ".faq-answer",
- ".health-tip-card p",
- "#geo-qa-block",
- "#ai-knowledge-block",
- "#clinic-trust-summary",
- ".eeat-author-block",
- "section#faq",
- "section#schedule",
- "section#realtime-progress"
- ]
+  "@type": "SpeakableSpecification",
+  "cssSelector": [
+   "h1",
+   "h2",
+   "h3",
+   ".faq-question-title",
+   ".faq-answer",
+   ".health-tip-card p",
+   "#geo-qa-block",
+   "#ai-knowledge-block",
+   "#clinic-trust-summary",
+   ".eeat-author-block",
+   "section#faq",
+   "section#schedule",
+   "section#realtime-progress",
+   "#eeat-credentials",
+   ".health-tip-summary",
+   "section#team",
+   "section#services",
+   "section#contact",
+   ".hero-bg p",
+   ".speakable-summary",
+   ".clinic-address",
+   ".clinic-phone",
+   ".doctor-intro"
+  ],
+  "xpath": ["/html/body//*[@id='schedule']//table", "/html/body//*[@id='contact']//*[contains(@class,'font-chinese')]"]
  },
  "potentialAction": [
- {
- "@type": "ReserveAction",
- "name": "LINE 預約",
- "target": "https://line.me/R/ti/p/@lhpedclinic"
- },
- {
- "@type": "ContactAction",
- "name": "電話聯絡",
- "target": "tel:062516086"
- },
- {
- "@type": "ViewAction",
- "name": "查詢即時看診進度",
- "target": "https://www.mainpi.com/query?i=2935"
- }
+  {"@type": "ReserveAction", "name": "LINE 預約", "target": "https://line.me/R/ti/p/@lhpedclinic"},
+  {"@type": "ContactAction", "name": "電話聯絡", "target": "tel:062516086"},
+  {"@type": "ViewAction", "name": "查詢即時看診進度", "target": "https://www.mainpi.com/query?i=2935"}
  ]
 }
  </script>
