@@ -162,6 +162,21 @@
  "priceRange": "$$",
  "foundingDate": "2024-07", "isAcceptingNewPatients": true, "currenciesAccepted": "TWD",
  "paymentAccepted": "現金、信用卡、健保",
+ "numberOfEmployees": {"@type": "QuantitativeValue", "minValue": 5, "maxValue": 15},
+ "hasCredential": [
+ {
+ "@type": "EducationalOccupationalCredential",
+ "name": "衛生福利部診所開業執照",
+ "credentialCategory": "license",
+ "recognizedBy": {"@type": "Organization", "name": "衛生福利部"}
+ },
+ {
+ "@type": "EducationalOccupationalCredential",
+ "name": "健保特約醫療機構",
+ "credentialCategory": "certification",
+ "recognizedBy": {"@type": "Organization", "name": "衛生福利部中央健康保險署"}
+ }
+ ],
  "openingHoursSpecification": [
  {
  "@type": "OpeningHoursSpecification",
@@ -581,8 +596,8 @@
  "memberOf": {"@id": "https://lhpedclinic.com.tw/#organization"},
  "knowsAbout": [
  {"@type": "MedicalCondition", "name": "兒童過敏"},
- {"@type": "MedicalCondition", "name": "兒童氣喘"},
- {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-asthma", "name": "兒童氣喘"},
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-atopic-dermatitis", "name": "異位性皮膚炎"},
  {"@type": "MedicalCondition", "name": "慢性鼻炎"},
  {"@type": "MedicalCondition", "name": "肥胖症"},
  {"@type": "Thing", "name": "科學減重"},
@@ -770,15 +785,7 @@
  "alternateName": ["LiHsin Clinic", "立欣小兒科", "立欣診所 LiHsin Clinic"],
  "description": "台南市北區小兒科・兒童過敏氣喘・疫苗接種・家庭醫學照護・科學減重診所",
  "inLanguage": "zh-TW",
- "publisher": {"@id": "https://lhpedclinic.com.tw/#organization"},
- "potentialAction": {
- "@type": "SearchAction",
- "target": {
- "@type": "EntryPoint",
- "urlTemplate": "https://lhpedclinic.com.tw/?s={search_term_string}"
- },
- "query": "required name=search_term_string"
- }
+ "publisher": {"@id": "https://lhpedclinic.com.tw/#organization"}
 }
  </script>
 
@@ -1590,10 +1597,12 @@
 {
  "@context": "https://schema.org",
  "@type": "MedicalCondition",
+ "@id": "https://lhpedclinic.com.tw/#condition-asthma",
  "name": "兒童氣喘",
  "alternateName": [
  "小兒氣喘",
  "兒童哮喘",
+ "支氣管氣喘",
  "Childhood Asthma",
  "台南氣喘",
  "台南氣喘推薦",
@@ -1643,7 +1652,15 @@
  "@type": "MedicalProcedure",
  "name": "肺功能監測"
  }
- ]
+ ],
+ "associatedAnatomy": {
+ "@type": "AnatomicalStructure",
+ "name": "支氣管"
+ },
+ "relevantSpecialty": {
+ "@type": "MedicalSpecialty",
+ "name": "Pediatric"
+ }
 }
  </script>
  <!-- AI SEO / GEO 強化 meta 標籤 -->
@@ -1694,6 +1711,7 @@
 {
  "@context": "https://schema.org",
  "@type": "MedicalCondition",
+ "@id": "https://lhpedclinic.com.tw/#condition-atopic-dermatitis",
  "name": "異位性皮膚炎",
  "alternateName": [
    "兒童濕疹",
@@ -1730,6 +1748,7 @@
 {
  "@context": "https://schema.org",
  "@type": "MedicalCondition",
+ "@id": "https://lhpedclinic.com.tw/#condition-allergic-rhinitis",
  "name": "過敏性鼻炎",
  "alternateName": [
  "兒童鼻過敏",
@@ -1833,7 +1852,8 @@
  "lastReviewed": "2026-05-15T09:00:00+08:00",
  "dateModified": "2026-07-27T12:00:00+08:00",
  "reviewedBy": {
- "@type": "Person",
+ "@type": "Physician",
+ "@id": "https://lhpedclinic.com.tw/#physician-tsai",
  "name": "蔡宗儒",
  "honorificSuffix": "醫師・院長",
  "jobTitle": "小兒科醫師・台灣肥胖醫學會醫師",
@@ -1893,9 +1913,9 @@
  {"@type": "Thing", "name": "科學減重門診"},
  {"@type": "Thing", "name": "InBody 身體組成分析"},
  {"@type": "Thing", "name": "家庭醫學・成人慢性病追蹤"},
- {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
- {"@type": "MedicalCondition", "name": "過敏性鼻炎"},
- {"@type": "MedicalCondition", "name": "兒童氣喘"}
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-atopic-dermatitis", "name": "異位性皮膚炎"},
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-allergic-rhinitis", "name": "過敏性鼻炎"},
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-asthma", "name": "兒童氣喘"}
  ],
  "primaryImageOfPage": {
  "@type": "ImageObject",
@@ -1931,56 +1951,14 @@
 }
  </script>
 
- <!-- 9. MedicalOrganization foundingDate & credentials（強化 EEAT 機構可信度）-->
- <script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "MedicalOrganization",
- "@id": "https://lhpedclinic.com.tw/#medical-org",
- "name": "立欣診所",
- "alternateName": "立欣診所 LiHsin Clinic",
- "url": "https://lhpedclinic.com.tw",
- "telephone": "+886-6-2516086",
- "email": "lhpedclinic@gmail.com",
- "image": "https://lhpedclinic.com.tw/images/og-image.jpg",
- "logo": "https://lhpedclinic.com.tw/images/logo.png",
- "priceRange": "$$",
- "address": {
- "@type": "PostalAddress",
- "streetAddress": "育德路467號",
- "addressLocality": "北區",
- "addressRegion": "台南市",
- "postalCode": "70457",
- "addressCountry": "TW"
- },
- "foundingDate": "2024-07-01",
- "numberOfEmployees": {"@type": "QuantitativeValue", "minValue": 5, "maxValue": 15},
- "hasCredential": [
- {
- "@type": "EducationalOccupationalCredential",
- "name": "衛生福利部診所開業執照",
- "credentialCategory": "license",
- "recognizedBy": {"@type": "Organization", "name": "衛生福利部"}
- },
- {
- "@type": "EducationalOccupationalCredential",
- "name": "健保特約醫療機構",
- "credentialCategory": "certification",
- "recognizedBy": {"@type": "Organization", "name": "衛生福利部中央健康保險署"}
- }
- ],
- "employee": [
- {"@id": "https://lhpedclinic.com.tw/#physician-tsai"},
- {"@id": "https://lhpedclinic.com.tw/#physician-lee"}
- ],
- "parentOrganization": {
- "@type": "Organization",
- "name": "台灣兒科醫學會",
- "url": "https://www.pediatr.org.tw"
- }
-}
- </script>
- 
+ <!-- 9. 機構 EEAT 憑證（開業執照／健保特約）
+      2026-07-29：本區塊原為 @id "#medical-org" 的第二個機構節點，與 head 內 #organization
+      指向同一間診所卻各自宣告名稱、地址、電話、開業日（2024-07-01 vs 2024-07）＝同一實體兩個節點。
+      已將其獨有欄位（hasCredential 開業執照與健保特約、numberOfEmployees）併入 #organization，
+      其餘欄位皆為重複、本區塊移除。
+      另移除原 "parentOrganization: 台灣兒科醫學會"：學會非本診所之母機構，該寫法在實體圖上
+      等同宣告從屬與背書關係（00 §4-7 精神）；醫學會會籍屬醫師個人，已載於 #physician-tsai 的 memberOf。 -->
+
  <!-- ══ 10. HowTo Schema：科學減重流程（AEO 快速答案優化）══ -->
  <script type="application/ld+json">
 {
@@ -2067,7 +2045,7 @@
  "description": "由立欣診所院長蔡宗儒醫師審閱的兒童健康衛教知識，涵蓋發燒判斷、氣喘照護、疫苗接種、新生兒護理及科學減重。",
  "dateModified": "2026-06-12T10:00:00+08:00", "lastReviewed": "2026-06-12T09:00:00+08:00",
  "reviewedBy": {
- "@type": "Person",
+ "@type": "Physician",
  "@id": "https://lhpedclinic.com.tw/#physician-tsai",
  "name": "蔡宗儒",
  "honorificSuffix": "醫師・院長",
@@ -2085,31 +2063,11 @@
 }
  </script>
 
- <!-- ══ 13. MedicalCondition：兒童氣喘（補齊知識圖譜）══ -->
- <script type="application/ld+json">
-{
- "@context": "https://schema.org",
- "@type": "MedicalCondition",
- "name": "兒童氣喘",
- "alternateName": ["Childhood Asthma", "小兒氣喘", "支氣管氣喘"],
- "code": {"@type": "MedicalCode", "code": "J45", "codingSystem": "ICD-10"},
- "description": "兒童氣喘是慢性氣道發炎疾病，台灣兒童盛行率約10至15%，主要症狀為反覆喘鳴、咳嗽、胸悶及呼吸困難，夜間及運動後更明顯。現代醫學以「良好控制」為目標，多數孩子在規律吸入性類固醇與環境調整下可達無症狀生活。立欣診所院長蔡宗儒醫師具馬偕兒童過敏氣喘免疫風濕科訓練，引進院內肺功能檢測儀，提供台南北區標準化氣喘評估。",
- "signOrSymptom": [
- {"@type": "MedicalSymptom", "name": "反覆喘鳴"},
- {"@type": "MedicalSymptom", "name": "夜間咳嗽"},
- {"@type": "MedicalSymptom", "name": "運動後呼吸困難"},
- {"@type": "MedicalSymptom", "name": "胸悶"}
- ],
- "possibleTreatment": [
- {"@type": "MedicalProcedure", "name": "吸入性類固醇（ICS）長期控制"},
- {"@type": "MedicalProcedure", "name": "支氣管擴張劑（SABA）緩解"},
- {"@type": "MedicalProcedure", "name": "肺功能檢測追蹤"},
- {"@type": "MedicalProcedure", "name": "過敏原迴避與環境改善"}
- ],
- "associatedAnatomy": {"@type": "AnatomicalStructure", "name": "支氣管"},
- "relevantSpecialty": {"@type": "MedicalSpecialty", "name": "Pediatric"}
-}
- </script>
+ <!-- ══ 13. MedicalCondition：兒童氣喘 ══
+      2026-07-29：本區塊原為第二個「兒童氣喘」MedicalCondition 節點（與 head 內既有節點同名同 ICD-10 J45、
+      但無 @id 且欄位不一致 → 同一頁出現兩個互相競爭的疾病實體）。已合併至 head 內的
+      #condition-asthma 單一節點（該節點已納入本區塊獨有的 alternateName「支氣管氣喘」、
+      associatedAnatomy、relevantSpecialty），本區塊移除以維持一實體一節點。 -->
 
  <!-- ══ 14. WebPage + Speakable（GEO/AEO：供 AI 語音與 Overview 直接引用）══ -->
  <script type="application/ld+json">
@@ -2122,12 +2080,7 @@
  "headline": "立欣診所 LiHsin Clinic — 台南市北區小兒科診所",
  "description": "立欣診所位於台南市北區育德路467號，提供台南假日兒科服務（週六、週日均有門診，平日三段門診含夜診至21:30）。院長蔡宗儒醫師具馬偕兒童過敏氣喘免疫風濕科訓練背景，李佳玲醫師具國泰醫院新生兒次專科訓練。服務項目含小兒科、兒童過敏氣喘、新生兒照護、公費自費疫苗接種、科學減重及家庭醫學。鄰近成大醫院、台南公園、長榮中學。",
  "inLanguage": "zh-TW",
- "isPartOf": {
- "@type": "WebSite",
- "@id": "https://lhpedclinic.com.tw/#website",
- "url": "https://lhpedclinic.com.tw/",
- "name": "立欣診所 LiHsin Clinic"
- },
+ "isPartOf": {"@type": "WebSite", "@id": "https://lhpedclinic.com.tw/#website"},
  "about": [
  {"@id": "https://lhpedclinic.com.tw/#organization"},
  {"@type": "Thing", "name": "台南市北區小兒科診療服務"},
@@ -2146,9 +2099,9 @@
  {"@type": "Substance", "name": "輪狀病毒疫苗"},
  {"@type": "Substance", "name": "腸病毒 71 型疫苗"},
  {"@type": "Substance", "name": "麻疹腮腺炎德國麻疹疫苗（MMR）"},
- {"@type": "MedicalCondition", "name": "兒童氣喘"},
- {"@type": "MedicalCondition", "name": "過敏性鼻炎"},
- {"@type": "MedicalCondition", "name": "異位性皮膚炎"},
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-asthma", "name": "兒童氣喘"},
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-allergic-rhinitis", "name": "過敏性鼻炎"},
+ {"@type": "MedicalCondition", "@id": "https://lhpedclinic.com.tw/#condition-atopic-dermatitis", "name": "異位性皮膚炎"},
  {"@type": "MedicalCondition", "name": "兒童慢性久咳"},
  {"@type": "MedicalCondition", "name": "新生兒黃疸"}
  ],
