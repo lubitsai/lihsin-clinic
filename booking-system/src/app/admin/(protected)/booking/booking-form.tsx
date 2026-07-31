@@ -4,7 +4,7 @@
  * 櫃檯代約／改期表單：
  * - 病人可搜尋既有病歷或新建資料
  * - 時段以櫃檯視角顯示（含不開放線上者）
- * - 撞到同日/7天/受限限制時，跳出理由欄位覆寫（留稽核）
+ * - 撞到同日／同時筆數／受限限制時，跳出理由欄位覆寫（留稽核）
  */
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -117,7 +117,7 @@ export function StaffBookingForm({
           overrideReason: needOverride ? overrideReason : undefined,
         });
         if (!r.ok) {
-          if (!needOverride && /當天已有預約|7 天內|無法使用線上預約/.test(r.message)) {
+          if (!needOverride && /當天已有預約|尚未完成的預約|無法使用線上預約/.test(r.message)) {
             setNeedOverride(true);
             setError(`${r.message}（如需強制改期，請輸入覆寫理由後再送出）`);
             return;
@@ -144,7 +144,7 @@ export function StaffBookingForm({
 
       const r = await adminCreateBooking(payload);
       if (!r.ok) {
-        if (!needOverride && /當天已有預約|7 天內|無法使用線上預約/.test(r.message)) {
+        if (!needOverride && /當天已有預約|尚未完成的預約|無法使用線上預約/.test(r.message)) {
           setNeedOverride(true);
           setError(`${r.message}（如需代約，請輸入覆寫理由後再送出）`);
           return;

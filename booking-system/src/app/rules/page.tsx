@@ -7,10 +7,9 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "預約規則與個資告知" };
 
 export default async function RulesPage() {
-  const [openDays, windowDays, windowMax, cancelCutoff] = await Promise.all([
+  const [openDays, activeMax, cancelCutoff] = await Promise.all([
     getSetting("booking.open_days"),
-    getSetting("booking.window_days"),
-    getSetting("booking.window_max"),
+    getSetting("booking.active_max"),
     getSetting("booking.cancel_cutoff_minutes"),
   ]);
   return (
@@ -22,7 +21,7 @@ export default async function RulesPage() {
         <ul className="list-disc list-inside space-y-1.5 text-stone-700 leading-relaxed">
           <li>開放預約範圍：今日起 {openDays} 天內（每日 00:00 開放最新一天）。</li>
           <li>同一位病人同一天僅能有 1 筆有效預約（不分醫師、門診類型）。</li>
-          <li>為維護公平性，每位病人任意連續 {windowDays} 天內最多預約 {windowMax} 個時段。</li>
+          <li>為維護公平性，同時最多只能保留 {activeMax} 筆尚未完成的預約（當日的預約不計入）。</li>
           <li>取消或改期請於看診前 {cancelCutoff >= 60 ? `${cancelCutoff / 60} 小時` : `${cancelCutoff} 分鐘`}完成；逾時請致電診所。</li>
           <li>多次預約未到且未事先取消者，將暫停線上預約服務，需致電診所由櫃檯協助。</li>
           <li>線上預約為看診時段登記，非實際看診號碼；請依現場報到順序候診。</li>

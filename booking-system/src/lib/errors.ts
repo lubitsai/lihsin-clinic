@@ -6,7 +6,7 @@ export type BookingErrorCode =
   | "SLOT_UNAVAILABLE"       // 時段不存在/已休診/已封鎖/已過期
   | "SLOT_FULL"              // 名額已滿
   | "DUPLICATE_SAME_DAY"     // 同日已有有效預約
-  | "WEEKLY_LIMIT"           // 7 天內超過上限
+  | "ACTIVE_LIMIT"           // 同時未完成的預約超過上限（當日不計入）
   | "RESTRICTED"             // 預約限制名單
   | "CUTOFF_PASSED"          // 已過取消/改期截止時間
   | "NOT_FOUND"              // 查無資料（對外一律中性訊息）
@@ -31,8 +31,8 @@ export class BookingError extends Error {
 export const MSG = {
   duplicateSameDay:
     "您當天已有預約，無法重複預約其他門診或時段。如需更改，請先取消原預約或聯絡立欣診所。",
-  weeklyLimit: (days: number, max: number) =>
-    `為維護預約公平性，每位病人在 ${days} 天內最多預約 ${max} 個時段。如有特殊需求，請致電立欣診所。`,
+  activeLimit: (max: number) =>
+    `為維護預約公平性，同時最多只能保留 ${max} 筆尚未完成的預約（當日的預約不計入）。請先取消或完成既有預約後再約，如有特殊需求請致電立欣診所。`,
   restricted: "目前無法使用線上預約，請致電立欣診所，由櫃檯人員協助。",
   slotFull: "此時段名額已滿，請選擇其他時段。",
   slotUnavailable: "此時段目前無法預約，請重新選擇時段。",

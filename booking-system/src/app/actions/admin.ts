@@ -214,10 +214,10 @@ export async function adminCreateBooking(
       revalidatePath("/admin");
       return { ok: true, data: { bookingNumber: r.appointment.bookingNumber, usedOverride: false } };
     } catch (e) {
-      // 同日/7天/受限 → 若已填覆寫理由則覆寫重試（需 override 權限）
+      // 同日／同時筆數／受限 → 若已填覆寫理由則覆寫重試（需 override 權限）
       const overridable =
         e instanceof BookingError &&
-        ["DUPLICATE_SAME_DAY", "WEEKLY_LIMIT", "RESTRICTED"].includes(e.code);
+        ["DUPLICATE_SAME_DAY", "ACTIVE_LIMIT", "RESTRICTED"].includes(e.code);
       if (!overridable || !parsed.overrideReason) throw e;
       requirePermission(ctx, PERMISSIONS.APPOINTMENTS_OVERRIDE);
       const r = await createAppointment({

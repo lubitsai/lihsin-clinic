@@ -45,8 +45,8 @@ export const OCCUPYING_STATUSES = [
 /** 「有效預約」：計入同日唯一限制（與 partial unique index 一致） */
 export const ACTIVE_STATUSES = ["PENDING", "CONFIRMED", "CHECKED_IN"] as const;
 
-/** 計入 7 天上限的狀態（僅排除病人取消/診所取消/已改期/未到） */
-export const WEEKLY_COUNT_STATUSES = ["PENDING", "CONFIRMED", "CHECKED_IN", "COMPLETED"] as const;
+/** 計入「同時未完成預約」上限的狀態（已完成/未到/取消/已改期都不算未完成） */
+export const ACTIVE_LIMIT_STATUSES = ["PENDING", "CONFIRMED", "CHECKED_IN"] as const;
 
 export interface CreateAppointmentParams {
   clinicTypeId: string;
@@ -59,9 +59,9 @@ export interface CreateAppointmentParams {
   source: AppointmentSource;
   requestId?: string; // 防重複送出
   actor: AuditActor;
-  /** 櫃檯覆寫限制（同日/7天/黑名單），必填理由 */
+  /** 櫃檯覆寫限制（同日／同時筆數／黑名單），必填理由 */
   staffOverride?: { reason: string };
-  /** 改期內部使用：排除原預約的同日/7天計算 */
+  /** 改期內部使用：排除原預約的同日／同時筆數計算 */
   excludeAppointmentId?: string;
   /** 後台是否略過「線上開放」與滾動開放天數限制 */
   isStaff?: boolean;
@@ -155,9 +155,9 @@ async function runCreateTransaction(
       if (!params.staffOverride)
         await assertNoSameDay(tx, patient.id, params.date, params.excludeAppointmentId);
 
-      // 7 天上限
+      // 同時未完成預約上限（當日不計入）
       if (!params.staffOverride)
-        await assertWeeklyLimit(tx, patient.id, params.date, params.excludeAppointmentId);
+        await assertActiveLimit(tx, patient.id, params.date, params.excludeAppointmentId);
 
       // 醫師與名額（含「不限醫師」自動分配）
       const { doctorId, slotId, endTime, capacitySlotNo } = await allocateSlot(tx, {
@@ -315,30 +315,23 @@ async function assertNoSameDay(tx: Tx, patientId: string, date: string, excludeI
   if (count > 0) throw new BookingError("DUPLICATE_SAME_DAY", MSG.duplicateSameDay);
 }
 
-/** 任意連續 N 天內最多 M 筆（病人列已鎖定） */
-async function assertWeeklyLimit(tx: Tx, patientId: string, date: string, excludeId?: string) {
-  const [windowDays, max] = await Promise.all([
-    getSetting("booking.window_days", tx),
-    getSetting("booking.window_max", tx),
-  ]);
-  const rangeStart = addDays(date, -(windowDays - 1));
-  const rangeEnd = addDays(date, windowDays - 1);
-  const appts = await tx.appointment.findMany({
+/**
+ * 同時最多 N 筆尚未完成的預約（病人列已鎖定）。
+ * 與官網公告一致：**當日的預約不計入**——今天的預約既不占用額度，也不受額度阻擋。
+ */
+async function assertActiveLimit(tx: Tx, patientId: string, date: string, excludeId?: string) {
+  const today = todayStr();
+  if (date <= today) return; // 當日（或更早，理論上不會發生）不計入、也不受限
+  const max = await getSetting("booking.active_max", tx);
+  const count = await tx.appointment.count({
     where: {
       patientId,
-      status: { in: [...WEEKLY_COUNT_STATUSES] },
-      appointmentDate: { gte: dateToDb(rangeStart), lte: dateToDb(rangeEnd) },
+      status: { in: [...ACTIVE_LIMIT_STATUSES] },
+      appointmentDate: { gt: dateToDb(today) },
       ...(excludeId ? { id: { not: excludeId } } : {}),
     },
-    select: { appointmentDate: true },
   });
-  const dates = [...appts.map((a) => dbToDate(a.appointmentDate)), date];
-  for (let offset = -(windowDays - 1); offset <= 0; offset++) {
-    const winStart = addDays(date, offset);
-    const winEnd = addDays(winStart, windowDays - 1);
-    const count = dates.filter((d) => d >= winStart && d <= winEnd).length;
-    if (count > max) throw new BookingError("WEEKLY_LIMIT", MSG.weeklyLimit(windowDays, max));
-  }
+  if (count >= max) throw new BookingError("ACTIVE_LIMIT", MSG.activeLimit(max));
 }
 
 interface AllocateParams {
@@ -584,7 +577,7 @@ export async function rescheduleAppointment(opts: {
 
       if (!opts.staffOverride) {
         await assertNoSameDay(tx, appt.patientId, opts.newDate, appt.id);
-        await assertWeeklyLimit(tx, appt.patientId, opts.newDate, appt.id);
+        await assertActiveLimit(tx, appt.patientId, opts.newDate, appt.id);
       }
 
       const { doctorId, slotId, endTime, capacitySlotNo } = await allocateSlot(tx, {

@@ -339,7 +339,7 @@ model Appointment {
   visitType          VisitType?        @map("visit_type")
   patientNote        String?           @map("patient_note")
   staffNote          String?           @map("staff_note")
-  /// 櫃檯覆寫同日/7天/黑名單限制時的必填理由
+  /// 櫃檯覆寫同日／同時筆數／黑名單限制時的必填理由
   overrideReason     String?           @map("override_reason")
   /// 前端一次性 token，防重複送出
   requestId          String?           @unique @map("request_id")

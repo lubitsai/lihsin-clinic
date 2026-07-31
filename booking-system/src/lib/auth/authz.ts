@@ -8,7 +8,7 @@ import type { StaffContext } from "./staff";
 export const PERMISSIONS = {
   APPOINTMENTS_READ: "appointments:read",
   APPOINTMENTS_WRITE: "appointments:write", // 代約/改期/取消/報到/未到
-  APPOINTMENTS_OVERRIDE: "appointments:override", // 覆寫同日/7天/受限（需理由）
+  APPOINTMENTS_OVERRIDE: "appointments:override", // 覆寫同日／同時筆數／受限（需理由）
   SCHEDULE_WRITE: "schedule:write", // 排班/休診/特殊時段
   PATIENTS_READ: "patients:read",
   PATIENTS_WRITE: "patients:write",

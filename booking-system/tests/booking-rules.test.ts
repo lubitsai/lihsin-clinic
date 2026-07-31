@@ -1,5 +1,5 @@
 /**
- * 驗收條件 1,2,4,5,6,7,12：名額、同日、7 天、取消釋放、開放範圍。
+ * 驗收條件 1,2,4,5,6,7,12：名額、同日、同時未完成預約上限、取消釋放、開放範圍。
  */
 import { describe, it, expect, beforeEach } from "vitest";
 import { randomUUID } from "node:crypto";
@@ -128,7 +128,7 @@ describe("名額規則", () => {
   });
 });
 
-describe("同日與 7 天限制", () => {
+describe("同日與同時未完成預約上限", () => {
   beforeEach(resetDb);
 
   it("4. 同一病人同日預約不同門診時，第二筆被阻擋", async () => {
@@ -173,7 +173,7 @@ describe("同日與 7 天限制", () => {
     expect(overridden.appointment.overrideReason).toContain("主管同意");
   });
 
-  it("6+7. 任意 7 天內最多 3 筆；已取消不計入也不占名額", async () => {
+  it("6+7. 同時最多 2 筆未完成預約；已取消不計入也不占名額", async () => {
     const { drTsai, general } = await seedBase();
     const patient = makePatient();
     const book = (n: number) =>
@@ -182,29 +182,28 @@ describe("同日與 7 天限制", () => {
         patientInput: patient, source: "WEB", actor: PATIENT_ACTOR,
       });
     await book(1);
-    await book(2);
-    const third = await book(3);
-    // 第 4 筆（+4 天，與前三筆同在 7 天視窗內）被阻擋
-    await expectBookingError(book(4), "WEEKLY_LIMIT");
+    const second = await book(2);
+    // 第 3 筆超過「同時 2 筆」上限
+    await expectBookingError(book(3), "ACTIVE_LIMIT");
 
-    // 取消第三筆後，第 4 筆可成立（已取消不計入）
+    // 取消第 2 筆後額度釋出，第 3 筆可成立
     await cancelAppointment({
-      appointmentId: third.appointment.id,
+      appointmentId: second.appointment.id,
       actor: PATIENT_ACTOR,
       byPatient: true,
     });
-    const fourth = await book(4);
-    expect(fourth.appointment.status).toBe("CONFIRMED");
+    const third = await book(3);
+    expect(third.appointment.status).toBe("CONFIRMED");
 
     // 已取消不占名額：其他病人可預約原時段
     const other = await createAppointment({
-      clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(3), startTime: "09:00",
+      clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(2), startTime: "09:00",
       patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
     });
     expect(other.appointment.status).toBe("CONFIRMED");
   });
 
-  it("跨 7 天視窗的第 4 筆不受限（+1,+2,+3 之後 +8 可約）", async () => {
+  it("相隔很遠的第 3 筆同樣受限（上限算的是筆數，不是視窗）", async () => {
     const { drTsai, general } = await seedBase();
     const patient = makePatient();
     const book = (n: number) =>
@@ -214,9 +213,26 @@ describe("同日與 7 天限制", () => {
       });
     await book(1);
     await book(2);
-    await book(3);
-    const ok = await book(9); // 與 +3 相距 6 天 → 視窗 [3..9] 內共 2 筆，合法
-    expect(ok.appointment.status).toBe("CONFIRMED");
+    await expectBookingError(book(13), "ACTIVE_LIMIT");
+  });
+
+  it("當日的預約不計入額度：已有 2 筆未來預約時，當日仍可預約", async () => {
+    const { drTsai, general } = await seedBase();
+    const patient = makePatient();
+    const book = (n: number) =>
+      createAppointment({
+        clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(n), startTime: "09:00",
+        patientInput: patient, source: "WEB", actor: PATIENT_ACTOR,
+      });
+    await book(1);
+    await book(2);
+    // 當日：以櫃檯代約（isStaff）避開「當日時段已過」的時間限制，規則檢查一視同仁
+    const sameDay = await createAppointment({
+      clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(0), startTime: "09:00",
+      patientId: (await prisma.patient.findFirstOrThrow()).id,
+      source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
+    });
+    expect(sameDay.appointment.status).toBe("CONFIRMED");
   });
 });
 

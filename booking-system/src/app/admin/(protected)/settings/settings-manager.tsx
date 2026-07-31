@@ -39,8 +39,7 @@ interface SettingsDto {
   openDays: number;
   openTime: string;
   sameDayCutoff: number;
-  windowDays: number;
-  windowMax: number;
+  activeMax: number;
   noShowThreshold: number;
   cancelCutoff: number;
   allowSameDay: boolean;
@@ -75,8 +74,7 @@ export function SettingsManager({
         { key: "booking.open_days", value: s.openDays },
         { key: "booking.open_time", value: s.openTime },
         { key: "booking.same_day_cutoff_minutes", value: s.sameDayCutoff },
-        { key: "booking.window_days", value: s.windowDays },
-        { key: "booking.window_max", value: s.windowMax },
+        { key: "booking.active_max", value: s.activeMax },
         { key: "booking.no_show_threshold", value: s.noShowThreshold },
         { key: "booking.cancel_cutoff_minutes", value: s.cancelCutoff },
         { key: "booking.allow_same_day", value: s.allowSameDay },
@@ -104,8 +102,7 @@ export function SettingsManager({
             <span className="text-sm text-stone-600">每日開放最新一天的時間</span>
             <input type="time" className="input" value={s.openTime} onChange={(e) => setS({ ...s, openTime: e.target.value })} />
           </label>
-          <NumField label="7 天視窗天數" value={s.windowDays} onChange={(v) => setS({ ...s, windowDays: v })} />
-          <NumField label="視窗內預約上限（筆）" value={s.windowMax} onChange={(v) => setS({ ...s, windowMax: v })} />
+          <NumField label="同時未完成預約上限（筆，當日不計入）" value={s.activeMax} onChange={(v) => setS({ ...s, activeMax: v })} />
           <NumField label="未到限制門檻（超過 N 次自動限制）" value={s.noShowThreshold} onChange={(v) => setS({ ...s, noShowThreshold: v })} />
           <NumField label="當日預約截止（時段前 N 分鐘）" value={s.sameDayCutoff} onChange={(v) => setS({ ...s, sameDayCutoff: v })} />
           <NumField label="取消/改期截止（看診前 N 分鐘）" value={s.cancelCutoff} onChange={(v) => setS({ ...s, cancelCutoff: v })} />
