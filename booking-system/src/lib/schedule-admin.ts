@@ -9,7 +9,7 @@ import { prisma } from "./db";
 import { addDays, dateToDb, dbToDate, slotEnd } from "./tw-time";
 import { applyExceptions, getDayScheduleBlocks } from "./schedule";
 import { writeAudit, type AuditActor } from "./audit";
-import { cancelAppointment } from "./booking";
+import { cancelAppointmentTx } from "./booking";
 import { BookingError } from "./errors";
 
 export interface ExceptionInput {
@@ -75,33 +75,38 @@ export async function createScheduleException(
   opts: { cancelAffected?: boolean; cancelReason?: string } = {},
 ): Promise<CreateExceptionResult> {
   const affected = await findAffectedAppointments(input);
-  if (affected.length > 0) {
-    if (!opts.cancelAffected) return { affected };
-    for (const appt of affected) {
-      await cancelAppointment({
-        appointmentId: appt.id,
-        actor,
-        byPatient: false,
-        reason: opts.cancelReason ?? input.reason,
-      });
-    }
-  }
+  if (affected.length > 0 && !opts.cancelAffected) return { affected };
 
-  const created = await prisma.scheduleException.create({
-    data: {
-      date: dateToDb(input.date),
-      type: input.type,
-      session: input.session,
-      doctorId: input.doctorId,
-      substituteDoctorId: input.substituteDoctorId,
-      startTime: input.startTime,
-      endTime: input.endTime,
-      slotCapacity: input.slotCapacity,
-      clinicTypeId: input.clinicTypeId,
-      reason: input.reason,
-      createdBy: actor.id ?? "unknown",
+  // 取消受影響預約與建立例外放在同一交易：中途失敗會整批回滾，
+  // 不會留下「病人已被取消、例外卻沒建立」的半套狀態。
+  const created = await prisma.$transaction(
+    async (tx) => {
+      for (const appt of affected) {
+        await cancelAppointmentTx(tx, {
+          appointmentId: appt.id,
+          actor,
+          byPatient: false,
+          reason: opts.cancelReason ?? input.reason,
+        });
+      }
+      return tx.scheduleException.create({
+        data: {
+          date: dateToDb(input.date),
+          type: input.type,
+          session: input.session,
+          doctorId: input.doctorId,
+          substituteDoctorId: input.substituteDoctorId,
+          startTime: input.startTime,
+          endTime: input.endTime,
+          slotCapacity: input.slotCapacity,
+          clinicTypeId: input.clinicTypeId,
+          reason: input.reason,
+          createdBy: actor.id ?? "unknown",
+        },
+      });
     },
-  });
+    { timeout: 30000 },
+  );
   await writeAudit(
     actor,
     "schedule.exception.create",

@@ -14,6 +14,8 @@ import { bookingRequestSchema, phoneSchema, dateStrSchema, timeStrSchema, idType
 import {
   issueOtp,
   verifyOtp,
+  checkOtp,
+  consumeOtp,
   createPortalSession,
   getPortalContext,
   destroyPortalSession,
@@ -129,10 +131,14 @@ export async function submitBooking(
       });
       viaLine = !!existing?.lineLinks.some((l) => l.lineAccountId === portal.lineAccountId);
     }
+    // 驗證碼先檢查不註銷：預約仍可能因額滿等原因失敗，
+    // 若此時就註銷，使用者改選別的時段會被要求重拿驗證碼。
+    let otpId: string | null = null;
     if (!viaLine) {
-      const okOtp =
-        !!parsed.otpCode && (await verifyOtp(parsed.patient.phone, "BOOKING", parsed.otpCode));
-      if (!okOtp) return { ok: false, message: "手機驗證碼錯誤或已過期，請重新取得驗證碼" };
+      otpId = parsed.otpCode
+        ? await checkOtp(parsed.patient.phone, "BOOKING", parsed.otpCode)
+        : null;
+      if (!otpId) return { ok: false, message: "手機驗證碼錯誤或已過期，請重新取得驗證碼" };
     }
 
     const result = await createAppointment({
@@ -145,6 +151,8 @@ export async function submitBooking(
       requestId: parsed.requestId,
       actor: { type: "PATIENT", ip: await clientIp() },
     });
+
+    if (otpId) await consumeOtp(otpId); // 預約確定成立後才註銷驗證碼
 
     // LINE 登入且已通過 OTP：自動綁定此病人到 LINE 帳號（之後通知走 LINE）
     if (portal?.lineAccountId && !viaLine) {

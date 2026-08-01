@@ -10,6 +10,7 @@ import { hashToken, randomToken, randomOtp, hashIdNumber } from "../crypto";
 import { getSmsProvider } from "../sms";
 import { rateLimit } from "../rate-limit";
 import { BookingError, MSG } from "../errors";
+import { resolveMergedPatient } from "../patients";
 import type { OtpPurpose, IdType } from "@prisma/client";
 
 export const PORTAL_COOKIE = "lihsin_portal_session";
@@ -37,19 +38,42 @@ export async function issueOtp(phone: string, purpose: OtpPurpose): Promise<{ de
   return process.env.NODE_ENV === "production" ? {} : { devCode: code };
 }
 
-/** 驗證 OTP；成功即註銷 */
-export async function verifyOtp(phone: string, purpose: OtpPurpose, code: string): Promise<boolean> {
+/**
+ * 檢查 OTP 是否正確，但**不註銷**；回傳可供之後註銷的 id。
+ * 用於「驗證通過後還可能失敗」的流程（如預約可能撞到額滿），
+ * 避免使用者因為換一個時段重送就被迫重新索取驗證碼。
+ */
+export async function checkOtp(
+  phone: string,
+  purpose: OtpPurpose,
+  code: string,
+): Promise<string | null> {
   const otp = await prisma.otpCode.findFirst({
     where: { phone, purpose, consumedAt: null, expiresAt: { gt: new Date() } },
     orderBy: { createdAt: "desc" },
   });
-  if (!otp) return false;
-  if (otp.attempts >= OTP_MAX_ATTEMPTS) return false;
+  if (!otp) return null;
+  if (otp.attempts >= OTP_MAX_ATTEMPTS) return null;
   if (otp.codeHash !== hashToken(code.trim())) {
     await prisma.otpCode.update({ where: { id: otp.id }, data: { attempts: { increment: 1 } } });
-    return false;
+    return null;
   }
-  await prisma.otpCode.update({ where: { id: otp.id }, data: { consumedAt: new Date() } });
+  return otp.id;
+}
+
+/** 註銷指定 OTP（在依賴它的操作真正成功後呼叫） */
+export async function consumeOtp(otpId: string): Promise<void> {
+  await prisma.otpCode.updateMany({
+    where: { id: otpId, consumedAt: null },
+    data: { consumedAt: new Date() },
+  });
+}
+
+/** 驗證 OTP；成功即註銷（用於一次成敗定案的流程：查詢登入、LINE 綁定） */
+export async function verifyOtp(phone: string, purpose: OtpPurpose, code: string): Promise<boolean> {
+  const otpId = await checkOtp(phone, purpose, code);
+  if (!otpId) return false;
+  await consumeOtp(otpId);
   return true;
 }
 
@@ -94,10 +118,9 @@ export async function getPortalContext(): Promise<PortalContext | null> {
     });
     for (const l of links) patientIds.add(l.patientId);
   }
-  if (session.verifiedPhone) {
-    const patients = await prisma.patient.findMany({ where: { phone: session.verifiedPhone } });
-    for (const p of patients) patientIds.add(p.id);
-  }
+  // 註：不以「手機號碼相同」推導可存取的病人——同號碼可能因家長換號、
+  // 輸入錯誤或號碼回收而對應到非本人的病歷。查詢一律走
+  // verifyPatientIdentity（證件＋生日＋手機三者相符）或 LINE 綁定。
   return {
     sessionId: session.id,
     lineAccountId: session.lineAccountId ?? undefined,
@@ -126,8 +149,10 @@ export async function verifyPatientIdentity(
     where: { uniq_patient_identity: { idType, idNumberHash: hashIdNumber(idNumber) } },
   });
   if (!patient) throw new BookingError("NOT_FOUND", MSG.notFound);
-  const birthOk = patient.birthDate.toISOString().slice(0, 10) === birthDate;
-  const phoneOk = patient.phone === phone;
+  // 病歷若已被合併，改以保留的那筆核對與回傳，否則查不到合併後的預約
+  const resolved = await resolveMergedPatient(prisma, patient);
+  const birthOk = resolved.birthDate.toISOString().slice(0, 10) === birthDate;
+  const phoneOk = resolved.phone === phone;
   if (!birthOk || !phoneOk) throw new BookingError("NOT_FOUND", MSG.notFound);
-  return patient.id;
+  return resolved.id;
 }

@@ -5,7 +5,14 @@
  * - 病人有 LINE 綁定（且仍為好友）→ LINE 推播；否則 → 簡訊。
  * - 內容一律不含完整證件號與敏感醫療資訊。
  */
-import type { Appointment, ClinicType, Doctor, NotificationType, Patient } from "@prisma/client";
+import type {
+  Appointment,
+  ClinicType,
+  Doctor,
+  NotificationChannel,
+  NotificationType,
+  Patient,
+} from "@prisma/client";
 import { prisma, type Tx } from "./db";
 import { dbToDate, formatDateTw } from "./tw-time";
 import { pushLineMessage, isLineMessagingConfigured } from "./line";
@@ -115,7 +122,11 @@ export async function dispatchPendingNotifications(limit = 50): Promise<number> 
   return sent;
 }
 
-/** 提醒排程（scripts/send-reminders.ts 每日呼叫）：為指定日期的有效預約排入提醒 */
+/**
+ * 提醒排程（scripts/send-reminders.ts 每日呼叫）：為指定日期的有效預約排入提醒。
+ * 以批次查詢＋createMany 完成：查詢次數與預約筆數無關，
+ * 避免忙日（上百筆預約）在單一交易內累積數百次查詢而撞上交易逾時、整批提醒不送。
+ */
 export async function enqueueReminders(
   forDate: string,
   type: "REMINDER_DAY_BEFORE" | "REMINDER_SAME_DAY",
@@ -132,12 +143,50 @@ export async function enqueueReminders(
     },
     include: { patient: true },
   });
-  let count = 0;
-  await prisma.$transaction(async (tx) => {
-    for (const appt of appts) {
-      await enqueueAppointmentNotification(tx, type, appt, appt.patient);
-      count++;
-    }
-  });
-  return count;
+  if (appts.length === 0) return 0;
+
+  const [doctors, clinicTypes, lineLinks] = await Promise.all([
+    prisma.doctor.findMany(),
+    prisma.clinicType.findMany(),
+    prisma.linePatientLink.findMany({
+      where: {
+        patientId: { in: [...new Set(appts.map((a) => a.patientId))] },
+        lineAccount: { isFollowing: true },
+      },
+      include: { lineAccount: true },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
+  const doctorMap = new Map(doctors.map((d) => [d.id, d]));
+  const clinicTypeMap = new Map(clinicTypes.map((c) => [c.id, c]));
+  const lineMap = new Map<string, string>();
+  for (const l of lineLinks) {
+    if (!lineMap.has(l.patientId)) lineMap.set(l.patientId, l.lineAccount.lineUserId);
+  }
+  const lineReady = isLineMessagingConfigured();
+
+  const rows = appts
+    .filter((a) => clinicTypeMap.get(a.clinicTypeId)?.notifyLine !== false)
+    .map((a) => {
+      const lineUserId = lineReady ? lineMap.get(a.patientId) : undefined;
+      return {
+        patientId: a.patientId,
+        appointmentId: a.id,
+        channel: (lineUserId ? "LINE" : "SMS") as NotificationChannel,
+        type,
+        recipient: lineUserId ?? a.patient.phone,
+        payload: {
+          message: buildMessage(
+            type,
+            a,
+            a.patient.name,
+            doctorMap.get(a.doctorId) ?? null,
+            clinicTypeMap.get(a.clinicTypeId) ?? null,
+          ),
+        },
+      };
+    });
+  if (rows.length === 0) return 0;
+  await prisma.notification.createMany({ data: rows });
+  return rows.length;
 }

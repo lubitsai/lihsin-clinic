@@ -378,6 +378,70 @@ export async function adminFetchDaySlots(
 
 // ── 病人 ─────────────────────────────────────────────
 
+const patientContactSchema = z.object({
+  patientId: z.string().min(1),
+  name: z.string().trim().min(1, "請輸入姓名").max(50),
+  phone: z.string().trim().regex(/^09\d{8}$/, "手機號碼格式不正確（09 開頭共 10 碼）"),
+});
+
+/**
+ * 櫃檯更新病人姓名／手機（前台預約不會自動覆寫，需人員核對身分後由此更新）。
+ * 變更前後值寫入稽核；若更新後的號碼正是先前記錄的待確認聯絡方式，一併清掉該筆。
+ */
+export async function adminUpdatePatientContact(
+  input: z.infer<typeof patientContactSchema>,
+): Promise<ActionResult> {
+  try {
+    const ctx = requirePermission(await getStaffContext(), PERMISSIONS.PATIENTS_WRITE);
+    const parsed = patientContactSchema.parse(input);
+    const before = await prisma.patient.findUnique({ where: { id: parsed.patientId } });
+    if (!before) return { ok: false, message: "查無此病人" };
+    await prisma.$transaction(async (tx) => {
+      await tx.patient.update({
+        where: { id: parsed.patientId },
+        data: { name: parsed.name, phone: parsed.phone },
+      });
+      await tx.patientContact.deleteMany({
+        where: { patientId: parsed.patientId, type: "PHONE", value: parsed.phone },
+      });
+      await writeAudit(
+        await actorOf(ctx),
+        "patient.contact_update",
+        { type: "patient", id: parsed.patientId },
+        {
+          nameChanged: before.name !== parsed.name,
+          phoneChanged: before.phone !== parsed.phone,
+          // 舊值遮罩後留存，稽核可追溯但不落完整號碼
+          fromPhoneMasked: before.phone.slice(0, 4) + "***" + before.phone.slice(-3),
+        },
+        tx,
+      );
+    });
+    revalidatePath(`/admin/patients/${parsed.patientId}`);
+    return { ok: true };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
+/** 忽略（刪除）一筆待確認聯絡方式 */
+export async function adminDismissPendingContact(contactId: string): Promise<ActionResult> {
+  try {
+    const ctx = requirePermission(await getStaffContext(), PERMISSIONS.PATIENTS_WRITE);
+    const row = await prisma.patientContact.findUnique({ where: { id: contactId } });
+    if (!row) return { ok: false, message: "查無此紀錄" };
+    await prisma.patientContact.delete({ where: { id: contactId } });
+    await writeAudit(await actorOf(ctx), "patient.pending_contact_dismiss", {
+      type: "patient",
+      id: row.patientId,
+    });
+    revalidatePath(`/admin/patients/${row.patientId}`);
+    return { ok: true };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
 export async function adminUpdatePatientNote(
   patientId: string,
   staffNote: string,

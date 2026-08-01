@@ -27,7 +27,7 @@ import {
   isSlotKeyBlocked,
   sessionOfTime,
 } from "./schedule";
-import { upsertPatientForBooking, lockPatientRow } from "./patients";
+import { upsertPatientForBooking, lockPatientRow, resolveMergedPatient } from "./patients";
 import { isPatientRestricted, maybeAutoRestrict } from "./restrictions";
 import { writeAudit, type AuditActor } from "./audit";
 import { enqueueAppointmentNotification } from "./notifications";
@@ -136,9 +136,13 @@ async function runCreateTransaction(
       if (params.patientId) {
         const found = await tx.patient.findUnique({ where: { id: params.patientId } });
         if (!found) throw new BookingError("NOT_FOUND", MSG.notFound);
-        patient = found;
+        // 舊病歷若已被合併，預約要記到保留的那筆，限制才會算在同一個人身上
+        patient = await resolveMergedPatient(tx, found);
       } else if (params.patientInput) {
-        patient = await upsertPatientForBooking(tx, params.patientInput);
+        // 僅櫃檯代約可更新既有病歷的姓名／電話（人員已確認身分）；前台預約不覆寫
+        patient = await upsertPatientForBooking(tx, params.patientInput, {
+          trusted: !!params.isStaff,
+        });
       } else {
         throw new BookingError("VALIDATION", "缺少病人資料");
       }
@@ -474,13 +478,28 @@ async function tryAllocateSeq(tx: Tx, date: string, startTime: string, c: SlotCa
 
 // ── 取消 ────────────────────────────────────────────────
 
-export async function cancelAppointment(opts: {
+export interface CancelOptions {
   appointmentId: string;
   actor: AuditActor;
   byPatient: boolean;
   reason?: string;
-}): Promise<Appointment> {
-  return prisma.$transaction(async (tx) => {
+}
+
+/**
+ * 取消預約（交易內核心）。供 cancelAppointment 使用，
+ * 也供「排班例外批次取消受影響預約」在同一交易內逐筆呼叫，
+ * 讓取消與例外建立同生共死，不會出現「病人被取消但例外沒建立」。
+ */
+export async function cancelAppointmentTx(tx: Tx, opts: CancelOptions): Promise<Appointment> {
+  return cancelCore(tx, opts);
+}
+
+export async function cancelAppointment(opts: CancelOptions): Promise<Appointment> {
+  return prisma.$transaction(async (tx) => cancelCore(tx, opts));
+}
+
+async function cancelCore(tx: Tx, opts: CancelOptions): Promise<Appointment> {
+  {
     await tx.$queryRaw`SELECT id FROM appointments WHERE id = ${opts.appointmentId} FOR UPDATE`;
     const appt = await tx.appointment.findUnique({
       where: { id: opts.appointmentId },
@@ -533,7 +552,7 @@ export async function cancelAppointment(opts: {
     );
     await enqueueAppointmentNotification(tx, "CANCELLED", updated, appt.patient);
     return updated;
-  });
+  }
 }
 
 // ── 改期 ────────────────────────────────────────────────

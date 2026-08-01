@@ -6,7 +6,12 @@ import { getPatientDetail } from "@/lib/admin-service";
 import { dbToDate, formatDateTw } from "@/lib/tw-time";
 import { Card, StatusBadge } from "@/components/ui";
 import { ID_TYPE_LABEL } from "@/lib/status-labels";
-import { PatientNoteForm, RevealIdButton, RestrictionControls } from "./patient-controls";
+import {
+  PatientNoteForm,
+  PatientContactForm,
+  RevealIdButton,
+  RestrictionControls,
+} from "./patient-controls";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "病人資料" };
@@ -46,7 +51,6 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
             {hasPermission(ctx, PERMISSIONS.PII_FULL) && <RevealIdButton patientId={patient.id} />}
           </p>
           <p>出生日期：{dbToDate(patient.birthDate)}</p>
-          <p>手機：{patient.phone}</p>
           <p>
             LINE 綁定：
             {patient.lineLinks.length > 0
@@ -61,11 +65,27 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
           </p>
         </Card>
 
-        <Card>
-          <h2 className="font-bold text-forest-700 mb-2">後台備註</h2>
-          <PatientNoteForm patientId={patient.id} initialNote={patient.staffNote ?? ""} />
+        <Card className="space-y-3">
+          <h2 className="font-bold text-forest-700">聯絡資料</h2>
+          <PatientContactForm
+            patientId={patient.id}
+            initialName={patient.name}
+            initialPhone={patient.phone}
+            pendingContacts={patient.contacts
+              .filter((c) => c.type === "PHONE" && c.value !== patient.phone)
+              .map((c) => ({
+                id: c.id,
+                value: c.value,
+                createdAt: c.createdAt.toISOString().slice(0, 10),
+              }))}
+          />
         </Card>
       </div>
+
+      <Card>
+        <h2 className="font-bold text-forest-700 mb-2">後台備註</h2>
+        <PatientNoteForm patientId={patient.id} initialNote={patient.staffNote ?? ""} />
+      </Card>
 
       <RestrictionControls
         patientId={patient.id}

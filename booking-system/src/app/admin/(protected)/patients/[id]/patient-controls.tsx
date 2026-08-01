@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   adminUpdatePatientNote,
+  adminUpdatePatientContact,
+  adminDismissPendingContact,
   adminRevealIdNumber,
   adminLiftRestriction,
   adminResetNoShow,
@@ -29,6 +31,93 @@ export function PatientNoteForm({ patientId, initialNote }: { patientId: string;
         className="btn-secondary !py-2"
       >
         儲存備註
+      </button>
+      {saved && <span className="text-forest-600 text-sm ml-2">已儲存</span>}
+    </div>
+  );
+}
+
+/**
+ * 姓名／手機編輯（前台預約不會自動覆寫既有病歷，改由櫃檯核對身分後在此更新）。
+ * pendingContacts＝民眾線上預約時填寫、與病歷不符的電話，供一鍵採用或忽略。
+ */
+export function PatientContactForm({
+  patientId,
+  initialName,
+  initialPhone,
+  pendingContacts,
+}: {
+  patientId: string;
+  initialName: string;
+  initialPhone: string;
+  pendingContacts: { id: string; value: string; createdAt: string }[];
+}) {
+  const router = useRouter();
+  const [name, setName] = useState(initialName);
+  const [phone, setPhone] = useState(initialPhone);
+  const [error, setError] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [pending, startTransition] = useTransition();
+
+  const save = (nextName = name, nextPhone = phone) =>
+    startTransition(async () => {
+      const r = await adminUpdatePatientContact({ patientId, name: nextName, phone: nextPhone });
+      if (!r.ok) return setError(r.message);
+      setError("");
+      setSaved(true);
+      setName(nextName);
+      setPhone(nextPhone);
+      router.refresh();
+    });
+
+  return (
+    <div className="space-y-2">
+      {error && <Alert tone="error">{error}</Alert>}
+      {pendingContacts.length > 0 && (
+        <Alert tone="warn">
+          <p className="font-bold mb-1">民眾線上預約時填寫了不同的電話</p>
+          <ul className="space-y-1">
+            {pendingContacts.map((c) => (
+              <li key={c.id} className="flex flex-wrap items-center gap-2">
+                <span className="font-mono">{c.value}</span>
+                <span className="text-sm text-stone-500">{c.createdAt}</span>
+                <button
+                  onClick={() => save(name, c.value)}
+                  disabled={pending}
+                  className="qbtn bg-forest-600 text-white"
+                >
+                  確認後更新為此號碼
+                </button>
+                <button
+                  onClick={() =>
+                    startTransition(async () => {
+                      await adminDismissPendingContact(c.id);
+                      router.refresh();
+                    })
+                  }
+                  disabled={pending}
+                  className="qbtn bg-white border border-cream-200 text-stone-700"
+                >
+                  忽略
+                </button>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm mt-1">請先與家長確認身分再更新，避免他人冒用。</p>
+        </Alert>
+      )}
+      <div className="grid sm:grid-cols-2 gap-2">
+        <label className="block">
+          <span className="text-sm text-stone-600">姓名</span>
+          <input className="input" value={name} onChange={(e) => setName(e.target.value)} />
+        </label>
+        <label className="block">
+          <span className="text-sm text-stone-600">手機</span>
+          <input className="input" value={phone} onChange={(e) => setPhone(e.target.value.trim())} />
+        </label>
+      </div>
+      <button onClick={() => save()} disabled={pending} className="btn-secondary !py-2">
+        儲存聯絡資料
       </button>
       {saved && <span className="text-forest-600 text-sm ml-2">已儲存</span>}
     </div>
