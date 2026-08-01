@@ -31,17 +31,17 @@ describe("未到與黑名單", () => {
     return appointment;
   }
 
-  it("8+9. 第 4 次未到自動限制前台預約；管理員解除後可再次預約", async () => {
+  it("8+9. 第 3 次未到自動限制前台預約（官網公告門檻）；管理員解除後可再次預約", async () => {
     const base = await seedBase();
     const patientInput = makePatient();
 
-    // 前 3 次未到：尚未限制
-    for (let i = 1; i <= 3; i++) await bookAndNoShow(patientInput, i, base);
+    // 前 2 次未到：尚未限制
+    for (let i = 1; i <= 2; i++) await bookAndNoShow(patientInput, i, base);
     let restrictions = await prisma.bookingRestriction.findMany();
     expect(restrictions).toHaveLength(0);
 
-    // 第 4 次未到：自動限制
-    await bookAndNoShow(patientInput, 4, base);
+    // 第 3 次未到：自動限制
+    await bookAndNoShow(patientInput, 3, base);
     restrictions = await prisma.bookingRestriction.findMany({ where: { status: "ACTIVE" } });
     expect(restrictions).toHaveLength(1);
     expect(restrictions[0].type).toBe("AUTO_NO_SHOW");
@@ -80,7 +80,7 @@ describe("未到與黑名單", () => {
   it("暫時解除（至期限）後於期限內可預約", async () => {
     const base = await seedBase();
     const patientInput = makePatient();
-    for (let i = 1; i <= 4; i++) await bookAndNoShow(patientInput, i, base);
+    for (let i = 1; i <= 3; i++) await bookAndNoShow(patientInput, i, base);
     const restriction = await prisma.bookingRestriction.findFirstOrThrow();
     await liftRestriction(
       restriction.id,
@@ -111,7 +111,7 @@ describe("未到與黑名單", () => {
   it("17. 未到、自動限制、解除均有稽核紀錄", async () => {
     const base = await seedBase();
     const patientInput = makePatient();
-    for (let i = 1; i <= 4; i++) await bookAndNoShow(patientInput, i, base);
+    for (let i = 1; i <= 3; i++) await bookAndNoShow(patientInput, i, base);
     const restriction = await prisma.bookingRestriction.findFirstOrThrow();
     await liftRestriction(restriction.id, ADMIN_ACTOR, "測試解除");
 
@@ -119,5 +119,57 @@ describe("未到與黑名單", () => {
     expect(actions).toContain("appointment.no_show");
     expect(actions).toContain("restriction.auto_create");
     expect(actions).toContain("restriction.lift");
+  });
+});
+
+describe("暫停期滿自動恢復（官網公告：3 個月後累計歸零）", () => {
+  beforeEach(resetDb);
+
+  it("期滿後自動解除限制、未到次數歸零，且可再次預約", async () => {
+    const base = await seedBase();
+    const patientInput = makePatient();
+    for (let i = 1; i <= 3; i++) {
+      const { appointment } = await createAppointment({
+        clinicTypeId: base.general.id, doctorId: base.drTsai.id, date: futureDate(i),
+        startTime: "09:00", patientInput, source: "WEB", actor: PATIENT_ACTOR,
+      });
+      await updateAppointmentStatus({
+        appointmentId: appointment.id, toStatus: "NO_SHOW", actor: STAFF_ACTOR,
+      });
+    }
+    const restriction = await prisma.bookingRestriction.findFirstOrThrow();
+    expect(restriction.status).toBe("ACTIVE");
+    expect(restriction.expiresAt).not.toBeNull(); // 帶到期日，不是無限期
+
+    // 受限期間不可預約
+    await expect(
+      createAppointment({
+        clinicTypeId: base.general.id, doctorId: base.drTsai.id, date: futureDate(6),
+        startTime: "09:00", patientInput, source: "WEB", actor: PATIENT_ACTOR,
+      }),
+    ).rejects.toMatchObject({ code: "RESTRICTED" });
+
+    // 將到期日撥到過去，模擬暫停期滿
+    await prisma.bookingRestriction.update({
+      where: { id: restriction.id },
+      data: { expiresAt: new Date(Date.now() - 1000) },
+    });
+
+    const rebooked = await createAppointment({
+      clinicTypeId: base.general.id, doctorId: base.drTsai.id, date: futureDate(6),
+      startTime: "09:00", patientInput, source: "WEB", actor: PATIENT_ACTOR,
+    });
+    expect(rebooked.appointment.status).toBe("CONFIRMED");
+
+    const after = await prisma.bookingRestriction.findUniqueOrThrow({
+      where: { id: restriction.id },
+    });
+    expect(after.status).toBe("LIFTED");
+    expect(after.liftReason).toContain("期滿");
+    // 累計歸零
+    const patient = await prisma.patient.findUniqueOrThrow({ where: { id: rebooked.patient.id } });
+    expect(patient.noShowCount).toBe(0);
+    // 稽核有紀錄
+    expect(await prisma.auditLog.count({ where: { action: "restriction.auto_expire" } })).toBe(1);
   });
 });

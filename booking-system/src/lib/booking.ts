@@ -28,7 +28,7 @@ import {
   sessionOfTime,
 } from "./schedule";
 import { upsertPatientForBooking, lockPatientRow, resolveMergedPatient } from "./patients";
-import { isPatientRestricted, maybeAutoRestrict } from "./restrictions";
+import { isPatientRestricted, maybeAutoRestrict, applyRestrictionExpiry } from "./restrictions";
 import { writeAudit, type AuditActor } from "./audit";
 import { enqueueAppointmentNotification } from "./notifications";
 import type { PatientInput } from "./validation";
@@ -151,7 +151,8 @@ async function runCreateTransaction(
       // 年齡限制
       assertAgeEligible(clinicType, patient, params.date);
 
-      // 黑名單
+      // 暫停期滿者先自動恢復（病人列已鎖定），再判斷是否仍受限
+      await applyRestrictionExpiry(tx, patient.id);
       if (!params.staffOverride && (await isPatientRestricted(tx, patient.id)))
         throw new BookingError("RESTRICTED", MSG.restricted);
 
@@ -590,7 +591,8 @@ export async function rescheduleAppointment(opts: {
 
       await lockPatientRow(tx, appt.patientId);
 
-      // 受限病人不可線上改期（櫃檯可覆寫）
+      // 受限病人不可線上改期（櫃檯可覆寫）；暫停期滿者先自動恢復
+      await applyRestrictionExpiry(tx, appt.patientId);
       if (!opts.staffOverride && (await isPatientRestricted(tx, appt.patientId)))
         throw new BookingError("RESTRICTED", MSG.restricted);
 

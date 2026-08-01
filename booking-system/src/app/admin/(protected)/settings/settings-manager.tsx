@@ -41,6 +41,7 @@ interface SettingsDto {
   sameDayCutoff: number;
   activeMax: number;
   noShowThreshold: number;
+  noShowSuspensionDays: number;
   cancelCutoff: number;
   allowSameDay: boolean;
   sameDayReminder: boolean;
@@ -76,6 +77,7 @@ export function SettingsManager({
         { key: "booking.same_day_cutoff_minutes", value: s.sameDayCutoff },
         { key: "booking.active_max", value: s.activeMax },
         { key: "booking.no_show_threshold", value: s.noShowThreshold },
+        { key: "booking.no_show_suspension_days", value: s.noShowSuspensionDays },
         { key: "booking.cancel_cutoff_minutes", value: s.cancelCutoff },
         { key: "booking.allow_same_day", value: s.allowSameDay },
         { key: "notify.same_day_reminder", value: s.sameDayReminder },
@@ -103,7 +105,8 @@ export function SettingsManager({
             <input type="time" className="input" value={s.openTime} onChange={(e) => setS({ ...s, openTime: e.target.value })} />
           </label>
           <NumField label="同時未完成預約上限（筆，當日不計入）" value={s.activeMax} onChange={(v) => setS({ ...s, activeMax: v })} />
-          <NumField label="未到限制門檻（超過 N 次自動限制）" value={s.noShowThreshold} onChange={(v) => setS({ ...s, noShowThreshold: v })} />
+          <NumField label="未到達 N 次自動暫停" value={s.noShowThreshold} onChange={(v) => setS({ ...s, noShowThreshold: v })} />
+          <NumField label="暫停天數（期滿自動恢復並歸零；0＝需人工解除）" value={s.noShowSuspensionDays} onChange={(v) => setS({ ...s, noShowSuspensionDays: v })} />
           <NumField label="當日預約截止（時段前 N 分鐘）" value={s.sameDayCutoff} onChange={(v) => setS({ ...s, sameDayCutoff: v })} />
           <NumField label="取消/改期截止（看診前 N 分鐘）" value={s.cancelCutoff} onChange={(v) => setS({ ...s, cancelCutoff: v })} />
           <NumField label="後台閒置自動登出（分鐘）" value={s.idleMinutes} onChange={(v) => setS({ ...s, idleMinutes: v })} />

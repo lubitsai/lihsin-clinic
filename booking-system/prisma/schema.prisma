@@ -410,6 +410,9 @@ model BookingRestriction {
   status         RestrictionStatus @default(ACTIVE)
   reason         String
   suspendedUntil DateTime?         @map("suspended_until")
+  /// 限制的到期時間（官網公告：未到暫停 3 個月）；到期自動解除並將未到次數歸零。
+  /// null＝無到期日，需人工解除（人工加入的限制預設如此）
+  expiresAt      DateTime?         @map("expires_at")
   createdBy      String?           @map("created_by") // null = 系統自動
   createdAt      DateTime          @default(now()) @map("created_at")
   liftedAt       DateTime?         @map("lifted_at")

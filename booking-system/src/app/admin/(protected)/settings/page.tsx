@@ -19,6 +19,7 @@ export default async function SettingsPage() {
     sameDayCutoff: await getSetting("booking.same_day_cutoff_minutes"),
     activeMax: await getSetting("booking.active_max"),
     noShowThreshold: await getSetting("booking.no_show_threshold"),
+    noShowSuspensionDays: await getSetting("booking.no_show_suspension_days"),
     cancelCutoff: await getSetting("booking.cancel_cutoff_minutes"),
     allowSameDay: await getSetting("booking.allow_same_day"),
     sameDayReminder: await getSetting("notify.same_day_reminder"),
