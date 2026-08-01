@@ -6,7 +6,9 @@ export const SETTING_DEFAULTS = {
   "booking.open_time": "00:00", // 每日開放「第 N 天」時段的時間（台灣時間）
   // 官網公告：網路預約請在該時段開始的 4 小時前完成
   "booking.same_day_cutoff_minutes": 240, // 時段開始前 N 分鐘停止預約
-  "booking.active_max": 2, // 同時可保留的未完成預約上限（當日的預約不計入）
+  // 官網公告：每個預約帳號同時最多保留 2 筆尚未完成的預約（當日的預約不計入）
+  "booking.active_max": 2, // 每個預約帳號的同時未完成預約上限
+  "booking.max_companions": 3, // 家庭代表預約可帶的同行家人上限
   // 官網公告：累計 3 次未到暫停網路預約 3 個月，期滿累計歸零
   "booking.no_show_threshold": 3, // 未到累計「達」此數即自動限制
   "booking.no_show_suspension_days": 90, // 自動限制的天數；到期自動恢復並歸零未到次數

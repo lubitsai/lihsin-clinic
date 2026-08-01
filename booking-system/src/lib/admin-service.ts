@@ -45,6 +45,8 @@ export async function getDayAppointments(date: string, filters: DayBoardFilters 
       },
       doctor: true,
       clinicType: true,
+      // 家庭代表預約的同行家人：櫃檯報到時需知道實際到診人數與姓名
+      companions: { include: { patient: true } },
     },
     orderBy: [{ startTime: "asc" }, { doctorId: "asc" }],
   });

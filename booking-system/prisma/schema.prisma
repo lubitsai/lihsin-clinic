@@ -139,6 +139,7 @@ model Patient {
   contacts      PatientContact[]
   lineLinks     LinePatientLink[]
   appointments  Appointment[]
+  companionOf   AppointmentCompanion[]
   noShowRecords NoShowRecord[]
   restrictions  BookingRestriction[]
   notifications Notification[]
@@ -227,6 +228,9 @@ model ClinicType {
   isActive         Boolean @default(true) @map("is_active") // 是否開放預約
   requiresReview   Boolean @default(false) @map("requires_review") // 需櫃檯審核（成立為待確認）
   needsQuestionnaire Boolean @default(false) @map("needs_questionnaire")
+  /// 是否允許家庭代表預約（一個名額涵蓋同診次多位家人）。
+  /// 官網公告：兒童發展篩檢每時段只安排 1 位兒童施測，故該門診設為 false。
+  allowCompanions  Boolean @default(true) @map("allow_companions")
   questionnaireUrl String? @map("questionnaire_url")
   minAgeMonths     Int?    @map("min_age_months")
   maxAgeMonths     Int?    @map("max_age_months")
@@ -341,6 +345,9 @@ model Appointment {
   staffNote          String?           @map("staff_note")
   /// 櫃檯覆寫同日／同時筆數／黑名單限制時的必填理由
   overrideReason     String?           @map("override_reason")
+  /// 預約帳號識別（額度以此為單位，官網公告：每個預約帳號同時最多 2 筆）。
+  /// LINE 登入＝line:<lineAccountId>；手機驗證＝phone:<已驗證手機>；櫃檯代約＝null（不占帳號額度）
+  accountKey         String?           @map("account_key")
   /// 前端一次性 token，防重複送出
   requestId          String?           @unique @map("request_id")
   rescheduledFromId  String?           @map("rescheduled_from_id")
@@ -359,12 +366,33 @@ model Appointment {
   statusHistory AppointmentStatusHistory[]
   noShowRecord  NoShowRecord?
   notifications Notification[]
+  companions    AppointmentCompanion[]
 
+  @@index([accountKey, appointmentDate])
   @@index([appointmentDate])
   @@index([patientId, appointmentDate])
   @@index([doctorId, appointmentDate])
   @@index([status])
   @@map("appointments")
+}
+
+/**
+ * 家庭代表預約的同行看診家人：一個時段名額涵蓋同診次的多位家人
+ * （官網公告：同家庭同診次 2 位以上，由 1 位代表預約 1 個時段即可）。
+ * 同行者不另占名額、不另計帳號額度，但仍受「同一病人同日僅一筆」限制。
+ */
+model AppointmentCompanion {
+  id            String   @id @default(cuid())
+  appointmentId String   @map("appointment_id")
+  patientId     String   @map("patient_id")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id])
+  patient     Patient     @relation(fields: [patientId], references: [id])
+
+  @@unique([appointmentId, patientId])
+  @@index([patientId])
+  @@map("appointment_companions")
 }
 
 model AppointmentStatusHistory {

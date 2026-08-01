@@ -105,6 +105,8 @@ export const bookingRequestSchema = z.object({
   date: dateStrSchema,
   startTime: timeStrSchema,
   patient: patientInputSchema,
+  /** 家庭代表預約：同診次一起看診的其他家人（不另占名額） */
+  companions: z.array(patientInputSchema).max(3, "同行家人最多 3 位").optional(),
   requestId: z.string().uuid("重複送出防護參數錯誤"),
 });
 export type BookingRequest = z.infer<typeof bookingRequestSchema>;

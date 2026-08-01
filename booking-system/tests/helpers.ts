@@ -9,6 +9,7 @@ export async function resetDb() {
   // 依外鍵相依順序清空
   const tables = [
     "notifications",
+    "appointment_companions",
     "appointment_status_history",
     "no_show_records",
     "booking_restrictions",
@@ -68,6 +69,7 @@ export async function seedBase(opts: { doubleShift?: boolean } = {}): Promise<Ba
       code: "DEVELOPMENT",
       name: "兒童發展篩檢",
       requiresReview: true,
+      allowCompanions: false, // 每時段只安排 1 位施測
       allowedWeekdays: [],
       allowedSessions: [],
       doctors: { create: [{ doctorId: drTsai.id }, { doctorId: drLee.id }] },

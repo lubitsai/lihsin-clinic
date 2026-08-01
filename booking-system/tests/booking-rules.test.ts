@@ -176,10 +176,11 @@ describe("同日與同時未完成預約上限", () => {
   it("6+7. 同時最多 2 筆未完成預約；已取消不計入也不占名額", async () => {
     const { drTsai, general } = await seedBase();
     const patient = makePatient();
+    // 額度以預約帳號計（院長 2026-08-01 裁示）
     const book = (n: number) =>
       createAppointment({
         clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(n), startTime: "09:00",
-        patientInput: patient, source: "WEB", actor: PATIENT_ACTOR,
+        patientInput: patient, accountKey: "phone:0912345678", source: "WEB", actor: PATIENT_ACTOR,
       });
     await book(1);
     const second = await book(2);
@@ -209,7 +210,7 @@ describe("同日與同時未完成預約上限", () => {
     const book = (n: number) =>
       createAppointment({
         clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(n), startTime: "09:00",
-        patientInput: patient, source: "WEB", actor: PATIENT_ACTOR,
+        patientInput: patient, accountKey: "phone:0912345678", source: "WEB", actor: PATIENT_ACTOR,
       });
     await book(1);
     await book(2);

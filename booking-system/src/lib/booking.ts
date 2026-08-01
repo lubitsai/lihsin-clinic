@@ -66,12 +66,17 @@ export interface CreateAppointmentParams {
   /** 後台是否略過「線上開放」與滾動開放天數限制 */
   isStaff?: boolean;
   staffNote?: string;
+  /** 預約帳號識別（額度以此計算）：line:<id> 或 phone:<已驗證手機>；櫃檯代約留空 */
+  accountKey?: string;
+  /** 家庭代表預約：同診次一起看診的其他家人（不另占名額、不另計帳號額度） */
+  companions?: PatientInput[];
 }
 
 export interface CreateAppointmentResult {
   appointment: Appointment;
   patient: Patient;
   duplicated: boolean; // requestId 重複送出時回傳既有預約
+  companions?: Patient[];
 }
 
 function genBookingNumber(date: string): string {
@@ -160,9 +165,12 @@ async function runCreateTransaction(
       if (!params.staffOverride)
         await assertNoSameDay(tx, patient.id, params.date, params.excludeAppointmentId);
 
-      // 同時未完成預約上限（當日不計入）
+      // 同時未完成預約上限（以預約帳號計、當日不計入）
       if (!params.staffOverride)
-        await assertActiveLimit(tx, patient.id, params.date, params.excludeAppointmentId);
+        await assertActiveLimit(tx, params.accountKey, params.date, params.excludeAppointmentId);
+
+      // 家庭代表預約：同行家人各自建立／取回病歷並檢查，但不另占名額
+      const companionPatients = await prepareCompanions(tx, params, clinicType, patient.id);
 
       // 醫師與名額（含「不限醫師」自動分配）
       const { doctorId, slotId, endTime, capacitySlotNo } = await allocateSlot(tx, {
@@ -195,11 +203,18 @@ async function runCreateTransaction(
           patientNote: params.patientInput?.note,
           staffNote: params.staffNote,
           overrideReason: params.staffOverride?.reason,
+          accountKey: params.accountKey,
           requestId: params.requestId,
           rescheduledFromId: params.excludeAppointmentId,
           createdBy: params.actor.type === "STAFF" ? params.actor.id : "patient",
         },
       });
+
+      if (companionPatients.length > 0) {
+        await tx.appointmentCompanion.createMany({
+          data: companionPatients.map((c) => ({ appointmentId: appointment.id, patientId: c.id })),
+        });
+      }
 
       await tx.appointmentStatusHistory.create({
         data: {
@@ -224,16 +239,81 @@ async function runCreateTransaction(
           startTime: params.startTime,
           source: params.source,
           override: params.staffOverride?.reason,
+          companionCount: companionPatients.length,
         },
         tx,
       );
 
       await enqueueAppointmentNotification(tx, "BOOKED", appointment, patient);
 
-      return { appointment, patient, duplicated: false };
+      return { appointment, patient, duplicated: false, companions: companionPatients };
     },
     { timeout: 15000 },
   );
+}
+
+/**
+ * 家庭代表預約：處理同行看診的家人。
+ * 同行者不另占時段名額、不另計帳號額度（這正是此功能的用意），
+ * 但仍逐一檢查：門診是否允許、是否與代表人重複、是否受預約限制、同日是否已有預約。
+ */
+async function prepareCompanions(
+  tx: Tx,
+  params: CreateAppointmentParams,
+  clinicType: { allowCompanions: boolean; name: string; minAgeMonths: number | null; maxAgeMonths: number | null },
+  primaryPatientId: string,
+): Promise<Patient[]> {
+  const inputs = params.companions ?? [];
+  if (inputs.length === 0) return [];
+  if (!clinicType.allowCompanions) {
+    throw new BookingError(
+      "VALIDATION",
+      `「${clinicType.name}」每個時段只安排 1 位看診，無法加入同行家人，請分別預約時段。`,
+    );
+  }
+  const max = await getSetting("booking.max_companions", tx);
+  if (inputs.length > max) {
+    throw new BookingError("VALIDATION", `同行家人最多 ${max} 位，超過請另外預約時段。`);
+  }
+
+  const out: Patient[] = [];
+  for (const input of inputs) {
+    const companion = await upsertPatientForBooking(tx, input, { trusted: !!params.isStaff });
+    if (companion.id === primaryPatientId)
+      throw new BookingError("VALIDATION", "同行家人與預約人重複，請確認填寫內容。");
+    if (out.some((p) => p.id === companion.id))
+      throw new BookingError("VALIDATION", "同行家人重複填寫，請確認填寫內容。");
+
+    await lockPatientRow(tx, companion.id);
+    assertAgeEligible(clinicType, companion, params.date);
+    await applyRestrictionExpiry(tx, companion.id);
+    if (!params.staffOverride && (await isPatientRestricted(tx, companion.id)))
+      throw new BookingError(
+        "RESTRICTED",
+        `同行家人「${companion.name}」目前無法使用線上預約，請致電立欣診所，由櫃檯人員協助。`,
+      );
+    // 同行者同日不得另有預約（含身為別筆預約的同行者）
+    if (!params.staffOverride) {
+      await assertNoSameDay(tx, companion.id, params.date, params.excludeAppointmentId);
+      const alsoCompanion = await tx.appointmentCompanion.count({
+        where: {
+          patientId: companion.id,
+          appointment: {
+            appointmentDate: dateToDb(params.date),
+            status: { in: [...ACTIVE_STATUSES] },
+            ...(params.excludeAppointmentId ? { id: { not: params.excludeAppointmentId } } : {}),
+          },
+        },
+      });
+      if (alsoCompanion > 0)
+        throw new BookingError(
+          "DUPLICATE_SAME_DAY",
+          `同行家人「${companion.name}」當天已有預約，無法重複預約。`,
+        );
+    }
+    out.push(companion);
+  }
+  return out;
 }
 
 /** 產生不重複的預約編號（含碰撞重試；建立與改期共用） */
@@ -307,30 +387,47 @@ function assertAgeEligible(
   }
 }
 
-/** 同日唯一檢查（病人列已鎖定） */
+/**
+ * 同日唯一檢查（病人列已鎖定）。
+ * 同時檢查「本人是別筆預約的同行家人」，否則家庭代表預約會成為同日重複的破口。
+ */
 async function assertNoSameDay(tx: Tx, patientId: string, date: string, excludeId?: string) {
-  const count = await tx.appointment.count({
-    where: {
-      patientId,
-      appointmentDate: dateToDb(date),
-      status: { in: [...ACTIVE_STATUSES] },
-      ...(excludeId ? { id: { not: excludeId } } : {}),
-    },
-  });
-  if (count > 0) throw new BookingError("DUPLICATE_SAME_DAY", MSG.duplicateSameDay);
+  const where = {
+    appointmentDate: dateToDb(date),
+    status: { in: [...ACTIVE_STATUSES] },
+    ...(excludeId ? { id: { not: excludeId } } : {}),
+  };
+  const [own, asCompanion] = await Promise.all([
+    tx.appointment.count({ where: { patientId, ...where } }),
+    tx.appointmentCompanion.count({ where: { patientId, appointment: where } }),
+  ]);
+  if (own + asCompanion > 0) throw new BookingError("DUPLICATE_SAME_DAY", MSG.duplicateSameDay);
 }
 
 /**
  * 同時最多 N 筆尚未完成的預約（病人列已鎖定）。
  * 與官網公告一致：**當日的預約不計入**——今天的預約既不占用額度，也不受額度阻擋。
  */
-async function assertActiveLimit(tx: Tx, patientId: string, date: string, excludeId?: string) {
+/**
+ * 同時未完成預約上限（官網公告：每個預約帳號同時最多 2 筆，當日的預約不計入）。
+ * 額度以「預約帳號」為單位（院長 2026-08-01 裁示）：
+ *   LINE 登入＝該 LINE 帳號、手機驗證＝該已驗證手機。
+ * 櫃檯代約沒有帳號（accountKey 為 null），不占任何帳號額度、也不受此限。
+ * 超過上限時擋下並說明，不採「自動取消較新的預約」。
+ */
+async function assertActiveLimit(
+  tx: Tx,
+  accountKey: string | null | undefined,
+  date: string,
+  excludeId?: string,
+) {
+  if (!accountKey) return; // 櫃檯代約
   const today = todayStr();
   if (date <= today) return; // 當日（或更早，理論上不會發生）不計入、也不受限
   const max = await getSetting("booking.active_max", tx);
   const count = await tx.appointment.count({
     where: {
-      patientId,
+      accountKey,
       status: { in: [...ACTIVE_LIMIT_STATUSES] },
       appointmentDate: { gt: dateToDb(today) },
       ...(excludeId ? { id: { not: excludeId } } : {}),
@@ -598,7 +695,8 @@ export async function rescheduleAppointment(opts: {
 
       if (!opts.staffOverride) {
         await assertNoSameDay(tx, appt.patientId, opts.newDate, appt.id);
-        await assertActiveLimit(tx, appt.patientId, opts.newDate, appt.id);
+        // 沿用原預約的帳號額度歸屬
+        await assertActiveLimit(tx, appt.accountKey, opts.newDate, appt.id);
       }
 
       const { doctorId, slotId, endTime, capacitySlotNo } = await allocateSlot(tx, {
@@ -629,10 +727,24 @@ export async function rescheduleAppointment(opts: {
           patientNote: appt.patientNote,
           staffNote: appt.staffNote,
           overrideReason: opts.staffOverride?.reason,
+          accountKey: appt.accountKey,
           rescheduledFromId: appt.id,
           createdBy: opts.actor.type === "STAFF" ? opts.actor.id : "patient",
         },
       });
+
+      // 同行家人隨改期一併轉到新預約（原預約標記已改期後即不再生效）
+      const companions = await tx.appointmentCompanion.findMany({
+        where: { appointmentId: appt.id },
+      });
+      if (companions.length > 0) {
+        await tx.appointmentCompanion.createMany({
+          data: companions.map((c) => ({
+            appointmentId: newAppointment.id,
+            patientId: c.patientId,
+          })),
+        });
+      }
 
       const oldAppointment = await tx.appointment.update({
         where: { id: appt.id },

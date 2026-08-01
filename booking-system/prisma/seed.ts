@@ -37,6 +37,8 @@ async function main() {
       notice: "請攜帶兒童健康手冊；送出後需櫃檯確認才成立。",
       requiresReview: true, allowedWeekdays: [2, 4], allowedSessions: ["AFTERNOON"] as SessionPeriod[],
       maxAgeMonths: 84,
+      // 官網公告：兒童發展篩檢每個時段只安排 1 位兒童施測，故不適用家庭代表預約
+      allowCompanions: false,
     },
     {
       code: "WEIGHT", name: "減重特別門診", color: "#E0592A", icon: "scale", displayOrder: 3,

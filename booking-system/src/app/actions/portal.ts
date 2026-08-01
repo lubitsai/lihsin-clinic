@@ -65,6 +65,7 @@ export async function fetchClinicTypes() {
     icon: t.icon,
     requiresReview: t.requiresReview,
     needsQuestionnaire: t.needsQuestionnaire,
+    allowCompanions: t.allowCompanions,
     questionnaireUrl: t.questionnaireUrl,
     doctors: t.doctors
       .filter((d) => d.doctor.isActive)
@@ -141,12 +142,20 @@ export async function submitBooking(
       if (!otpId) return { ok: false, message: "手機驗證碼錯誤或已過期，請重新取得驗證碼" };
     }
 
+    // 額度以「預約帳號」計（官網公告：每個預約帳號同時最多 2 筆）。
+    // LINE 登入者用 LINE 帳號，其餘用剛通過驗證的手機號碼作為帳號識別。
+    const accountKey = portal?.lineAccountId
+      ? `line:${portal.lineAccountId}`
+      : `phone:${parsed.patient.phone}`;
+
     const result = await createAppointment({
       clinicTypeId: parsed.clinicTypeId,
       doctorId: parsed.doctorId,
       date: parsed.date,
       startTime: parsed.startTime,
       patientInput: parsed.patient,
+      companions: parsed.companions,
+      accountKey,
       source: portal?.lineAccountId ? "LINE" : "WEB",
       requestId: parsed.requestId,
       actor: { type: "PATIENT", ip: await clientIp() },

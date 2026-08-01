@@ -23,8 +23,19 @@ interface ClinicTypeDto {
   requiresReview: boolean;
   needsQuestionnaire: boolean;
   questionnaireUrl: string | null;
+  allowCompanions: boolean;
   doctors: { id: string; name: string; title: string | null }[];
 }
+
+/** 同行看診家人（家庭代表預約） */
+interface Companion {
+  name: string;
+  birthDate: string;
+  idType: "NATIONAL_ID" | "RESIDENT_CERT" | "PASSPORT";
+  idNumber: string;
+}
+
+const MAX_COMPANIONS = 3;
 
 type OpenDate = { date: string; open: boolean; hasFreeSlot: boolean };
 type Slot = {
@@ -67,6 +78,7 @@ export function BookingWizard({
     visitType: "" as "" | "FIRST_VISIT" | "RETURN_VISIT",
     note: "",
   });
+  const [companions, setCompanions] = useState<Companion[]>([]);
   const [agree, setAgree] = useState(false);
   const [otpCode, setOtpCode] = useState("");
   const [otpSent, setOtpSent] = useState(false);
@@ -127,6 +139,10 @@ export function BookingWizard({
     if (!/^09\d{8}$/.test(patient.phone)) return setError("手機號碼格式不正確（09 開頭共 10 碼）");
     if (!patient.birthDate) return setError("請選擇出生日期");
     if (!patient.idNumber.trim()) return setError("請輸入證件號碼");
+    for (const [i, c] of companions.entries()) {
+      if (!c.name.trim() || !c.birthDate || !c.idNumber.trim())
+        return setError(`請填寫第 ${i + 1} 位同行家人的姓名、出生日期與證件號碼`);
+    }
     if (!agree) return setError("請先閱讀並勾選同意個資告知事項");
     setRequestId(crypto.randomUUID()); // 進入確認頁時產生一次性編號，防重複送出
     goto(6);
@@ -161,6 +177,16 @@ export function BookingWizard({
           visitType: patient.visitType || undefined,
           note: patient.note.trim() || undefined,
         },
+        companions: companions.length
+          ? companions.map((c) => ({
+              name: c.name.trim(),
+              // 同行家人沿用代表人的聯絡電話（通知一併寄給代表人）
+              phone: patient.phone,
+              birthDate: c.birthDate,
+              idType: c.idType,
+              idNumber: c.idNumber.trim(),
+            }))
+          : undefined,
       });
       if (!r.ok) {
         if (viaLine && !needOtp && r.message.includes("驗證碼")) setNeedOtp(true);
@@ -433,6 +459,100 @@ export function BookingWizard({
               </span>
             </label>
           </Card>
+
+          {clinicType?.allowCompanions && (
+            <Card className="space-y-3">
+              <div>
+                <h2 className="font-bold text-forest-700">同行看診的家人（選填）</h2>
+                <p className="text-sm text-stone-600 mt-1">
+                  同一個家庭、同一診次有多位要看診時，由 1 位代表預約 1 個時段即可，
+                  到診後一起報到、依序看診，不必每人各佔一個名額。
+                </p>
+              </div>
+              {companions.map((c, i) => (
+                <div key={i} className="rounded-xl border border-cream-200 p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-bark-600">第 {i + 1} 位同行家人</span>
+                    <button
+                      type="button"
+                      onClick={() => setCompanions(companions.filter((_, idx) => idx !== i))}
+                      className="text-sm text-stone-500 underline underline-offset-2"
+                    >
+                      移除
+                    </button>
+                  </div>
+                  <input
+                    className="input"
+                    placeholder="姓名"
+                    value={c.name}
+                    onChange={(e) =>
+                      setCompanions(
+                        companions.map((x, idx) => (idx === i ? { ...x, name: e.target.value } : x)),
+                      )
+                    }
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input
+                      type="date"
+                      className="input"
+                      value={c.birthDate}
+                      max={new Date().toISOString().slice(0, 10)}
+                      onChange={(e) =>
+                        setCompanions(
+                          companions.map((x, idx) =>
+                            idx === i ? { ...x, birthDate: e.target.value } : x,
+                          ),
+                        )
+                      }
+                    />
+                    <select
+                      className="input"
+                      value={c.idType}
+                      onChange={(e) =>
+                        setCompanions(
+                          companions.map((x, idx) =>
+                            idx === i ? { ...x, idType: e.target.value as Companion["idType"] } : x,
+                          ),
+                        )
+                      }
+                    >
+                      {(Object.keys(ID_TYPE_LABEL) as (keyof typeof ID_TYPE_LABEL)[]).map((t) => (
+                        <option key={t} value={t}>
+                          {ID_TYPE_LABEL[t]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <input
+                    className="input"
+                    placeholder="證件號碼"
+                    value={c.idNumber}
+                    onChange={(e) =>
+                      setCompanions(
+                        companions.map((x, idx) =>
+                          idx === i ? { ...x, idNumber: e.target.value.toUpperCase().trim() } : x,
+                        ),
+                      )
+                    }
+                  />
+                </div>
+              ))}
+              {companions.length < MAX_COMPANIONS && (
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCompanions([
+                      ...companions,
+                      { name: "", birthDate: "", idType: "NATIONAL_ID", idNumber: "" },
+                    ])
+                  }
+                  className="btn-secondary w-full"
+                >
+                  ＋ 新增同行家人
+                </button>
+              )}
+            </Card>
+          )}
           <div className="flex gap-3">
             <BackButton onClick={() => goto(4)} />
             <button onClick={toConfirm} className="btn-primary flex-1">
@@ -452,6 +572,9 @@ export function BookingWizard({
               <Row label="日期">{formatDateTw(date)}</Row>
               <Row label="時段">{startTime}</Row>
               <Row label="病人">{patient.name}</Row>
+              {companions.length > 0 && (
+                <Row label="同行">{companions.map((c) => c.name).join("、")}（共 {companions.length + 1} 位一起看診）</Row>
+              )}
               <Row label="手機">{patient.phone}</Row>
             </dl>
           </Card>
@@ -509,6 +632,12 @@ export function BookingWizard({
             <p className="mt-3 text-stone-700">
               {formatDateTw(date)} {startTime}｜{doctorName}｜{clinicType?.name}
             </p>
+            {companions.length > 0 && (
+              <p className="mt-1 text-stone-600 text-sm">
+                共 {companions.length + 1} 位一起看診：{patient.name}、
+                {companions.map((c) => c.name).join("、")}
+              </p>
+            )}
           </Card>
           <p className="text-stone-600 text-sm px-4">
             已透過 LINE 或簡訊發送預約通知。線上預約不等於實際看診號碼，請依現場狀況候診。

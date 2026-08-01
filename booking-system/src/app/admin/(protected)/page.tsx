@@ -111,6 +111,7 @@ export default async function AdminDashboard({
           doctorId: a.doctorId,
           doctor: { name: a.doctor.name },
           clinicType: { name: a.clinicType.name, color: a.clinicType.color },
+          companions: a.companions.map((c) => ({ id: c.id, name: c.patient.name })),
           patient: {
             id: a.patient.id,
             name: a.patient.name,

@@ -29,6 +29,8 @@ interface ApptDto {
   doctorId: string;
   doctor: { name: string };
   clinicType: { name: string; color: string };
+  /** 家庭代表預約的同行看診家人（不另占名額） */
+  companions: { id: string; name: string }[];
   patient: {
     id: string;
     name: string;
@@ -249,6 +251,11 @@ function ApptCard({
           {showTime && <span className="font-mono mr-2">{a.startTime}</span>}
           {a.patient.name}
           <span className="ml-2 text-sm font-normal text-stone-500">{a.patient.idNumberMasked}</span>
+          {a.companions.length > 0 && (
+            <span className="ml-2 rounded bg-bark-500/15 text-bark-600 px-1.5 py-0.5 text-xs font-medium">
+              👨‍👩‍👧 同行 {a.companions.length} 位
+            </span>
+          )}
         </p>
         <StatusBadge status={a.status} />
       </div>
@@ -269,6 +276,11 @@ function ApptCard({
           <span className="ml-2 text-red-700 font-medium">⛔ 預約限制中</span>
         )}
       </p>
+      {a.companions.length > 0 && (
+        <p className="text-sm text-bark-600 bg-bark-400/10 rounded px-2 py-1">
+          同行看診：{a.companions.map((c) => c.name).join("、")}（共 {a.companions.length + 1} 位）
+        </p>
+      )}
       {(a.patientNote || a.staffNote || a.patient.staffNote) && (
         <p className="text-sm text-amber-800 bg-amber-50 rounded px-2 py-1">
           {a.patientNote && <>病人備註：{a.patientNote} </>}

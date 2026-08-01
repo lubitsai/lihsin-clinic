@@ -21,7 +21,14 @@ export default async function RulesPage() {
         <ul className="list-disc list-inside space-y-1.5 text-stone-700 leading-relaxed">
           <li>開放預約範圍：今日起 {openDays} 天內（每日 00:00 開放最新一天）。</li>
           <li>同一位病人同一天僅能有 1 筆有效預約（不分醫師、門診類型）。</li>
-          <li>為維護公平性，同時最多只能保留 {activeMax} 筆尚未完成的預約（當日的預約不計入）。</li>
+          <li>
+            為維護公平性，每個預約帳號同時最多保留 {activeMax} 筆尚未完成的預約（當日的預約不計入）；
+            超過時將無法再預約，請先取消或完成既有預約。
+          </li>
+          <li>
+            同一家庭、同一診次有 2 位以上要看診時，由 1 位代表預約 1 個時段即可，
+            到診後一起報到、依序看診，不必每人各佔一個名額（兒童發展篩檢門診除外）。
+          </li>
           <li>取消或改期請於看診前 {cancelCutoff >= 60 ? `${cancelCutoff / 60} 小時` : `${cancelCutoff} 分鐘`}完成；逾時請致電診所。</li>
           <li>多次預約未到且未事先取消者，將暫停線上預約服務，需致電診所由櫃檯協助。</li>
           <li>線上預約為看診時段登記，非實際看診號碼；請依現場報到順序候診。</li>
