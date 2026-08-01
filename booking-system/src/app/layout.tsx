@@ -1,5 +1,21 @@
 import type { Metadata, Viewport } from "next";
+import { Noto_Sans_TC, Poppins } from "next/font/google";
 import "./globals.css";
+
+// 與官網相同的字體組合；next/font 於建置時自帶字檔，
+// 不會對外部字型服務發出請求（符合本站 CSP 的 default-src 'self'）
+const notoSansTC = Noto_Sans_TC({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-noto-sans-tc",
+  display: "swap",
+});
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-poppins",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: { default: "立欣診所線上預約", template: "%s｜立欣診所線上預約" },
@@ -15,8 +31,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-Hant-TW">
-      <body className="min-h-screen">{children}</body>
+    <html lang="zh-Hant-TW" className={`${notoSansTC.variable} ${poppins.variable}`}>
+      <body className="min-h-screen font-sans">{children}</body>
     </html>
   );
 }

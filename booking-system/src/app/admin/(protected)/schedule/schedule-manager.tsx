@@ -91,7 +91,7 @@ export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }:
             key={key}
             onClick={() => setTab(key)}
             className={`rounded-xl border-2 px-4 py-2 font-bold ${
-              tab === key ? "border-forest-600 bg-forest-600 text-white" : "border-cream-200 bg-white text-stone-700"
+              tab === key ? "border-sage-600 bg-sage-600 text-white" : "border-sage-200 bg-white text-ink-900"
             }`}
           >
             {label}
@@ -223,7 +223,7 @@ function WeeklyEditor({
       <Card className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-stone-500">
+            <tr className="text-left text-ink-500">
               <th className="py-1.5 pr-3">星期</th>
               <th className="pr-3">診別</th>
               <th className="pr-3">時間</th>
@@ -234,7 +234,7 @@ function WeeklyEditor({
               <th />
             </tr>
           </thead>
-          <tbody className="divide-y divide-cream-200">
+          <tbody className="divide-y divide-sage-200">
             {templates.map((t) => (
               <tr key={t.id}>
                 <td className="py-2 pr-3 font-bold">週{WEEKDAYS[t.weekday]}</td>
@@ -247,7 +247,7 @@ function WeeklyEditor({
                 <td className="pr-3">{t.allowOnline ? "✅" : "—"}</td>
                 <td className="pr-3">{t.isActive ? "✅" : "停用"}</td>
                 <td>
-                  <button onClick={() => onDelete(t.id)} disabled={pending} className="text-red-700 underline underline-offset-2">
+                  <button onClick={() => onDelete(t.id)} disabled={pending} className="text-rose-600 underline underline-offset-2">
                     刪除
                   </button>
                 </td>
@@ -258,7 +258,7 @@ function WeeklyEditor({
       </Card>
 
       <Card className="space-y-3">
-        <h3 className="font-bold text-forest-700">新增／覆蓋班表段落（同星期＋診別＋醫師會覆蓋）</h3>
+        <h3 className="font-bold text-sage-700">新增／覆蓋班表段落（同星期＋診別＋醫師會覆蓋）</h3>
         <div className="flex flex-wrap gap-2 items-center">
           <select className="input !w-auto" value={form.weekday} onChange={(e) => setForm({ ...form, weekday: +e.target.value })}>
             {WEEKDAYS.map((w, i) => (
@@ -283,14 +283,14 @@ function WeeklyEditor({
             <input type="number" min={1} max={10} className="input !w-16" value={form.slotCapacity} onChange={(e) => setForm({ ...form, slotCapacity: +e.target.value })} />
           </label>
           <label className="flex items-center gap-1">
-            <input type="checkbox" checked={form.allowOnline} onChange={(e) => setForm({ ...form, allowOnline: e.target.checked })} className="size-4 accent-forest-600" />
+            <input type="checkbox" checked={form.allowOnline} onChange={(e) => setForm({ ...form, allowOnline: e.target.checked })} className="size-4 accent-sage-500" />
             線上開放
           </label>
           <button onClick={() => onSave(form)} disabled={pending} className="btn-primary !py-2">
             儲存
           </button>
         </div>
-        <p className="text-sm text-stone-500">
+        <p className="text-sm text-ink-500">
           預設營業時間：週一–五 08:00–12:00／14:30–18:00／18:30–21:30；週六 08:00–11:30／14:30–18:00；週日 08:00–11:30／18:30–21:00。
         </p>
       </Card>
@@ -380,7 +380,7 @@ function ExceptionEditor({
   return (
     <div className="space-y-4">
       <Card className="space-y-3">
-        <h3 className="font-bold text-forest-700">新增日期例外</h3>
+        <h3 className="font-bold text-sage-700">新增日期例外</h3>
         <div className="flex flex-wrap gap-2 items-center">
           <input type="date" className="input !w-auto" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
           <select className="input !w-auto" value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as ExceptionType })}>
@@ -444,18 +444,18 @@ function ExceptionEditor({
       </Card>
 
       {affected && affected.length > 0 && (
-        <Card className="border-persimmon-500/50 space-y-3">
-          <h3 className="font-bold text-persimmon-600">
+        <Card className="border-rose-500/50 space-y-3">
+          <h3 className="font-bold text-rose-600">
             ⚠️ 此變更影響 {affected.length} 筆有效預約（不會直接刪除，請選擇處理方式）
           </h3>
-          <ul className="divide-y divide-cream-200">
+          <ul className="divide-y divide-sage-200">
             {affected.map((a) => (
               <li key={a.id} className="py-2 flex flex-wrap items-center gap-2">
                 <span className="font-mono">{a.time}</span>
                 <span className="font-bold">{a.patientName}</span>
-                <span className="text-stone-500">{a.phone}</span>
-                <span className="text-stone-400 text-sm">{a.bookingNumber}</span>
-                <Link href={`/admin/booking?reschedule=${a.id}`} className="ml-auto qbtn bg-bark-500 text-white">
+                <span className="text-ink-500">{a.phone}</span>
+                <span className="text-ink-300 text-sm">{a.bookingNumber}</span>
+                <Link href={`/admin/booking?reschedule=${a.id}`} className="ml-auto qbtn bg-wood-600 text-white">
                   逐筆改期
                 </Link>
               </li>
@@ -473,13 +473,13 @@ function ExceptionEditor({
       )}
 
       <Card>
-        <h3 className="font-bold text-forest-700 mb-2">已設定的例外（今日起）</h3>
-        <ul className="divide-y divide-cream-200">
-          {exceptions.length === 0 && <li className="py-2 text-stone-500">目前沒有例外設定。</li>}
+        <h3 className="font-bold text-sage-700 mb-2">已設定的例外（今日起）</h3>
+        <ul className="divide-y divide-sage-200">
+          {exceptions.length === 0 && <li className="py-2 text-ink-500">目前沒有例外設定。</li>}
           {exceptions.map((e) => (
             <li key={e.id} className="py-2 flex flex-wrap items-center gap-2">
               <span className="font-bold">{formatDateTw(e.date)}</span>
-              <span className="rounded bg-cream-200 px-2 py-0.5 text-sm">{EXCEPTION_LABEL[e.type]}</span>
+              <span className="rounded bg-sage-200 px-2 py-0.5 text-sm">{EXCEPTION_LABEL[e.type]}</span>
               {e.session && <span>{SESSION_META[e.session].label}</span>}
               {e.doctorId && <span>{doctorName(e.doctorId)}醫師</span>}
               {e.substituteDoctorId && <span>→ {doctorName(e.substituteDoctorId)}醫師代診</span>}
@@ -489,8 +489,8 @@ function ExceptionEditor({
                   {e.endTime ? `–${e.endTime}` : ""}
                 </span>
               )}
-              <span className="text-stone-500">{e.reason}</span>
-              <button onClick={() => onDelete(e.id)} disabled={pending} className="ml-auto text-red-700 underline underline-offset-2 text-sm">
+              <span className="text-ink-500">{e.reason}</span>
+              <button onClick={() => onDelete(e.id)} disabled={pending} className="ml-auto text-rose-600 underline underline-offset-2 text-sm">
                 刪除
               </button>
             </li>
@@ -551,7 +551,7 @@ function MonthCalendar({
           <button onClick={() => shiftMonth(-1)} className="btn-secondary !py-1.5 !px-3">
             ← 上月
           </button>
-          <h3 className="font-bold text-forest-700 text-lg">
+          <h3 className="font-bold text-sage-700 text-lg">
             {month.replace("-", " 年 ")} 月
           </h3>
           <button onClick={() => shiftMonth(1)} className="btn-secondary !py-1.5 !px-3">
@@ -576,7 +576,7 @@ function MonthCalendar({
           </button>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 text-center text-sm font-medium text-stone-500">
+        <div className="grid grid-cols-7 gap-1 text-center text-sm font-medium text-ink-500">
           {WEEKDAYS.map((w) => (
             <div key={w}>週{w}</div>
           ))}
@@ -593,16 +593,16 @@ function MonthCalendar({
               <div
                 key={date}
                 className={`min-h-20 rounded-lg border p-1 text-left ${
-                  isToday ? "border-forest-600 bg-forest-500/5" : "border-cream-200 bg-white"
+                  isToday ? "border-sage-600 bg-sage-500/5" : "border-sage-200 bg-white"
                 } ${date < today ? "opacity-50" : ""}`}
               >
-                <p className={`text-xs font-bold ${isToday ? "text-forest-700" : "text-stone-500"}`}>
+                <p className={`text-xs font-bold ${isToday ? "text-sage-700" : "text-ink-500"}`}>
                   {i + 1}
                 </p>
                 {dayExceptions.map((e) => (
                   <p
                     key={e.id}
-                    className="mt-0.5 rounded bg-persimmon-500/10 text-persimmon-600 px-1 py-0.5 text-[11px] leading-tight"
+                    className="mt-0.5 rounded bg-rose-500/10 text-rose-600 px-1 py-0.5 text-[11px] leading-tight"
                     title={`${e.reason}${e.doctorId ? `｜${doctorName(e.doctorId)}` : ""}`}
                   >
                     {EXCEPTION_LABEL[e.type]}
@@ -613,7 +613,7 @@ function MonthCalendar({
             );
           })}
         </div>
-        <p className="text-sm text-stone-500">
+        <p className="text-sm text-ink-500">
           固定週班表每週自動重複，毋需複製；「複製」針對例外設定（休診、代診、加診等）。
           新增或刪除例外請至「日期例外」分頁。
         </p>
@@ -641,8 +641,8 @@ function CapacityEditor({
   });
   return (
     <Card className="space-y-3">
-      <h3 className="font-bold text-forest-700">手動調整單一時段名額（加開特殊名額）</h3>
-      <p className="text-sm text-stone-500">操作者、時間與原因將寫入稽核紀錄。</p>
+      <h3 className="font-bold text-sage-700">手動調整單一時段名額（加開特殊名額）</h3>
+      <p className="text-sm text-ink-500">操作者、時間與原因將寫入稽核紀錄。</p>
       <div className="flex flex-wrap gap-2 items-center">
         <select className="input !w-auto" value={form.doctorId} onChange={(e) => setForm({ ...form, doctorId: e.target.value })}>
           {doctors.map((d) => (

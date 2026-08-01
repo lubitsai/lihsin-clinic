@@ -32,9 +32,9 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
   return (
     <div className="space-y-4 max-w-4xl">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold text-forest-700">{patient.name}</h1>
+        <h1 className="text-2xl font-bold text-sage-700">{patient.name}</h1>
         {activeRestrictions.length > 0 && (
-          <span className="rounded-full bg-red-100 text-red-800 border border-red-300 px-3 py-1 text-sm font-bold">
+          <span className="rounded-full bg-rose-200 text-rose-600 border border-rose-500 px-3 py-1 text-sm font-bold">
             ⛔ 預約限制中
           </span>
         )}
@@ -45,7 +45,7 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
 
       <div className="grid md:grid-cols-2 gap-4">
         <Card className="space-y-1.5">
-          <h2 className="font-bold text-forest-700 mb-1">基本資料</h2>
+          <h2 className="font-bold text-sage-700 mb-1">基本資料</h2>
           <p>
             {ID_TYPE_LABEL[patient.idType]}：{patient.idNumberMasked}
             {hasPermission(ctx, PERMISSIONS.PII_FULL) && <RevealIdButton patientId={patient.id} />}
@@ -59,14 +59,14 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
           </p>
           <p>
             取消 {patient.cancelCount} 次｜
-            <span className={patient.noShowCount > 0 ? "text-persimmon-600 font-bold" : ""}>
+            <span className={patient.noShowCount > 0 ? "text-rose-600 font-bold" : ""}>
               未到 {patient.noShowCount} 次
             </span>
           </p>
         </Card>
 
         <Card className="space-y-3">
-          <h2 className="font-bold text-forest-700">聯絡資料</h2>
+          <h2 className="font-bold text-sage-700">聯絡資料</h2>
           <PatientContactForm
             patientId={patient.id}
             initialName={patient.name}
@@ -83,7 +83,7 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
       </div>
 
       <Card>
-        <h2 className="font-bold text-forest-700 mb-2">後台備註</h2>
+        <h2 className="font-bold text-sage-700 mb-2">後台備註</h2>
         <PatientNoteForm patientId={patient.id} initialNote={patient.staffNote ?? ""} />
       </Card>
 
@@ -104,14 +104,14 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
 
       {patient.noShowRecords.length > 0 && (
         <Card>
-          <h2 className="font-bold text-forest-700 mb-2">未到紀錄</h2>
-          <ul className="divide-y divide-cream-200 text-sm">
+          <h2 className="font-bold text-sage-700 mb-2">未到紀錄</h2>
+          <ul className="divide-y divide-sage-200 text-sm">
             {patient.noShowRecords.map((r) => (
               <li key={r.id} className="py-2 flex flex-wrap gap-2">
                 <span>{formatDateTw(dbToDate(r.appointment.appointmentDate))} {r.appointment.startTime}</span>
-                <span className="text-stone-500">{r.appointment.bookingNumber}</span>
-                {r.note && <span className="text-stone-500">{r.note}</span>}
-                {r.revokedAt && <span className="text-forest-600">（已撤銷：{r.revokeReason}）</span>}
+                <span className="text-ink-500">{r.appointment.bookingNumber}</span>
+                {r.note && <span className="text-ink-500">{r.note}</span>}
+                {r.revokedAt && <span className="text-sage-600">（已撤銷：{r.revokeReason}）</span>}
               </li>
             ))}
           </ul>
@@ -119,14 +119,14 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
       )}
 
       <Card>
-        <h2 className="font-bold text-forest-700 mb-2">未來預約</h2>
-        {upcoming.length === 0 && <p className="text-stone-500">無</p>}
-        <ul className="divide-y divide-cream-200">
+        <h2 className="font-bold text-sage-700 mb-2">未來預約</h2>
+        {upcoming.length === 0 && <p className="text-ink-500">無</p>}
+        <ul className="divide-y divide-sage-200">
           {upcoming.map((a) => (
             <li key={a.id} className="py-2 flex flex-wrap items-center gap-2">
               <span className="font-bold">{formatDateTw(dbToDate(a.appointmentDate))} {a.startTime}</span>
               <span>{a.doctor.name}醫師｜{a.clinicType.name}</span>
-              <span className="text-stone-400 text-sm">{a.bookingNumber}</span>
+              <span className="text-ink-300 text-sm">{a.bookingNumber}</span>
               <span className="ml-auto"><StatusBadge status={a.status} /></span>
             </li>
           ))}
@@ -134,13 +134,13 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
       </Card>
 
       <Card>
-        <h2 className="font-bold text-forest-700 mb-2">歷史預約</h2>
-        {past.length === 0 && <p className="text-stone-500">無</p>}
-        <ul className="divide-y divide-cream-200 text-sm">
+        <h2 className="font-bold text-sage-700 mb-2">歷史預約</h2>
+        {past.length === 0 && <p className="text-ink-500">無</p>}
+        <ul className="divide-y divide-sage-200 text-sm">
           {past.slice(0, 30).map((a) => (
             <li key={a.id} className="py-1.5 flex flex-wrap items-center gap-2">
               <span>{formatDateTw(dbToDate(a.appointmentDate))} {a.startTime}</span>
-              <span className="text-stone-600">{a.doctor.name}｜{a.clinicType.name}</span>
+              <span className="text-ink-700">{a.doctor.name}｜{a.clinicType.name}</span>
               <span className="ml-auto"><StatusBadge status={a.status} /></span>
             </li>
           ))}

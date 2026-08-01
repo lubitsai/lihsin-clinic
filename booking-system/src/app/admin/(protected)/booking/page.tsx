@@ -60,7 +60,7 @@ export default async function StaffBookingPage({
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-forest-700 mb-4">
+      <h1 className="text-2xl font-bold text-sage-700 mb-4">
         {reschedule ? "預約改期" : "代客預約"}
       </h1>
       <StaffBookingForm

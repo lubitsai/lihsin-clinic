@@ -1,50 +1,97 @@
 @import "tailwindcss";
 
-/* 立欣診所品牌色系：奶油底＋深綠/暖棕/橘紅，溫暖親切、非冰冷醫院系統 */
+/**
+ * 立欣診所預約系統設計 token
+ * 取自官網 lhpedclinic.com.tw 實際使用值，與官網視覺一致：
+ *   --sage-green #7C9A6E（主色，官網使用逾 400 次）／--sage-green-light #A8C69F
+ *   區塊底色 #f8faf7、#f0f7ed、#e8f4e8；暖白 #fff8f0
+ *   --wood #D4B896／--wood-light #E8D5B7／深木色文字 #8b6f3a
+ *   --pink #F2C4C4／--pink-light #F7D6D6；強調紅 #d97a7a、#c66060
+ *   字體 Noto Sans TC ＋ Poppins；內文 16px／行高 1.6／#333
+ */
 @theme {
-  --color-cream-50: #fdfaf3;
-  --color-cream-100: #faf5e9;
-  --color-cream-200: #f3ead6;
-  --color-forest-500: #3d7a4e;
-  --color-forest-600: #2f5d3a;
-  --color-forest-700: #24482d;
-  --color-forest-800: #1a3521;
-  --color-bark-400: #a97c50;
-  --color-bark-500: #8b5e3c;
-  --color-bark-600: #6f4a2f;
-  --color-persimmon-400: #ef7a4a;
-  --color-persimmon-500: #e0592a;
-  --color-persimmon-600: #c44a1f;
+  /* 主色：鼠尾草綠 */
+  --color-sage-50: #f8faf7;
+  --color-sage-100: #f0f7ed;
+  --color-sage-200: #e8f4e8;
+  --color-sage-300: #a8c69f;
+  --color-sage-400: #93b385;
+  --color-sage-500: #7c9a6e;
+  --color-sage-600: #6b8a5e;
+  --color-sage-700: #5a7a50;
+  --color-sage-800: #47613f;
 
-  --font-sans: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  /* 木色：次要強調、標題輔助 */
+  --color-wood-100: #fff8f0;
+  --color-wood-200: #f5e9d8;
+  --color-wood-300: #e8d5b7;
+  --color-wood-400: #d4b896;
+  --color-wood-500: #c2a785;
+  --color-wood-600: #b8935a;
+  --color-wood-700: #8b6f3a;
 
-  --radius-card: 1.25rem;
+  /* 玫瑰粉：提醒與注意（官網用於提示與強調） */
+  --color-rose-100: #fdeeee;
+  --color-rose-200: #f7d6d6;
+  --color-rose-300: #f2c4c4;
+  --color-rose-500: #d97a7a;
+  --color-rose-600: #c66060;
+
+  /* 中性：以官網內文色為基準 */
+  --color-ink-900: #333333;
+  --color-ink-700: #55584f;
+  --color-ink-500: #7a7d75;
+  --color-ink-300: #b9bcb4;
+  --color-line-brand: #06c755;
+
+  --font-sans: var(--font-noto-sans-tc), var(--font-poppins), "PingFang TC",
+    "Microsoft JhengHei", system-ui, sans-serif;
+
+  /* 官網卡片以 rounded-2xl 為主、CTA 為膠囊 */
+  --radius-card: 1rem;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
-  background-color: var(--color-cream-100);
-  color: #2d2a24;
+  background-color: #ffffff;
+  color: var(--color-ink-900);
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-/* 長輩友善：預設字級略大、觸控目標夠大 */
-html {
-  font-size: 17px;
+/* 官網一致的點擊高亮（品牌綠微透明） */
+* {
+  -webkit-tap-highlight-color: rgba(124, 154, 110, 0.15);
+}
+
+a,
+button,
+[role="button"],
+input[type="button"],
+input[type="submit"] {
+  touch-action: manipulation;
 }
 
 @layer components {
   .input {
-    @apply w-full rounded-xl border-2 border-cream-200 bg-white px-3 py-2.5 text-stone-800 focus:border-forest-500 focus:outline-none;
+    @apply w-full rounded-xl border-2 border-sage-200 bg-white px-3 py-2.5 text-ink-900 transition focus:border-sage-500 focus:outline-none;
   }
+  /* 主要 CTA：官網的膠囊按鈕＋綠色漸層 */
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-forest-600 px-5 py-3 font-bold text-white transition hover:bg-forest-700 disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-full bg-gradient-to-br from-sage-500 to-sage-700 px-6 py-3 font-bold text-white shadow-md transition hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:hover:shadow-md;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-xl border-2 border-cream-200 bg-white px-5 py-3 font-bold text-stone-700 transition hover:border-forest-500;
+    @apply inline-flex items-center justify-center rounded-full border-2 border-sage-300 bg-white px-6 py-3 font-bold text-sage-700 transition hover:border-sage-500 hover:bg-sage-50 disabled:opacity-50;
   }
   .btn-danger {
-    @apply inline-flex items-center justify-center rounded-xl bg-persimmon-500 px-5 py-3 font-bold text-white transition hover:bg-persimmon-600 disabled:opacity-50;
+    @apply inline-flex items-center justify-center rounded-full bg-rose-500 px-6 py-3 font-bold text-white shadow-md transition hover:bg-rose-600 active:scale-[0.98] disabled:opacity-50;
   }
+  /* 後台密集操作用的小按鈕：維持方角圓潤但不佔空間 */
   .qbtn {
     @apply inline-flex items-center rounded-lg px-2.5 py-1.5 text-sm font-medium transition disabled:opacity-50;
   }

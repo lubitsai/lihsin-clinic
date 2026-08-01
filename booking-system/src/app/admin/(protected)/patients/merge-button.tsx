@@ -20,7 +20,7 @@ export function MergeButton({ keepId, mergeId }: { keepId: string; mergeId: stri
     });
   };
   return (
-    <button onClick={merge} disabled={pending} className="ml-auto qbtn bg-persimmon-500 text-white">
+    <button onClick={merge} disabled={pending} className="ml-auto qbtn bg-rose-500 text-white">
       合併 →
     </button>
   );

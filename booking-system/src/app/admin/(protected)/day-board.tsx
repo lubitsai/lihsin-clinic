@@ -154,7 +154,7 @@ export function DayBoard({ date, appointments, doctors, clinicTypes, filters, ca
       </form>
 
       {appointments.length === 0 && (
-        <p className="text-center text-stone-500 py-8">此條件下沒有預約。</p>
+        <p className="text-center text-ink-500 py-8">此條件下沒有預約。</p>
       )}
 
       {/* 桌面：時間 × 醫師欄 */}
@@ -163,9 +163,9 @@ export function DayBoard({ date, appointments, doctors, clinicTypes, filters, ca
           <table className="w-full border-separate border-spacing-1">
             <thead>
               <tr>
-                <th className="text-left text-stone-500 font-medium px-2 w-20">時間</th>
+                <th className="text-left text-ink-500 font-medium px-2 w-20">時間</th>
                 {activeDoctors.map((d) => (
-                  <th key={d.id} className="text-left text-forest-700 font-bold px-2">
+                  <th key={d.id} className="text-left text-sage-700 font-bold px-2">
                     {d.name}醫師
                   </th>
                 ))}
@@ -174,7 +174,7 @@ export function DayBoard({ date, appointments, doctors, clinicTypes, filters, ca
             <tbody>
               {times.map((t) => (
                 <tr key={t} className="align-top">
-                  <td className="px-2 py-2 font-mono font-bold text-stone-700">{t}</td>
+                  <td className="px-2 py-2 font-mono font-bold text-ink-900">{t}</td>
                   {activeDoctors.map((d) => (
                     <td key={d.id} className="px-1 py-1">
                       {appointments
@@ -245,21 +245,21 @@ function ApptCard({
 }) {
   const active = ["PENDING", "CONFIRMED", "CHECKED_IN"].includes(a.status);
   return (
-    <div className="rounded-xl border border-cream-200 bg-white p-3 space-y-1.5 shadow-sm">
+    <div className="rounded-xl border border-sage-200 bg-white p-3 space-y-1.5 shadow-sm">
       <div className="flex items-center justify-between gap-2">
-        <p className="font-bold text-stone-800">
+        <p className="font-bold text-ink-900">
           {showTime && <span className="font-mono mr-2">{a.startTime}</span>}
           {a.patient.name}
-          <span className="ml-2 text-sm font-normal text-stone-500">{a.patient.idNumberMasked}</span>
+          <span className="ml-2 text-sm font-normal text-ink-500">{a.patient.idNumberMasked}</span>
           {a.companions.length > 0 && (
-            <span className="ml-2 rounded bg-bark-500/15 text-bark-600 px-1.5 py-0.5 text-xs font-medium">
+            <span className="ml-2 rounded bg-wood-600/15 text-wood-700 px-1.5 py-0.5 text-xs font-medium">
               👨‍👩‍👧 同行 {a.companions.length} 位
             </span>
           )}
         </p>
         <StatusBadge status={a.status} />
       </div>
-      <p className="text-sm text-stone-600">
+      <p className="text-sm text-ink-700">
         <span className="rounded px-1.5 py-0.5 text-white text-xs mr-1" style={{ backgroundColor: a.clinicType.color }}>
           {a.clinicType.name}
         </span>
@@ -267,22 +267,22 @@ function ApptCard({
         {a.visitType ? VISIT_TYPE_LABEL[a.visitType] : "初/複診未填"}｜{SOURCE_LABEL[a.source] ?? a.source}
         ｜{a.bookingNumber}
       </p>
-      <p className="text-sm text-stone-600">
+      <p className="text-sm text-ink-700">
         📱 <a href={`tel:${a.patient.phone}`} className="underline underline-offset-2">{a.patient.phone}</a>
         {a.patient.noShowCount > 0 && (
-          <span className="ml-2 text-persimmon-600 font-medium">⚠️ 未到 {a.patient.noShowCount} 次</span>
+          <span className="ml-2 text-rose-600 font-medium">⚠️ 未到 {a.patient.noShowCount} 次</span>
         )}
         {a.patient.restrictions.length > 0 && (
-          <span className="ml-2 text-red-700 font-medium">⛔ 預約限制中</span>
+          <span className="ml-2 text-rose-600 font-medium">⛔ 預約限制中</span>
         )}
       </p>
       {a.companions.length > 0 && (
-        <p className="text-sm text-bark-600 bg-bark-400/10 rounded px-2 py-1">
+        <p className="text-sm text-wood-700 bg-wood-400/10 rounded px-2 py-1">
           同行看診：{a.companions.map((c) => c.name).join("、")}（共 {a.companions.length + 1} 位）
         </p>
       )}
       {(a.patientNote || a.staffNote || a.patient.staffNote) && (
-        <p className="text-sm text-amber-800 bg-amber-50 rounded px-2 py-1">
+        <p className="text-sm text-wood-700 bg-wood-100 rounded px-2 py-1">
           {a.patientNote && <>病人備註：{a.patientNote} </>}
           {a.staffNote && <>｜櫃檯：{a.staffNote}</>}
           {a.patient.staffNote && <>｜病歷註記：{a.patient.staffNote}</>}
@@ -291,42 +291,42 @@ function ApptCard({
       {canWrite && (
         <div className="flex flex-wrap gap-1.5 pt-1 no-print">
           {a.status === "PENDING" && (
-            <button disabled={pending} onClick={() => onMark(a.id, "CONFIRMED")} className="qbtn bg-forest-600 text-white">
+            <button disabled={pending} onClick={() => onMark(a.id, "CONFIRMED")} className="qbtn bg-sage-600 text-white">
               確認
             </button>
           )}
           {active && a.status !== "CHECKED_IN" && (
-            <button disabled={pending} onClick={() => onMark(a.id, "CHECKED_IN")} className="qbtn bg-sky-600 text-white">
+            <button disabled={pending} onClick={() => onMark(a.id, "CHECKED_IN")} className="qbtn bg-sage-500 text-white">
               報到
             </button>
           )}
           {active && (
-            <button disabled={pending} onClick={() => onMark(a.id, "COMPLETED")} className="qbtn bg-stone-600 text-white">
+            <button disabled={pending} onClick={() => onMark(a.id, "COMPLETED")} className="qbtn bg-ink-500 text-white">
               完成
             </button>
           )}
           {(a.status === "PENDING" || a.status === "CONFIRMED") && (
             <>
-              <button disabled={pending} onClick={() => onMark(a.id, "NO_SHOW")} className="qbtn bg-persimmon-500 text-white">
+              <button disabled={pending} onClick={() => onMark(a.id, "NO_SHOW")} className="qbtn bg-rose-500 text-white">
                 未到
               </button>
-              <button disabled={pending} onClick={() => onCancel(a.id)} className="qbtn bg-red-700 text-white">
+              <button disabled={pending} onClick={() => onCancel(a.id)} className="qbtn bg-rose-600 text-white">
                 取消
               </button>
-              <Link href={`/admin/booking?reschedule=${a.id}&date=${date}`} className="qbtn bg-bark-500 text-white">
+              <Link href={`/admin/booking?reschedule=${a.id}&date=${date}`} className="qbtn bg-wood-600 text-white">
                 改期
               </Link>
             </>
           )}
           {a.status === "NO_SHOW" && (
-            <button disabled={pending} onClick={() => onRevoke(a.id)} className="qbtn bg-stone-500 text-white">
+            <button disabled={pending} onClick={() => onRevoke(a.id)} className="qbtn bg-ink-500 text-white">
               撤銷未到
             </button>
           )}
-          <Link href={`/admin/patients/${a.patient.id}`} className="qbtn bg-white border border-cream-200 text-stone-700">
+          <Link href={`/admin/patients/${a.patient.id}`} className="qbtn bg-white border border-sage-200 text-ink-900">
             編輯/病歷
           </Link>
-          <button disabled={pending} onClick={() => onResend(a.id)} className="qbtn bg-white border border-cream-200 text-stone-700">
+          <button disabled={pending} onClick={() => onResend(a.id)} className="qbtn bg-white border border-sage-200 text-ink-900">
             傳送通知
           </button>
         </div>

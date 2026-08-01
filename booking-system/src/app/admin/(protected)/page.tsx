@@ -77,22 +77,22 @@ export default async function AdminDashboard({
           <input type="date" name="date" defaultValue={date} className="input !w-auto !py-2" />
           <button className="btn-secondary !px-3 !py-2">前往</button>
         </form>
-        <h1 className="text-xl font-bold text-forest-700 ml-auto">{formatDateTw(date)}</h1>
+        <h1 className="text-xl font-bold text-sage-700 ml-auto">{formatDateTw(date)}</h1>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 no-print">
         {overview.map((o) => (
           <Card key={o.doctor.id} className="!p-3 text-center">
-            <p className="font-bold text-forest-700">{o.doctor.name}醫師</p>
-            <p className="text-2xl font-bold text-stone-800">
+            <p className="font-bold text-sage-700">{o.doctor.name}醫師</p>
+            <p className="text-2xl font-bold text-ink-900">
               {o.booked}
-              <span className="text-base font-normal text-stone-500">／{o.total} 名</span>
+              <span className="text-base font-normal text-ink-500">／{o.total} 名</span>
             </p>
-            <p className="text-sm text-stone-500">剩餘 {Math.max(0, o.total - o.booked)}</p>
+            <p className="text-sm text-ink-500">剩餘 {Math.max(0, o.total - o.booked)}</p>
           </Card>
         ))}
         {overview.length === 0 && (
-          <Card className="!p-3 col-span-2 text-center text-stone-500">本日休診或未排班</Card>
+          <Card className="!p-3 col-span-2 text-center text-ink-500">本日休診或未排班</Card>
         )}
       </div>
 

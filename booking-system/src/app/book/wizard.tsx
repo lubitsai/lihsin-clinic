@@ -209,12 +209,12 @@ export function BookingWizard({
 
       {step === 1 && (
         <div className="space-y-3">
-          <h1 className="text-xl font-bold text-forest-700">請選擇門診類型</h1>
+          <h1 className="text-xl font-bold text-sage-700">請選擇門診類型</h1>
           {clinicTypes.map((t) => (
             <button
               key={t.id}
               onClick={() => pickClinicType(t)}
-              className="w-full text-left rounded-card bg-white border-2 border-cream-200 hover:border-forest-500 p-4 transition flex items-start gap-3"
+              className="w-full text-left rounded-card bg-white border-2 border-sage-200 hover:border-sage-500 p-4 transition flex items-start gap-3"
             >
               <span className="text-3xl" aria-hidden>
                 {CLINIC_ICONS[t.icon] ?? "🩺"}
@@ -223,17 +223,17 @@ export function BookingWizard({
                 <span className="block text-lg font-bold" style={{ color: t.color }}>
                   {t.name}
                 </span>
-                {t.description && <span className="block text-stone-600 text-sm mt-0.5">{t.description}</span>}
+                {t.description && <span className="block text-ink-700 text-sm mt-0.5">{t.description}</span>}
                 {t.requiresReview && (
-                  <span className="block text-amber-700 text-sm mt-0.5">此門診送出後需櫃檯確認</span>
+                  <span className="block text-wood-700 text-sm mt-0.5">此門診送出後需櫃檯確認</span>
                 )}
               </span>
             </button>
           ))}
           {!viaLine && lineConfigured && (
-            <p className="text-sm text-stone-600 text-center pt-2">
+            <p className="text-sm text-ink-700 text-center pt-2">
               已加入 LINE？
-              <a href="/api/line/login?next=/book" className="text-forest-600 underline underline-offset-2">
+              <a href="/api/line/login?next=/book" className="text-sage-600 underline underline-offset-2">
                 以 LINE 登入
               </a>
               可加快填寫並接收通知
@@ -244,7 +244,7 @@ export function BookingWizard({
 
       {step === 2 && clinicType && (
         <div className="space-y-3">
-          <h1 className="text-xl font-bold text-forest-700">請選擇醫師</h1>
+          <h1 className="text-xl font-bold text-sage-700">請選擇醫師</h1>
           {clinicType.notice && <Alert tone="info">{clinicType.notice}</Alert>}
           {clinicType.needsQuestionnaire && clinicType.questionnaireUrl && (
             <Alert tone="warn">
@@ -263,20 +263,20 @@ export function BookingWizard({
           <button
             onClick={() => pickDoctor("any")}
             disabled={pending}
-            className="w-full rounded-card bg-white border-2 border-cream-200 hover:border-forest-500 p-4 text-left transition"
+            className="w-full rounded-card bg-white border-2 border-sage-200 hover:border-sage-500 p-4 text-left transition"
           >
-            <span className="text-lg font-bold text-forest-700">不限醫師</span>
-            <span className="block text-sm text-stone-600">由系統安排當時段仍有名額的醫師</span>
+            <span className="text-lg font-bold text-sage-700">不限醫師</span>
+            <span className="block text-sm text-ink-700">由系統安排當時段仍有名額的醫師</span>
           </button>
           {clinicType.doctors.map((d) => (
             <button
               key={d.id}
               onClick={() => pickDoctor(d.id)}
               disabled={pending}
-              className="w-full rounded-card bg-white border-2 border-cream-200 hover:border-forest-500 p-4 text-left transition"
+              className="w-full rounded-card bg-white border-2 border-sage-200 hover:border-sage-500 p-4 text-left transition"
             >
-              <span className="text-lg font-bold text-forest-700">{d.name}醫師</span>
-              {d.title && <span className="block text-sm text-stone-600">{d.title}</span>}
+              <span className="text-lg font-bold text-sage-700">{d.name}醫師</span>
+              {d.title && <span className="block text-sm text-ink-700">{d.title}</span>}
             </button>
           ))}
           <BackButton onClick={() => goto(1)} />
@@ -285,8 +285,8 @@ export function BookingWizard({
 
       {step === 3 && (
         <div className="space-y-3">
-          <h1 className="text-xl font-bold text-forest-700">請選擇日期</h1>
-          <p className="text-sm text-stone-600">開放今日起 {openDates.length} 天內預約；灰色表示休診或額滿。</p>
+          <h1 className="text-xl font-bold text-sage-700">請選擇日期</h1>
+          <p className="text-sm text-ink-700">開放今日起 {openDates.length} 天內預約；灰色表示休診或額滿。</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
             {openDates.map((d) => {
               const disabled = !d.open || !d.hasFreeSlot;
@@ -297,8 +297,8 @@ export function BookingWizard({
                   disabled={disabled || pending}
                   className={`rounded-xl border-2 px-3 py-3 text-center transition ${
                     disabled
-                      ? "bg-cream-100 border-cream-200 text-stone-400"
-                      : "bg-white border-cream-200 hover:border-forest-500 text-stone-800"
+                      ? "bg-sage-50 border-sage-200 text-ink-300"
+                      : "bg-white border-sage-200 hover:border-sage-500 text-ink-900"
                   }`}
                 >
                   <span className="block font-bold">{formatDateTw(d.date)}</span>
@@ -315,7 +315,7 @@ export function BookingWizard({
 
       {step === 4 && (
         <div className="space-y-4">
-          <h1 className="text-xl font-bold text-forest-700">
+          <h1 className="text-xl font-bold text-sage-700">
             {formatDateTw(date)}｜請選擇時段
           </h1>
           {(["MORNING", "AFTERNOON", "EVENING"] as const).map((session) => {
@@ -323,7 +323,7 @@ export function BookingWizard({
             if (list.length === 0) return null;
             return (
               <div key={session}>
-                <h2 className="font-bold text-bark-600 mb-2">{SESSION_META[session].label}</h2>
+                <h2 className="font-bold text-wood-700 mb-2">{SESSION_META[session].label}</h2>
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                   {list.map((s) => {
                     const remaining = s.doctors.reduce((acc, d) => acc + d.remaining, 0);
@@ -335,8 +335,8 @@ export function BookingWizard({
                         disabled={full}
                         className={`rounded-xl border-2 py-2.5 font-bold transition ${
                           full
-                            ? "bg-cream-100 border-cream-200 text-stone-400 line-through"
-                            : "bg-white border-cream-200 hover:border-forest-500 text-forest-700"
+                            ? "bg-sage-50 border-sage-200 text-ink-300 line-through"
+                            : "bg-white border-sage-200 hover:border-sage-500 text-sage-700"
                         }`}
                       >
                         {s.startTime}
@@ -354,7 +354,7 @@ export function BookingWizard({
 
       {step === 5 && (
         <div className="space-y-4">
-          <h1 className="text-xl font-bold text-forest-700">請填寫看診病人資料</h1>
+          <h1 className="text-xl font-bold text-sage-700">請填寫看診病人資料</h1>
           <Card className="space-y-4">
             <Field label="病人姓名（必填）">
               <input
@@ -394,8 +394,8 @@ export function BookingWizard({
                     onClick={() => setPatient({ ...patient, idType: t as typeof patient.idType })}
                     className={`rounded-xl border-2 px-3 py-2 ${
                       patient.idType === t
-                        ? "border-forest-500 bg-forest-500/10 text-forest-700 font-bold"
-                        : "border-cream-200 bg-white text-stone-600"
+                        ? "border-sage-500 bg-sage-500/10 text-sage-700 font-bold"
+                        : "border-sage-200 bg-white text-ink-700"
                     }`}
                   >
                     {ID_TYPE_LABEL[t]}
@@ -427,8 +427,8 @@ export function BookingWizard({
                     onClick={() => setPatient({ ...patient, visitType: v })}
                     className={`rounded-xl border-2 px-3 py-2 ${
                       patient.visitType === v
-                        ? "border-forest-500 bg-forest-500/10 text-forest-700 font-bold"
-                        : "border-cream-200 bg-white text-stone-600"
+                        ? "border-sage-500 bg-sage-500/10 text-sage-700 font-bold"
+                        : "border-sage-200 bg-white text-ink-700"
                     }`}
                   >
                     {label}
@@ -444,16 +444,16 @@ export function BookingWizard({
                 maxLength={200}
               />
             </Field>
-            <label className="flex items-start gap-2 text-sm text-stone-700">
+            <label className="flex items-start gap-2 text-sm text-ink-900">
               <input
                 type="checkbox"
                 checked={agree}
                 onChange={(e) => setAgree(e.target.checked)}
-                className="mt-1 size-4 accent-forest-600"
+                className="mt-1 size-4 accent-sage-500"
               />
               <span>
                 我已閱讀並同意
-                <Link href="/rules" target="_blank" className="text-forest-600 underline underline-offset-2 mx-1">
+                <Link href="/rules" target="_blank" className="text-sage-600 underline underline-offset-2 mx-1">
                   預約規則與個人資料告知事項
                 </Link>
               </span>
@@ -463,20 +463,20 @@ export function BookingWizard({
           {clinicType?.allowCompanions && (
             <Card className="space-y-3">
               <div>
-                <h2 className="font-bold text-forest-700">同行看診的家人（選填）</h2>
-                <p className="text-sm text-stone-600 mt-1">
+                <h2 className="font-bold text-sage-700">同行看診的家人（選填）</h2>
+                <p className="text-sm text-ink-700 mt-1">
                   同一個家庭、同一診次有多位要看診時，由 1 位代表預約 1 個時段即可，
                   到診後一起報到、依序看診，不必每人各佔一個名額。
                 </p>
               </div>
               {companions.map((c, i) => (
-                <div key={i} className="rounded-xl border border-cream-200 p-3 space-y-2">
+                <div key={i} className="rounded-xl border border-sage-200 p-3 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-bark-600">第 {i + 1} 位同行家人</span>
+                    <span className="font-medium text-wood-700">第 {i + 1} 位同行家人</span>
                     <button
                       type="button"
                       onClick={() => setCompanions(companions.filter((_, idx) => idx !== i))}
-                      className="text-sm text-stone-500 underline underline-offset-2"
+                      className="text-sm text-ink-500 underline underline-offset-2"
                     >
                       移除
                     </button>
@@ -564,7 +564,7 @@ export function BookingWizard({
 
       {step === 6 && clinicType && (
         <div className="space-y-4">
-          <h1 className="text-xl font-bold text-forest-700">請確認預約內容</h1>
+          <h1 className="text-xl font-bold text-sage-700">請確認預約內容</h1>
           <Card>
             <dl className="space-y-2 text-lg">
               <Row label="門診">{clinicType.name}</Row>
@@ -583,8 +583,8 @@ export function BookingWizard({
           )}
           {needOtp && (
             <Card className="space-y-3">
-              <p className="font-bold text-forest-700">手機驗證</p>
-              <p className="text-sm text-stone-600">
+              <p className="font-bold text-sage-700">手機驗證</p>
+              <p className="text-sm text-ink-700">
                 為確認是本人預約，請點選「傳送驗證碼」，輸入 {patient.phone} 收到的 6 位數字。
               </p>
               <div className="flex gap-2">
@@ -621,25 +621,25 @@ export function BookingWizard({
           <div className="text-6xl" aria-hidden>
             🦌🎉
           </div>
-          <h1 className="text-2xl font-bold text-forest-700">
+          <h1 className="text-2xl font-bold text-sage-700">
             {result.status === "PENDING" ? "預約已送出，待櫃檯確認" : "預約成功！"}
           </h1>
           <Card className="inline-block text-left">
-            <p className="text-stone-600 text-sm">您的預約編號</p>
-            <p className="text-3xl font-mono font-bold text-persimmon-500 tracking-wider">
+            <p className="text-ink-700 text-sm">您的預約編號</p>
+            <p className="text-3xl font-mono font-bold text-rose-500 tracking-wider">
               {result.bookingNumber}
             </p>
-            <p className="mt-3 text-stone-700">
+            <p className="mt-3 text-ink-900">
               {formatDateTw(date)} {startTime}｜{doctorName}｜{clinicType?.name}
             </p>
             {companions.length > 0 && (
-              <p className="mt-1 text-stone-600 text-sm">
+              <p className="mt-1 text-ink-700 text-sm">
                 共 {companions.length + 1} 位一起看診：{patient.name}、
                 {companions.map((c) => c.name).join("、")}
               </p>
             )}
           </Card>
-          <p className="text-stone-600 text-sm px-4">
+          <p className="text-ink-700 text-sm px-4">
             已透過 LINE 或簡訊發送預約通知。線上預約不等於實際看診號碼，請依現場狀況候診。
           </p>
           {clinicType?.needsQuestionnaire && clinicType.questionnaireUrl && (
@@ -682,7 +682,7 @@ function BackButton({ onClick }: { onClick: () => void }) {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="block text-sm font-medium text-stone-700 mb-1">{label}</span>
+      <span className="block text-sm font-medium text-ink-900 mb-1">{label}</span>
       {children}
     </label>
   );
@@ -691,8 +691,8 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex gap-3">
-      <dt className="w-16 text-stone-500 shrink-0">{label}</dt>
-      <dd className="font-bold text-stone-800">{children}</dd>
+      <dt className="w-16 text-ink-500 shrink-0">{label}</dt>
+      <dd className="font-bold text-ink-900">{children}</dd>
     </div>
   );
 }

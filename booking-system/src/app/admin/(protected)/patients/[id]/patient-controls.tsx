@@ -32,7 +32,7 @@ export function PatientNoteForm({ patientId, initialNote }: { patientId: string;
       >
         儲存備註
       </button>
-      {saved && <span className="text-forest-600 text-sm ml-2">已儲存</span>}
+      {saved && <span className="text-sage-600 text-sm ml-2">已儲存</span>}
     </div>
   );
 }
@@ -80,11 +80,11 @@ export function PatientContactForm({
             {pendingContacts.map((c) => (
               <li key={c.id} className="flex flex-wrap items-center gap-2">
                 <span className="font-mono">{c.value}</span>
-                <span className="text-sm text-stone-500">{c.createdAt}</span>
+                <span className="text-sm text-ink-500">{c.createdAt}</span>
                 <button
                   onClick={() => save(name, c.value)}
                   disabled={pending}
-                  className="qbtn bg-forest-600 text-white"
+                  className="qbtn bg-sage-600 text-white"
                 >
                   確認後更新為此號碼
                 </button>
@@ -96,7 +96,7 @@ export function PatientContactForm({
                     })
                   }
                   disabled={pending}
-                  className="qbtn bg-white border border-cream-200 text-stone-700"
+                  className="qbtn bg-white border border-sage-200 text-ink-900"
                 >
                   忽略
                 </button>
@@ -108,18 +108,18 @@ export function PatientContactForm({
       )}
       <div className="grid sm:grid-cols-2 gap-2">
         <label className="block">
-          <span className="text-sm text-stone-600">姓名</span>
+          <span className="text-sm text-ink-700">姓名</span>
           <input className="input" value={name} onChange={(e) => setName(e.target.value)} />
         </label>
         <label className="block">
-          <span className="text-sm text-stone-600">手機</span>
+          <span className="text-sm text-ink-700">手機</span>
           <input className="input" value={phone} onChange={(e) => setPhone(e.target.value.trim())} />
         </label>
       </div>
       <button onClick={() => save()} disabled={pending} className="btn-secondary !py-2">
         儲存聯絡資料
       </button>
-      {saved && <span className="text-forest-600 text-sm ml-2">已儲存</span>}
+      {saved && <span className="text-sage-600 text-sm ml-2">已儲存</span>}
     </div>
   );
 }
@@ -139,7 +139,7 @@ export function RevealIdButton({ patientId }: { patientId: string }) {
         })
       }
       disabled={pending}
-      className="ml-2 text-sm text-forest-600 underline underline-offset-2"
+      className="ml-2 text-sm text-sage-600 underline underline-offset-2"
       title="查看行為將寫入稽核紀錄"
     >
       顯示完整號碼
@@ -195,26 +195,26 @@ export function RestrictionControls({
 
   return (
     <Card className="space-y-3">
-      <h2 className="font-bold text-forest-700">預約限制狀態</h2>
+      <h2 className="font-bold text-sage-700">預約限制狀態</h2>
       {error && <Alert tone="error">{error}</Alert>}
-      {restrictions.length === 0 && <p className="text-stone-500">無限制紀錄。</p>}
-      <ul className="divide-y divide-cream-200 text-sm">
+      {restrictions.length === 0 && <p className="text-ink-500">無限制紀錄。</p>}
+      <ul className="divide-y divide-sage-200 text-sm">
         {restrictions.map((r) => (
           <li key={r.id} className="py-2 flex flex-wrap items-center gap-2">
             <span className={`rounded px-2 py-0.5 font-bold ${
-              r.status === "ACTIVE" ? "bg-red-100 text-red-800" : r.status === "SUSPENDED" ? "bg-amber-100 text-amber-800" : "bg-stone-100 text-stone-500"
+              r.status === "ACTIVE" ? "bg-rose-200 text-rose-600" : r.status === "SUSPENDED" ? "bg-wood-200 text-wood-700" : "bg-sage-50 text-ink-500"
             }`}>
               {r.status === "ACTIVE" ? "生效中" : r.status === "SUSPENDED" ? `暫時解除至 ${r.suspendedUntil}` : "已解除"}
             </span>
             <span>{r.type === "AUTO_NO_SHOW" ? "未到累計自動" : "人工"}</span>
-            <span className="text-stone-500">{r.createdAt}｜{r.reason}</span>
-            {r.liftReason && <span className="text-forest-600">解除原因：{r.liftReason}</span>}
+            <span className="text-ink-500">{r.createdAt}｜{r.reason}</span>
+            {r.liftReason && <span className="text-sage-600">解除原因：{r.liftReason}</span>}
             {canManage && ["ACTIVE", "SUSPENDED"].includes(r.status) && (
               <span className="ml-auto flex gap-1.5">
-                <button onClick={() => lift(r.id, true)} disabled={pending} className="qbtn bg-amber-500 text-white">
+                <button onClick={() => lift(r.id, true)} disabled={pending} className="qbtn bg-wood-600 text-white">
                   暫時解除
                 </button>
-                <button onClick={() => lift(r.id, false)} disabled={pending} className="qbtn bg-forest-600 text-white">
+                <button onClick={() => lift(r.id, false)} disabled={pending} className="qbtn bg-sage-600 text-white">
                   解除
                 </button>
               </span>

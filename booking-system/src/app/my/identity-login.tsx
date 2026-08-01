@@ -41,10 +41,10 @@ export function IdentityLoginForm() {
 
   return (
     <Card className="space-y-4">
-      <h2 className="font-bold text-forest-700 text-lg">以證件號碼查詢</h2>
+      <h2 className="font-bold text-sage-700 text-lg">以證件號碼查詢</h2>
       {error && <Alert tone="error">{error}</Alert>}
       <label className="block">
-        <span className="block text-sm font-medium text-stone-700 mb-1">證件類型</span>
+        <span className="block text-sm font-medium text-ink-900 mb-1">證件類型</span>
         <div className="flex gap-2">
           {(Object.keys(ID_TYPE_LABEL) as (keyof typeof ID_TYPE_LABEL)[]).map((t) => (
             <button
@@ -53,8 +53,8 @@ export function IdentityLoginForm() {
               onClick={() => setForm({ ...form, idType: t as typeof form.idType })}
               className={`rounded-xl border-2 px-3 py-2 ${
                 form.idType === t
-                  ? "border-forest-500 bg-forest-500/10 text-forest-700 font-bold"
-                  : "border-cream-200 bg-white text-stone-600"
+                  ? "border-sage-500 bg-sage-500/10 text-sage-700 font-bold"
+                  : "border-sage-200 bg-white text-ink-700"
               }`}
             >
               {ID_TYPE_LABEL[t]}
@@ -63,7 +63,7 @@ export function IdentityLoginForm() {
         </div>
       </label>
       <label className="block">
-        <span className="block text-sm font-medium text-stone-700 mb-1">證件號碼</span>
+        <span className="block text-sm font-medium text-ink-900 mb-1">證件號碼</span>
         <input
           type="text"
           className="input"
@@ -73,7 +73,7 @@ export function IdentityLoginForm() {
         />
       </label>
       <label className="block">
-        <span className="block text-sm font-medium text-stone-700 mb-1">出生日期</span>
+        <span className="block text-sm font-medium text-ink-900 mb-1">出生日期</span>
         <input
           type="date"
           className="input"
@@ -82,7 +82,7 @@ export function IdentityLoginForm() {
         />
       </label>
       <label className="block">
-        <span className="block text-sm font-medium text-stone-700 mb-1">預約時填寫的手機號碼</span>
+        <span className="block text-sm font-medium text-ink-900 mb-1">預約時填寫的手機號碼</span>
         <input
           type="tel"
           inputMode="numeric"

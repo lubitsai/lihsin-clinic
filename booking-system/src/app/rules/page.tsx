@@ -13,12 +13,13 @@ export default async function RulesPage() {
     getSetting("booking.cancel_cutoff_minutes"),
   ]);
   return (
-    <main className="mx-auto max-w-2xl px-4 py-8 space-y-5">
-      <h1 className="text-2xl font-bold text-forest-700">預約規則與個人資料告知</h1>
+    <main className="min-h-screen bg-gradient-to-b from-white to-sage-50">
+      <div className="mx-auto max-w-2xl px-4 py-8 space-y-5">
+      <h1 className="text-2xl font-bold text-sage-700">預約規則與個人資料告知</h1>
 
       <Card className="space-y-3">
-        <h2 className="text-lg font-bold text-forest-700">預約規則</h2>
-        <ul className="list-disc list-inside space-y-1.5 text-stone-700 leading-relaxed">
+        <h2 className="text-lg font-bold text-sage-700">預約規則</h2>
+        <ul className="list-disc list-inside space-y-1.5 text-ink-900 leading-relaxed">
           <li>開放預約範圍：今日起 {openDays} 天內（每日 00:00 開放最新一天）。</li>
           <li>同一位病人同一天僅能有 1 筆有效預約（不分醫師、門診類型）。</li>
           <li>
@@ -37,8 +38,8 @@ export default async function RulesPage() {
       </Card>
 
       <Card className="space-y-3">
-        <h2 className="text-lg font-bold text-forest-700">個人資料蒐集告知（個資法第 8 條）</h2>
-        <div className="text-stone-700 leading-relaxed space-y-2">
+        <h2 className="text-lg font-bold text-sage-700">個人資料蒐集告知（個資法第 8 條）</h2>
+        <div className="text-ink-900 leading-relaxed space-y-2">
           <p>
             {CLINIC.name}（以下稱本診所）為辦理門診預約、掛號、就診通知與醫療服務之目的
             （特定目的：醫療業務、掛號管理、行銷以外之聯繫），蒐集您填寫的姓名、出生日期、
@@ -58,10 +59,11 @@ export default async function RulesPage() {
       </Card>
 
       <p className="text-center">
-        <Link href="/" className="text-forest-600 underline underline-offset-2">
+        <Link href="/" className="text-sage-600 underline underline-offset-2">
           回預約首頁
         </Link>
       </p>
+    </div>
     </main>
   );
 }

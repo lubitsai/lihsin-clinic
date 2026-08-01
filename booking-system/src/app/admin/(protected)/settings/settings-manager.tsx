@@ -97,11 +97,11 @@ export function SettingsManager({
       {message && <Alert tone="success">{message}</Alert>}
 
       <Card className="space-y-3 max-w-3xl">
-        <h2 className="font-bold text-forest-700">預約規則</h2>
+        <h2 className="font-bold text-sage-700">預約規則</h2>
         <div className="grid sm:grid-cols-2 gap-3">
           <NumField label="滾動開放天數（含今天）" value={s.openDays} onChange={(v) => setS({ ...s, openDays: v })} />
           <label className="block">
-            <span className="text-sm text-stone-600">每日開放最新一天的時間</span>
+            <span className="text-sm text-ink-700">每日開放最新一天的時間</span>
             <input type="time" className="input" value={s.openTime} onChange={(e) => setS({ ...s, openTime: e.target.value })} />
           </label>
           <NumField label="同時未完成預約上限（筆，當日不計入）" value={s.activeMax} onChange={(v) => setS({ ...s, activeMax: v })} />
@@ -111,26 +111,26 @@ export function SettingsManager({
           <NumField label="取消/改期截止（看診前 N 分鐘）" value={s.cancelCutoff} onChange={(v) => setS({ ...s, cancelCutoff: v })} />
           <NumField label="後台閒置自動登出（分鐘）" value={s.idleMinutes} onChange={(v) => setS({ ...s, idleMinutes: v })} />
           <label className="flex items-center gap-2 pt-5">
-            <input type="checkbox" checked={s.allowSameDay} onChange={(e) => setS({ ...s, allowSameDay: e.target.checked })} className="size-4 accent-forest-600" />
+            <input type="checkbox" checked={s.allowSameDay} onChange={(e) => setS({ ...s, allowSameDay: e.target.checked })} className="size-4 accent-sage-500" />
             開放當日預約
           </label>
         </div>
-        <h3 className="font-bold text-forest-700 pt-2">通知</h3>
+        <h3 className="font-bold text-sage-700 pt-2">通知</h3>
         <div className="grid sm:grid-cols-3 gap-3">
           <label className="flex items-center gap-2">
-            <input type="checkbox" checked={s.sameDayReminder} onChange={(e) => setS({ ...s, sameDayReminder: e.target.checked })} className="size-4 accent-forest-600" />
+            <input type="checkbox" checked={s.sameDayReminder} onChange={(e) => setS({ ...s, sameDayReminder: e.target.checked })} className="size-4 accent-sage-500" />
             當日提醒
           </label>
           <label className="block">
-            <span className="text-sm text-stone-600">前一日提醒時間</span>
+            <span className="text-sm text-ink-700">前一日提醒時間</span>
             <input type="time" className="input" value={s.dayBeforeTime} onChange={(e) => setS({ ...s, dayBeforeTime: e.target.value })} />
           </label>
           <label className="block">
-            <span className="text-sm text-stone-600">當日提醒時間</span>
+            <span className="text-sm text-ink-700">當日提醒時間</span>
             <input type="time" className="input" value={s.sameDayTime} onChange={(e) => setS({ ...s, sameDayTime: e.target.value })} />
           </label>
         </div>
-        <p className="text-sm text-stone-500">
+        <p className="text-sm text-ink-500">
           通知管道狀態：LINE 推播 {lineConfigured ? "✅ 已設定" : "—（未設定，將以簡訊替代）"}｜簡訊供應商：{smsProvider}
           （管道設定由環境變數管理，見部署說明）
         </p>
@@ -148,7 +148,7 @@ export function SettingsManager({
 function NumField({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
   return (
     <label className="block">
-      <span className="text-sm text-stone-600">{label}</span>
+      <span className="text-sm text-ink-700">{label}</span>
       <input type="number" className="input" value={value} min={0} onChange={(e) => onChange(+e.target.value)} />
     </label>
   );
@@ -184,14 +184,14 @@ function ClinicTypesEditor({
 
   return (
     <Card className="space-y-3">
-      <h2 className="font-bold text-forest-700">門診類型設定</h2>
+      <h2 className="font-bold text-sage-700">門診類型設定</h2>
       <div className="flex flex-wrap gap-2">
         {clinicTypes.map((t) => (
           <button
             key={t.id}
             onClick={() => setSelected({ ...t })}
             className={`rounded-xl border-2 px-3 py-2 font-bold ${
-              selected?.id === t.id ? "border-forest-600 bg-forest-600 text-white" : "border-cream-200 bg-white"
+              selected?.id === t.id ? "border-sage-600 bg-sage-600 text-white" : "border-sage-200 bg-white"
             } ${!t.isActive ? "opacity-50" : ""}`}
             style={selected?.id === t.id ? {} : { color: t.color }}
           >
@@ -202,53 +202,53 @@ function ClinicTypesEditor({
       </div>
 
       {selected && (
-        <div className="space-y-3 border-t border-cream-200 pt-3">
+        <div className="space-y-3 border-t border-sage-200 pt-3">
           <div className="grid sm:grid-cols-2 gap-3">
             <label className="block">
-              <span className="text-sm text-stone-600">名稱</span>
+              <span className="text-sm text-ink-700">名稱</span>
               <input className="input" value={selected.name} onChange={(e) => setSelected({ ...selected, name: e.target.value })} />
             </label>
             <label className="block">
-              <span className="text-sm text-stone-600">顯示顏色</span>
+              <span className="text-sm text-ink-700">顯示顏色</span>
               <input type="color" className="input !h-11" value={selected.color} onChange={(e) => setSelected({ ...selected, color: e.target.value })} />
             </label>
           </div>
           <label className="block">
-            <span className="text-sm text-stone-600">預約說明</span>
+            <span className="text-sm text-ink-700">預約說明</span>
             <input className="input" value={selected.description} onChange={(e) => setSelected({ ...selected, description: e.target.value })} />
           </label>
           <label className="block">
-            <span className="text-sm text-stone-600">預約前注意事項</span>
+            <span className="text-sm text-ink-700">預約前注意事項</span>
             <textarea className="input min-h-16" value={selected.notice} onChange={(e) => setSelected({ ...selected, notice: e.target.value })} />
           </label>
           <div className="flex flex-wrap gap-4">
             <label className="flex items-center gap-2">
-              <input type="checkbox" checked={selected.isActive} onChange={(e) => setSelected({ ...selected, isActive: e.target.checked })} className="size-4 accent-forest-600" />
+              <input type="checkbox" checked={selected.isActive} onChange={(e) => setSelected({ ...selected, isActive: e.target.checked })} className="size-4 accent-sage-500" />
               開放預約
             </label>
             <label className="flex items-center gap-2">
-              <input type="checkbox" checked={selected.requiresReview} onChange={(e) => setSelected({ ...selected, requiresReview: e.target.checked })} className="size-4 accent-forest-600" />
+              <input type="checkbox" checked={selected.requiresReview} onChange={(e) => setSelected({ ...selected, requiresReview: e.target.checked })} className="size-4 accent-sage-500" />
               需櫃檯審核（成立為待確認）
             </label>
             <label className="flex items-center gap-2">
-              <input type="checkbox" checked={selected.notifyLine} onChange={(e) => setSelected({ ...selected, notifyLine: e.target.checked })} className="size-4 accent-forest-600" />
+              <input type="checkbox" checked={selected.notifyLine} onChange={(e) => setSelected({ ...selected, notifyLine: e.target.checked })} className="size-4 accent-sage-500" />
               發送 LINE/簡訊通知
             </label>
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             <label className="block">
-              <span className="text-sm text-stone-600">年齡下限（月，空白＝不限）</span>
+              <span className="text-sm text-ink-700">年齡下限（月，空白＝不限）</span>
               <input type="number" className="input" value={selected.minAgeMonths ?? ""} min={0}
                 onChange={(e) => setSelected({ ...selected, minAgeMonths: e.target.value === "" ? null : +e.target.value })} />
             </label>
             <label className="block">
-              <span className="text-sm text-stone-600">年齡上限（月，空白＝不限）</span>
+              <span className="text-sm text-ink-700">年齡上限（月，空白＝不限）</span>
               <input type="number" className="input" value={selected.maxAgeMonths ?? ""} min={0}
                 onChange={(e) => setSelected({ ...selected, maxAgeMonths: e.target.value === "" ? null : +e.target.value })} />
             </label>
           </div>
           <div>
-            <span className="text-sm text-stone-600 block mb-1">可預約星期（全不勾＝依醫師班表）</span>
+            <span className="text-sm text-ink-700 block mb-1">可預約星期（全不勾＝依醫師班表）</span>
             <div className="flex gap-2 flex-wrap">
               {WEEKDAYS.map((w, i) => (
                 <label key={i} className="flex items-center gap-1">
@@ -263,7 +263,7 @@ function ClinicTypesEditor({
                           : selected.allowedWeekdays.filter((x) => x !== i),
                       })
                     }
-                    className="size-4 accent-forest-600"
+                    className="size-4 accent-sage-500"
                   />
                   週{w}
                 </label>
@@ -271,7 +271,7 @@ function ClinicTypesEditor({
             </div>
           </div>
           <div>
-            <span className="text-sm text-stone-600 block mb-1">可預約診別（全不勾＝全部）</span>
+            <span className="text-sm text-ink-700 block mb-1">可預約診別（全不勾＝全部）</span>
             <div className="flex gap-3">
               {(Object.keys(SESSION_META) as SessionPeriod[]).map((sess) => (
                 <label key={sess} className="flex items-center gap-1">
@@ -286,7 +286,7 @@ function ClinicTypesEditor({
                           : selected.allowedSessions.filter((x) => x !== sess),
                       })
                     }
-                    className="size-4 accent-forest-600"
+                    className="size-4 accent-sage-500"
                   />
                   {SESSION_META[sess].label}
                 </label>
@@ -294,7 +294,7 @@ function ClinicTypesEditor({
             </div>
           </div>
           <div>
-            <span className="text-sm text-stone-600 block mb-1">可接受預約的醫師</span>
+            <span className="text-sm text-ink-700 block mb-1">可接受預約的醫師</span>
             <div className="flex gap-3 flex-wrap">
               {doctors.filter((d) => d.isActive).map((d) => (
                 <label key={d.id} className="flex items-center gap-1">
@@ -309,7 +309,7 @@ function ClinicTypesEditor({
                           : selected.doctorIds.filter((x) => x !== d.id),
                       })
                     }
-                    className="size-4 accent-forest-600"
+                    className="size-4 accent-sage-500"
                   />
                   {d.name}
                 </label>
@@ -353,24 +353,24 @@ function DoctorsEditor({
 
   return (
     <Card className="space-y-3">
-      <h2 className="font-bold text-forest-700">醫師管理（可新增，不限兩位）</h2>
-      <ul className="divide-y divide-cream-200">
+      <h2 className="font-bold text-sage-700">醫師管理（可新增，不限兩位）</h2>
+      <ul className="divide-y divide-sage-200">
         {doctors.map((d) => (
           <li key={d.id} className="py-2 flex items-center gap-3">
             <span className="font-bold">{d.name}</span>
-            <span className="text-stone-500">{d.title}</span>
-            <span className="text-sm text-stone-400">排序 {d.displayOrder}</span>
-            {!d.isActive && <span className="text-sm text-red-700">已停用</span>}
+            <span className="text-ink-500">{d.title}</span>
+            <span className="text-sm text-ink-300">排序 {d.displayOrder}</span>
+            {!d.isActive && <span className="text-sm text-rose-600">已停用</span>}
             <button
               onClick={() => setForm({ id: d.id, name: d.name, title: d.title, isActive: d.isActive, displayOrder: d.displayOrder })}
-              className="ml-auto text-forest-600 underline underline-offset-2 text-sm"
+              className="ml-auto text-sage-600 underline underline-offset-2 text-sm"
             >
               編輯
             </button>
           </li>
         ))}
       </ul>
-      <div className="flex flex-wrap gap-2 items-center border-t border-cream-200 pt-3">
+      <div className="flex flex-wrap gap-2 items-center border-t border-sage-200 pt-3">
         <input className="input !w-36" placeholder="姓名" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
         <input className="input !w-36" placeholder="職稱" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
         <label className="flex items-center gap-1">
@@ -378,7 +378,7 @@ function DoctorsEditor({
           <input type="number" className="input !w-16" value={form.displayOrder} onChange={(e) => setForm({ ...form, displayOrder: +e.target.value })} />
         </label>
         <label className="flex items-center gap-1">
-          <input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} className="size-4 accent-forest-600" />
+          <input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} className="size-4 accent-sage-500" />
           啟用
         </label>
         <button onClick={save} disabled={pending || !form.name.trim()} className="btn-primary !py-2">

@@ -24,10 +24,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ].filter((n) => n.show);
 
   return (
-    <div className="min-h-screen">
-      <header className="bg-forest-700 text-white no-print">
+    <div className="min-h-screen bg-gradient-to-b from-white to-sage-50">
+      <header className="bg-white border-b border-sage-100 shadow-sm sticky top-0 z-50 no-print">
         <div className="mx-auto max-w-7xl px-4 py-2.5 flex items-center gap-4">
-          <Link href="/admin" className="flex items-center gap-2 font-bold shrink-0">
+          <Link href="/admin" className="flex items-center gap-2 font-bold shrink-0 text-sage-700">
             <DeerMascot size={32} />
             <span className="hidden sm:inline">立欣診所預約後台</span>
           </Link>
@@ -36,14 +36,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               <Link
                 key={n.href}
                 href={n.href}
-                className="rounded-lg px-3 py-1.5 whitespace-nowrap hover:bg-forest-600 transition"
+                className="rounded-full px-3 py-1.5 whitespace-nowrap text-ink-700 hover:bg-sage-100 hover:text-sage-700 transition"
               >
                 {n.label}
               </Link>
             ))}
           </nav>
           <div className="flex items-center gap-2 shrink-0 text-sm">
-            <span className="hidden sm:inline text-forest-500/90 text-cream-100">
+            <span className="hidden sm:inline text-ink-500">
               {ctx.user.displayName}（{ctx.user.role.name}）
             </span>
             <LogoutButton />

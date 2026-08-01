@@ -25,7 +25,7 @@ export default async function SchedulePage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-forest-700">排班管理</h1>
+      <h1 className="text-2xl font-bold text-sage-700">排班管理</h1>
       <ScheduleManager
         templates={templates.map((t) => ({
           id: t.id,

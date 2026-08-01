@@ -16,7 +16,7 @@ export function LogoutButton() {
         })
       }
       disabled={pending}
-      className="rounded-lg bg-forest-600 hover:bg-forest-500 px-3 py-1.5 transition"
+      className="rounded-full border border-sage-300 text-sage-700 hover:bg-sage-100 px-3 py-1.5 font-medium transition"
     >
       登出
     </button>

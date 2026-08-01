@@ -34,7 +34,7 @@ export function RestrictionListControls({
           if (!until || !/^\d{4}-\d{2}-\d{2}$/.test(until)) return window.alert("日期格式不正確");
           run(() => adminLiftRestriction(restrictionId, reason, until));
         }}
-        className="qbtn bg-amber-500 text-white"
+        className="qbtn bg-wood-600 text-white"
       >
         暫時解除
       </button>
@@ -44,7 +44,7 @@ export function RestrictionListControls({
           const reason = window.prompt("解除限制原因：");
           if (reason?.trim()) run(() => adminLiftRestriction(restrictionId, reason));
         }}
-        className="qbtn bg-forest-600 text-white"
+        className="qbtn bg-sage-600 text-white"
       >
         解除
       </button>
@@ -55,7 +55,7 @@ export function RestrictionListControls({
             const reason = window.prompt("重設未到次數原因：");
             if (reason?.trim()) run(() => adminResetNoShow(patientId, reason));
           }}
-          className="qbtn bg-stone-500 text-white"
+          className="qbtn bg-ink-500 text-white"
         >
           重設未到
         </button>

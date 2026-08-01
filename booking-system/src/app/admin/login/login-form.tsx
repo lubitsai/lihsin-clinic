@@ -42,7 +42,7 @@ export function StaffLoginForm() {
       {!pendingToken ? (
         <>
           <label className="block">
-            <span className="block text-sm font-medium text-stone-700 mb-1">帳號</span>
+            <span className="block text-sm font-medium text-ink-900 mb-1">帳號</span>
             <input
               className="input"
               value={username}
@@ -51,7 +51,7 @@ export function StaffLoginForm() {
             />
           </label>
           <label className="block">
-            <span className="block text-sm font-medium text-stone-700 mb-1">密碼</span>
+            <span className="block text-sm font-medium text-ink-900 mb-1">密碼</span>
             <input
               type="password"
               className="input"
@@ -67,7 +67,7 @@ export function StaffLoginForm() {
         </>
       ) : (
         <>
-          <p className="text-stone-700">請輸入驗證器 App 顯示的 6 位數驗證碼（兩步驟驗證）</p>
+          <p className="text-ink-900">請輸入驗證器 App 顯示的 6 位數驗證碼（兩步驟驗證）</p>
           <input
             className="input text-center text-2xl tracking-widest"
             inputMode="numeric"

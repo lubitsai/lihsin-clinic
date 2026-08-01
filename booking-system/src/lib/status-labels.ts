@@ -5,14 +5,14 @@ export const STATUS_META: Record<
   AppointmentStatus,
   { label: string; icon: string; className: string }
 > = {
-  PENDING: { label: "待確認", icon: "⏳", className: "bg-amber-100 text-amber-900 border-amber-300" },
-  CONFIRMED: { label: "已確認", icon: "✅", className: "bg-forest-500/10 text-forest-700 border-forest-500/40" },
-  CHECKED_IN: { label: "已報到", icon: "🪪", className: "bg-sky-100 text-sky-900 border-sky-300" },
-  COMPLETED: { label: "已完成", icon: "🏁", className: "bg-stone-200 text-stone-700 border-stone-300" },
-  CANCELLED_BY_PATIENT: { label: "病人取消", icon: "↩️", className: "bg-stone-100 text-stone-500 border-stone-300" },
-  CANCELLED_BY_CLINIC: { label: "診所取消", icon: "🏥", className: "bg-purple-100 text-purple-900 border-purple-300" },
-  NO_SHOW: { label: "未到", icon: "⚠️", className: "bg-persimmon-500/10 text-persimmon-600 border-persimmon-500/40" },
-  RESCHEDULED: { label: "已改期", icon: "🔁", className: "bg-stone-100 text-stone-500 border-stone-300" },
+  PENDING: { label: "待確認", icon: "⏳", className: "bg-wood-100 text-wood-700 border-wood-400" },
+  CONFIRMED: { label: "已確認", icon: "✅", className: "bg-sage-100 text-sage-800 border-sage-300" },
+  CHECKED_IN: { label: "已報到", icon: "🪪", className: "bg-sage-200 text-sage-800 border-sage-500" },
+  COMPLETED: { label: "已完成", icon: "🏁", className: "bg-ink-300/20 text-ink-700 border-ink-300" },
+  CANCELLED_BY_PATIENT: { label: "病人取消", icon: "↩️", className: "bg-white text-ink-500 border-ink-300" },
+  CANCELLED_BY_CLINIC: { label: "診所取消", icon: "🏥", className: "bg-rose-100 text-rose-600 border-rose-300" },
+  NO_SHOW: { label: "未到", icon: "⚠️", className: "bg-rose-200 text-rose-600 border-rose-500" },
+  RESCHEDULED: { label: "已改期", icon: "🔁", className: "bg-white text-ink-500 border-ink-300" },
 };
 
 export const SESSION_META: Record<SessionPeriod, { label: string }> = {

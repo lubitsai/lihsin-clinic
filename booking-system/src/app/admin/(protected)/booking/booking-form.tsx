@@ -165,27 +165,27 @@ export function StaffBookingForm({
 
       {reschedule ? (
         <Card>
-          <p className="font-bold text-stone-800">
+          <p className="font-bold text-ink-900">
             原預約：{reschedule.bookingNumber}｜{reschedule.patientName}
           </p>
-          <p className="text-stone-600">
+          <p className="text-ink-700">
             {formatDateTw(reschedule.date)} {reschedule.startTime}｜{reschedule.doctorName}醫師｜
             {reschedule.clinicTypeName}
           </p>
         </Card>
       ) : (
         <Card className="space-y-3">
-          <h2 className="font-bold text-forest-700">1. 病人</h2>
+          <h2 className="font-bold text-sage-700">1. 病人</h2>
           <div className="flex gap-2">
             <button
               onClick={() => setUseNewPatient(false)}
-              className={`rounded-xl border-2 px-3 py-2 ${!useNewPatient ? "border-forest-500 bg-forest-500/10 font-bold text-forest-700" : "border-cream-200"}`}
+              className={`rounded-xl border-2 px-3 py-2 ${!useNewPatient ? "border-sage-500 bg-sage-500/10 font-bold text-sage-700" : "border-sage-200"}`}
             >
               既有病人
             </button>
             <button
               onClick={() => setUseNewPatient(true)}
-              className={`rounded-xl border-2 px-3 py-2 ${useNewPatient ? "border-forest-500 bg-forest-500/10 font-bold text-forest-700" : "border-cream-200"}`}
+              className={`rounded-xl border-2 px-3 py-2 ${useNewPatient ? "border-sage-500 bg-sage-500/10 font-bold text-sage-700" : "border-sage-200"}`}
             >
               新病人
             </button>
@@ -212,19 +212,19 @@ export function StaffBookingForm({
                 </Alert>
               )}
               {patientResults && (
-                <ul className="divide-y divide-cream-200 border border-cream-200 rounded-xl overflow-hidden">
+                <ul className="divide-y divide-sage-200 border border-sage-200 rounded-xl overflow-hidden">
                   {patientResults.length === 0 && (
-                    <li className="px-3 py-2 text-stone-500">查無病人，可改用「新病人」建立</li>
+                    <li className="px-3 py-2 text-ink-500">查無病人，可改用「新病人」建立</li>
                   )}
                   {patientResults.map((p) => (
                     <li key={p.id}>
                       <button
                         onClick={() => setSelectedPatient(p)}
-                        className="w-full text-left px-3 py-2 hover:bg-cream-100"
+                        className="w-full text-left px-3 py-2 hover:bg-sage-50"
                       >
                         {p.name}｜{p.idNumberMasked}｜{p.phone}｜{p.birthDate}
                         {p.noShowCount > 0 && (
-                          <span className="text-persimmon-600 ml-1">未到{p.noShowCount}次</span>
+                          <span className="text-rose-600 ml-1">未到{p.noShowCount}次</span>
                         )}
                       </button>
                     </li>
@@ -259,7 +259,7 @@ export function StaffBookingForm({
       )}
 
       <Card className="space-y-3">
-        <h2 className="font-bold text-forest-700">{reschedule ? "選擇新時段" : "2. 門診與時段"}</h2>
+        <h2 className="font-bold text-sage-700">{reschedule ? "選擇新時段" : "2. 門診與時段"}</h2>
         {!reschedule && (
           <select className="input !w-auto" value={clinicTypeId} onChange={(e) => setClinicTypeId(e.target.value)}>
             {clinicTypes.map((t) => (
@@ -278,7 +278,7 @@ export function StaffBookingForm({
           <button onClick={() => loadSlots(date)} disabled={pending} className="btn-secondary !py-2">
             載入時段
           </button>
-          <span className="text-sm text-stone-500">{formatDateTw(date)}（櫃檯可見全部時段，含未開放線上者）</span>
+          <span className="text-sm text-ink-500">{formatDateTw(date)}（櫃檯可見全部時段，含未開放線上者）</span>
         </div>
         {slots && slots.length === 0 && <Alert tone="warn">此日期無排班時段。</Alert>}
         {slots && slots.length > 0 && (
@@ -287,7 +287,7 @@ export function StaffBookingForm({
               const docSlots = slots.filter((s) => s.doctorId === docId);
               return (
                 <div key={docId}>
-                  <p className="font-medium text-bark-600 mb-1">{docSlots[0].doctorName}醫師</p>
+                  <p className="font-medium text-wood-700 mb-1">{docSlots[0].doctorName}醫師</p>
                   <div className="flex flex-wrap gap-1.5">
                     {docSlots.map((s) => {
                       const isSel = selected?.doctorId === docId && selected?.startTime === s.startTime;
@@ -299,10 +299,10 @@ export function StaffBookingForm({
                           disabled={full}
                           className={`rounded-lg border-2 px-2.5 py-1.5 text-sm font-bold ${
                             isSel
-                              ? "border-forest-600 bg-forest-600 text-white"
+                              ? "border-sage-600 bg-sage-600 text-white"
                               : full
-                                ? "border-cream-200 bg-cream-100 text-stone-400 line-through"
-                                : "border-cream-200 bg-white text-forest-700 hover:border-forest-500"
+                                ? "border-sage-200 bg-sage-50 text-ink-300 line-through"
+                                : "border-sage-200 bg-white text-sage-700 hover:border-sage-500"
                           }`}
                           title={`剩餘 ${s.remaining}/${s.capacity}`}
                         >
@@ -328,8 +328,8 @@ export function StaffBookingForm({
       </Card>
 
       {needOverride && (
-        <Card className="space-y-2 border-persimmon-500/50">
-          <p className="font-bold text-persimmon-600">限制覆寫理由（必填，將寫入稽核紀錄）</p>
+        <Card className="space-y-2 border-rose-500/50">
+          <p className="font-bold text-rose-600">限制覆寫理由（必填，將寫入稽核紀錄）</p>
           <input
             className="input"
             placeholder="例如：家長來電說明特殊狀況，主管同意"

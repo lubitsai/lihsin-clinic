@@ -25,7 +25,7 @@ export default async function PatientsPage({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-forest-700">病人管理</h1>
+      <h1 className="text-2xl font-bold text-sage-700">病人管理</h1>
       <form action="/admin/patients" method="get" className="flex gap-2 max-w-lg">
         <input
           name="q"
@@ -39,21 +39,21 @@ export default async function PatientsPage({
       {q && (
         <Card>
           {patients.length === 0 ? (
-            <p className="text-stone-500">查無符合的病人。</p>
+            <p className="text-ink-500">查無符合的病人。</p>
           ) : (
-            <ul className="divide-y divide-cream-200">
+            <ul className="divide-y divide-sage-200">
               {patients.map((p) => (
                 <li key={p.id} className="py-2.5 flex flex-wrap items-center gap-3">
-                  <Link href={`/admin/patients/${p.id}`} className="font-bold text-forest-700 underline underline-offset-2">
+                  <Link href={`/admin/patients/${p.id}`} className="font-bold text-sage-700 underline underline-offset-2">
                     {p.name}
                   </Link>
-                  <span className="text-stone-600">{p.idNumberMasked}</span>
-                  <span className="text-stone-600">{maskPhone(p.phone)}</span>
-                  <span className="text-stone-500 text-sm">生日 {dbToDate(p.birthDate)}</span>
+                  <span className="text-ink-700">{p.idNumberMasked}</span>
+                  <span className="text-ink-700">{maskPhone(p.phone)}</span>
+                  <span className="text-ink-500 text-sm">生日 {dbToDate(p.birthDate)}</span>
                   {p.noShowCount > 0 && (
-                    <span className="text-persimmon-600 text-sm font-medium">未到 {p.noShowCount} 次</span>
+                    <span className="text-rose-600 text-sm font-medium">未到 {p.noShowCount} 次</span>
                   )}
-                  <Link href={`/admin/booking?patient=${p.id}`} className="ml-auto qbtn bg-forest-600 text-white">
+                  <Link href={`/admin/booking?patient=${p.id}`} className="ml-auto qbtn bg-sage-600 text-white">
                     代約
                   </Link>
                 </li>
@@ -65,8 +65,8 @@ export default async function PatientsPage({
 
       {canMerge && duplicates.length > 0 && (
         <Card className="space-y-2">
-          <h2 className="font-bold text-persimmon-600">⚠️ 可能重複的病歷（僅管理員可合併）</h2>
-          <ul className="divide-y divide-cream-200">
+          <h2 className="font-bold text-rose-600">⚠️ 可能重複的病歷（僅管理員可合併）</h2>
+          <ul className="divide-y divide-sage-200">
             {duplicates.map((d, i) => (
               <li key={i} className="py-2.5 flex flex-wrap items-center gap-3">
                 <span>
@@ -75,14 +75,14 @@ export default async function PatientsPage({
                   </Link>{" "}
                   （{d.a.idNumberMasked}）
                 </span>
-                <span className="text-stone-400">⇄</span>
+                <span className="text-ink-300">⇄</span>
                 <span>
                   <Link href={`/admin/patients/${d.b.id}`} className="font-bold underline underline-offset-2">
                     {d.b.name}
                   </Link>{" "}
                   （{d.b.idNumberMasked}）
                 </span>
-                <span className="text-sm text-stone-500">
+                <span className="text-sm text-ink-500">
                   {d.reason === "same_name_birth" ? "同姓名＋同生日" : "同電話＋同生日"}
                 </span>
                 <MergeButton keepId={d.a.id} mergeId={d.b.id} />

@@ -21,7 +21,7 @@ export default async function AuditPage({
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-forest-700">稽核紀錄</h1>
+      <h1 className="text-2xl font-bold text-sage-700">稽核紀錄</h1>
       <form action="/admin/audit" method="get" className="flex gap-2 max-w-md">
         <input name="action" defaultValue={sp.action ?? ""} placeholder="依動作篩選，如 restriction、schedule" className="input" />
         <button className="btn-secondary !py-2 shrink-0">篩選</button>
@@ -29,7 +29,7 @@ export default async function AuditPage({
       <Card className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-stone-500">
+            <tr className="text-left text-ink-500">
               <th className="py-1.5 pr-3">時間（台灣）</th>
               <th className="pr-3">操作者</th>
               <th className="pr-3">動作</th>
@@ -37,7 +37,7 @@ export default async function AuditPage({
               <th>詳細</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-cream-200 align-top">
+          <tbody className="divide-y divide-sage-200 align-top">
             {rows.map((r) => (
               <tr key={r.id}>
                 <td className="py-2 pr-3 font-mono whitespace-nowrap">
@@ -48,17 +48,17 @@ export default async function AuditPage({
                   {r.actorName ? `｜${r.actorName}` : ""}
                 </td>
                 <td className="pr-3 font-mono">{r.action}</td>
-                <td className="pr-3 text-stone-500">
+                <td className="pr-3 text-ink-500">
                   {r.targetType ? `${r.targetType}:${r.targetId?.slice(0, 8)}…` : "—"}
                 </td>
-                <td className="text-stone-500 break-all max-w-md">
+                <td className="text-ink-500 break-all max-w-md">
                   {r.detail ? JSON.stringify(r.detail).slice(0, 200) : "—"}
                 </td>
               </tr>
             ))}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={5} className="py-4 text-center text-stone-500">
+                <td colSpan={5} className="py-4 text-center text-ink-500">
                   沒有符合的紀錄。
                 </td>
               </tr>

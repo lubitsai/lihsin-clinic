@@ -67,26 +67,26 @@ export function MyAppointments({
       ) : (
         <>
           <section className="space-y-3">
-            <h2 className="font-bold text-forest-700 text-lg">即將到來的預約</h2>
-            {upcoming.length === 0 && <p className="text-stone-600">目前沒有有效預約。</p>}
+            <h2 className="font-bold text-sage-700 text-lg">即將到來的預約</h2>
+            {upcoming.length === 0 && <p className="text-ink-700">目前沒有有效預約。</p>}
             {upcoming.map((a) => (
               <Card key={a.id} className="space-y-2">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="font-bold text-lg text-stone-800">
+                    <p className="font-bold text-lg text-ink-900">
                       {formatDateTw(a.date)} {a.startTime}
                     </p>
-                    <p className="text-stone-700">
+                    <p className="text-ink-900">
                       {a.doctorName}醫師｜{a.clinicTypeName}
                     </p>
-                    <p className="text-sm text-stone-500 mt-1">
+                    <p className="text-sm text-ink-500 mt-1">
                       病人：{a.patientName}（{a.patientIdMasked}）
                     </p>
-                    <p className="text-sm text-stone-500">預約編號：{a.bookingNumber}</p>
+                    <p className="text-sm text-ink-500">預約編號：{a.bookingNumber}</p>
                   </div>
                   <StatusBadge status={a.status as AppointmentStatus} />
                 </div>
-                {a.notice && <p className="text-sm text-amber-800 bg-amber-50 rounded-lg px-3 py-2">{a.notice}</p>}
+                {a.notice && <p className="text-sm text-wood-700 bg-wood-100 rounded-lg px-3 py-2">{a.notice}</p>}
                 {a.canCancel && (
                   <div className="flex gap-2 pt-1">
                     <button
@@ -107,13 +107,13 @@ export function MyAppointments({
 
           {history.length > 0 && (
             <section className="space-y-2">
-              <h2 className="font-bold text-stone-500 text-lg">歷史紀錄</h2>
+              <h2 className="font-bold text-ink-500 text-lg">歷史紀錄</h2>
               {history.slice(0, 10).map((a) => (
                 <div
                   key={a.id}
-                  className="flex items-center justify-between rounded-xl bg-white/70 border border-cream-200 px-4 py-2.5 text-sm"
+                  className="flex items-center justify-between rounded-xl bg-white/70 border border-sage-200 px-4 py-2.5 text-sm"
                 >
-                  <span className="text-stone-600">
+                  <span className="text-ink-700">
                     {formatDateTw(a.date)} {a.startTime}｜{a.patientName}｜{a.clinicTypeName}
                   </span>
                   <StatusBadge status={a.status as AppointmentStatus} />
@@ -130,7 +130,7 @@ export function MyAppointments({
                   router.refresh();
                 })
               }
-              className="text-sm text-stone-500 underline underline-offset-2"
+              className="text-sm text-ink-500 underline underline-offset-2"
             >
               登出
             </button>
@@ -195,12 +195,12 @@ function RescheduleFlow({
   return (
     <Card className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="font-bold text-forest-700 text-lg">改期</h2>
-        <button onClick={onCancel} className="text-sm text-stone-500 underline underline-offset-2">
+        <h2 className="font-bold text-sage-700 text-lg">改期</h2>
+        <button onClick={onCancel} className="text-sm text-ink-500 underline underline-offset-2">
           返回
         </button>
       </div>
-      <p className="text-stone-700">
+      <p className="text-ink-900">
         原預約：{formatDateTw(appointment.date)} {appointment.startTime}｜{appointment.doctorName}醫師
       </p>
       {!date ? (
@@ -214,8 +214,8 @@ function RescheduleFlow({
                 onClick={() => pickDate(d.date)}
                 className={`rounded-xl border-2 px-3 py-2.5 text-center ${
                   disabled
-                    ? "bg-cream-100 border-cream-200 text-stone-400"
-                    : "bg-white border-cream-200 hover:border-forest-500"
+                    ? "bg-sage-50 border-sage-200 text-ink-300"
+                    : "bg-white border-sage-200 hover:border-sage-500"
                 }`}
               >
                 {formatDateTw(d.date)}
@@ -225,7 +225,7 @@ function RescheduleFlow({
         </div>
       ) : (
         <>
-          <p className="font-medium text-bark-600">{formatDateTw(date)}，請選擇新時段：</p>
+          <p className="font-medium text-wood-700">{formatDateTw(date)}，請選擇新時段：</p>
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
             {slots.map((s) => {
               const full = s.doctors.reduce((acc, d) => acc + d.remaining, 0) <= 0;
@@ -236,8 +236,8 @@ function RescheduleFlow({
                   onClick={() => pickSlot(s.startTime)}
                   className={`rounded-xl border-2 py-2.5 font-bold ${
                     full
-                      ? "bg-cream-100 border-cream-200 text-stone-400 line-through"
-                      : "bg-white border-cream-200 hover:border-forest-500 text-forest-700"
+                      ? "bg-sage-50 border-sage-200 text-ink-300 line-through"
+                      : "bg-white border-sage-200 hover:border-sage-500 text-sage-700"
                   }`}
                 >
                   {s.startTime}

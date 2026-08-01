@@ -15,7 +15,7 @@ export default async function StaffPage() {
   ]);
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-forest-700">員工帳號與權限</h1>
+      <h1 className="text-2xl font-bold text-sage-700">員工帳號與權限</h1>
       <StaffManager
         users={users.map((u) => ({
           id: u.id,

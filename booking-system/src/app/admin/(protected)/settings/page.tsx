@@ -30,7 +30,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-forest-700">系統設定</h1>
+      <h1 className="text-2xl font-bold text-sage-700">系統設定</h1>
       <SettingsManager
         settings={settings}
         clinicTypes={clinicTypes.map((t) => ({

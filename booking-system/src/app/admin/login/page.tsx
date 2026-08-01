@@ -16,8 +16,8 @@ export default async function AdminLoginPage() {
           <div className="inline-block">
             <DeerMascot size={64} />
           </div>
-          <h1 className="text-2xl font-bold text-forest-700 mt-2">立欣診所預約後台</h1>
-          <p className="text-stone-500 text-sm mt-1">員工專用，操作皆有紀錄</p>
+          <h1 className="text-2xl font-bold text-sage-700 mt-2">立欣診所預約後台</h1>
+          <p className="text-ink-500 text-sm mt-1">員工專用，操作皆有紀錄</p>
         </div>
         <StaffLoginForm />
       </div>

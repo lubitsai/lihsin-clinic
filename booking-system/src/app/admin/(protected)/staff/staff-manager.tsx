@@ -112,7 +112,7 @@ export function StaffManager({
       <Card className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left text-stone-500">
+            <tr className="text-left text-ink-500">
               <th className="py-1.5 pr-3">帳號</th>
               <th className="pr-3">姓名</th>
               <th className="pr-3">角色</th>
@@ -123,7 +123,7 @@ export function StaffManager({
               <th />
             </tr>
           </thead>
-          <tbody className="divide-y divide-cream-200">
+          <tbody className="divide-y divide-sage-200">
             {users.map((u) => (
               <tr key={u.id}>
                 <td className="py-2 pr-3 font-mono">{u.username}</td>
@@ -132,9 +132,9 @@ export function StaffManager({
                 <td className="pr-3">{u.doctorName ?? "—"}</td>
                 <td className="pr-3">{u.totpEnabled ? "✅" : "—"}</td>
                 <td className="pr-3">{u.isActive ? "啟用" : "停用"}</td>
-                <td className="pr-3 text-stone-500">{u.lastLoginAt ?? "—"}</td>
+                <td className="pr-3 text-ink-500">{u.lastLoginAt ?? "—"}</td>
                 <td>
-                  <button onClick={() => startEdit(u)} className="text-forest-600 underline underline-offset-2">
+                  <button onClick={() => startEdit(u)} className="text-sage-600 underline underline-offset-2">
                     編輯
                   </button>
                 </td>
@@ -145,7 +145,7 @@ export function StaffManager({
       </Card>
 
       <Card className="space-y-3 max-w-2xl">
-        <h2 className="font-bold text-forest-700">{editing ? `編輯：${editing.username}` : "新增員工帳號"}</h2>
+        <h2 className="font-bold text-sage-700">{editing ? `編輯：${editing.username}` : "新增員工帳號"}</h2>
         <div className="grid sm:grid-cols-2 gap-3">
           <input className="input" placeholder="登入帳號（英數字）" value={form.username} disabled={!!editing}
             onChange={(e) => setForm({ ...form, username: e.target.value.trim() })} />
@@ -167,7 +167,7 @@ export function StaffManager({
             </select>
           )}
           <label className="flex items-center gap-2">
-            <input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} className="size-4 accent-forest-600" />
+            <input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} className="size-4 accent-sage-600" />
             啟用
           </label>
         </div>
@@ -184,16 +184,16 @@ export function StaffManager({
       </Card>
 
       <Card className="space-y-3 max-w-2xl">
-        <h2 className="font-bold text-forest-700">我的兩步驟驗證（TOTP）</h2>
+        <h2 className="font-bold text-sage-700">我的兩步驟驗證（TOTP）</h2>
         {selfTotpEnabled && !totpQr ? (
-          <p className="text-forest-600">✅ 已啟用。登入時需輸入驗證器 App 的 6 位數驗證碼。</p>
+          <p className="text-sage-600">✅ 已啟用。登入時需輸入驗證器 App 的 6 位數驗證碼。</p>
         ) : totpQr ? (
           <div className="space-y-2">
-            <p className="text-stone-700">
+            <p className="text-ink-900">
               請用 Google Authenticator／Microsoft Authenticator 掃描 QR code，然後輸入顯示的 6 位數完成啟用：
             </p>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={totpQr} alt="TOTP QR code" className="rounded-xl border border-cream-200" />
+            <img src={totpQr} alt="TOTP QR code" className="rounded-xl border border-sage-200" />
             <div className="flex gap-2">
               <input className="input !w-40 text-center tracking-widest" inputMode="numeric" maxLength={6}
                 value={totpCode} onChange={(e) => setTotpCode(e.target.value.trim())} />

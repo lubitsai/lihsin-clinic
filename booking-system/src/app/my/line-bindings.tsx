@@ -64,7 +64,7 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
   return (
     <Card className="space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="font-bold text-forest-700 text-lg">LINE 綁定的家庭成員</h2>
+        <h2 className="font-bold text-sage-700 text-lg">LINE 綁定的家庭成員</h2>
         {!adding && (
           <button onClick={() => setAdding(true)} className="btn-secondary !py-1.5 !px-3 text-sm">
             ＋ 新增成員
@@ -75,21 +75,21 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
       {message && <Alert tone="success">{message}</Alert>}
 
       {initial.length === 0 && !adding && (
-        <p className="text-stone-600 text-sm">
+        <p className="text-ink-700 text-sm">
           尚未綁定任何看診成員。綁定後預約免手機驗證，通知直接透過 LINE 傳送；
           同一個 LINE 可綁定多位孩子或家人。
         </p>
       )}
-      <ul className="divide-y divide-cream-200">
+      <ul className="divide-y divide-sage-200">
         {initial.map((b) => (
           <li key={b.patientId} className="py-2 flex items-center gap-3">
             <span className="font-bold">{b.name}</span>
-            <span className="text-stone-500 text-sm">{b.idNumberMasked}</span>
-            {b.relation && <span className="text-stone-500 text-sm">（{b.relation}）</span>}
+            <span className="text-ink-500 text-sm">{b.idNumberMasked}</span>
+            {b.relation && <span className="text-ink-500 text-sm">（{b.relation}）</span>}
             <button
               onClick={() => unbind(b)}
               disabled={pending}
-              className="ml-auto text-sm text-stone-500 underline underline-offset-2"
+              className="ml-auto text-sm text-ink-500 underline underline-offset-2"
             >
               解除綁定
             </button>
@@ -98,8 +98,8 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
       </ul>
 
       {adding && (
-        <div className="space-y-3 border-t border-cream-200 pt-3">
-          <p className="text-sm text-stone-600">
+        <div className="space-y-3 border-t border-sage-200 pt-3">
+          <p className="text-sm text-ink-700">
             為保護個資，首次綁定需輸入該成員的證件號碼、出生日期，並以其預約用手機完成驗證。
           </p>
           <div className="flex gap-2">
@@ -110,8 +110,8 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
                 onClick={() => setForm({ ...form, idType: t as typeof form.idType })}
                 className={`rounded-xl border-2 px-3 py-2 ${
                   form.idType === t
-                    ? "border-forest-500 bg-forest-500/10 text-forest-700 font-bold"
-                    : "border-cream-200 bg-white text-stone-600"
+                    ? "border-sage-500 bg-sage-500/10 text-sage-700 font-bold"
+                    : "border-sage-200 bg-white text-ink-700"
                 }`}
               >
                 {ID_TYPE_LABEL[t]}
