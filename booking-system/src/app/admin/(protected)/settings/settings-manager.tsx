@@ -2,7 +2,12 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { adminUpdateSettings, adminUpdateClinicType, adminUpsertDoctor } from "@/app/actions/admin";
+import {
+  adminUpdateSettings,
+  adminUpdateClinicType,
+  adminUpsertDoctor,
+  adminCheckLineSetup,
+} from "@/app/actions/admin";
 import { Card, Alert } from "@/components/ui";
 import { SESSION_META } from "@/lib/status-labels";
 import { WEEKDAY_ZH as WEEKDAYS } from "@/lib/tw-time";
@@ -130,14 +135,12 @@ export function SettingsManager({
             <input type="time" className="input" value={s.sameDayTime} onChange={(e) => setS({ ...s, sameDayTime: e.target.value })} />
           </label>
         </div>
-        <p className="text-sm text-ink-500">
-          通知管道狀態：LINE 推播 {lineConfigured ? "✅ 已設定" : "—（未設定，將以簡訊替代）"}｜簡訊供應商：{smsProvider}
-          （管道設定由環境變數管理，見部署說明）
-        </p>
         <button onClick={saveRules} disabled={pending} className="btn-primary !py-2">
           儲存設定
         </button>
       </Card>
+
+      <LineSetupCard lineConfigured={lineConfigured} smsProvider={smsProvider} />
 
       <ClinicTypesEditor clinicTypes={clinicTypes} doctors={doctors} onError={setError} onDone={(m) => { setMessage(m); router.refresh(); }} />
       <DoctorsEditor doctors={doctors} onError={setError} onDone={(m) => { setMessage(m); router.refresh(); }} />
@@ -151,6 +154,74 @@ function NumField({ label, value, onChange }: { label: string; value: number; on
       <span className="text-sm text-ink-700">{label}</span>
       <input type="number" className="input" value={value} min={0} onChange={(e) => onChange(+e.target.value)} />
     </label>
+  );
+}
+
+/** LINE 串接設定與連線檢測 */
+function LineSetupCard({
+  lineConfigured,
+  smsProvider,
+}: {
+  lineConfigured: boolean;
+  smsProvider: string;
+}) {
+  const [status, setStatus] = useState<Awaited<
+    ReturnType<typeof adminCheckLineSetup>
+  > | null>(null);
+  const [pending, startTransition] = useTransition();
+
+  const check = () =>
+    startTransition(async () => {
+      setStatus(await adminCheckLineSetup());
+    });
+
+  const data = status?.ok ? status.data : undefined;
+
+  return (
+    <Card className="space-y-3">
+      <h2 className="font-bold text-sage-700">LINE 官方帳號串接</h2>
+      <p className="text-sm text-ink-700">
+        金鑰由環境變數管理（見部署說明 docs/05）。填好後按「檢測連線」可立即確認是否接通，
+        不必等到有民眾預約。<strong>未設定 LINE 時系統仍可正常運作</strong>，
+        民眾改用手機驗證碼、通知改以簡訊發送。
+      </p>
+      <p className="text-sm text-ink-500">
+        目前狀態：LINE 推播 {lineConfigured ? "已設定" : "未設定（改用簡訊）"}｜簡訊供應商：{smsProvider}
+      </p>
+
+      <button onClick={check} disabled={pending} className="btn-secondary !py-2">
+        {pending ? "檢測中…" : "檢測連線"}
+      </button>
+
+      {status && !status.ok && <Alert tone="error">{status.message}</Alert>}
+
+      {data && (
+        <div className="space-y-3">
+          <ul className="divide-y divide-sage-100 border border-sage-100 rounded-xl overflow-hidden">
+            {data.checks.map((c) => (
+              <li key={c.label} className="px-3 py-2 flex gap-2 items-start">
+                <span aria-hidden>{c.ok ? "✅" : "⚠️"}</span>
+                <span>
+                  <span className="font-medium">{c.label}</span>
+                  <span className="block text-sm text-ink-700">{c.detail}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="rounded-xl bg-sage-50 border border-sage-100 p-3 space-y-1 text-sm">
+            <p className="font-bold text-sage-700">請把以下網址貼進 LINE Developers 後台：</p>
+            <p>
+              LINE Login → Callback URL：
+              <code className="ml-1 break-all">{data.callbackUrl}</code>
+            </p>
+            <p>
+              Messaging API → Webhook URL：
+              <code className="ml-1 break-all">{data.webhookUrl}</code>
+            </p>
+          </div>
+        </div>
+      )}
+    </Card>
   );
 }
 

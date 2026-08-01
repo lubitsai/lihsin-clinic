@@ -889,6 +889,26 @@ export async function adminConfirmTotp(code: string): Promise<ActionResult> {
 
 // ── 系統設定／門診類型／醫師（僅管理員） ─────────────────
 
+/**
+ * LINE 串接檢測：實際呼叫 LINE API 驗證憑證，
+ * 讓診所填完金鑰後可立即確認，而不是等民眾預約才發現沒接上。
+ */
+export async function adminCheckLineSetup(): Promise<
+  ActionResult<import("@/lib/line").LineSetupStatus>
+> {
+  try {
+    const ctx = requirePermission(await getStaffContext(), PERMISSIONS.SETTINGS_MANAGE);
+    const { checkLineSetup } = await import("@/lib/line");
+    const status = await checkLineSetup();
+    await writeAudit(await actorOf(ctx), "settings.line_check", undefined, {
+      allPassed: status.checks.every((c) => c.ok),
+    });
+    return { ok: true, data: status };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
 export async function adminUpdateSettings(
   entries: { key: string; value: unknown }[],
 ): Promise<ActionResult> {
