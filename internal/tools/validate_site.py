@@ -50,6 +50,8 @@ validate_site.py — 立欣診所全站驗證器 v1.0.1（2026-07-10；v1.0＝20
   W-LLMS      llms 雙檔關鍵條目在場（app/visit-guide/growth）    ｜07-06 回退攔截
   W-ROBOTS    robots.txt AI 爬蟲放行組在場                      ｜07-06 批③
   W-FAVICON   根目錄 favicon.ico 在場                          ｜07-06 批④
+  W-CITEDOC   醫療頁 citation 應為「文件層級」書目（有 publisher
+              且非機構首頁），不得退化回「機構名＋首頁」        ｜08-03 回退攔截
 
 已知設計取捨（弱模型請勿「修正」這些行為）
 ------------------------------------------
@@ -68,6 +70,7 @@ import sys
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlparse
 
 SITE_ORIGIN = "https://lhpedclinic.com.tw"
 
@@ -305,6 +308,34 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
             json.loads(m.group(1))
         except Exception as e:
             rep.err(rel, "E-JSONLD", f"第 {i} 個 ld+json 解析失敗：{e}")
+
+    # W-CITEDOC（2026-08-03：citation 退化攔截）
+    # 病徵：citation 只寫「機構名＋機構首頁」＝宣稱參考了疾管署卻沒說參考哪份文件，
+    # AI 無從查核。政策＝每個醫療頁至少 1 筆「文件層級」書目（有 publisher，
+    # 且 url 不是裸網域首頁）。5 頁僅掛臺灣兒科醫學會機構層級為已知例外（未查得
+    # 對應深層文件，依 00 §4-11「誤連比不連更糟」不硬連）——它們仍另有文件層級書目。
+    if rel.startswith(("health/", "news/")):
+        for m in re.finditer(
+                r'<script[^>]*type\s*=\s*["\']application/ld\+json["\'][^>]*>(.*?)</script\s*>',
+                raw, re.S | re.I):
+            try:
+                d = json.loads(m.group(1))
+            except Exception:
+                continue
+            if not isinstance(d, dict) or d.get("@type") not in ("MedicalWebPage", "WebPage"):
+                continue
+            cites = d.get("citation") or []
+            if isinstance(cites, dict):
+                cites = [cites]
+            if not cites:
+                rep.warn(rel, "W-CITEDOC", "頁面層 schema 無 citation（醫療頁應列參考資料）")
+            elif not any(isinstance(c, dict) and c.get("publisher")
+                         and urlparse(c.get("url", "")).path.strip("/")
+                         for c in cites):
+                rep.warn(rel, "W-CITEDOC",
+                         "citation 全為機構首頁層級（缺文件名／publisher／深層連結）"
+                         "——退回 08-03 前狀態，AI 無從查核")
+            break
 
     # E-AGGRT
     if "aggregateRating" in raw:
