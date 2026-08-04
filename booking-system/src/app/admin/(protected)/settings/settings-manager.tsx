@@ -430,7 +430,7 @@ function ClinicWindowsEditor({
   return (
     <div>
       <span className="text-sm text-ink-700 block mb-1">
-        可預約時間窗（逐日指定；空白＝改用下方的星期／診別）
+        可預約時間窗（逐日指定；空白＝改用下方的星期／診別）——時間需為整點或半點
       </span>
       {windows.length > 0 && (
         <p className="text-sm text-wood-700 mb-2">
@@ -453,6 +453,7 @@ function ClinicWindowsEditor({
             </select>
             <input
               type="time"
+              step={1800}
               className="input !w-auto"
               value={w.startTime}
               onChange={(e) => patch(i, "startTime", e.target.value)}
@@ -460,6 +461,7 @@ function ClinicWindowsEditor({
             <span className="text-ink-500">–</span>
             <input
               type="time"
+              step={1800}
               className="input !w-auto"
               value={w.endTime}
               onChange={(e) => patch(i, "endTime", e.target.value)}
