@@ -8,8 +8,11 @@ import {
   getDayScheduleBlocks,
   getBlockedSlotKeys,
   getSuspendedClinicTypes,
+  hasSessionStarted,
   isSlotKeyBlocked,
+  isWithinClinicWindows,
   sessionOfTime,
+  sessionStartsOf,
   type WorkingBlock,
 } from "./schedule";
 import { OCCUPYING_STATUSES } from "./booking";
@@ -60,13 +63,18 @@ export async function getDaySlotAvailability(
 ): Promise<SlotAvailability[]> {
   const clinicType = await prisma.clinicType.findUnique({
     where: { id: clinicTypeId },
-    include: { doctors: true },
+    include: { doctors: true, windows: true },
   });
   if (!clinicType || !clinicType.isActive) return [];
 
   const weekday = weekdayOf(date);
-  if (clinicType.allowedWeekdays.length > 0 && !clinicType.allowedWeekdays.includes(weekday))
+  const windows = clinicType.windows;
+  // 有設時間窗時只看時間窗（見 schema 註解）；當天沒有任何時間窗即不開放
+  if (windows.length > 0) {
+    if (!windows.some((w) => w.weekday === weekday)) return [];
+  } else if (clinicType.allowedWeekdays.length > 0 && !clinicType.allowedWeekdays.includes(weekday)) {
     return [];
+  }
   const [suspended, allBlocks, blocked] = await Promise.all([
     getSuspendedClinicTypes(date),
     getDayScheduleBlocks(date),
@@ -75,11 +83,13 @@ export async function getDaySlotAvailability(
   if (suspended.has(clinicType.id)) return [];
 
   const allowedDoctorIds = clinicType.doctors.map((d) => d.doctorId);
+  const sessionAllowed = (s: SessionPeriod) =>
+    windows.length > 0 || clinicType.allowedSessions.length === 0 || clinicType.allowedSessions.includes(s);
   const blocks = allBlocks.filter(
     (b) =>
       b.allowOnline &&
       (allowedDoctorIds.length === 0 || allowedDoctorIds.includes(b.doctorId)) &&
-      (clinicType.allowedSessions.length === 0 || clinicType.allowedSessions.includes(b.session)) &&
+      sessionAllowed(b.session) &&
       (!doctorId || doctorId === "any" || b.doctorId === doctorId),
   );
   // 注意：blocks 為空仍需繼續——手動加開（MANUAL）時段可能落在班表之外
@@ -98,12 +108,19 @@ export async function getDaySlotAvailability(
   const slotOverride = new Map(slotRows.map((s) => [`${s.doctorId}|${s.startTime}`, s]));
   const usedCount = new Map(counts.map((c) => [`${c.doctorId}|${c.startTime}`, c._count.id]));
   const isToday = date === todayStr();
+  // 官網公告：該診次開診後就不再受理該診次的預約（診次以當日班表最早的時間為準）
+  const sessionStarts = sessionStartsOf(allBlocks);
+  const nowTime = nowTimeStr();
+  const sessionOpenForBooking = (s: SessionPeriod) =>
+    !isToday || !hasSessionStarted(sessionStarts, s, nowTime);
 
   // (時間 → 各醫師) 彙整
   const byTime = new Map<string, SlotAvailability>();
   for (const b of blocks) {
+    if (!sessionOpenForBooking(b.session)) continue;
     for (const t of slotTimes(b.startTime, b.endTime)) {
       if (blocked.has(`${b.doctorId}|${t}`) || blocked.has(`*|${t}`)) continue;
+      if (!isWithinClinicWindows(windows, weekday, t)) continue;
       if (isToday && minutesFromNow(date, t) < cutoffMin) continue;
       const key = `${b.doctorId}|${t}`;
       const override = slotOverride.get(key);
@@ -130,11 +147,9 @@ export async function getDaySlotAvailability(
     if (s.source !== "MANUAL" || s.isBlocked) continue;
     if (doctorId && doctorId !== "any" && s.doctorId !== doctorId) continue;
     if (allowedDoctorIds.length > 0 && !allowedDoctorIds.includes(s.doctorId)) continue;
-    if (
-      clinicType.allowedSessions.length > 0 &&
-      !clinicType.allowedSessions.includes(sessionOfTime(s.startTime))
-    )
-      continue;
+    if (!sessionAllowed(sessionOfTime(s.startTime))) continue;
+    if (!sessionOpenForBooking(sessionOfTime(s.startTime))) continue;
+    if (!isWithinClinicWindows(windows, weekday, s.startTime)) continue;
     if (isSlotKeyBlocked(blocked, s.doctorId, s.startTime)) continue;
     if (isToday && minutesFromNow(date, s.startTime) < cutoffMin) continue;
     const key = `${s.doctorId}|${s.startTime}`;

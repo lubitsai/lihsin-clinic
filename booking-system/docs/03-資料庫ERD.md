@@ -15,6 +15,7 @@ erDiagram
     doctors ||--o{ weekly_schedule_templates : "固定班表"
     doctors ||--o{ schedule_exceptions : "日期例外"
     clinic_types }o--o{ doctors : "clinic_type_doctors"
+    clinic_types ||--o{ clinic_type_windows : "可預約時間窗"
     appointments ||--o{ appointment_status_history : "狀態歷史"
     appointments ||--o| no_show_records : "未到紀錄"
     patients ||--o{ no_show_records : accumulates
@@ -158,3 +159,4 @@ CREATE UNIQUE INDEX "uniq_active_doctor_slot_seq"
 | `portal_sessions` | 民眾登入 session（token 雜湊） |
 | `staff_sessions` | 員工登入 session（token 雜湊、閒置逾時） |
 | `clinic_type_doctors` | 門診類型可接受的醫師 |
+| `clinic_type_windows` | 門診類型逐日可預約時間窗（星期＋時間區間）；有資料時取代 `allowed_weekdays`／`allowed_sessions` |

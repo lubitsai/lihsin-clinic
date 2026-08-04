@@ -10,7 +10,10 @@ export const metadata = { title: "系統設定" };
 export default async function SettingsPage() {
   requirePermission(await getStaffContext(), PERMISSIONS.SETTINGS_MANAGE);
   const [clinicTypes, doctors] = await Promise.all([
-    prisma.clinicType.findMany({ orderBy: { displayOrder: "asc" }, include: { doctors: true } }),
+    prisma.clinicType.findMany({
+      orderBy: { displayOrder: "asc" },
+      include: { doctors: true, windows: { orderBy: [{ weekday: "asc" }, { startTime: "asc" }] } },
+    }),
     prisma.doctor.findMany({ orderBy: { displayOrder: "asc" } }),
   ]);
   const settings = {
@@ -21,6 +24,7 @@ export default async function SettingsPage() {
     noShowThreshold: await getSetting("booking.no_show_threshold"),
     noShowSuspensionDays: await getSetting("booking.no_show_suspension_days"),
     cancelCutoff: await getSetting("booking.cancel_cutoff_minutes"),
+    checkinGrace: await getSetting("booking.checkin_grace_minutes"),
     allowSameDay: await getSetting("booking.allow_same_day"),
     sameDayReminder: await getSetting("notify.same_day_reminder"),
     dayBeforeTime: await getSetting("notify.day_before_time"),
@@ -46,6 +50,11 @@ export default async function SettingsPage() {
           maxAgeMonths: t.maxAgeMonths,
           allowedWeekdays: t.allowedWeekdays,
           allowedSessions: t.allowedSessions,
+          windows: t.windows.map((w) => ({
+            weekday: w.weekday,
+            startTime: w.startTime,
+            endTime: w.endTime,
+          })),
           doctorIds: t.doctors.map((d) => d.doctorId),
           color: t.color,
           icon: t.icon,

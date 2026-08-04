@@ -28,17 +28,30 @@ async function main() {
     {
       code: "GENERAL", name: "一般門診", color: "#2F5D3A", icon: "stethoscope", displayOrder: 1,
       description: "兒科、家庭醫學一般看診與疫苗接種",
+      // 疫苗停打時間與但書不放這裡——notice 是櫃檯可自行編輯的欄位，
+      // 合規文字（00 §4-2）改由程式碼固定顯示，見 src/lib/clinic-notes.ts
       notice: "線上預約為時段登記，非實際看診號碼，請依現場狀況候診。",
       requiresReview: false, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
     {
       code: "DEVELOPMENT", name: "兒童發展篩檢", color: "#8B5E3C", icon: "growth", displayOrder: 2,
       description: "兒童發展評估與篩檢（需櫃檯確認）",
-      notice: "請攜帶兒童健康手冊；送出後需櫃檯確認才成立。",
-      requiresReview: true, allowedWeekdays: [2, 4], allowedSessions: ["AFTERNOON"] as SessionPeriod[],
+      // 施測規則（健保卡＋手冊、一時段一位、矯正年齡）同樣由 clinic-notes.ts 固定顯示
+      notice: "送出後需櫃檯確認才成立。",
+      requiresReview: true,
+      // 施測時間改由下方 windows 表達（逐日不同），故粗篩留空
+      allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
       maxAgeMonths: 84,
       // 官網公告：兒童發展篩檢每個時段只安排 1 位兒童施測，故不適用家庭代表預約
       allowCompanions: false,
+      // 官網公告：週二至週五上午 09:00–11:30、下午 14:30–16:00；週一僅下午 14:30–16:00
+      windows: [
+        { weekday: 1, startTime: "14:30", endTime: "16:00" },
+        ...[2, 3, 4, 5].flatMap((weekday) => [
+          { weekday, startTime: "09:00", endTime: "11:30" },
+          { weekday, startTime: "14:30", endTime: "16:00" },
+        ]),
+      ],
     },
     {
       code: "WEIGHT", name: "減重特別門診", color: "#E0592A", icon: "scale", displayOrder: 3,
@@ -54,11 +67,27 @@ async function main() {
     },
   ];
   for (const t of clinicTypes) {
+    const { windows = [], ...fields } = t as typeof t & {
+      windows?: { weekday: number; startTime: string; endTime: string }[];
+    };
     const created = await prisma.clinicType.upsert({
-      where: { code: t.code },
-      create: { ...t },
+      where: { code: fields.code },
+      create: { ...fields },
       update: {},
     });
+    for (const w of windows) {
+      await prisma.clinicTypeWindow.upsert({
+        where: {
+          clinicTypeId_weekday_startTime: {
+            clinicTypeId: created.id,
+            weekday: w.weekday,
+            startTime: w.startTime,
+          },
+        },
+        create: { clinicTypeId: created.id, ...w },
+        update: { endTime: w.endTime },
+      });
+    }
     for (const doctorId of doctorIds) {
       await prisma.clinicTypeDoctor.upsert({
         where: { clinicTypeId_doctorId: { clinicTypeId: created.id, doctorId } },

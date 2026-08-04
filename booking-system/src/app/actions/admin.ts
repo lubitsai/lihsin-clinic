@@ -940,6 +940,23 @@ const clinicTypeSchema = z.object({
   maxAgeMonths: z.number().int().min(0).nullable(),
   allowedWeekdays: z.array(z.number().int().min(0).max(6)),
   allowedSessions: z.array(z.enum(["MORNING", "AFTERNOON", "EVENING"])),
+  /** 逐日可預約時間窗；有值時取代 allowedWeekdays／allowedSessions */
+  windows: z
+    .array(
+      z.object({
+        weekday: z.number().int().min(0).max(6),
+        startTime: z.string().regex(/^\d{2}:\d{2}$/),
+        endTime: z.string().regex(/^\d{2}:\d{2}$/),
+      }),
+    )
+    .default([])
+    .refine((ws) => ws.every((w) => w.startTime < w.endTime), {
+      message: "時間窗的結束時間必須晚於開始時間",
+    })
+    .refine(
+      (ws) => new Set(ws.map((w) => `${w.weekday}|${w.startTime}`)).size === ws.length,
+      { message: "同一天不可有兩段開始時間相同的時間窗" },
+    ),
   doctorIds: z.array(z.string()),
   color: z.string(),
   icon: z.string(),
@@ -973,6 +990,12 @@ export async function adminUpdateClinicType(
       await tx.clinicTypeDoctor.createMany({
         data: parsed.doctorIds.map((doctorId) => ({ clinicTypeId: parsed.id, doctorId })),
       });
+      await tx.clinicTypeWindow.deleteMany({ where: { clinicTypeId: parsed.id } });
+      if (parsed.windows.length > 0) {
+        await tx.clinicTypeWindow.createMany({
+          data: parsed.windows.map((w) => ({ clinicTypeId: parsed.id, ...w })),
+        });
+      }
     });
     await writeAudit(await actorOf(ctx), "clinic_type.update", { type: "clinic_type", id: parsed.id });
     revalidatePath("/admin/settings");

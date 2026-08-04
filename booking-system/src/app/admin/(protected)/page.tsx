@@ -4,6 +4,7 @@ import { PERMISSIONS } from "@/lib/auth/authz";
 import { getDayAppointments, type DayBoardFilters } from "@/lib/admin-service";
 import { getStaffDayOverview } from "@/lib/availability";
 import { prisma } from "@/lib/db";
+import { getSetting } from "@/lib/settings";
 import { todayStr, addDays, formatDateTw } from "@/lib/tw-time";
 import { Card } from "@/components/ui";
 import { DayBoard } from "./day-board";
@@ -45,11 +46,12 @@ export default async function AdminDashboard({
     q: sp.q || undefined,
   };
 
-  const [appointments, overview, doctors, clinicTypes] = await Promise.all([
+  const [appointments, overview, doctors, clinicTypes, graceMinutes] = await Promise.all([
     getDayAppointments(date, filters),
     getStaffDayOverview(date),
     prisma.doctor.findMany({ where: { isActive: true }, orderBy: { displayOrder: "asc" } }),
     prisma.clinicType.findMany({ orderBy: { displayOrder: "asc" } }),
+    getSetting("booking.checkin_grace_minutes"),
   ]);
 
   const qs = (patch: Record<string, string>) => {
@@ -133,6 +135,7 @@ export default async function AdminDashboard({
         }}
         canWrite={ctx.permissions.has(PERMISSIONS.APPOINTMENTS_WRITE)}
         doctorLocked={isDoctorReadonly}
+        graceMinutes={graceMinutes}
       />
     </div>
   );

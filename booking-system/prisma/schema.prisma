@@ -247,8 +247,33 @@ model ClinicType {
 
   doctors      ClinicTypeDoctor[]
   appointments Appointment[]
+  windows      ClinicTypeWindow[]
 
   @@map("clinic_types")
+}
+
+/// 門診類型的可預約時間窗（星期 × 時間區間）。
+///
+/// allowedWeekdays／allowedSessions 只能表達「星期」與「整個診別」，
+/// 但官網公告的兒童發展篩檢是「週一僅下午 14:30–16:00、週二至週五上午 09:00–11:30
+/// 與下午 14:30–16:00」——星期與時間各不相同，粗篩表達不了。
+///
+/// 規則：本表**有資料時只看本表**（allowedWeekdays／allowedSessions 不再套用），
+/// 避免兩套條件相乘出沒人預期的結果；沒資料時維持原本的粗篩行為。
+model ClinicTypeWindow {
+  id           String @id @default(cuid())
+  clinicTypeId String @map("clinic_type_id")
+  /// 0=日…6=六
+  weekday      Int
+  /// 含頭不含尾："09:00"–"11:30" ＝ 可約 09:00 至 11:00 的時段（11:30 為結束時刻）
+  startTime    String @map("start_time")
+  endTime      String @map("end_time")
+
+  clinicType ClinicType @relation(fields: [clinicTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([clinicTypeId, weekday, startTime])
+  @@index([clinicTypeId, weekday])
+  @@map("clinic_type_windows")
 }
 
 model ClinicTypeDoctor {

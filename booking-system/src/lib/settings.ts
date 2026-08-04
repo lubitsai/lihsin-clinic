@@ -12,7 +12,12 @@ export const SETTING_DEFAULTS = {
   // 官網公告：累計 3 次未到暫停網路預約 3 個月，期滿累計歸零
   "booking.no_show_threshold": 3, // 未到累計「達」此數即自動限制
   "booking.no_show_suspension_days": 90, // 自動限制的天數；到期自動恢復並歸零未到次數
-  "booking.cancel_cutoff_minutes": 120, // 看診前 N 分鐘停止線上取消/改期
+  // 官網公告：該診次開診前都可自行取消或改期。開診時間取自當日班表，
+  // 只有查不到診次（櫃檯在班表外手動加開的時段）時才退回這個分鐘數。
+  "booking.cancel_cutoff_minutes": 120, // 查無診次時的備援：看診前 N 分鐘停止線上取消/改期
+  // 官網公告：請於預約時段開始後 10 分鐘內完成報到，逾時該筆預約即取消、需重新抽現場號。
+  // 系統不自動取消——櫃檯總覽以「報到逾時」標記提醒，由櫃檯確認現場狀況後處理。
+  "booking.checkin_grace_minutes": 10, // 報到保留分鐘數（櫃檯總覽逾時標記用）
   "booking.default_slot_capacity": 1, // 每醫師每 30 分鐘預設線上名額
   "booking.allow_same_day": true, // 是否開放當日預約
   "notify.same_day_reminder": true,

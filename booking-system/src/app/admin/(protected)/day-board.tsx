@@ -4,7 +4,7 @@
  * 今日預約總覽：桌面＝時間×醫師欄位表；手機＝卡片列表。
  * 快速操作：報到／完成／未到／取消／改期／編輯／撥打／補發通知。
  */
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -15,6 +15,7 @@ import {
 } from "@/app/actions/admin";
 import { StatusBadge, Alert } from "@/components/ui";
 import { VISIT_TYPE_LABEL, SOURCE_LABEL } from "@/lib/status-labels";
+import { addMinutes, nowTimeStr, todayStr } from "@/lib/tw-time";
 import type { AppointmentStatus } from "@prisma/client";
 
 interface ApptDto {
@@ -50,12 +51,40 @@ interface Props {
   filters: { session: string; doctor: string; type: string; status: string; q: string };
   canWrite: boolean;
   doctorLocked: boolean;
+  /** 報到保留分鐘數（booking.checkin_grace_minutes），逾時即標記提醒 */
+  graceMinutes: number;
 }
 
-export function DayBoard({ date, appointments, doctors, clinicTypes, filters, canWrite, doctorLocked }: Props) {
+export function DayBoard({
+  date,
+  appointments,
+  doctors,
+  clinicTypes,
+  filters,
+  canWrite,
+  doctorLocked,
+  graceMinutes,
+}: Props) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [pending, startTransition] = useTransition();
+
+  // 報到逾時標記（官網公告：時段開始後保留 N 分鐘）。
+  // 系統不自動取消——櫃檯可能正忙、家長也可能人已在現場，
+  // 這裡只把「該處理了」標出來，實際要記未到或補報到仍由櫃檯按鈕決定。
+  // 於 effect 內取時間避免伺服器與瀏覽器算出不同結果；每 30 秒重算一次。
+  const [nowTime, setNowTime] = useState<string | null>(null);
+  useEffect(() => {
+    if (date !== todayStr()) return;
+    const tick = () => setNowTime(nowTimeStr());
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, [date]);
+  const isOverdue = (a: ApptDto) =>
+    !!nowTime &&
+    (a.status === "PENDING" || a.status === "CONFIRMED") &&
+    nowTime >= addMinutes(a.startTime, graceMinutes);
 
   const act = (fn: () => Promise<{ ok: boolean; message?: string }>) =>
     startTransition(async () => {
@@ -190,6 +219,7 @@ export function DayBoard({ date, appointments, doctors, clinicTypes, filters, ca
                             onRevoke={revoke}
                             onResend={(id) => act(() => adminResendNotification(id))}
                             date={date}
+                            overdue={isOverdue(a)}
                           />
                         ))}
                     </td>
@@ -214,6 +244,7 @@ export function DayBoard({ date, appointments, doctors, clinicTypes, filters, ca
             onRevoke={revoke}
             onResend={(id) => act(() => adminResendNotification(id))}
             date={date}
+            overdue={isOverdue(a)}
             showTime
           />
         ))}
@@ -231,6 +262,7 @@ function ApptCard({
   onRevoke,
   onResend,
   date,
+  overdue = false,
   showTime = false,
 }: {
   a: ApptDto;
@@ -241,11 +273,17 @@ function ApptCard({
   onRevoke: (id: string) => void;
   onResend: (id: string) => void;
   date: string;
+  /** 已過報到保留時間，尚未報到 */
+  overdue?: boolean;
   showTime?: boolean;
 }) {
   const active = ["PENDING", "CONFIRMED", "CHECKED_IN"].includes(a.status);
   return (
-    <div className="rounded-xl border border-sage-200 bg-white p-3 space-y-1.5 shadow-sm">
+    <div
+      className={`rounded-xl border bg-white p-3 space-y-1.5 shadow-sm ${
+        overdue ? "border-rose-500 ring-1 ring-rose-500/30" : "border-sage-200"
+      }`}
+    >
       <div className="flex items-center justify-between gap-2">
         <p className="font-bold text-ink-900">
           {showTime && <span className="font-mono mr-2">{a.startTime}</span>}
@@ -257,7 +295,14 @@ function ApptCard({
             </span>
           )}
         </p>
-        <StatusBadge status={a.status} />
+        <div className="flex items-center gap-1.5 shrink-0">
+          {overdue && (
+            <span className="rounded bg-rose-100 text-rose-600 px-1.5 py-0.5 text-xs font-bold whitespace-nowrap">
+              報到逾時
+            </span>
+          )}
+          <StatusBadge status={a.status} />
+        </div>
       </div>
       <p className="text-sm text-ink-700">
         <span className="rounded px-1.5 py-0.5 text-white text-xs mr-1" style={{ backgroundColor: a.clinicType.color }}>

@@ -24,8 +24,13 @@ import {
   getBlockedSlotKeys,
   getDayScheduleBlocks,
   getSuspendedClinicTypes,
+  hasSessionStarted,
   isSlotKeyBlocked,
+  isWithinClinicWindows,
+  sessionOfSlot,
   sessionOfTime,
+  sessionStartsOf,
+  type ClinicWindow,
 } from "./schedule";
 import { upsertPatientForBooking, lockPatientRow, resolveMergedPatient } from "./patients";
 import { isPatientRestricted, maybeAutoRestrict, applyRestrictionExpiry } from "./restrictions";
@@ -127,7 +132,7 @@ async function runCreateTransaction(
     async (tx) => {
       const clinicType = await tx.clinicType.findUnique({
         where: { id: params.clinicTypeId },
-        include: { doctors: true },
+        include: { doctors: true, windows: true },
       });
       if (!clinicType) throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
       // 門診類型：停用／當日暫停／可預約星期（改期路徑共用同一檢查）
@@ -179,6 +184,7 @@ async function runCreateTransaction(
         doctorId: params.doctorId,
         clinicTypeDoctorIds: clinicType.doctors.map((d) => d.doctorId),
         allowedSessions: clinicType.allowedSessions,
+        windows: clinicType.windows,
         isStaff: !!params.isStaff,
       });
 
@@ -327,10 +333,10 @@ async function issueBookingNumber(tx: Tx, date: string): Promise<string> {
   return bookingNumber;
 }
 
-/** 門診類型是否可於該日期預約：停用／當日暫停／可預約星期（櫃檯不受限） */
+/** 門診類型是否可於該日期預約：停用／當日暫停／可預約星期或時間窗（櫃檯不受限） */
 async function assertClinicTypeBookable(
   tx: Tx,
-  clinicType: { id: string; isActive: boolean; allowedWeekdays: number[] },
+  clinicType: { id: string; isActive: boolean; allowedWeekdays: number[]; windows?: ClinicWindow[] },
   date: string,
   isStaff: boolean,
 ) {
@@ -340,8 +346,35 @@ async function assertClinicTypeBookable(
   if (suspended.has(clinicType.id))
     throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
   const weekday = dateToDb(date).getUTCDay();
-  if (clinicType.allowedWeekdays.length > 0 && !clinicType.allowedWeekdays.includes(weekday))
+  // 有設時間窗時只看時間窗（見 schema 註解），星期粗篩不再套用
+  const windows = clinicType.windows ?? [];
+  if (windows.length > 0) {
+    if (!windows.some((w) => w.weekday === weekday))
+      throw new BookingError("SLOT_UNAVAILABLE", MSG.slotUnavailable);
+  } else if (clinicType.allowedWeekdays.length > 0 && !clinicType.allowedWeekdays.includes(weekday)) {
     throw new BookingError("SLOT_UNAVAILABLE", MSG.slotUnavailable);
+  }
+}
+
+/**
+ * 民眾自行取消／改期的截止時間（官網公告：該診次開診前都可以，開診後就不行）。
+ * 未來日期一律還沒開診；查不到診次開診時間（例如班表外手動加開的時段）時，
+ * 退回設定的 booking.cancel_cutoff_minutes 分鐘數，避免完全沒有截止。
+ */
+async function assertCancelCutoff(tx: Tx, date: string, startTime: string) {
+  const today = todayStr();
+  if (date > today) return;
+  if (date < today) throw new BookingError("CUTOFF_PASSED", MSG.cutoffPassed);
+
+  const blocks = await getDayScheduleBlocks(date, tx);
+  const sessionStart = sessionStartsOf(blocks).get(sessionOfSlot(blocks, startTime));
+  if (sessionStart) {
+    if (nowTimeStr() >= sessionStart) throw new BookingError("CUTOFF_PASSED", MSG.cutoffPassed);
+    return;
+  }
+  const cutoff = await getSetting("booking.cancel_cutoff_minutes", tx);
+  if (minutesFromNow(date, startTime) < cutoff)
+    throw new BookingError("CUTOFF_PASSED", MSG.cutoffPassed);
 }
 
 /** 開放日期檢查：滾動開放 N 天（最新一天於 open_time 才開放）＋當日截止 */
@@ -442,6 +475,8 @@ interface AllocateParams {
   doctorId: string; // 或 "any"
   clinicTypeDoctorIds: string[];
   allowedSessions: import("@prisma/client").SessionPeriod[];
+  /** 門診類型時間窗；有值時取代 allowedSessions 的診別粗篩 */
+  windows: ClinicWindow[];
   isStaff: boolean;
 }
 
@@ -467,7 +502,23 @@ async function allocateSlot(tx: Tx, p: AllocateParams) {
     (p.clinicTypeDoctorIds.length === 0 || p.clinicTypeDoctorIds.includes(id)) &&
     (p.doctorId === "any" || id === p.doctorId);
   const sessionAllowed = (s: import("@prisma/client").SessionPeriod) =>
-    p.allowedSessions.length === 0 || p.allowedSessions.includes(s);
+    p.windows.length > 0 || p.allowedSessions.length === 0 || p.allowedSessions.includes(s);
+
+  // 門診類型時間窗（例：兒童發展篩檢週一僅下午 14:30–16:00）；櫃檯代約不受限
+  if (
+    !p.isStaff &&
+    !isWithinClinicWindows(p.windows, dateToDb(p.date).getUTCDay(), p.startTime)
+  ) {
+    throw new BookingError("SLOT_UNAVAILABLE", MSG.slotUnavailable);
+  }
+
+  // 官網公告：該診次開診後就不再受理該診次的預約（櫃檯代約仍可，比照現場加號）
+  const sessionStarts = sessionStartsOf(blocks);
+  const nowTime = nowTimeStr();
+  const sessionOpen = (s: import("@prisma/client").SessionPeriod) =>
+    p.isStaff || p.date !== todayStr() || !hasSessionStarted(sessionStarts, s, nowTime);
+  if (!sessionOpen(sessionOfSlot(blocks, p.startTime)))
+    throw new BookingError("SLOT_UNAVAILABLE", MSG.sessionStarted);
 
   // 班表候選：slotTimes 產生的格點才有效，防止自創時間（如 09:01）繞過名額上限
   const candidates: SlotCandidate[] = blocks
@@ -476,6 +527,7 @@ async function allocateSlot(tx: Tx, p: AllocateParams) {
         slotTimes(b.startTime, b.endTime).includes(p.startTime) &&
         (p.isStaff || b.allowOnline) &&
         sessionAllowed(b.session) &&
+        sessionOpen(b.session) &&
         allowedDoctor(b.doctorId) &&
         !isSlotKeyBlocked(blocked, b.doctorId, p.startTime),
     )
@@ -497,6 +549,7 @@ async function allocateSlot(tx: Tx, p: AllocateParams) {
   for (const row of manualRows) {
     if (!allowedDoctor(row.doctorId)) continue;
     if (!sessionAllowed(sessionOfTime(row.startTime))) continue;
+    if (!sessionOpen(sessionOfTime(row.startTime))) continue;
     if (isSlotKeyBlocked(blocked, row.doctorId, p.startTime)) continue;
     if (candidates.some((c) => c.doctorId === row.doctorId)) continue; // 班表候選已涵蓋
     candidates.push({ doctorId: row.doctorId, capacity: row.capacity, endTime: row.endTime });
@@ -609,11 +662,8 @@ async function cancelCore(tx: Tx, opts: CancelOptions): Promise<Appointment> {
     if (opts.byPatient && appt.status === "CHECKED_IN")
       throw new BookingError("INVALID_STATUS", "已報到的預約無法線上取消，請洽櫃檯。");
 
-    if (opts.byPatient) {
-      const cutoff = await getSetting("booking.cancel_cutoff_minutes", tx);
-      if (minutesFromNow(dbToDate(appt.appointmentDate), appt.startTime) < cutoff)
-        throw new BookingError("CUTOFF_PASSED", MSG.cutoffPassed);
-    }
+    if (opts.byPatient)
+      await assertCancelCutoff(tx, dbToDate(appt.appointmentDate), appt.startTime);
 
     const toStatus = opts.byPatient ? "CANCELLED_BY_PATIENT" : "CANCELLED_BY_CLINIC";
     const updated = await tx.appointment.update({
@@ -670,16 +720,14 @@ export async function rescheduleAppointment(opts: {
       await tx.$queryRaw`SELECT id FROM appointments WHERE id = ${opts.appointmentId} FOR UPDATE`;
       const appt = await tx.appointment.findUnique({
         where: { id: opts.appointmentId },
-        include: { patient: true, clinicType: { include: { doctors: true } } },
+        include: { patient: true, clinicType: { include: { doctors: true, windows: true } } },
       });
       if (!appt) throw new BookingError("NOT_FOUND", MSG.notFound);
       if (!(["PENDING", "CONFIRMED"] as string[]).includes(appt.status))
         throw new BookingError("INVALID_STATUS", "此預約目前狀態無法改期。");
 
       if (opts.byPatient) {
-        const cutoff = await getSetting("booking.cancel_cutoff_minutes", tx);
-        if (minutesFromNow(dbToDate(appt.appointmentDate), appt.startTime) < cutoff)
-          throw new BookingError("CUTOFF_PASSED", MSG.cutoffPassed);
+        await assertCancelCutoff(tx, dbToDate(appt.appointmentDate), appt.startTime);
         await assertDateOpen(tx, opts.newDate, opts.newStartTime);
       }
 
@@ -705,6 +753,7 @@ export async function rescheduleAppointment(opts: {
         doctorId: opts.newDoctorId,
         clinicTypeDoctorIds: appt.clinicType.doctors.map((d) => d.doctorId),
         allowedSessions: appt.clinicType.allowedSessions,
+        windows: appt.clinicType.windows,
         isStaff: !opts.byPatient,
       });
 
