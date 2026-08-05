@@ -19,6 +19,8 @@
 
 - **整棵樹由 Netlify 公開部署。** `internal/`、`.claude/`、`.codex/`、`CLAUDE.md`、`AGENTS.md`、`.mcp.json`、`booking-system/` 靠 `_redirects` 第 5 節強制 404 擋住；新增內部檔案時必須同步攔截規則。
 - **`booking-system/` 不是官網頁面。** 獨立的 Next.js＋PostgreSQL 應用，走 Docker 部署到獨立網域，改官網時不要動它。
+  **唯一的例外是門診時間**：預約系統的班表以官網 `index.html` 的門診時間表為準，動到門診時間就要跑
+  `python3 internal/tools/sync_schedule.py`（push 前用 `--check` 把關），詳見 `clinic-schedule` skill。
 
 ## 編輯手法（踩過的雷）
 
