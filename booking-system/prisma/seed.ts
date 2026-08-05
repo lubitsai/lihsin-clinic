@@ -23,8 +23,9 @@ async function main() {
   });
   const bothDoctors = [drTsai.id, drLee.id];
 
-  // 門診類型（特別門診的可預約星期／診別仍為示意設定，正式排程請於後台調整）
-  // doctorIds＝可接受該門診預約的醫師（院長 2026-08-05 指定）；後台「系統設定 → 門診類型」可改
+  // 門診類型（院長 2026-08-05 定案醫師與開放時段；後台「系統設定 → 門診類型」可再調整）
+  // doctorIds＝可接受該門診預約的醫師。allowedWeekdays／allowedSessions 留空
+  // ＝不另設限制，可預約時段直接跟著該門診醫師的班表走。
   const clinicTypes = [
     {
       code: "GENERAL", name: "一般門診", color: "#2F5D3A", icon: "stethoscope", displayOrder: 1,
@@ -61,14 +62,17 @@ async function main() {
       doctorIds: [drTsai.id], // 僅蔡醫師
       description: "體重管理特別門診（需櫃檯確認）",
       notice: "初診請預留較長看診時間；送出後需櫃檯確認才成立。",
-      requiresReview: true, allowedWeekdays: [3, 6], allowedSessions: ["AFTERNOON"] as SessionPeriod[],
+      // 院長 2026-08-05：蔡醫師有開診的時段皆開放 → 不另設星期／診別，
+      // 可預約時段直接跟著蔡醫師的班表走（門診醫師名單已限定只有蔡醫師）
+      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
     {
       code: "ALLERGY", name: "過敏特別門診", color: "#3d7a4e", icon: "allergy", displayOrder: 4,
       doctorIds: [drTsai.id], // 僅蔡醫師
       description: "兒童過敏、氣喘評估與檢測（需櫃檯確認）",
       notice: "如需過敏原檢測，請先電話詢問空腹等注意事項；送出後需櫃檯確認才成立。",
-      requiresReview: true, allowedWeekdays: [1, 5], allowedSessions: ["EVENING"] as SessionPeriod[],
+      // 同減重：跟著蔡醫師的班表走
+      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
   ];
   for (const t of clinicTypes) {
