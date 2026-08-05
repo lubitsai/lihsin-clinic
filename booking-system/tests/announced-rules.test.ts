@@ -194,3 +194,70 @@ describe("門診類型可預約時間窗（兒童發展篩檢施測時間）", (
     }
   });
 });
+
+describe("一位醫師同一時段只會有一位病人（跨門診共用名額）", () => {
+  beforeEach(resetDb);
+
+  it("某門診占用後，同一醫師同時段在其他門診也不再有名額", async () => {
+    const { general, development, drTsai, drLee } = await seedBase();
+    const date = futureDate(3);
+
+    // 先以「兒童發展篩檢」占用蔡醫師 14:30
+    await createAppointment({
+      clinicTypeId: development.id, doctorId: drTsai.id, date, startTime: "14:30",
+      patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+    });
+
+    // 一般門診看同一時段：蔡醫師已無名額，李醫師不受影響
+    const slot = (await getDaySlotAvailability(date, general.id)).find((s) => s.startTime === "14:30");
+    expect(slot).toBeDefined();
+    expect(slot!.doctors.find((d) => d.doctorId === drTsai.id)?.remaining).toBe(0);
+    expect(slot!.doctors.find((d) => d.doctorId === drLee.id)?.remaining).toBe(1);
+
+    // 硬送出一般門診也會被擋（前台隱藏不是唯一防線）
+    await expect(
+      createAppointment({
+        clinicTypeId: general.id, doctorId: drTsai.id, date, startTime: "14:30",
+        patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      }),
+    ).rejects.toMatchObject({ code: "SLOT_FULL" });
+  });
+
+  it("「不限醫師」會避開已被其他門診占用的醫師，改分配另一位", async () => {
+    const { general, development, drTsai } = await seedBase();
+    const date = futureDate(4);
+
+    await createAppointment({
+      clinicTypeId: development.id, doctorId: drTsai.id, date, startTime: "10:00",
+      patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+    });
+
+    const { appointment } = await createAppointment({
+      clinicTypeId: general.id, doctorId: "any", date, startTime: "10:00",
+      patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+    });
+    expect(appointment.doctorId).not.toBe(drTsai.id);
+  });
+
+  it("該時段兩位醫師都被其他門診占滿後，一般門診就沒有這個時段可選", async () => {
+    const { general, development, drTsai, drLee } = await seedBase();
+    const date = futureDate(5);
+
+    for (const doctorId of [drTsai.id, drLee.id]) {
+      await createAppointment({
+        clinicTypeId: development.id, doctorId, date, startTime: "19:00",
+        patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      });
+    }
+
+    const slot = (await getDaySlotAvailability(date, general.id)).find((s) => s.startTime === "19:00");
+    expect(slot!.doctors.every((d) => d.remaining === 0)).toBe(true);
+
+    await expect(
+      createAppointment({
+        clinicTypeId: general.id, doctorId: "any", date, startTime: "19:00",
+        patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      }),
+    ).rejects.toMatchObject({ code: "SLOT_FULL" });
+  });
+});
