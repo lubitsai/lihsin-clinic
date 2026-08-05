@@ -96,18 +96,14 @@ export default async function HomePage() {
         </Alert>
       )}
 
+      {/*
+        非急診定位與 119 但書（合規紅線 internal/00 §4-5）只放在 /rules
+        ——院長 2026-08-05 裁示。該頁由頁尾與預約流程的同意事項連出，
+        兩處都連得到，故本頁不重複。移除前請先確認 /rules 仍留有該段。
+      */}
       <Alert tone="info">
         線上預約為看診時段登記，<strong>不等於實際看診號碼</strong>，現場依報到順序與醫師看診狀況候診，敬請見諒。
       </Alert>
-
-      {/* 非急診定位與 119 但書：合規紅線（internal/00 §4-5），文字同官網公告 */}
-      <Card className="border-rose-500/40">
-        <h2 className="text-lg font-bold text-rose-600 mb-1">提醒</h2>
-        <p className="text-ink-900 leading-relaxed">
-          本院為一般門診、非急診。孩子出現呼吸困難、抽搐、意識改變或活力明顯變差，
-          請直接告知櫃檯由護理人員先行評估；情況危急請撥打 <strong>119</strong> 或前往鄰近急診。
-        </p>
-      </Card>
 
       <Card className="space-y-2">
         <h2 className="text-lg font-bold text-sage-700">聯絡立欣診所</h2>
