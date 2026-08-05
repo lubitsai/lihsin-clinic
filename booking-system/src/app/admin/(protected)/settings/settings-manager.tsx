@@ -23,6 +23,7 @@ interface ClinicTypeDto {
   isActive: boolean;
   requiresReview: boolean;
   notifyLine: boolean;
+  skipOnPublicHoliday: boolean;
   minAgeMonths: number | null;
   maxAgeMonths: number | null;
   allowedWeekdays: number[];
@@ -57,18 +58,29 @@ interface SettingsDto {
   idleMinutes: number;
 }
 
+interface HolidayDto {
+  count: number;
+  from: string | null;
+  to: string | null;
+  sources: string[];
+  sufficient: boolean;
+  lastOpenDate: string;
+}
+
 export function SettingsManager({
   settings,
   clinicTypes,
   doctors,
   lineConfigured,
   smsProvider,
+  holidays,
 }: {
   settings: SettingsDto;
   clinicTypes: ClinicTypeDto[];
   doctors: DoctorDto[];
   lineConfigured: boolean;
   smsProvider: string;
+  holidays: HolidayDto;
 }) {
   const router = useRouter();
   const [s, setS] = useState(settings);
@@ -149,6 +161,8 @@ export function SettingsManager({
         </button>
       </Card>
 
+      <HolidayCard holidays={holidays} clinicTypes={clinicTypes} />
+
       <LineSetupCard lineConfigured={lineConfigured} smsProvider={smsProvider} />
 
       <ClinicTypesEditor clinicTypes={clinicTypes} doctors={doctors} onError={setError} onDone={(m) => { setMessage(m); router.refresh(); }} />
@@ -163,6 +177,52 @@ function NumField({ label, value, onChange }: { label: string; value: number; on
       <span className="text-sm text-ink-700">{label}</span>
       <input type="number" className="input" value={value} min={0} onChange={(e) => onChange(+e.target.value)} />
     </label>
+  );
+}
+
+/** 國定假日行事曆狀態；資料由 scripts/import-holidays.ts 匯入 */
+function HolidayCard({
+  holidays,
+  clinicTypes,
+}: {
+  holidays: HolidayDto;
+  clinicTypes: ClinicTypeDto[];
+}) {
+  const affected = clinicTypes.filter((t) => t.skipOnPublicHoliday);
+  return (
+    <Card className="space-y-3">
+      <h2 className="font-bold text-sage-700">國定假日行事曆</h2>
+      <p className="text-sm text-ink-700 leading-relaxed">
+        依行政院人事行政總處「政府行政機關辦公日曆表」。診所國定假日多半照常看診，
+        只有下列門診當天不開放預約：
+        <strong>{affected.length > 0 ? affected.map((t) => t.name).join("、") : "（目前無）"}</strong>
+        。可在下方「門診類型」逐科勾選。
+      </p>
+
+      {holidays.count === 0 ? (
+        <Alert tone="warn">
+          <p className="font-bold mb-1">尚未匯入國定假日</p>
+          <p>
+            在假日清單匯入前，國定假日當天這些門診仍會開放預約。請下載官方日曆表 CSV 後於主機執行：
+          </p>
+          <code className="block mt-1 text-sm">npx tsx scripts/import-holidays.ts 檔案.csv --source dgpa-115</code>
+        </Alert>
+      ) : (
+        <>
+          <p className="text-sm text-ink-500">
+            已匯入 {holidays.count} 天（{holidays.from} ～ {holidays.to}）
+            {holidays.sources.length > 0 && `｜來源：${holidays.sources.join("、")}`}
+          </p>
+          {!holidays.sufficient && (
+            <Alert tone="warn">
+              假日資料只到 <strong>{holidays.to}</strong>，但目前開放預約到{" "}
+              <strong>{holidays.lastOpenDate}</strong>。
+              超出範圍的日子系統當作平日處理，請儘快匯入次年度日曆表。
+            </Alert>
+          )}
+        </>
+      )}
+    </Card>
   );
 }
 
@@ -313,6 +373,10 @@ function ClinicTypesEditor({
             <label className="flex items-center gap-2">
               <input type="checkbox" checked={selected.notifyLine} onChange={(e) => setSelected({ ...selected, notifyLine: e.target.checked })} className="size-4 accent-sage-500" />
               發送 LINE/簡訊通知
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={selected.skipOnPublicHoliday} onChange={(e) => setSelected({ ...selected, skipOnPublicHoliday: e.target.checked })} className="size-4 accent-sage-500" />
+              國定假日停開此門診
             </label>
           </div>
           <div className="grid sm:grid-cols-2 gap-3">

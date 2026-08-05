@@ -45,4 +45,7 @@ export const MSG = {
   notFound: "查無符合的預約資料，請確認輸入內容。",
   identityMismatch: "查無符合的預約資料，請確認輸入內容。", // 與 notFound 相同,避免身分探測
   clinicTypeClosed: "此門診目前未開放線上預約，請致電立欣診所詢問。",
+  // 官網公告：兒童發展篩檢「國定假日不施測」；一般門診當天照常
+  holidayClosed: (clinicTypeName: string, holidayName: string) =>
+    `${holidayName}為國定假日，「${clinicTypeName}」當天不施測，請改選其他日期。當天一般門診仍照常看診。`,
 } as const;

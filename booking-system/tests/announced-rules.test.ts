@@ -10,6 +10,7 @@ import { prisma } from "@/lib/db";
 import { createAppointment, cancelAppointment, rescheduleAppointment } from "@/lib/booking";
 import { getDaySlotAvailability } from "@/lib/availability";
 import { setSetting, clearSettingsCache } from "@/lib/settings";
+import { dateToDb } from "@/lib/tw-time";
 import { resetDb, seedBase, makePatient, futureDate, todayStr, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
 
 /** 把系統時間固定在台灣時間某日某時（tw-time 全部以 UTC+8 平移計算） */
@@ -259,5 +260,95 @@ describe("一位醫師同一時段只會有一位病人（跨門診共用名額�
         patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
       }),
     ).rejects.toMatchObject({ code: "SLOT_FULL" });
+  });
+});
+
+describe("國定假日不施測（兒童發展篩檢）", () => {
+  beforeEach(resetDb);
+
+  /** 未來 14 天內第一個週三（篩檢有早上與下午時段） */
+  function nextWednesday(): string {
+    for (let i = 1; i <= 14; i++) {
+      const d = futureDate(i);
+      if (new Date(`${d}T00:00:00.000Z`).getUTCDay() === 3) return d;
+    }
+    throw new Error("找不到日期");
+  }
+
+  async function setupScreening(clinicTypeId: string) {
+    await prisma.clinicType.update({
+      where: { id: clinicTypeId },
+      data: { skipOnPublicHoliday: true },
+    });
+    await prisma.clinicTypeWindow.createMany({
+      data: [2, 3, 4, 5].flatMap((weekday) => [
+        { clinicTypeId, weekday, startTime: "09:00", endTime: "11:30" },
+        { clinicTypeId, weekday, startTime: "14:30", endTime: "16:00" },
+      ]),
+    });
+  }
+
+  it("國定假日當天篩檢沒有時段，一般門診照常", async () => {
+    const { general, development } = await seedBase();
+    await setupScreening(development.id);
+    const date = nextWednesday();
+
+    // 假日前：篩檢有時段
+    expect((await getDaySlotAvailability(date, development.id)).length).toBeGreaterThan(0);
+
+    await prisma.publicHoliday.create({
+      data: { date: dateToDb(date), name: "國慶日", source: "test" },
+    });
+
+    expect(await getDaySlotAvailability(date, development.id)).toEqual([]);
+    // 一般門診不受影響——診所照常看診
+    expect((await getDaySlotAvailability(date, general.id)).length).toBeGreaterThan(0);
+  });
+
+  it("國定假日送出篩檢預約會被擋下，訊息說明當天一般門診照常", async () => {
+    const { development, drTsai } = await seedBase();
+    await setupScreening(development.id);
+    const date = nextWednesday();
+    await prisma.publicHoliday.create({
+      data: { date: dateToDb(date), name: "國慶日", source: "test" },
+    });
+
+    await expect(
+      createAppointment({
+        clinicTypeId: development.id, doctorId: drTsai.id, date, startTime: "09:00",
+        patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      }),
+    ).rejects.toMatchObject({ code: "CLINIC_TYPE_CLOSED" });
+
+    await expect(
+      createAppointment({
+        clinicTypeId: development.id, doctorId: drTsai.id, date, startTime: "09:00",
+        patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      }),
+    ).rejects.toThrow(/國慶日.*不施測/);
+  });
+
+  it("未標記「國定假日停開」的門診不受假日影響", async () => {
+    const { general } = await seedBase();
+    const date = nextWednesday();
+    await prisma.publicHoliday.create({
+      data: { date: dateToDb(date), name: "國慶日", source: "test" },
+    });
+    expect((await getDaySlotAvailability(date, general.id)).length).toBeGreaterThan(0);
+  });
+
+  it("櫃檯代約不受假日限制（現場仍可安排）", async () => {
+    const { development, drTsai } = await seedBase();
+    await setupScreening(development.id);
+    const date = nextWednesday();
+    await prisma.publicHoliday.create({
+      data: { date: dateToDb(date), name: "國慶日", source: "test" },
+    });
+
+    const r = await createAppointment({
+      clinicTypeId: development.id, doctorId: drTsai.id, date, startTime: "09:00",
+      patientInput: makePatient(), source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
+    });
+    expect(r.appointment.id).toBeTruthy();
   });
 });

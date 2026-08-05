@@ -32,6 +32,7 @@ import {
   sessionStartsOf,
   type ClinicWindow,
 } from "./schedule";
+import { getHolidayName } from "./holidays";
 import { upsertPatientForBooking, lockPatientRow, resolveMergedPatient } from "./patients";
 import { isPatientRestricted, maybeAutoRestrict, applyRestrictionExpiry } from "./restrictions";
 import { writeAudit, type AuditActor } from "./audit";
@@ -336,12 +337,25 @@ async function issueBookingNumber(tx: Tx, date: string): Promise<string> {
 /** 門診類型是否可於該日期預約：停用／當日暫停／可預約星期或時間窗（櫃檯不受限） */
 async function assertClinicTypeBookable(
   tx: Tx,
-  clinicType: { id: string; isActive: boolean; allowedWeekdays: number[]; windows?: ClinicWindow[] },
+  clinicType: {
+    id: string;
+    name: string;
+    isActive: boolean;
+    allowedWeekdays: number[];
+    windows?: ClinicWindow[];
+    skipOnPublicHoliday?: boolean;
+  },
   date: string,
   isStaff: boolean,
 ) {
   if (isStaff) return;
   if (!clinicType.isActive) throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);
+  // 國定假日停開的門診（兒童發展篩檢）；其他門診照常
+  if (clinicType.skipOnPublicHoliday) {
+    const holiday = await getHolidayName(date, tx);
+    if (holiday)
+      throw new BookingError("CLINIC_TYPE_CLOSED", MSG.holidayClosed(clinicType.name, holiday));
+  }
   const suspended = await getSuspendedClinicTypes(date, tx);
   if (suspended.has(clinicType.id))
     throw new BookingError("CLINIC_TYPE_CLOSED", MSG.clinicTypeClosed);

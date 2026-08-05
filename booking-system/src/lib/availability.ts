@@ -16,6 +16,7 @@ import {
   type WorkingBlock,
 } from "./schedule";
 import { OCCUPYING_STATUSES } from "./booking";
+import { getHolidayName } from "./holidays";
 import { slotTimes } from "./tw-time";
 import type { SessionPeriod } from "@prisma/client";
 
@@ -66,6 +67,9 @@ export async function getDaySlotAvailability(
     include: { doctors: true, windows: true },
   });
   if (!clinicType || !clinicType.isActive) return [];
+
+  // 國定假日停開的門診（兒童發展篩檢）：診所照常看診，但這一科不施測
+  if (clinicType.skipOnPublicHoliday && (await getHolidayName(date))) return [];
 
   const weekday = weekdayOf(date);
   const windows = clinicType.windows;

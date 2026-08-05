@@ -231,6 +231,9 @@ model ClinicType {
   /// 是否允許家庭代表預約（一個名額涵蓋同診次多位家人）。
   /// 官網公告：兒童發展篩檢每時段只安排 1 位兒童施測，故該門診設為 false。
   allowCompanions  Boolean @default(true) @map("allow_companions")
+  /// 國定假日是否停開此門診。診所國定假日多半照常看診，但兒童發展篩檢不施測，
+  /// 故只有該門診設為 true；假日若連門診都異動，另以官網公告（單日例外）處理。
+  skipOnPublicHoliday Boolean @default(false) @map("skip_on_public_holiday")
   questionnaireUrl String? @map("questionnaire_url")
   minAgeMonths     Int?    @map("min_age_months")
   maxAgeMonths     Int?    @map("max_age_months")
@@ -274,6 +277,19 @@ model ClinicTypeWindow {
   @@unique([clinicTypeId, weekday, startTime])
   @@index([clinicTypeId, weekday])
   @@map("clinic_type_windows")
+}
+
+/// 國定假日（依行政院人事行政總處「政府行政機關辦公日曆表」）。
+/// 只收「放假且有假日名稱」的日子——一般週末不列入，週末本來就沒有篩檢時段。
+/// 由 scripts/import-holidays.ts 匯入官方檔案，每年公布次年日曆表後更新一次。
+model PublicHoliday {
+  date      DateTime @id @db.Date
+  name      String
+  /// 匯入來源標記，例：dgpa-115（民國 115 年辦公日曆表）
+  source    String   @default("manual")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("public_holidays")
 }
 
 model ClinicTypeDoctor {

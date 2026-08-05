@@ -51,6 +51,9 @@ async function main() {
       maxAgeMonths: 84,
       // 官網公告：兒童發展篩檢每個時段只安排 1 位兒童施測，故不適用家庭代表預約
       allowCompanions: false,
+      // 官網公告：國定假日不施測（診所當天照常看診，只有這一科停）
+      // 假日清單需另行匯入：npx tsx scripts/import-holidays.ts <官方日曆表 CSV>
+      skipOnPublicHoliday: true,
       // 官網公告：週二至週五上午 09:00–11:30、下午 14:30–16:00；週一僅下午 14:30–16:00
       windows: [
         { weekday: 1, startTime: "14:30", endTime: "16:00" },

@@ -2,6 +2,8 @@ import { prisma } from "@/lib/db";
 import { getStaffContext } from "@/lib/auth/staff";
 import { PERMISSIONS, requirePermission } from "@/lib/auth/authz";
 import { getSetting } from "@/lib/settings";
+import { getHolidayCoverage, isCoverageSufficient } from "@/lib/holidays";
+import { addDays, todayStr } from "@/lib/tw-time";
 import { SettingsManager } from "./settings-manager";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +34,9 @@ export default async function SettingsPage() {
     idleMinutes: await getSetting("security.staff_idle_minutes"),
   };
 
+  const coverage = await getHolidayCoverage();
+  const lastOpenDate = addDays(todayStr(), settings.openDays - 1);
+
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold text-sage-700">系統設定</h1>
@@ -46,6 +51,7 @@ export default async function SettingsPage() {
           isActive: t.isActive,
           requiresReview: t.requiresReview,
           notifyLine: t.notifyLine,
+          skipOnPublicHoliday: t.skipOnPublicHoliday,
           minAgeMonths: t.minAgeMonths,
           maxAgeMonths: t.maxAgeMonths,
           allowedWeekdays: t.allowedWeekdays,
@@ -68,6 +74,11 @@ export default async function SettingsPage() {
         }))}
         lineConfigured={!!process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN}
         smsProvider={process.env.SMS_PROVIDER ?? "console"}
+        holidays={{
+          ...coverage,
+          sufficient: isCoverageSufficient(coverage, lastOpenDate),
+          lastOpenDate,
+        }}
       />
     </div>
   );
