@@ -111,36 +111,75 @@ async function main() {
     });
   }
 
-  // 預設營業時間（需求書）：兩位醫師皆排班（雙診），實際單/雙診請於後台調整
-  const sessions: Record<number, { session: SessionPeriod; start: string; end: string }[]> = {
-    1: [
-      { session: "MORNING", start: "08:00", end: "12:00" },
-      { session: "AFTERNOON", start: "14:30", end: "18:00" },
-      { session: "EVENING", start: "18:30", end: "21:30" },
-    ],
-    6: [
-      { session: "MORNING", start: "08:00", end: "11:30" },
-      { session: "AFTERNOON", start: "14:30", end: "18:00" },
-    ],
+  // 現行門診時間表（與官網 index.html 門診時間表一致，院長 2026-08-05 提供）
+  // 多數診次為單診；雙診只有兩處：週一晚診、週日早診（蔡／李同時看診）。
+  const WEEKLY: Record<
+    number,
+    { session: SessionPeriod; start: string; end: string; doctors: string[] }[]
+  > = {
+    // 週日：早診雙診、午診休診、晚診至 21:00
     0: [
-      { session: "MORNING", start: "08:00", end: "11:30" },
-      { session: "EVENING", start: "18:30", end: "21:00" },
+      { session: "MORNING", start: "08:00", end: "11:30", doctors: [drTsai.id, drLee.id] },
+      { session: "EVENING", start: "18:30", end: "21:00", doctors: [drTsai.id] },
+    ],
+    // 週一：晚診雙診
+    1: [
+      { session: "MORNING", start: "08:00", end: "12:00", doctors: [drTsai.id] },
+      { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: [drTsai.id] },
+      { session: "EVENING", start: "18:30", end: "21:30", doctors: [drTsai.id, drLee.id] },
+    ],
+    2: [
+      { session: "MORNING", start: "08:00", end: "12:00", doctors: [drTsai.id] },
+      { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: [drTsai.id] },
+      { session: "EVENING", start: "18:30", end: "21:30", doctors: [drTsai.id] },
+    ],
+    // 週三晚診＝李醫師
+    3: [
+      { session: "MORNING", start: "08:00", end: "12:00", doctors: [drTsai.id] },
+      { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: [drTsai.id] },
+      { session: "EVENING", start: "18:30", end: "21:30", doctors: [drLee.id] },
+    ],
+    // 週四早診＝李醫師
+    4: [
+      { session: "MORNING", start: "08:00", end: "12:00", doctors: [drLee.id] },
+      { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: [drTsai.id] },
+      { session: "EVENING", start: "18:30", end: "21:30", doctors: [drTsai.id] },
+    ],
+    // 週五午診＝李醫師
+    5: [
+      { session: "MORNING", start: "08:00", end: "12:00", doctors: [drTsai.id] },
+      { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: [drLee.id] },
+      { session: "EVENING", start: "18:30", end: "21:30", doctors: [drTsai.id] },
+    ],
+    // 週六：早診至 11:30、午診＝李醫師、無晚診
+    6: [
+      { session: "MORNING", start: "08:00", end: "11:30", doctors: [drTsai.id] },
+      { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: [drLee.id] },
     ],
   };
-  for (let weekday = 0; weekday <= 6; weekday++) {
-    const list = weekday >= 1 && weekday <= 5 ? sessions[1] : sessions[weekday === 6 ? 6 : 0];
+  for (const [weekdayStr, list] of Object.entries(WEEKLY)) {
+    const weekday = Number(weekdayStr);
     for (const s of list) {
-      // 班表＝醫師何時看診，與門診類型的醫師名單無關：兩位醫師都排班
-      for (const doctorId of bothDoctors) {
+      for (const doctorId of s.doctors) {
         await prisma.weeklyScheduleTemplate.upsert({
           where: { weekday_session_doctorId: { weekday, session: s.session, doctorId } },
           create: {
             weekday, session: s.session, startTime: s.start, endTime: s.end,
             doctorId, slotCapacity: 1, allowOnline: true,
           },
-          update: {},
+          update: { startTime: s.start, endTime: s.end },
         });
       }
+    }
+    // 該星期沒排到的（醫師, 診次）組合要移除，否則重跑 seed 只會愈加愈多。
+    // 例：早期版本把兩位醫師排滿每一診，不刪會變成整週都是雙診。
+    const keep = list.flatMap((s) => s.doctors.map((d) => `${s.session}|${d}`));
+    const rows = await prisma.weeklyScheduleTemplate.findMany({ where: { weekday } });
+    const stale = rows.filter((r) => !keep.includes(`${r.session}|${r.doctorId}`));
+    if (stale.length > 0) {
+      await prisma.weeklyScheduleTemplate.deleteMany({
+        where: { id: { in: stale.map((r) => r.id) } },
+      });
     }
   }
 
