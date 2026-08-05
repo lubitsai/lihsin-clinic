@@ -284,14 +284,17 @@ export function BookingWizard({
               （可於看診前完成）
             </Alert>
           )}
-          <button
-            onClick={() => pickDoctor("any")}
-            disabled={pending}
-            className="w-full rounded-card bg-white border-2 border-sage-200 hover:border-sage-500 p-4 text-left transition"
-          >
-            <span className="text-lg font-bold text-sage-700">不限醫師</span>
-            <span className="block text-sm text-ink-700">由系統安排當時段仍有名額的醫師</span>
-          </button>
+          {/* 該門診只有一位醫師時不顯示「不限醫師」——兩個選項結果相同，只會讓家長多想一下 */}
+          {clinicType.doctors.length !== 1 && (
+            <button
+              onClick={() => pickDoctor("any")}
+              disabled={pending}
+              className="w-full rounded-card bg-white border-2 border-sage-200 hover:border-sage-500 p-4 text-left transition"
+            >
+              <span className="text-lg font-bold text-sage-700">不限醫師</span>
+              <span className="block text-sm text-ink-700">由系統安排當時段仍有名額的醫師</span>
+            </button>
+          )}
           {clinicType.doctors.map((d) => (
             <button
               key={d.id}
