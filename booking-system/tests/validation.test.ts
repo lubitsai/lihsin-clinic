@@ -4,7 +4,9 @@ import {
   isValidNationalId,
   isValidResidentCert,
   patientInputSchema,
+  slotTimeSchema,
 } from "@/lib/validation";
+import { slotTimes } from "@/lib/tw-time";
 import { maskIdNumber, maskPhone, maskName } from "@/lib/masking";
 import { encryptPii, decryptPii, hashIdNumber } from "@/lib/crypto";
 import { genNationalId } from "./helpers";
@@ -70,5 +72,53 @@ describe("遮罩與加密", () => {
     // 雜湊穩定（供唯一索引），大小寫正規化
     expect(hashIdNumber("a123456789")).toBe(hashIdNumber("A123456789"));
     expect(hashIdNumber(id)).not.toContain(id);
+  });
+});
+
+describe("時段格點（整點／半點，每 30 分鐘一組）", () => {
+  it("整點與半點通過，其餘分鐘拒絕", () => {
+    for (const t of ["08:00", "08:30", "00:00", "14:30", "21:30", "23:30"]) {
+      expect(slotTimeSchema.safeParse(t).success).toBe(true);
+    }
+    for (const t of ["08:15", "08:45", "09:01", "11:20", "14:29"]) {
+      expect(slotTimeSchema.safeParse(t).success).toBe(false);
+    }
+  });
+
+  it("格式本身不合法者一樣拒絕", () => {
+    for (const t of ["8:00", "24:00", "08:60", "0800", ""]) {
+      expect(slotTimeSchema.safeParse(t).success).toBe(false);
+    }
+  });
+
+  // 院長 2026-08-05 確認的三診次可預約時間；改動班表時這裡會先擋下來
+  it("平日三診次產生的時段與院長確認的清單完全相同", () => {
+    expect(slotTimes("08:00", "12:00")).toEqual([
+      "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+    ]);
+    expect(slotTimes("14:30", "18:00")).toEqual([
+      "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30",
+    ]);
+    expect(slotTimes("18:30", "21:30")).toEqual([
+      "18:30", "19:00", "19:30", "20:00", "20:30", "21:00",
+    ]);
+  });
+
+  it("週六、週日的較短診次同樣落在格點上（官網 SCHEDULE：六無夜診、日無午診）", () => {
+    expect(slotTimes("08:00", "11:30")).toEqual([
+      "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00",
+    ]);
+    expect(slotTimes("18:30", "21:00")).toEqual([
+      "18:30", "19:00", "19:30", "20:00", "20:30",
+    ]);
+  });
+
+  it("區間結束時刻本身不算一個時段（21:30 收診，最後一個時段是 21:00）", () => {
+    expect(slotTimes("18:30", "21:30")).not.toContain("21:30");
+  });
+
+  it("班表若非格點，整天的時段都會歪掉——這正是要在寫入時擋下的原因", () => {
+    expect(slotTimes("08:15", "10:00")).toEqual(["08:15", "08:45", "09:15", "09:45"]);
+    expect(slotTimeSchema.safeParse("08:15").success).toBe(false);
   });
 });

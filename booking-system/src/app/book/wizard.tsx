@@ -12,9 +12,11 @@ import {
 import { Card, StepProgress, Alert } from "@/components/ui";
 import { formatDateTw } from "@/lib/tw-time";
 import { SESSION_META, ID_TYPE_LABEL } from "@/lib/status-labels";
+import { clinicNoteOf } from "@/lib/clinic-notes";
 
 interface ClinicTypeDto {
   id: string;
+  code: string;
   name: string;
   description: string | null;
   notice: string | null;
@@ -57,10 +59,13 @@ export function BookingWizard({
   clinicTypes,
   lineConfigured,
   viaLine,
+  checkinGraceMinutes,
 }: {
   clinicTypes: ClinicTypeDto[];
   lineConfigured: boolean;
   viaLine: boolean;
+  /** 報到保留分鐘數（booking.checkin_grace_minutes） */
+  checkinGraceMinutes: number;
 }) {
   const [step, setStep] = useState(1);
   const [clinicType, setClinicType] = useState<ClinicTypeDto | null>(null);
@@ -245,7 +250,26 @@ export function BookingWizard({
       {step === 2 && clinicType && (
         <div className="space-y-3">
           <h1 className="text-xl font-bold text-sage-700">請選擇醫師</h1>
-          {clinicType.notice && <Alert tone="info">{clinicType.notice}</Alert>}
+          {/* 合規與已公告的固定規則（疫苗但書、篩檢施測規則）；不受後台編輯影響 */}
+          {(() => {
+            const note = clinicNoteOf(clinicType.code);
+            return note ? (
+              <Alert tone="warn">
+                <p className="font-bold mb-1">{note.title}</p>
+                <ul className="list-disc list-inside space-y-0.5">
+                  {note.items.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </Alert>
+            ) : null;
+          })()}
+          {clinicType.notice && (
+            <Alert tone="info">
+              {/* 診所自行維護的補充說明，可能是多行 */}
+              <span className="whitespace-pre-line">{clinicType.notice}</span>
+            </Alert>
+          )}
           {clinicType.needsQuestionnaire && clinicType.questionnaireUrl && (
             <Alert tone="warn">
               此門診需先填寫問卷：
@@ -260,14 +284,17 @@ export function BookingWizard({
               （可於看診前完成）
             </Alert>
           )}
-          <button
-            onClick={() => pickDoctor("any")}
-            disabled={pending}
-            className="w-full rounded-card bg-white border-2 border-sage-200 hover:border-sage-500 p-4 text-left transition"
-          >
-            <span className="text-lg font-bold text-sage-700">不限醫師</span>
-            <span className="block text-sm text-ink-700">由系統安排當時段仍有名額的醫師</span>
-          </button>
+          {/* 該門診只有一位醫師時不顯示「不限醫師」——兩個選項結果相同，只會讓家長多想一下 */}
+          {clinicType.doctors.length !== 1 && (
+            <button
+              onClick={() => pickDoctor("any")}
+              disabled={pending}
+              className="w-full rounded-card bg-white border-2 border-sage-200 hover:border-sage-500 p-4 text-left transition"
+            >
+              <span className="text-lg font-bold text-sage-700">不限醫師</span>
+              <span className="block text-sm text-ink-700">由系統安排當時段仍有名額的醫師</span>
+            </button>
+          )}
           {clinicType.doctors.map((d) => (
             <button
               key={d.id}
@@ -642,6 +669,20 @@ export function BookingWizard({
           <p className="text-ink-700 text-sm px-4">
             已透過 LINE 或簡訊發送預約通知。線上預約不等於實際看診號碼，請依現場狀況候診。
           </p>
+          {/* 官網公告：報到才算掛號、時段開始後只保留 N 分鐘、報到要主動告知櫃檯 */}
+          <div className="px-4 text-left">
+            <Alert tone="warn">
+              <p className="font-bold mb-1">看診當天請注意</p>
+              <ul className="list-disc list-inside space-y-0.5">
+                <li>
+                  到櫃檯完成報到才算正式掛號，請於<strong>時段開始後 {checkinGraceMinutes} 分鐘內</strong>報到，
+                  建議提早 5–10 分鐘到院。
+                </li>
+                <li>報到時請主動告知櫃檯您有預約並出示健保卡；系統不會自動跳出通知。</li>
+                <li>逾時該筆預約即取消，需重新抽現場號依序候診。</li>
+              </ul>
+            </Alert>
+          </div>
           {clinicType?.needsQuestionnaire && clinicType.questionnaireUrl && (
             <div className="px-4">
               <Alert tone="warn">

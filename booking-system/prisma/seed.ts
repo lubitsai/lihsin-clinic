@@ -1,11 +1,14 @@
 /**
- * Seed：預設醫師、四種門診類型、需求書預設營業時間、角色與測試帳號。
- * 正式環境請改用 scripts/create-admin.ts 建立管理員，並在後台調整班表。
+ * Seed：預設醫師、四種門診類型、班表（依官網）、角色與測試帳號。
+ * 班表不寫在這裡——以官網門診時間表為準，見 prisma/schedule.json 與 scripts/sync-schedule.ts。
+ * 正式環境請改用 scripts/create-admin.ts 建立管理員。
  */
 import { PrismaClient, type SessionPeriod } from "@prisma/client";
 import bcrypt from "bcryptjs";
 // 權限矩陣單一來源：authz.ts（此檔與 create-admin 腳本皆由此匯入，避免三份副本漂移）
 import { ROLE_PERMISSIONS } from "../src/lib/auth/authz";
+import { applySchedule, loadScheduleSource } from "../src/lib/schedule-source";
+import { todayStr } from "../src/lib/tw-time";
 
 const prisma = new PrismaClient();
 
@@ -21,44 +24,85 @@ async function main() {
     create: { id: "seed-dr-lee", name: "李佳玲", title: "主治醫師", displayOrder: 2, color: "#8B5E3C" },
     update: {},
   });
-  const doctorIds = [drTsai.id, drLee.id];
+  const bothDoctors = [drTsai.id, drLee.id];
 
-  // 門診類型（特別門診預約時段為示意設定，正式排程請於後台調整）
+  // 門診類型（院長 2026-08-05 定案醫師與開放時段；後台「系統設定 → 門診類型」可再調整）
+  // doctorIds＝可接受該門診預約的醫師。allowedWeekdays／allowedSessions 留空
+  // ＝不另設限制，可預約時段直接跟著該門診醫師的班表走。
   const clinicTypes = [
     {
       code: "GENERAL", name: "一般門診", color: "#2F5D3A", icon: "stethoscope", displayOrder: 1,
+      doctorIds: bothDoctors,
       description: "兒科、家庭醫學一般看診與疫苗接種",
+      // 疫苗停打時間與但書不放這裡——notice 是櫃檯可自行編輯的欄位，
+      // 合規文字（00 §4-2）改由程式碼固定顯示，見 src/lib/clinic-notes.ts
       notice: "線上預約為時段登記，非實際看診號碼，請依現場狀況候診。",
       requiresReview: false, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
     {
       code: "DEVELOPMENT", name: "兒童發展篩檢", color: "#8B5E3C", icon: "growth", displayOrder: 2,
+      doctorIds: bothDoctors,
       description: "兒童發展評估與篩檢（需櫃檯確認）",
-      notice: "請攜帶兒童健康手冊；送出後需櫃檯確認才成立。",
-      requiresReview: true, allowedWeekdays: [2, 4], allowedSessions: ["AFTERNOON"] as SessionPeriod[],
+      // 施測規則（健保卡＋手冊、一時段一位、矯正年齡）同樣由 clinic-notes.ts 固定顯示
+      notice: "送出後需櫃檯確認才成立。",
+      requiresReview: true,
+      // 施測時間改由下方 windows 表達（逐日不同），故粗篩留空
+      allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
       maxAgeMonths: 84,
       // 官網公告：兒童發展篩檢每個時段只安排 1 位兒童施測，故不適用家庭代表預約
       allowCompanions: false,
+      // 官網公告：國定假日不施測（診所當天照常看診，只有這一科停）
+      // 假日清單需另行匯入：npx tsx scripts/import-holidays.ts <官方日曆表 CSV>
+      skipOnPublicHoliday: true,
+      // 官網公告：週二至週五上午 09:00–11:30、下午 14:30–16:00；週一僅下午 14:30–16:00
+      windows: [
+        { weekday: 1, startTime: "14:30", endTime: "16:00" },
+        ...[2, 3, 4, 5].flatMap((weekday) => [
+          { weekday, startTime: "09:00", endTime: "11:30" },
+          { weekday, startTime: "14:30", endTime: "16:00" },
+        ]),
+      ],
     },
     {
       code: "WEIGHT", name: "減重特別門診", color: "#E0592A", icon: "scale", displayOrder: 3,
+      doctorIds: [drTsai.id], // 僅蔡醫師
       description: "體重管理特別門診（需櫃檯確認）",
       notice: "初診請預留較長看診時間；送出後需櫃檯確認才成立。",
-      requiresReview: true, allowedWeekdays: [3, 6], allowedSessions: ["AFTERNOON"] as SessionPeriod[],
+      // 院長 2026-08-05：蔡醫師有開診的時段皆開放 → 不另設星期／診別，
+      // 可預約時段直接跟著蔡醫師的班表走（門診醫師名單已限定只有蔡醫師）
+      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
     {
       code: "ALLERGY", name: "過敏特別門診", color: "#3d7a4e", icon: "allergy", displayOrder: 4,
+      doctorIds: [drTsai.id], // 僅蔡醫師
       description: "兒童過敏、氣喘評估與檢測（需櫃檯確認）",
       notice: "如需過敏原檢測，請先電話詢問空腹等注意事項；送出後需櫃檯確認才成立。",
-      requiresReview: true, allowedWeekdays: [1, 5], allowedSessions: ["EVENING"] as SessionPeriod[],
+      // 同減重：跟著蔡醫師的班表走
+      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
   ];
   for (const t of clinicTypes) {
+    const { windows = [], doctorIds, ...fields } = t as typeof t & {
+      windows?: { weekday: number; startTime: string; endTime: string }[];
+    };
     const created = await prisma.clinicType.upsert({
-      where: { code: t.code },
-      create: { ...t },
+      where: { code: fields.code },
+      create: { ...fields },
       update: {},
     });
+    for (const w of windows) {
+      await prisma.clinicTypeWindow.upsert({
+        where: {
+          clinicTypeId_weekday_startTime: {
+            clinicTypeId: created.id,
+            weekday: w.weekday,
+            startTime: w.startTime,
+          },
+        },
+        create: { clinicTypeId: created.id, ...w },
+        update: { endTime: w.endTime },
+      });
+    }
     for (const doctorId of doctorIds) {
       await prisma.clinicTypeDoctor.upsert({
         where: { clinicTypeId_doctorId: { clinicTypeId: created.id, doctorId } },
@@ -66,39 +110,22 @@ async function main() {
         update: {},
       });
     }
+    // 移除不再開放的醫師（重跑 seed 時才會用到；後台的手動調整不受影響——
+    // 後台改的是同一張表，seed 只在這裡把名單校正回指定值）
+    await prisma.clinicTypeDoctor.deleteMany({
+      where: { clinicTypeId: created.id, doctorId: { notIn: doctorIds } },
+    });
   }
 
-  // 預設營業時間（需求書）：兩位醫師皆排班（雙診），實際單/雙診請於後台調整
-  const sessions: Record<number, { session: SessionPeriod; start: string; end: string }[]> = {
-    1: [
-      { session: "MORNING", start: "08:00", end: "12:00" },
-      { session: "AFTERNOON", start: "14:30", end: "18:00" },
-      { session: "EVENING", start: "18:30", end: "21:30" },
-    ],
-    6: [
-      { session: "MORNING", start: "08:00", end: "11:30" },
-      { session: "AFTERNOON", start: "14:30", end: "18:00" },
-    ],
-    0: [
-      { session: "MORNING", start: "08:00", end: "11:30" },
-      { session: "EVENING", start: "18:30", end: "21:00" },
-    ],
-  };
-  for (let weekday = 0; weekday <= 6; weekday++) {
-    const list = weekday >= 1 && weekday <= 5 ? sessions[1] : sessions[weekday === 6 ? 6 : 0];
-    for (const s of list) {
-      for (const doctorId of doctorIds) {
-        await prisma.weeklyScheduleTemplate.upsert({
-          where: { weekday_session_doctorId: { weekday, session: s.session, doctorId } },
-          create: {
-            weekday, session: s.session, startTime: s.start, endTime: s.end,
-            doctorId, slotCapacity: 1, allowOnline: true,
-          },
-          update: {},
-        });
-      }
-    }
-  }
+  // 班表：以官網門診時間表為準，讀 prisma/schedule.json
+  // （該檔由 internal/tools/sync_schedule.py 從 index.html 產生，勿手改）。
+  // 與 scripts/sync-schedule.ts 共用同一段套用邏輯，避免初次建置與日後同步不一致。
+  const applied = await applySchedule(prisma, loadScheduleSource(), todayStr());
+  console.log(
+    `班表已依官網同步：新增 ${applied.created}、更新 ${applied.updated}、移除 ${applied.removed}、` +
+      `單日例外 ${applied.exceptionsApplied} 筆`,
+  );
+  for (const w of applied.warnings) console.log(`  ⚠️ ${w}`);
 
   // 角色與測試帳號（正式環境務必改密碼或改用 create-admin 腳本）
   for (const [code, permissions] of Object.entries(ROLE_PERMISSIONS)) {

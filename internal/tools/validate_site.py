@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-validate_site.py — 立欣診所全站驗證器 v1.0.1（2026-07-10；v1.0＝2026-07-07）
-    v1.0.1：W-SITEMAP 首頁 loc「/」對映修正（院長核可待決⑨），無其他變更。
+validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝2026-07-07）
+    v1.0.1（07-10）：W-SITEMAP 首頁 loc「/」對映修正（院長核可待決⑨），無其他變更。
+    v1.1（08-02b，院長核可 P5）：新增 **W-HSELF／W-HFORBID＝隱藏 #ai-knowledge-block
+      禁語掃描**＋`HIDDEN_EXTRA_ALLOWLIST`／`HIDDEN_SELF_PROMO_PATTERNS` 兩張表。
+      補的是 v1.0 起就存在的治理死角：可見禁語掃描依歷批協議**刻意排除**該區
+      → 促銷語「合規閘門看不到、爬蟲看得到」。08-02b 稽核在該區抓到 60 次禁語命中、
+      **23 頁**自稱式促銷句（8 頁由 P4-b 清除、**15 頁由本檢查首跑當場查獲**——
+      那 15 頁不含「推薦」二字，用關鍵詞掃描永遠掃不到，只有比對句型才抓得出來）。
 =========================================================
 把《00_專案總覽索引.md》第四節合規規則與歷批驗證協議「程式化」。
 任何未來 session（Claude Opus/Sonnet、GPT/Codex 系）在交付或部署前必跑本工具，
@@ -50,11 +56,26 @@ validate_site.py — 立欣診所全站驗證器 v1.0.1（2026-07-10；v1.0＝20
   W-LLMS      llms 雙檔關鍵條目在場（app/visit-guide/growth）    ｜07-06 回退攔截
   W-ROBOTS    robots.txt AI 爬蟲放行組在場                      ｜07-06 批③
   W-FAVICON   根目錄 favicon.ico 在場                          ｜07-06 批④
+  W-HSELF     隱藏區出現自稱式促銷句型（不受任何 allowlist 豁免）｜08-02b 裁示 P4-b
+  W-HFORBID   隱藏 #ai-knowledge-block 禁語掃描                 ｜08-02b P5（白名單=逐條複核）
+  W-CITEDOC   醫療頁 citation 應為「文件層級」書目（有 publisher
+              且非機構首頁），不得退化回「機構名＋首頁」        ｜08-03 回退攔截
 
 已知設計取捨（弱模型請勿「修正」這些行為）
 ------------------------------------------
 - 禁語掃描只掃「文字節點」：keywords meta、alt、head 內容依四層架構本來就允許
   promotional 用語，不在掃描範圍（與歷批 BeautifulSoup 協議一致）。
+- **E-FORBID 與 W-HFORBID 是兩套、掃兩個互斥區域，勿合併**：E-FORBID 掃可見層
+  （剝除隱藏區）＝ERROR；W-HFORBID 只掃隱藏 #ai-knowledge-block＝WARN。
+  隱藏區定為 WARN 是院長 08-02b 裁示：該區含大量醫療術語（`第一線`用藥、`第一劑`、
+  `權威來源：疾管署`），設 ERROR 會誤殺並逼出「為消音而放寬偵測」的壞誘因。
+  **WARN 不等於可以忽略**——同 W-TWIND 協議，每批逐條判讀寫進交付說明。
+- **W-HFORBID 命中後一律用四分法判讀，不可全域取代**：自稱→改中性句型；
+  醫療術語／權威引用／結構描述→提案加入 HIDDEN_EXTRA_ALLOWLIST（需院長核可）。
+  08-02b 實測 60 次命中中只有 8 頁該改，其餘改了會**破壞醫療正確性**。
+- **W-HSELF 為何要獨立於禁語清單**：08-02b 首跑查獲的 15 頁自稱句**完全不含**
+  「推薦」等任何禁語（如「在找台南糖尿病門診的民眾，可以考慮立欣診所」）
+  → 純關鍵詞掃描永遠掃不到。**問題型態是句型，不是詞**，故另立句型比對且不受豁免。
 - W-TWIND 會有少量誤報（純 JS 掛鉤 class、schema 掛鉤 class）→ 收進 TAILWIND_IGNORE
   並附註來源，不要為了消音而放寬偵測邏輯。
 - 本工具對「datePublished/datePosted 純日期 30 處」刻意不檢查：00 §4-9 記載該項
@@ -68,6 +89,7 @@ import sys
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlparse
 
 SITE_ORIGIN = "https://lhpedclinic.com.tw"
 
@@ -112,6 +134,45 @@ VISIBLE_ALLOWLIST = [
     "「台南耳鼻喉推薦」。立欣診所為健保特約",
     "台南腸胃炎推薦：大人小孩",
     "台南腸胃炎推薦就診重點",
+]
+
+# ---------------------------------------------------------------------------
+# 隱藏 #ai-knowledge-block 禁語掃描（W-HFORBID / W-HSELF）
+#   2026-08-02b 新增（P5，院長核可）。要解決的問題：
+#   VisibleTextExtractor 依歷批協議「刻意排除」#ai-knowledge-block 與 aria-hidden
+#   子樹 → 該區的促銷語**合規閘門看不到、而爬蟲看得到**。08-02b 稽核在該區抓到
+#   60 次禁語命中、其中 8 頁為自稱式促銷（已於同批 P4-b 清除）。本檢查是防止復發的閘門。
+#   ★ 定性為 WARN 而非 ERROR（院長裁示）：該區含大量醫療術語，硬性擋死會誤殺；
+#     WARN 要求每批逐條判讀寫進交付說明（同 W-TWIND 協議），不得消音。
+# ---------------------------------------------------------------------------
+
+# 隱藏區專用豁免（沿用 VISIBLE_ALLOWLIST 後仍需補的條目）。
+# 每條均為 2026-08-02b 實測殘餘 23 例逐條複核後認定「不可改」者，附類別與理由。
+HIDDEN_EXTRA_ALLOWLIST = [
+    # --- 醫療術語：改了會破壞醫療正確性（08-02b 逐條複核）---
+    "第一劑",              # EV71／疫苗劑次：「接種第一劑（基礎劑）時未滿 2 歲」
+    "第一線",              # 「孟魯司特…並非第一線」「常見的第一線口服藥」（VISIBLE 已有，此處備援）
+    "第一代",              # 「第一代抗組織胺（兒童應避免）」
+    "第一次",              # 「寶寶第一次看兒科」「孩子第一次打要幾劑」
+    # --- 權威來源引用：引用外部機構，非自稱（00 §4-1 禁的是自稱式）---
+    "權威來源",            # 「權威來源：衛生福利部疾病管制署」（measles）
+    "權威建議",            # 「權威建議：世界衛生組織（WHO）、美國 ACIP」（shingles-vaccine）
+    # --- 臨床與站內結構描述 ---
+    "唯一的表現就是",      # 咳嗽變異型氣喘臨床事實（VISIBLE 已有，此處備援）
+    "唯一主頁",            # 「本站假日與夜間門診主題的唯一主頁」＝§1-4 分工表結構註記
+    # --- 00 §4-1 明文合規的「問句框架＋客觀條件」（08-02b 判定不屬問題、不改）---
+    "台南減重推薦：如何挑選",              # index 隱藏區，段末自帶「以上為診所客觀資訊」
+    "「台南減重推薦」「台南醫療減重推薦」",  # 同上，列舉查詢詞非自稱
+    "台南假日兒科推薦怎麼選",              # visit-guide 隱藏區標題（問句框架）
+    "常被搜尋的關聯詞包含",                # ★ P4-b 標準化的中性句型；新增隱藏區一律用它
+]
+
+# 自稱式促銷句型：**永遠不受任何 allowlist 豁免**，命中即 WARN。
+# 這是 P4-b 的防復發閘門——8 頁清乾淨後，防的是「下一個 session 又寫回來」。
+# 正確寫法見 01 合規紅線：「常被搜尋的關聯詞包含：A、B、C。立欣診所（地址）…」
+HIDDEN_SELF_PROMO_PATTERNS = [
+    "可以考慮立欣診所",     # 08-02b 清除的自稱句核心（8 頁）
+    "推薦資訊",             # 08-02b 清除的自稱標題「台南XX推薦資訊」（8 頁）
 ]
 
 # 各檢查的豁免頁（相對路徑）。來源：00 現況「404／privacy 未動」「offline noindex」。
@@ -219,6 +280,56 @@ def visible_text(html: str) -> str:
     return re.sub(r"\s+", "", "".join(p.chunks))
 
 
+class HiddenBlockExtractor(HTMLParser):
+    """VisibleTextExtractor 的鏡像：**只**抽取 #ai-knowledge-block 子樹內的文字節點。
+    2026-08-02b 新增（P5）。內部仍剝除 script/style/svg，避免把 JSON-LD 誤算進來。"""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.chunks = []
+        self.stack = []        # [(tag, is_block_root, is_skip)]
+        self.block_depth = 0
+        self.skip_depth = 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in VOID_TAGS:
+            return
+        d = dict(attrs)
+        is_root = d.get("id") == "ai-knowledge-block"
+        is_skip = tag in SKIP_TAGS
+        self.stack.append((tag, is_root, is_skip))
+        if is_root:
+            self.block_depth += 1
+        if is_skip:
+            self.skip_depth += 1
+
+    def handle_startendtag(self, tag, attrs):
+        pass
+
+    def handle_endtag(self, tag):
+        for i in range(len(self.stack) - 1, -1, -1):
+            if self.stack[i][0] == tag:
+                _, is_root, is_skip = self.stack.pop(i)
+                if is_root:
+                    self.block_depth -= 1
+                if is_skip:
+                    self.skip_depth -= 1
+                break
+
+    def handle_data(self, data):
+        if self.block_depth > 0 and self.skip_depth == 0 and data.strip():
+            self.chunks.append(data)
+
+
+def hidden_block_text(html: str) -> str:
+    p = HiddenBlockExtractor()
+    try:
+        p.feed(html)
+    except Exception:
+        pass
+    return re.sub(r"\s+", "", "".join(p.chunks))
+
+
 def meta_content(html: str, key: str, attr: str = "name") -> str | None:
     for m in re.finditer(r"<meta\b[^>]*>", html, re.I):
         tag = m.group(0)
@@ -306,6 +417,34 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
         except Exception as e:
             rep.err(rel, "E-JSONLD", f"第 {i} 個 ld+json 解析失敗：{e}")
 
+    # W-CITEDOC（2026-08-03：citation 退化攔截）
+    # 病徵：citation 只寫「機構名＋機構首頁」＝宣稱參考了疾管署卻沒說參考哪份文件，
+    # AI 無從查核。政策＝每個醫療頁至少 1 筆「文件層級」書目（有 publisher，
+    # 且 url 不是裸網域首頁）。5 頁僅掛臺灣兒科醫學會機構層級為已知例外（未查得
+    # 對應深層文件，依 00 §4-11「誤連比不連更糟」不硬連）——它們仍另有文件層級書目。
+    if rel.startswith(("health/", "news/")):
+        for m in re.finditer(
+                r'<script[^>]*type\s*=\s*["\']application/ld\+json["\'][^>]*>(.*?)</script\s*>',
+                raw, re.S | re.I):
+            try:
+                d = json.loads(m.group(1))
+            except Exception:
+                continue
+            if not isinstance(d, dict) or d.get("@type") not in ("MedicalWebPage", "WebPage"):
+                continue
+            cites = d.get("citation") or []
+            if isinstance(cites, dict):
+                cites = [cites]
+            if not cites:
+                rep.warn(rel, "W-CITEDOC", "頁面層 schema 無 citation（醫療頁應列參考資料）")
+            elif not any(isinstance(c, dict) and c.get("publisher")
+                         and urlparse(c.get("url", "")).path.strip("/")
+                         for c in cites):
+                rep.warn(rel, "W-CITEDOC",
+                         "citation 全為機構首頁層級（缺文件名／publisher／深層連結）"
+                         "——退回 08-03 前狀態，AI 無從查核")
+            break
+
     # E-AGGRT
     if "aggregateRating" in raw:
         rep.err(rel, "E-AGGRT", "出現 aggregateRating（00 §4-3 禁自評）")
@@ -336,6 +475,30 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
                     rep.err(rel, "E-FORBID",
                             f"可見區出現「{term}」且不在白名單脈絡：…{ctx}…"
                             f"（若為院長已核可措辭 → 提案將該句加入 VISIBLE_ALLOWLIST）")
+
+    # W-HFORBID / W-HSELF（隱藏 #ai-knowledge-block 禁語；2026-08-02b P5 新增）
+    # 為何是 WARN 不是 ERROR：該區含大量醫療術語（第一線/第一劑/權威來源），
+    # 硬性擋死會誤殺；WARN 逐條判讀寫進交付說明（同 W-TWIND 協議），不得消音。
+    hid = hidden_block_text(raw)
+    if hid:
+        # ① 自稱式促銷句型：不受任何 allowlist 豁免（P4-b 防復發閘門）
+        for pat in HIDDEN_SELF_PROMO_PATTERNS:
+            if pat in hid:
+                rep.warn(rel, "W-HSELF",
+                         f"隱藏區出現自稱式促銷句型「{pat}」→ 違反 00 §6「隱藏區一律中性句型」"
+                         f"（08-02b 院長裁示 P4-b）。改用：常被搜尋的關聯詞包含：A、B、C。"
+                         f"立欣診所（地址）…；promotional 詞只進 keywords／llms")
+        # ② 一般禁語：VISIBLE_ALLOWLIST + HIDDEN_EXTRA_ALLOWLIST，±40 字脈絡窗
+        allow_h = [re.sub(r"\s+", "", a)
+                   for a in (VISIBLE_ALLOWLIST + HIDDEN_EXTRA_ALLOWLIST)]
+        for term in FORBIDDEN_TERMS:
+            for m in re.finditer(re.escape(term), hid):
+                ctx = hid[max(0, m.start() - 40):m.end() + 40]
+                if not any(a in ctx for a in allow_h):
+                    rep.warn(rel, "W-HFORBID",
+                             f"隱藏 #ai-knowledge-block 出現「{term}」且不在白名單脈絡：…{ctx}…"
+                             f"（判讀四分法：自稱→改中性句型；醫療術語／權威引用／結構描述"
+                             f"→ 提案加入 HIDDEN_EXTRA_ALLOWLIST，需院長核可）")
 
     # E-PWA（stage=deploy 才強制）
     if stage == "deploy" and rel not in EXEMPT["pwa"]:

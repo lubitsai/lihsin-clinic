@@ -23,10 +23,12 @@ interface ClinicTypeDto {
   isActive: boolean;
   requiresReview: boolean;
   notifyLine: boolean;
+  skipOnPublicHoliday: boolean;
   minAgeMonths: number | null;
   maxAgeMonths: number | null;
   allowedWeekdays: number[];
   allowedSessions: SessionPeriod[];
+  windows: { weekday: number; startTime: string; endTime: string }[];
   doctorIds: string[];
   color: string;
   icon: string;
@@ -48,11 +50,21 @@ interface SettingsDto {
   noShowThreshold: number;
   noShowSuspensionDays: number;
   cancelCutoff: number;
+  checkinGrace: number;
   allowSameDay: boolean;
   sameDayReminder: boolean;
   dayBeforeTime: string;
   sameDayTime: string;
   idleMinutes: number;
+}
+
+interface HolidayDto {
+  count: number;
+  from: string | null;
+  to: string | null;
+  sources: string[];
+  sufficient: boolean;
+  lastOpenDate: string;
 }
 
 export function SettingsManager({
@@ -61,12 +73,14 @@ export function SettingsManager({
   doctors,
   lineConfigured,
   smsProvider,
+  holidays,
 }: {
   settings: SettingsDto;
   clinicTypes: ClinicTypeDto[];
   doctors: DoctorDto[];
   lineConfigured: boolean;
   smsProvider: string;
+  holidays: HolidayDto;
 }) {
   const router = useRouter();
   const [s, setS] = useState(settings);
@@ -84,6 +98,7 @@ export function SettingsManager({
         { key: "booking.no_show_threshold", value: s.noShowThreshold },
         { key: "booking.no_show_suspension_days", value: s.noShowSuspensionDays },
         { key: "booking.cancel_cutoff_minutes", value: s.cancelCutoff },
+        { key: "booking.checkin_grace_minutes", value: s.checkinGrace },
         { key: "booking.allow_same_day", value: s.allowSameDay },
         { key: "notify.same_day_reminder", value: s.sameDayReminder },
         { key: "notify.day_before_time", value: s.dayBeforeTime },
@@ -113,7 +128,8 @@ export function SettingsManager({
           <NumField label="未到達 N 次自動暫停" value={s.noShowThreshold} onChange={(v) => setS({ ...s, noShowThreshold: v })} />
           <NumField label="暫停天數（期滿自動恢復並歸零；0＝需人工解除）" value={s.noShowSuspensionDays} onChange={(v) => setS({ ...s, noShowSuspensionDays: v })} />
           <NumField label="當日預約截止（時段前 N 分鐘）" value={s.sameDayCutoff} onChange={(v) => setS({ ...s, sameDayCutoff: v })} />
-          <NumField label="取消/改期截止（看診前 N 分鐘）" value={s.cancelCutoff} onChange={(v) => setS({ ...s, cancelCutoff: v })} />
+          <NumField label="報到保留（時段開始後 N 分鐘）" value={s.checkinGrace} onChange={(v) => setS({ ...s, checkinGrace: v })} />
+          <NumField label="取消/改期備援截止（看診前 N 分鐘）" value={s.cancelCutoff} onChange={(v) => setS({ ...s, cancelCutoff: v })} />
           <NumField label="後台閒置自動登出（分鐘）" value={s.idleMinutes} onChange={(v) => setS({ ...s, idleMinutes: v })} />
           <label className="flex items-center gap-2 pt-5">
             <input type="checkbox" checked={s.allowSameDay} onChange={(e) => setS({ ...s, allowSameDay: e.target.checked })} className="size-4 accent-sage-500" />
@@ -135,10 +151,17 @@ export function SettingsManager({
             <input type="time" className="input" value={s.sameDayTime} onChange={(e) => setS({ ...s, sameDayTime: e.target.value })} />
           </label>
         </div>
+        <p className="text-sm text-ink-500 leading-relaxed">
+          取消／改期一律以<strong>該診次開診時間</strong>為準（開診後就不能自行取消，與官網公告一致）；
+          上面的「備援截止」只在查不到診次時才會用到，例如櫃檯在班表以外手動加開的時段。
+          「報到保留」用於櫃檯總覽的<strong>報到逾時</strong>標記，系統不會自動取消民眾的預約。
+        </p>
         <button onClick={saveRules} disabled={pending} className="btn-primary !py-2">
           儲存設定
         </button>
       </Card>
+
+      <HolidayCard holidays={holidays} clinicTypes={clinicTypes} />
 
       <LineSetupCard lineConfigured={lineConfigured} smsProvider={smsProvider} />
 
@@ -154,6 +177,52 @@ function NumField({ label, value, onChange }: { label: string; value: number; on
       <span className="text-sm text-ink-700">{label}</span>
       <input type="number" className="input" value={value} min={0} onChange={(e) => onChange(+e.target.value)} />
     </label>
+  );
+}
+
+/** 國定假日行事曆狀態；資料由 scripts/import-holidays.ts 匯入 */
+function HolidayCard({
+  holidays,
+  clinicTypes,
+}: {
+  holidays: HolidayDto;
+  clinicTypes: ClinicTypeDto[];
+}) {
+  const affected = clinicTypes.filter((t) => t.skipOnPublicHoliday);
+  return (
+    <Card className="space-y-3">
+      <h2 className="font-bold text-sage-700">國定假日行事曆</h2>
+      <p className="text-sm text-ink-700 leading-relaxed">
+        依行政院人事行政總處「政府行政機關辦公日曆表」。診所國定假日多半照常看診，
+        只有下列門診當天不開放預約：
+        <strong>{affected.length > 0 ? affected.map((t) => t.name).join("、") : "（目前無）"}</strong>
+        。可在下方「門診類型」逐科勾選。
+      </p>
+
+      {holidays.count === 0 ? (
+        <Alert tone="warn">
+          <p className="font-bold mb-1">尚未匯入國定假日</p>
+          <p>
+            在假日清單匯入前，國定假日當天這些門診仍會開放預約。請下載官方日曆表 CSV 後於主機執行：
+          </p>
+          <code className="block mt-1 text-sm">npx tsx scripts/import-holidays.ts 檔案.csv --source dgpa-115</code>
+        </Alert>
+      ) : (
+        <>
+          <p className="text-sm text-ink-500">
+            已匯入 {holidays.count} 天（{holidays.from} ～ {holidays.to}）
+            {holidays.sources.length > 0 && `｜來源：${holidays.sources.join("、")}`}
+          </p>
+          {!holidays.sufficient && (
+            <Alert tone="warn">
+              假日資料只到 <strong>{holidays.to}</strong>，但目前開放預約到{" "}
+              <strong>{holidays.lastOpenDate}</strong>。
+              超出範圍的日子系統當作平日處理，請儘快匯入次年度日曆表。
+            </Alert>
+          )}
+        </>
+      )}
+    </Card>
   );
 }
 
@@ -305,6 +374,10 @@ function ClinicTypesEditor({
               <input type="checkbox" checked={selected.notifyLine} onChange={(e) => setSelected({ ...selected, notifyLine: e.target.checked })} className="size-4 accent-sage-500" />
               發送 LINE/簡訊通知
             </label>
+            <label className="flex items-center gap-2">
+              <input type="checkbox" checked={selected.skipOnPublicHoliday} onChange={(e) => setSelected({ ...selected, skipOnPublicHoliday: e.target.checked })} className="size-4 accent-sage-500" />
+              國定假日停開此門診
+            </label>
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             <label className="block">
@@ -318,7 +391,11 @@ function ClinicTypesEditor({
                 onChange={(e) => setSelected({ ...selected, maxAgeMonths: e.target.value === "" ? null : +e.target.value })} />
             </label>
           </div>
-          <div>
+          <ClinicWindowsEditor
+            windows={selected.windows}
+            onChange={(windows) => setSelected({ ...selected, windows })}
+          />
+          <div className={selected.windows.length > 0 ? "opacity-40 pointer-events-none" : ""}>
             <span className="text-sm text-ink-700 block mb-1">可預約星期（全不勾＝依醫師班表）</span>
             <div className="flex gap-2 flex-wrap">
               {WEEKDAYS.map((w, i) => (
@@ -341,7 +418,7 @@ function ClinicTypesEditor({
               ))}
             </div>
           </div>
-          <div>
+          <div className={selected.windows.length > 0 ? "opacity-40 pointer-events-none" : ""}>
             <span className="text-sm text-ink-700 block mb-1">可預約診別（全不勾＝全部）</span>
             <div className="flex gap-3">
               {(Object.keys(SESSION_META) as SessionPeriod[]).map((sess) => (
@@ -393,6 +470,84 @@ function ClinicTypesEditor({
         </div>
       )}
     </Card>
+  );
+}
+
+/**
+ * 逐日時間窗編輯（例：兒童發展篩檢週一僅下午 14:30–16:00）。
+ * 只要設了任何一列，上方的「可預約星期／診別」就不再套用——
+ * 兩套條件相乘容易得出沒人預期的結果，故以時間窗為唯一依據。
+ */
+function ClinicWindowsEditor({
+  windows,
+  onChange,
+}: {
+  windows: { weekday: number; startTime: string; endTime: string }[];
+  onChange: (w: { weekday: number; startTime: string; endTime: string }[]) => void;
+}) {
+  const patch = (i: number, field: "weekday" | "startTime" | "endTime", value: string) =>
+    onChange(
+      windows.map((w, idx) =>
+        idx === i ? { ...w, [field]: field === "weekday" ? +value : value } : w,
+      ),
+    );
+  return (
+    <div>
+      <span className="text-sm text-ink-700 block mb-1">
+        可預約時間窗（逐日指定；空白＝改用下方的星期／診別）——時間需為整點或半點
+      </span>
+      {windows.length > 0 && (
+        <p className="text-sm text-wood-700 mb-2">
+          已設定時間窗，<strong>下方的可預約星期與診別不再套用</strong>，一律以這裡為準。
+        </p>
+      )}
+      <div className="space-y-2">
+        {windows.map((w, i) => (
+          <div key={i} className="flex flex-wrap items-center gap-2">
+            <select
+              className="input !w-auto"
+              value={w.weekday}
+              onChange={(e) => patch(i, "weekday", e.target.value)}
+            >
+              {WEEKDAYS.map((label, idx) => (
+                <option key={idx} value={idx}>
+                  週{label}
+                </option>
+              ))}
+            </select>
+            <input
+              type="time"
+              step={1800}
+              className="input !w-auto"
+              value={w.startTime}
+              onChange={(e) => patch(i, "startTime", e.target.value)}
+            />
+            <span className="text-ink-500">–</span>
+            <input
+              type="time"
+              step={1800}
+              className="input !w-auto"
+              value={w.endTime}
+              onChange={(e) => patch(i, "endTime", e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={() => onChange(windows.filter((_, idx) => idx !== i))}
+              className="text-sm text-ink-500 underline underline-offset-2"
+            >
+              移除
+            </button>
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        onClick={() => onChange([...windows, { weekday: 1, startTime: "09:00", endTime: "11:30" }])}
+        className="btn-secondary !py-1.5 !px-3 text-sm mt-2"
+      >
+        ＋ 新增時間窗
+      </button>
+    </div>
   );
 }
 

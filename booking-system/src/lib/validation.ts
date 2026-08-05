@@ -67,6 +67,20 @@ export const timeStrSchema = z
   .string()
   .regex(/^([01]\d|2[0-3]):[0-5]\d$/, "時間格式不正確");
 
+/**
+ * 時段格點時間：分鐘只能是 00 或 30。
+ *
+ * 本院一律以整點與半點為時段起訖、每 30 分鐘一組名額。時段清單是從班表的
+ * startTime 起每 30 分鐘推算的，所以只要班表被填成 08:15，整天的時段就會變成
+ * 08:15／08:45／09:15…——與公告的「每 30 分鐘為一個時段」不符，
+ * 且區間結束時間若非格點還會產生不足 30 分鐘的畸零時段。
+ * 因此在「排班與名額寫入」這一層就擋掉，不讓非格點時間進到資料庫。
+ */
+export const slotTimeSchema = timeStrSchema.refine(
+  (t) => t.endsWith(":00") || t.endsWith(":30"),
+  "時間需為整點或半點（每 30 分鐘一個時段）",
+);
+
 export const idTypeSchema = z.enum(["NATIONAL_ID", "RESIDENT_CERT", "PASSPORT"]);
 
 export const patientInputSchema = z

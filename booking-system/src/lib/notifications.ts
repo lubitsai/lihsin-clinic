@@ -26,13 +26,14 @@ function buildMessage(
   patientName: string,
   doctor: Doctor | null,
   clinicType: ClinicType | null,
+  graceMinutes: number,
 ): string {
   const when = `${formatDateTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
   const base = `${patientName} 您好，`;
   const info = `${when}｜${doctor?.name ?? ""}醫師｜${clinicType?.name ?? ""}\n預約編號：${appt.bookingNumber}`;
   switch (type) {
     case "BOOKED":
-      return `${base}您在${CLINIC.name}的預約已成立。\n${info}\n提醒：線上預約不等於實際看診號碼，請依現場狀況候診。如需取消或改期請至預約系統操作，或致電 ${CLINIC.phone}。`;
+      return `${base}您在${CLINIC.name}的預約已成立。\n${info}\n提醒：到櫃檯報到才算完成掛號，時段開始後保留 ${graceMinutes} 分鐘。如需取消或改期請至預約系統操作，或致電 ${CLINIC.phone}。`;
     case "MODIFIED":
       return `${base}您在${CLINIC.name}的預約已更改為：\n${info}\n如非本人操作請致電 ${CLINIC.phone}。`;
     case "CANCELLED":
@@ -40,7 +41,8 @@ function buildMessage(
     case "REMINDER_DAY_BEFORE":
       return `${base}提醒您明天在${CLINIC.name}有預約。\n${info}\n如無法前來，請提前線上取消或致電 ${CLINIC.phone}，以免影響後續預約權益。`;
     case "REMINDER_SAME_DAY":
-      return `${base}提醒您今天在${CLINIC.name}有預約。\n${info}\n請提早報到，依現場狀況候診。`;
+      // 官網公告：時段開始後保留 N 分鐘，報到時要主動告知櫃檯（系統不會自動跳通知）
+      return `${base}提醒您今天在${CLINIC.name}有預約。\n${info}\n請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
     case "CLINIC_NOTICE":
       return `${base}${CLINIC.name}門診異動通知，請留意您的預約。如有疑問請致電 ${CLINIC.phone}。`;
   }
@@ -53,7 +55,7 @@ export async function enqueueAppointmentNotification(
   appt: Appointment,
   patient: Patient,
 ) {
-  const [doctor, clinicType, lineLink] = await Promise.all([
+  const [doctor, clinicType, lineLink, grace] = await Promise.all([
     tx.doctor.findUnique({ where: { id: appt.doctorId } }),
     tx.clinicType.findUnique({ where: { id: appt.clinicTypeId } }),
     tx.linePatientLink.findFirst({
@@ -61,6 +63,7 @@ export async function enqueueAppointmentNotification(
       include: { lineAccount: true },
       orderBy: { createdAt: "desc" },
     }),
+    getSetting("booking.checkin_grace_minutes", tx),
   ]);
   if (clinicType && !clinicType.notifyLine && type !== "CANCELLED") return;
 
@@ -72,7 +75,7 @@ export async function enqueueAppointmentNotification(
       channel: viaLine ? "LINE" : "SMS",
       type,
       recipient: viaLine ? lineLink.lineAccount.lineUserId : patient.phone,
-      payload: { message: buildMessage(type, appt, patient.name, doctor, clinicType) },
+      payload: { message: buildMessage(type, appt, patient.name, doctor, clinicType, grace) },
     },
   });
 }
@@ -145,7 +148,7 @@ export async function enqueueReminders(
   });
   if (appts.length === 0) return 0;
 
-  const [doctors, clinicTypes, lineLinks] = await Promise.all([
+  const [doctors, clinicTypes, lineLinks, grace] = await Promise.all([
     prisma.doctor.findMany(),
     prisma.clinicType.findMany(),
     prisma.linePatientLink.findMany({
@@ -156,6 +159,7 @@ export async function enqueueReminders(
       include: { lineAccount: true },
       orderBy: { createdAt: "desc" },
     }),
+    getSetting("booking.checkin_grace_minutes"),
   ]);
   const doctorMap = new Map(doctors.map((d) => [d.id, d]));
   const clinicTypeMap = new Map(clinicTypes.map((c) => [c.id, c]));
@@ -182,6 +186,7 @@ export async function enqueueReminders(
             a.patient.name,
             doctorMap.get(a.doctorId) ?? null,
             clinicTypeMap.get(a.clinicTypeId) ?? null,
+            grace,
           ),
         },
       };

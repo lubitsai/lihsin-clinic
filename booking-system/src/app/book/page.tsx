@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { fetchClinicTypes, fetchPortalStatus } from "@/app/actions/portal";
 import { isLineLoginConfigured } from "@/lib/line";
+import { getSetting } from "@/lib/settings";
 import { DeerMascot } from "@/components/ui";
 import { BookingWizard } from "./wizard";
 
@@ -8,7 +9,11 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "線上預約" };
 
 export default async function BookPage() {
-  const [clinicTypes, portalStatus] = await Promise.all([fetchClinicTypes(), fetchPortalStatus()]);
+  const [clinicTypes, portalStatus, checkinGraceMinutes] = await Promise.all([
+    fetchClinicTypes(),
+    fetchPortalStatus(),
+    getSetting("booking.checkin_grace_minutes"),
+  ]);
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-sage-50">
       <div className="mx-auto max-w-2xl px-4 py-6">
@@ -25,6 +30,7 @@ export default async function BookPage() {
         clinicTypes={clinicTypes}
         lineConfigured={isLineLoginConfigured()}
         viaLine={portalStatus.loggedIn && portalStatus.viaLine}
+        checkinGraceMinutes={checkinGraceMinutes}
       />
     </div>
     </main>

@@ -44,7 +44,7 @@ import {
 import { requirePermission, PERMISSIONS, ROLE_PERMISSIONS } from "@/lib/auth/authz";
 import { dispatchPendingNotifications, enqueueAppointmentNotification } from "@/lib/notifications";
 import { BookingError } from "@/lib/errors";
-import { patientInputSchema, dateStrSchema, timeStrSchema } from "@/lib/validation";
+import { patientInputSchema, dateStrSchema, timeStrSchema, slotTimeSchema } from "@/lib/validation";
 import { writeAudit, type AuditActor } from "@/lib/audit";
 import { setSetting, SETTING_DEFAULTS, type SettingKey } from "@/lib/settings";
 import { rateLimit } from "@/lib/rate-limit";
@@ -603,8 +603,8 @@ const exceptionSchema = z.object({
   session: z.enum(["MORNING", "AFTERNOON", "EVENING"]).optional(),
   doctorId: z.string().optional(),
   substituteDoctorId: z.string().optional(),
-  startTime: timeStrSchema.optional(),
-  endTime: timeStrSchema.optional(),
+  startTime: slotTimeSchema.optional(),
+  endTime: slotTimeSchema.optional(),
   slotCapacity: z.number().int().min(1).max(10).optional(),
   clinicTypeId: z.string().optional(),
   reason: z.string().trim().min(1, "請輸入原因"),
@@ -686,8 +686,8 @@ const templateSchema = z.object({
   id: z.string().optional(),
   weekday: z.number().int().min(0).max(6),
   session: z.enum(["MORNING", "AFTERNOON", "EVENING"]),
-  startTime: timeStrSchema,
-  endTime: timeStrSchema,
+  startTime: slotTimeSchema,
+  endTime: slotTimeSchema,
   doctorId: z.string().min(1),
   slotCapacity: z.number().int().min(1).max(10),
   allowOnline: z.boolean(),
@@ -770,6 +770,14 @@ export async function adminSetSlotBlocked(input: {
   }
 }
 
+const slotCapacitySchema = z.object({
+  doctorId: z.string().min(1),
+  date: dateStrSchema,
+  startTime: slotTimeSchema,
+  capacity: z.number().int().min(0).max(10),
+  reason: z.string().trim().min(1, "請輸入原因（手動加開名額必留紀錄）"),
+});
+
 export async function adminSetSlotCapacity(input: {
   doctorId: string;
   date: string;
@@ -779,8 +787,9 @@ export async function adminSetSlotCapacity(input: {
 }): Promise<ActionResult> {
   try {
     const ctx = requirePermission(await getStaffContext(), PERMISSIONS.SCHEDULE_WRITE);
-    if (!input.reason.trim()) return { ok: false, message: "請輸入原因（手動加開名額必留紀錄）" };
-    await setSlotCapacity(input, await actorOf(ctx));
+    // 手動加開的時段同樣要落在 30 分鐘格點上，否則會出現整點半點以外的名額
+    const parsed = slotCapacitySchema.parse(input);
+    await setSlotCapacity(parsed, await actorOf(ctx));
     revalidatePath("/admin/schedule");
     return { ok: true };
   } catch (e) {
@@ -936,10 +945,28 @@ const clinicTypeSchema = z.object({
   isActive: z.boolean(),
   requiresReview: z.boolean(),
   notifyLine: z.boolean(),
+  skipOnPublicHoliday: z.boolean(),
   minAgeMonths: z.number().int().min(0).nullable(),
   maxAgeMonths: z.number().int().min(0).nullable(),
   allowedWeekdays: z.array(z.number().int().min(0).max(6)),
   allowedSessions: z.array(z.enum(["MORNING", "AFTERNOON", "EVENING"])),
+  /** 逐日可預約時間窗；有值時取代 allowedWeekdays／allowedSessions */
+  windows: z
+    .array(
+      z.object({
+        weekday: z.number().int().min(0).max(6),
+        startTime: slotTimeSchema,
+        endTime: slotTimeSchema,
+      }),
+    )
+    .default([])
+    .refine((ws) => ws.every((w) => w.startTime < w.endTime), {
+      message: "時間窗的結束時間必須晚於開始時間",
+    })
+    .refine(
+      (ws) => new Set(ws.map((w) => `${w.weekday}|${w.startTime}`)).size === ws.length,
+      { message: "同一天不可有兩段開始時間相同的時間窗" },
+    ),
   doctorIds: z.array(z.string()),
   color: z.string(),
   icon: z.string(),
@@ -961,6 +988,7 @@ export async function adminUpdateClinicType(
           isActive: parsed.isActive,
           requiresReview: parsed.requiresReview,
           notifyLine: parsed.notifyLine,
+          skipOnPublicHoliday: parsed.skipOnPublicHoliday,
           minAgeMonths: parsed.minAgeMonths,
           maxAgeMonths: parsed.maxAgeMonths,
           allowedWeekdays: parsed.allowedWeekdays,
@@ -973,6 +1001,12 @@ export async function adminUpdateClinicType(
       await tx.clinicTypeDoctor.createMany({
         data: parsed.doctorIds.map((doctorId) => ({ clinicTypeId: parsed.id, doctorId })),
       });
+      await tx.clinicTypeWindow.deleteMany({ where: { clinicTypeId: parsed.id } });
+      if (parsed.windows.length > 0) {
+        await tx.clinicTypeWindow.createMany({
+          data: parsed.windows.map((w) => ({ clinicTypeId: parsed.id, ...w })),
+        });
+      }
     });
     await writeAudit(await actorOf(ctx), "clinic_type.update", { type: "clinic_type", id: parsed.id });
     revalidatePath("/admin/settings");

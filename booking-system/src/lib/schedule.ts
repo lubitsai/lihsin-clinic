@@ -135,6 +135,79 @@ export async function getDayScheduleBlocks(date: string, tx?: Tx): Promise<Worki
   return applyExceptions(blocks, exceptions);
 }
 
+/**
+ * 某日期各診別的開診時間（該診別最早的看診區間起點）。
+ *
+ * 官網公告有兩條規則以「診次」而非「時段」為單位：
+ * ①「該診次開診後就不再受理該診次的預約」②「該診次開診前，都可以自行取消或改期」。
+ * 診次不另建資料表——當日班表最早的 startTime 就是該診次的開診時間，
+ * 且已套用停診／代診／特殊時間等例外，臨時改時間也會跟著變。
+ *
+ * 回傳的 Map 沒有某診別 ＝ 當日該診別無班（或全日休診）。
+ */
+export async function getSessionStartTimes(
+  date: string,
+  tx?: Tx,
+): Promise<Map<SessionPeriod, string>> {
+  return sessionStartsOf(await getDayScheduleBlocks(date, tx));
+}
+
+/** 由已取得的班表推算各診別開診時間（避免重複查詢） */
+export function sessionStartsOf(blocks: WorkingBlock[]): Map<SessionPeriod, string> {
+  const starts = new Map<SessionPeriod, string>();
+  for (const b of blocks) {
+    const cur = starts.get(b.session);
+    if (!cur || b.startTime < cur) starts.set(b.session, b.startTime);
+  }
+  return starts;
+}
+
+/**
+ * 該診次是否已開診（僅當日有意義；未來日期一律未開診）。
+ * 查不到開診時間時回傳 false——例如櫃檯在班表外手動加開的時段，
+ * 沒有診次可依附，交由時段層級的規則（預約截止分鐘數）處理。
+ */
+export function hasSessionStarted(
+  starts: Map<SessionPeriod, string>,
+  session: SessionPeriod,
+  nowTime: string,
+): boolean {
+  const start = starts.get(session);
+  return !!start && nowTime >= start;
+}
+
+/**
+ * 某時段屬於哪個診次：以當日班表為準，班表查不到才退回時間判斷。
+ * 班表較準——晚診 18:30 起與午診 14:30–18:00 的界線會隨當日特殊時間變動。
+ */
+export function sessionOfSlot(blocks: WorkingBlock[], startTime: string): SessionPeriod {
+  const hit = blocks.find((b) => startTime >= b.startTime && startTime < b.endTime);
+  return hit?.session ?? sessionOfTime(startTime);
+}
+
+/** 門診類型時間窗（ClinicTypeWindow 的必要欄位） */
+export interface ClinicWindow {
+  weekday: number;
+  startTime: string;
+  endTime: string;
+}
+
+/**
+ * 時段起點是否落在該門診類型的可預約時間窗內。
+ * 空陣列＝未設時間窗，一律通過（改由 allowedWeekdays／allowedSessions 粗篩）。
+ * 區間含頭不含尾：09:00–11:30 可約到 11:00 這個時段（結束正好 11:30）。
+ */
+export function isWithinClinicWindows(
+  windows: ClinicWindow[],
+  weekday: number,
+  startTime: string,
+): boolean {
+  if (windows.length === 0) return true;
+  return windows.some(
+    (w) => w.weekday === weekday && startTime >= w.startTime && startTime < w.endTime,
+  );
+}
+
 /** 某日期被封鎖的時段（date-level SLOT_BLOCKED 例外，doctorId 空＝全院） */
 export async function getBlockedSlotKeys(date: string, tx?: Tx): Promise<Set<string>> {
   const db = tx ?? prisma;

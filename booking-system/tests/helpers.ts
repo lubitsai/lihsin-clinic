@@ -18,6 +18,8 @@ export async function resetDb() {
     "schedule_exceptions",
     "weekly_schedule_templates",
     "clinic_type_doctors",
+    "clinic_type_windows",
+    "public_holidays",
     "line_patient_links",
     "line_accounts",
     "otp_codes",
