@@ -9,6 +9,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { prisma } from "@/lib/db";
 import { createAppointment, cancelAppointment, rescheduleAppointment } from "@/lib/booking";
 import { getDaySlotAvailability } from "@/lib/availability";
+import { enqueueReminders } from "@/lib/notifications";
 import { setSetting, clearSettingsCache } from "@/lib/settings";
 import { dateToDb } from "@/lib/tw-time";
 import { resetDb, seedBase, makePatient, futureDate, todayStr, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
@@ -350,5 +351,60 @@ describe("國定假日不施測（兒童發展篩檢）", () => {
       patientInput: makePatient(), source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
     });
     expect(r.appointment.id).toBeTruthy();
+  });
+});
+
+describe("看診提醒：簡訊壓在單則 70 字內、LINE 版保留完整資訊", () => {
+  beforeEach(resetDb);
+
+  /** 中文簡訊以 UCS-2 計費：單則 70 字，超過則每則 67 字 */
+  const chars = (t: string) => [...t].length;
+
+  async function reminderFor(name: string, viaLine: boolean) {
+    const { general, drTsai } = await seedBase();
+    const date = futureDate(1);
+    const { appointment, patient } = await createAppointment({
+      clinicTypeId: general.id, doctorId: drTsai.id, date, startTime: "09:00",
+      patientInput: makePatient({ name }), source: "WEB", actor: PATIENT_ACTOR,
+    });
+    if (viaLine) {
+      const acc = await prisma.lineAccount.create({
+        data: { lineUserId: `U${Date.now()}`, isFollowing: true },
+      });
+      await prisma.linePatientLink.create({
+        data: { lineAccountId: acc.id, patientId: patient.id, verifiedAt: new Date() },
+      });
+      process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN = "test-token";
+    } else {
+      delete process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN;
+    }
+    await prisma.notification.deleteMany({ where: { appointmentId: appointment.id } });
+    await enqueueReminders(date, "REMINDER_DAY_BEFORE");
+    const n = await prisma.notification.findFirstOrThrow({
+      where: { appointmentId: appointment.id, type: "REMINDER_DAY_BEFORE" },
+    });
+    return { channel: n.channel, message: (n.payload as { message: string }).message };
+  }
+
+  it("簡訊版不超過 70 字（含較長姓名），且不含預約編號", async () => {
+    for (const name of ["王小明", "歐陽承翰", "陳彥廷宇"]) {
+      const r = await reminderFor(name, false);
+      expect(r.channel).toBe("SMS");
+      expect(chars(r.message)).toBeLessThanOrEqual(70);
+      expect(r.message).not.toMatch(/預約編號/);
+      // 該傳達的兩件事都在：是誰、報到規則
+      expect(r.message).toContain(name);
+      expect(r.message).toContain("10 分鐘內到櫃檯報到");
+      await resetDb();
+    }
+  });
+
+  it("LINE 版保留醫師、門診別與取消提示（無長度限制）", async () => {
+    const r = await reminderFor("王小明", true);
+    expect(r.channel).toBe("LINE");
+    expect(r.message).toContain("蔡宗儒醫師");
+    expect(r.message).toContain("一般門診");
+    expect(r.message).toContain("請提前線上取消");
+    expect(r.message).toContain("10 分鐘內到櫃檯報到");
   });
 });

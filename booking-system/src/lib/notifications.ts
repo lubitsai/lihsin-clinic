@@ -18,8 +18,17 @@ import { dbToDate, formatDateTw } from "./tw-time";
 import { pushLineMessage, isLineMessagingConfigured } from "./line";
 import { getSmsProvider } from "./sms";
 import { getSetting } from "./settings";
+import { formatDateShortTw } from "./tw-time";
 import { CLINIC } from "./clinic-info";
 
+/**
+ * 組通知內容。
+ *
+ * `channel` 會影響長度取捨：**簡訊按字計費**（中文每則 70 字，超過後每則 67 字），
+ * LINE 推播免費且無長度限制。因此看診提醒的簡訊版壓在單則 70 字內
+ * （院長 2026-08-05 指示），LINE 版保留醫師、門診別與取消提示。
+ * 其餘類型兩邊相同。
+ */
 function buildMessage(
   type: NotificationType,
   appt: Appointment,
@@ -27,6 +36,7 @@ function buildMessage(
   doctor: Doctor | null,
   clinicType: ClinicType | null,
   graceMinutes: number,
+  channel: NotificationChannel,
 ): string {
   const when = `${formatDateTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
   const base = `${patientName} 您好，`;
@@ -38,13 +48,19 @@ function buildMessage(
       return `${base}您在${CLINIC.name}的預約已更改為：\n${info}\n如非本人操作請致電 ${CLINIC.phone}。`;
     case "CANCELLED":
       return `${base}您在${CLINIC.name}的預約（編號 ${appt.bookingNumber}）已取消。如需重新預約歡迎使用線上預約，或致電 ${CLINIC.phone}。`;
-    case "REMINDER_DAY_BEFORE":
-      // 目前是唯一一次提醒（當日提醒已關閉），故報到規則寫在這裡
+    case "REMINDER_DAY_BEFORE": {
+      // 目前是唯一一次提醒（當日提醒已關閉），故報到規則寫在這裡。
+      const checkIn = `請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
+      if (channel === "SMS") {
+        // 單則簡訊 70 字：僅留「誰、何時」＋報到規則；醫師、門診別、取消提示只在 LINE 版
+        const shortWhen = `${formatDateShortTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
+        return `${CLINIC.name} ${patientName} 明天 ${shortWhen}\n${checkIn}`;
+      }
       return (
-        `${base}提醒您明天在${CLINIC.name}有預約。\n${info}\n` +
-        `請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。\n` +
-        `如無法前來，請提前線上取消或致電 ${CLINIC.phone}，以免影響後續預約權益。`
+        `${base}提醒您明天在${CLINIC.name}有預約。\n${when}｜${doctor?.name ?? ""}醫師｜${clinicType?.name ?? ""}\n` +
+        `${checkIn}\n如無法前來，請提前線上取消或致電 ${CLINIC.phone}，以免影響後續預約權益。`
       );
+    }
     case "REMINDER_SAME_DAY":
       // 官網公告：時段開始後保留 N 分鐘，報到時要主動告知櫃檯（系統不會自動跳通知）
       return `${base}提醒您今天在${CLINIC.name}有預約。\n${info}\n請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
@@ -80,7 +96,12 @@ export async function enqueueAppointmentNotification(
       channel: viaLine ? "LINE" : "SMS",
       type,
       recipient: viaLine ? lineLink.lineAccount.lineUserId : patient.phone,
-      payload: { message: buildMessage(type, appt, patient.name, doctor, clinicType, grace) },
+      payload: {
+        message: buildMessage(
+          type, appt, patient.name, doctor, clinicType, grace,
+          viaLine ? "LINE" : "SMS",
+        ),
+      },
     },
   });
 }
@@ -192,6 +213,7 @@ export async function enqueueReminders(
             doctorMap.get(a.doctorId) ?? null,
             clinicTypeMap.get(a.clinicTypeId) ?? null,
             grace,
+            lineUserId ? "LINE" : "SMS",
           ),
         },
       };

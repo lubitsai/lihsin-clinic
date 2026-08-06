@@ -175,7 +175,8 @@ describe("批次作業的正確性", () => {
     const rows = await prisma.notification.findMany({ where: { type: "REMINDER_DAY_BEFORE" } });
     expect(rows).toHaveLength(2);
     expect(rows[0].payload).toHaveProperty("message");
-    expect((rows[0].payload as { message: string }).message).toContain("提醒您明天");
+    // 只驗「有帶到看診日資訊」，不綁特定措辭——提醒的簡訊版與 LINE 版用字不同
+    expect((rows[0].payload as { message: string }).message).toContain("明天");
     // 再跑一次不應重複排入
     expect(await enqueueReminders(date, "REMINDER_DAY_BEFORE")).toBe(0);
   });
