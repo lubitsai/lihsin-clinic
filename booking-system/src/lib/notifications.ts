@@ -39,31 +39,53 @@ function buildMessage(
   channel: NotificationChannel,
 ): string {
   const when = `${formatDateTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
+  const shortWhen = `${formatDateShortTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
   const base = `${patientName} 您好，`;
-  const info = `${when}｜${doctor?.name ?? ""}醫師｜${clinicType?.name ?? ""}\n預約編號：${appt.bookingNumber}`;
+  // 院長 2026-08-05：通知不放預約編號（家長用證件號＋生日查詢即可；編號僅供櫃檯內部使用）
+  const info = `${when}｜${doctor?.name ?? ""}醫師｜${clinicType?.name ?? ""}`;
+  const checkIn = `請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
+  const isSms = channel === "SMS";
+
   switch (type) {
     case "BOOKED":
-      return `${base}您在${CLINIC.name}的預約已成立。\n${info}\n提醒：到櫃檯報到才算完成掛號，時段開始後保留 ${graceMinutes} 分鐘。如需取消或改期請至預約系統操作，或致電 ${CLINIC.phone}。`;
+      // 簡訊版壓在單則 70 字：報到細節留給前一日提醒，這裡只確認「約成立了、怎麼取消」
+      if (isSms) {
+        return (
+          `${CLINIC.name} ${patientName} ${shortWhen} 預約成立。到櫃檯報到才算掛號。\n` +
+          `取消或改期請至預約系統或電 ${CLINIC.phone}。`
+        );
+      }
+      return (
+        `${base}您在${CLINIC.name}的預約已成立。\n${info}\n` +
+        `提醒：到櫃檯報到才算完成掛號，時段開始後保留 ${graceMinutes} 分鐘。` +
+        `如需取消或改期請至預約系統操作，或致電 ${CLINIC.phone}。`
+      );
     case "MODIFIED":
+      if (isSms) {
+        return `${CLINIC.name} ${patientName} 預約已改為 ${shortWhen}。如非本人操作請電 ${CLINIC.phone}。`;
+      }
       return `${base}您在${CLINIC.name}的預約已更改為：\n${info}\n如非本人操作請致電 ${CLINIC.phone}。`;
     case "CANCELLED":
-      return `${base}您在${CLINIC.name}的預約（編號 ${appt.bookingNumber}）已取消。如需重新預約歡迎使用線上預約，或致電 ${CLINIC.phone}。`;
-    case "REMINDER_DAY_BEFORE": {
-      // 目前是唯一一次提醒（當日提醒已關閉），故報到規則寫在這裡。
-      const checkIn = `請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
-      if (channel === "SMS") {
-        // 單則簡訊 70 字：僅留「誰、何時」＋報到規則；醫師、門診別、取消提示只在 LINE 版
-        const shortWhen = `${formatDateShortTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
+      // 原本以預約編號指稱，改以日期時間——家長更容易對得起來
+      if (isSms) {
+        return `${CLINIC.name} ${patientName} ${shortWhen} 的預約已取消。需重新預約請至預約系統或電 ${CLINIC.phone}。`;
+      }
+      return (
+        `${base}您在${CLINIC.name} ${when} 的預約已取消。` +
+        `如需重新預約歡迎使用線上預約，或致電 ${CLINIC.phone}。`
+      );
+    case "REMINDER_DAY_BEFORE":
+      // 目前是唯一一次提醒（當日提醒已關閉），故報到規則寫在這裡
+      if (isSms) {
         return `${CLINIC.name} ${patientName} 明天 ${shortWhen}\n${checkIn}`;
       }
       return (
-        `${base}提醒您明天在${CLINIC.name}有預約。\n${when}｜${doctor?.name ?? ""}醫師｜${clinicType?.name ?? ""}\n` +
+        `${base}提醒您明天在${CLINIC.name}有預約。\n${info}\n` +
         `${checkIn}\n如無法前來，請提前線上取消或致電 ${CLINIC.phone}，以免影響後續預約權益。`
       );
-    }
     case "REMINDER_SAME_DAY":
-      // 官網公告：時段開始後保留 N 分鐘，報到時要主動告知櫃檯（系統不會自動跳通知）
-      return `${base}提醒您今天在${CLINIC.name}有預約。\n${info}\n請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
+      if (isSms) return `${CLINIC.name} ${patientName} 今天 ${shortWhen}\n${checkIn}`;
+      return `${base}提醒您今天在${CLINIC.name}有預約。\n${info}\n${checkIn}`;
     case "CLINIC_NOTICE":
       return `${base}${CLINIC.name}門診異動通知，請留意您的預約。如有疑問請致電 ${CLINIC.phone}。`;
   }

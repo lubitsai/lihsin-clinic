@@ -399,6 +399,36 @@ describe("看診提醒：簡訊壓在單則 70 字內、LINE 版保留完整資�
     }
   });
 
+  it("預約成立、更改、取消的簡訊也都在單則內，且都不含預約編號", async () => {
+    const { general, drTsai } = await seedBase();
+    delete process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN;
+    const name = "歐陽承翰"; // 取較長姓名當上限測試
+    const { appointment } = await createAppointment({
+      clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(3), startTime: "09:00",
+      patientInput: makePatient({ name }), source: "WEB", actor: PATIENT_ACTOR,
+    });
+    await rescheduleAppointment({
+      appointmentId: appointment.id, newDoctorId: drTsai.id,
+      newDate: futureDate(4), newStartTime: "10:00",
+      actor: PATIENT_ACTOR, byPatient: true,
+    }).then((r) =>
+      cancelAppointment({ appointmentId: r.newAppointment.id, actor: PATIENT_ACTOR, byPatient: true }),
+    );
+
+    const rows = await prisma.notification.findMany({ orderBy: { createdAt: "asc" } });
+    const types = rows.map((r) => r.type);
+    expect(types).toContain("BOOKED");
+    expect(types).toContain("MODIFIED");
+    expect(types).toContain("CANCELLED");
+    for (const r of rows) {
+      const msg = (r.payload as { message: string }).message;
+      expect(r.channel).toBe("SMS");
+      expect(chars(msg), `${r.type} 超過單則簡訊：${msg}`).toBeLessThanOrEqual(70);
+      expect(msg, `${r.type} 仍含預約編號`).not.toMatch(/預約編號|LH\d{6}-/);
+      expect(msg).toContain(name);
+    }
+  });
+
   it("LINE 版保留醫師、門診別與取消提示（無長度限制）", async () => {
     const r = await reminderFor("王小明", true);
     expect(r.channel).toBe("LINE");
