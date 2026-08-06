@@ -24,8 +24,11 @@ import {
   setSlotCapacity,
   findAffectedAppointments,
   copyWeekExceptions,
+  applyTemplateChange,
   type ExceptionInput,
+  type TemplateChange,
 } from "@/lib/schedule-admin";
+import { dbToDate, todayStr } from "@/lib/tw-time";
 import {
   liftRestriction,
   resetNoShowCount,
@@ -694,61 +697,94 @@ const templateSchema = z.object({
   isActive: z.boolean(),
 });
 
+/** 受影響預約的前台顯示格式（例外與週班表共用同一組欄位） */
+export interface AffectedRow {
+  id: string;
+  bookingNumber: string;
+  date: string;
+  time: string;
+  patientName: string;
+  phone: string;
+}
+
+type TemplateResult = ActionResult<{ applied: boolean; affected: AffectedRow[] }>;
+
+/**
+ * 改常態班表：比照單日例外，先列出會失去時段的既有預約。
+ * 未帶 cancelAffected 時班表完全不動，只回傳名單交由櫃檯決定。
+ */
 export async function adminUpsertTemplate(
   input: z.infer<typeof templateSchema>,
-): Promise<ActionResult> {
+  opts: { cancelAffected?: boolean; cancelReason?: string } = {},
+): Promise<TemplateResult> {
   try {
     const ctx = requirePermission(await getStaffContext(), PERMISSIONS.SCHEDULE_WRITE);
     const parsed = templateSchema.parse(input);
     if (parsed.endTime <= parsed.startTime)
       return { ok: false, message: "結束時間需晚於開始時間" };
-    const data = {
-      weekday: parsed.weekday,
-      session: parsed.session,
-      startTime: parsed.startTime,
-      endTime: parsed.endTime,
-      doctorId: parsed.doctorId,
-      slotCapacity: parsed.slotCapacity,
-      allowOnline: parsed.allowOnline,
-      isActive: parsed.isActive,
-    };
-    const row = parsed.id
-      ? await prisma.weeklyScheduleTemplate.update({ where: { id: parsed.id }, data })
-      : await prisma.weeklyScheduleTemplate.upsert({
-          where: {
-            weekday_session_doctorId: {
-              weekday: parsed.weekday,
-              session: parsed.session,
-              doctorId: parsed.doctorId,
-            },
-          },
-          create: data,
-          update: data,
-        });
-    await writeAudit(await actorOf(ctx), "schedule.template.upsert", {
-      type: "weekly_schedule_template",
-      id: row.id,
-    }, data);
-    revalidatePath("/admin/schedule");
-    return { ok: true };
+    return await runTemplateChange({ ...parsed }, ctx, opts);
   } catch (e) {
     return toUserError(e);
   }
 }
 
-export async function adminDeleteTemplate(id: string): Promise<ActionResult> {
+export async function adminDeleteTemplate(
+  id: string,
+  opts: { cancelAffected?: boolean; cancelReason?: string } = {},
+): Promise<TemplateResult> {
   try {
     const ctx = requirePermission(await getStaffContext(), PERMISSIONS.SCHEDULE_WRITE);
-    await prisma.weeklyScheduleTemplate.delete({ where: { id } });
-    await writeAudit(await actorOf(ctx), "schedule.template.delete", {
-      type: "weekly_schedule_template",
-      id,
-    });
-    revalidatePath("/admin/schedule");
-    return { ok: true };
+    const row = await prisma.weeklyScheduleTemplate.findUnique({ where: { id } });
+    if (!row) return { ok: false, message: "查無此班表列" };
+    return await runTemplateChange(
+      {
+        id: row.id,
+        remove: true,
+        weekday: row.weekday,
+        session: row.session,
+        startTime: row.startTime,
+        endTime: row.endTime,
+        doctorId: row.doctorId,
+        slotCapacity: row.slotCapacity,
+        allowOnline: row.allowOnline,
+        isActive: row.isActive,
+      },
+      ctx,
+      opts,
+    );
   } catch (e) {
     return toUserError(e);
   }
+}
+
+async function runTemplateChange(
+  change: TemplateChange,
+  ctx: NonNullable<Awaited<ReturnType<typeof getStaffContext>>>,
+  opts: { cancelAffected?: boolean; cancelReason?: string },
+): Promise<TemplateResult> {
+  const result = await applyTemplateChange(change, await actorOf(ctx), {
+    ...opts,
+    today: todayStr(),
+  });
+  if (result.affected) {
+    return {
+      ok: true,
+      data: {
+        applied: false,
+        affected: result.affected.map((a) => ({
+          id: a.id,
+          bookingNumber: a.bookingNumber,
+          date: dbToDate(a.appointmentDate),
+          time: a.startTime,
+          patientName: a.patient.name,
+          phone: a.patient.phone,
+        })),
+      },
+    };
+  }
+  void dispatchPendingNotifications().catch(() => {});
+  revalidatePath("/admin/schedule");
+  return { ok: true, data: { applied: true, affected: [] } };
 }
 
 export async function adminSetSlotBlocked(input: {

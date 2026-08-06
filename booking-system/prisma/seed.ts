@@ -123,7 +123,15 @@ async function main() {
   // 班表：以官網門診時間表為準，讀 prisma/schedule.json
   // （該檔由 internal/tools/sync_schedule.py 從 index.html 產生，勿手改）。
   // 與 scripts/sync-schedule.ts 共用同一段套用邏輯，避免初次建置與日後同步不一致。
+  // seed 通常跑在全新資料庫（沒有預約），受影響檢查不會擋下；
+  // 若在已有預約的環境重跑而被擋下，改用 scripts/sync-schedule.ts 處理受影響名單。
   const applied = await applySchedule(prisma, loadScheduleSource(), todayStr());
+  if (!applied.applied) {
+    throw new Error(
+      `班表未同步：有 ${applied.affected.length} 筆既有預約會落在新班表之外。` +
+        `請改跑 npx tsx scripts/sync-schedule.ts 查看名單並處理。`,
+    );
+  }
   console.log(
     `班表已依官網同步：新增 ${applied.created}、更新 ${applied.updated}、移除 ${applied.removed}、` +
       `單日例外 ${applied.exceptionsApplied} 筆`,

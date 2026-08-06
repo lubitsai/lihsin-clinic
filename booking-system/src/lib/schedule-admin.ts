@@ -4,10 +4,17 @@
  * 由管理員逐筆選擇改期／換醫師／診所取消（或批次診所取消＋通知）後才生效。
  */
 import { randomUUID } from "node:crypto";
-import type { Appointment, Patient, ScheduleException } from "@prisma/client";
+import type { Appointment, Patient, ScheduleException, SessionPeriod } from "@prisma/client";
 import { prisma } from "./db";
-import { addDays, dateToDb, dbToDate, slotEnd } from "./tw-time";
-import { applyExceptions, getDayScheduleBlocks } from "./schedule";
+import { addDays, dateToDb, dbToDate, slotEnd, weekdayOf } from "./tw-time";
+import {
+  applyExceptions,
+  blocksFromTemplates,
+  getDayScheduleBlocks,
+  isSlotCovered,
+  type ScheduleExceptionLike,
+  type WeeklyTemplateLike,
+} from "./schedule";
 import { writeAudit, type AuditActor } from "./audit";
 import { cancelAppointmentTx } from "./booking";
 import { BookingError } from "./errors";
@@ -44,10 +51,7 @@ export async function findAffectedAppointments(
   const current = await getDayScheduleBlocks(input.date);
   const simulated = applyExceptions(current, [input]);
   return appts.filter((a) => {
-    const stillCovered = simulated.some(
-      (b) => b.doctorId === a.doctorId && b.startTime <= a.startTime && a.startTime < b.endTime,
-    );
-    if (!stillCovered) return true;
+    if (!isSlotCovered(simulated, a.doctorId, a.startTime)) return true;
     if (
       input.type === "SLOT_BLOCKED" &&
       a.startTime === input.startTime &&
@@ -55,6 +59,60 @@ export async function findAffectedAppointments(
     )
       return true;
     return false;
+  });
+}
+
+export type AffectedAppointment = Appointment & { patient: Patient };
+
+/**
+ * 改「常態班表」前的受影響預約模擬（院長 2026-08-06 裁示 (a)：比照單日例外）。
+ *
+ * 單日例外只影響一天，週班表與官網同步會一次影響未來所有日期，所以這裡掃的是
+ * 今天（含）以後所有還有效的預約，逐日以「提案後的班表」重算，挑出失去時段的那些。
+ *
+ * `exceptionsFor` 讓呼叫端覆寫某日的例外：官網同步會整批重建自己建立的例外，
+ * 檢查時必須用重建後的那一組，否則會拿舊例外去對新班表。未提供 ＝ 沿用資料庫現況。
+ */
+export async function findAppointmentsOutsideSchedule(opts: {
+  fromDate: string;
+  templates: WeeklyTemplateLike[];
+  activeDoctorIds?: ReadonlySet<string>;
+  exceptionsFor?: (date: string, dbExceptions: ScheduleException[]) => ScheduleExceptionLike[];
+  client?: Pick<typeof prisma, "appointment" | "scheduleException">;
+}): Promise<AffectedAppointment[]> {
+  const db = opts.client ?? prisma;
+  const appts = await db.appointment.findMany({
+    where: {
+      appointmentDate: { gte: dateToDb(opts.fromDate) },
+      status: { in: ["PENDING", "CONFIRMED"] },
+    },
+    include: { patient: true },
+    orderBy: [{ appointmentDate: "asc" }, { startTime: "asc" }],
+  });
+  if (appts.length === 0) return [];
+
+  const dates = [...new Set(appts.map((a) => dbToDate(a.appointmentDate)))];
+  const exceptionRows = await db.scheduleException.findMany({
+    where: { date: { in: dates.map(dateToDb) } },
+  });
+
+  // 逐日算一次就好——同一天可能有很多筆預約
+  const blocksByDate = new Map<string, ReturnType<typeof blocksFromTemplates>>();
+  for (const date of dates) {
+    const dbExceptions = exceptionRows.filter((e) => dbToDate(e.date) === date);
+    const exceptions = opts.exceptionsFor?.(date, dbExceptions) ?? dbExceptions;
+    blocksByDate.set(
+      date,
+      applyExceptions(
+        blocksFromTemplates(opts.templates, weekdayOf(date), opts.activeDoctorIds),
+        exceptions,
+      ),
+    );
+  }
+
+  return appts.filter((a) => {
+    const blocks = blocksByDate.get(dbToDate(a.appointmentDate)) ?? [];
+    return !isSlotCovered(blocks, a.doctorId, a.startTime);
   });
 }
 
@@ -119,6 +177,117 @@ export async function createScheduleException(
     },
   );
   return { created };
+}
+
+export interface TemplateChange {
+  /** 更新／刪除既有列時給 id；新增時留空 */
+  id?: string;
+  /** 刪除該列 */
+  remove?: boolean;
+  weekday: number;
+  session: SessionPeriod;
+  startTime: string;
+  endTime: string;
+  doctorId: string;
+  slotCapacity: number;
+  allowOnline: boolean;
+  isActive: boolean;
+}
+
+export interface ApplyTemplateResult {
+  ok?: true;
+  /** 未處理的受影響預約；有值時班表完全沒動 */
+  affected?: AffectedAppointment[];
+}
+
+/**
+ * 改常態班表（新增／修改／刪除一列），比照單日例外先檢查受影響預約。
+ * 尚有受影響預約且未確認時**完全不動班表**，只回傳名單；
+ * cancelAffected=true 時，取消與班表變更同一交易，全成或全不動。
+ */
+export async function applyTemplateChange(
+  change: TemplateChange,
+  actor: AuditActor,
+  opts: { cancelAffected?: boolean; cancelReason?: string; today: string } = { today: "" },
+): Promise<ApplyTemplateResult> {
+  const [rows, activeDoctors] = await Promise.all([
+    prisma.weeklyScheduleTemplate.findMany(),
+    prisma.doctor.findMany({ where: { isActive: true }, select: { id: true } }),
+  ]);
+  const activeDoctorIds = new Set(activeDoctors.map((d) => d.id));
+
+  // 提案後的班表＝現況套上這次的異動（先算再寫，才能在不動資料的情況下檢查）
+  const proposed: WeeklyTemplateLike[] = rows
+    .filter((r) => !(change.id && r.id === change.id))
+    // 沒帶 id 的新增走 upsert 語意：同週幾＋同診別＋同醫師視為同一列
+    .filter(
+      (r) =>
+        !(
+          !change.id &&
+          r.weekday === change.weekday &&
+          r.session === change.session &&
+          r.doctorId === change.doctorId
+        ),
+    );
+  if (!change.remove) proposed.push({ ...change });
+
+  const affected = await findAppointmentsOutsideSchedule({
+    fromDate: opts.today,
+    templates: proposed,
+    activeDoctorIds,
+  });
+  if (affected.length > 0 && !opts.cancelAffected) return { affected };
+
+  await prisma.$transaction(
+    async (tx) => {
+      for (const appt of affected) {
+        await cancelAppointmentTx(tx, {
+          appointmentId: appt.id,
+          actor,
+          byPatient: false,
+          reason: opts.cancelReason ?? "門診時間異動",
+        });
+      }
+      const data = {
+        weekday: change.weekday,
+        session: change.session,
+        startTime: change.startTime,
+        endTime: change.endTime,
+        doctorId: change.doctorId,
+        slotCapacity: change.slotCapacity,
+        allowOnline: change.allowOnline,
+        isActive: change.isActive,
+      };
+      if (change.remove) {
+        if (change.id) await tx.weeklyScheduleTemplate.delete({ where: { id: change.id } });
+        return;
+      }
+      if (change.id) {
+        await tx.weeklyScheduleTemplate.update({ where: { id: change.id }, data });
+        return;
+      }
+      await tx.weeklyScheduleTemplate.upsert({
+        where: {
+          weekday_session_doctorId: {
+            weekday: change.weekday,
+            session: change.session,
+            doctorId: change.doctorId,
+          },
+        },
+        create: data,
+        update: data,
+      });
+    },
+    { timeout: 30000 },
+  );
+
+  await writeAudit(
+    actor,
+    change.remove ? "schedule.template.delete" : "schedule.template.upsert",
+    { type: "weekly_schedule_template", id: change.id ?? "new" },
+    { ...change, cancelledAffected: affected.length },
+  );
+  return { ok: true };
 }
 
 export async function deleteScheduleException(id: string, actor: AuditActor) {
