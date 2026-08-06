@@ -640,8 +640,12 @@ def main():
         print(f"  [i] tailwind.css：解析出 {len(tailwind_defined)} 個 class 選擇器")
 
     html_files = {}
+    # booking-system 是獨立部署的 Next.js 應用、不是官網頁面（_redirects §5 已擋成 404），
+    # 官網政策（PWA 掛載、sitemap、twitter:card、lang）對它不適用；
+    # 其 next build 產物 .next/ 也不進版控，只要有人在本機建置過就會誤報 ERROR。
+    skip_segments = ("tools", "archive", "node_modules", "booking-system", ".next")
     for p in sorted(root.rglob("*.html")):
-        if any(seg in ("tools", "archive", "node_modules") for seg in p.parts):
+        if any(seg in skip_segments for seg in p.parts):
             continue
         rel = str(p.relative_to(root))
         html_files[rel] = check_html(p, rel, root, rep, args.stage,

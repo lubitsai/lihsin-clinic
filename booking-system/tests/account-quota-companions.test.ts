@@ -2,12 +2,16 @@
  * 院長 2026-08-01 裁示：
  * D7 額度以「預約帳號」計算、D8 超額時擋下（不自動取消）、D9 家庭代表預約。
  */
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { prisma } from "@/lib/db";
 import { createAppointment, cancelAppointment, rescheduleAppointment } from "@/lib/booking";
-import { resetDb, seedBase, makePatient, futureDate, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
+import { resetDb, seedBase, makePatient, futureDate, todayStr, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
 
 const ACCOUNT = "phone:0912345678";
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe("D7 額度以預約帳號計算", () => {
   beforeEach(resetDb);
@@ -39,6 +43,10 @@ describe("D7 額度以預約帳號計算", () => {
   });
 
   it("當日的預約不計入帳號額度", async () => {
+    // 固定在當天早上再測——這裡要驗的是「當日不計入額度」，
+    // 不凍結時間的話，傍晚之後跑會先被「時段前 4 小時」擋掉而誤判為失敗。
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(`${todayStr()}T08:00:00.000+08:00`));
     const { drTsai, drLee, general } = await seedBase();
     // 未來兩筆＝額度已滿
     for (const day of [2, 3]) {
