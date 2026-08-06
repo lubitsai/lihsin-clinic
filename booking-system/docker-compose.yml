@@ -30,7 +30,9 @@ services:
     ports:
       - "127.0.0.1:3000:3000" # 由反向代理（Caddy/Nginx）對外提供 HTTPS
 
-  # 每日提醒排程（day-before 19:00、same-day 08:00，時間可依系統設定調整）
+  # 看診提醒排程。院長 2026-08-05 裁示：只發一次，前一日 20:00（當日提醒已於後台關閉）。
+  # 容器內自帶 TZ=Asia/Taipei，不受主機時區影響；enqueueReminders 有防重複，跑到兩次也不會重複發。
+  # 若日後於後台開啟「當日提醒」，在下方 while 迴圈內加一行對應時間的 same-day 即可。
   reminder:
     build: .
     restart: unless-stopped
@@ -43,8 +45,7 @@ services:
     entrypoint: >
       /bin/sh -c "while true; do
         H=$$(TZ=Asia/Taipei date +%H:%M);
-        if [ \"$$H\" = \"19:00\" ]; then node node_modules/tsx/dist/cli.mjs scripts/send-reminders.ts day-before; fi;
-        if [ \"$$H\" = \"08:00\" ]; then node node_modules/tsx/dist/cli.mjs scripts/send-reminders.ts same-day; fi;
+        if [ \"$$H\" = \"20:00\" ]; then node node_modules/tsx/dist/cli.mjs scripts/send-reminders.ts day-before; fi;
         sleep 60;
       done"
 
