@@ -375,18 +375,15 @@ async function assertClinicTypeBookable(
  * 未來日期一律還沒開診；查不到診次開診時間（例如班表外手動加開的時段）時，
  * 退回設定的 booking.cancel_cutoff_minutes 分鐘數，避免完全沒有截止。
  *
- * 另有一道與診次無關的底線（院長 2026-08-06 裁示）：預約時段本身開始後就不能再自行
- * 取消或改期。班表沒動過時這道線不會先觸發（開診時間必早於或等於時段時間），它擋的是
- * 「預約還在、班表卻改掉了」——早診由 08:00 改為 09:00 後（官網門診時間異動後跑
- * sync_schedule 就會這樣改），既有的 08:00 預約落在所有區間之外，只能粗分回早診，
- * 而早診 09:00 才開診，沒有這道線的話 08:30（時段已過）還取消得掉。詳見 docs/09 D11。
+ * 截止一律以**診次**為單位（院長 2026-08-06 確認）：診次開始後就停止取消該診次的預約，
+ * 不看個別時段的時間。曾短暫加過一道「時段開始就擋」的底線，已依裁示移除——班表改動後
+ * 落在區間外的預約（例如早診由 08:00 改為 09:00，既有的 08:00 預約）診所當下根本沒在
+ * 看診，擋住家長取消只會把他推向未到記點。理由見 docs/09 D11。
  */
 async function assertCancelCutoff(tx: Tx, date: string, startTime: string) {
   const today = todayStr();
   if (date > today) return;
   if (date < today) throw new BookingError("CUTOFF_PASSED", MSG.cutoffPassed);
-
-  if (nowTimeStr() >= startTime) throw new BookingError("CUTOFF_PASSED", MSG.slotStarted);
 
   const blocks = await getDayScheduleBlocks(date, tx);
   const sessionStart = sessionStartsOf(blocks).get(sessionOfSlot(blocks, startTime));

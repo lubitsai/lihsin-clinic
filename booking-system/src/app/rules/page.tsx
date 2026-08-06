@@ -79,7 +79,6 @@ export default async function RulesPage() {
           <ul className="list-disc list-inside space-y-1.5 text-ink-900 leading-relaxed">
             <li>該診次開診前，都可以在預約系統自行取消或改期。</li>
             <li>該診次開診後，就無法再取消當診的預約，如有需要請致電 {CLINIC.phone}。</li>
-            <li>預約時段開始後，一律停止取消，如有需要請致電 {CLINIC.phone}。</li>
             <li>該診次開診後臨時不能來、當天也沒有到診，這筆會列為 1 次未到。</li>
             <li>
               逾時報到、但當天仍有來看診：重新抽現場號後由櫃檯註記，<strong>不列為未到</strong>。

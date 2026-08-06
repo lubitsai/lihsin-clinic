@@ -4,7 +4,7 @@
  *  - 該診次開診前都可自行取消或改期，開診後不行
  *  - 門診類型可預約時間窗（兒童發展篩檢逐日不同）
  * 這三條在 docs/09 分別是 D2／D4／發展篩檢施測時間。
- * 另加院長 2026-08-06 新增的「時段開始後停止取消預約」（docs/09 D11）。
+ * 另加院長 2026-08-06 確認的「取消截止一律以診次為單位」（docs/09 D11）。
  */
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { prisma } from "@/lib/db";
@@ -121,15 +121,17 @@ describe("取消／改期以該診次開診時間為準（D4）", () => {
   });
 });
 
-describe("時段開始後停止取消（院長 2026-08-06 新增）", () => {
+/**
+ * 院長 2026-08-06 確認：截止一律以**診次**為單位，不看個別時段的時間。
+ * 這裡釘住最容易被「順手修掉」的一種情形——班表改動後落在區間外的預約：
+ * 早診原本 08:00 開始、之後改成 09:00（官網門診時間異動後跑 sync_schedule 就會這樣改），
+ * 已成立的 08:00 預約落在所有班表區間之外，判斷診次時粗分回早診，而早診 09:00 才開診。
+ * 08:30 時「時段已過、診次未開」——依裁示**仍可取消**：診所當下根本沒在看診，
+ * 擋住家長只會把他推向未到記點。
+ */
+describe("取消截止一律以診次為單位（院長 2026-08-06 確認）", () => {
   beforeEach(resetDb);
 
-  /**
-   * 這條規則擋的是「預約還在、班表卻改掉了」：早診原本 08:00 開始，改成 09:00
-   * （官網門診時間異動後跑 sync_schedule 就會這樣改），已成立的 08:00 預約會落在
-   * 所有班表區間之外，判斷診次時只能依時間粗分回早診，而早診現在 09:00 才開診。
-   * 只看開診時間的話，08:30（時段已經開始 30 分鐘）還取消得掉。
-   */
   /** 於 08:00 成立一筆預約（此時早診仍是 08:00 開始，所以約得到） */
   async function bookAtEight(doctorId: string, clinicTypeId: string, today: string) {
     freezeTaipei(today, "07:00");
@@ -149,7 +151,7 @@ describe("時段開始後停止取消（院長 2026-08-06 新增）", () => {
     });
   }
 
-  it("班表改動後被落在區間外的預約，時段開始後就不能自行取消", async () => {
+  it("班表改動後落在區間外的預約：診次未開診就仍可取消，開診後才擋", async () => {
     const { general, drTsai, drLee } = await seedBase();
     const today = todayStr();
     // 每位醫師每時段 1 名，兩筆分掛兩位醫師
@@ -157,31 +159,27 @@ describe("時段開始後停止取消（院長 2026-08-06 新增）", () => {
     const second = await bookAtEight(drLee.id, general.id, today);
     await moveMorningTo0900();
 
-    // 07:30：時段還沒開始、早診（已改為 09:00）也還沒開診 → 仍可自行改期
-    freezeTaipei(today, "07:30");
+    // 08:30：時段時間已過，但早診（已改為 09:00）還沒開診 → 依裁示仍可自行取消
+    freezeTaipei(today, "08:30");
     clearSettingsCache();
     await expect(
-      rescheduleAppointment({
-        appointmentId: first.id, newDoctorId: drTsai.id,
-        newDate: futureDate(2), newStartTime: "10:00",
-        actor: PATIENT_ACTOR, byPatient: true,
-      }),
+      cancelAppointment({ appointmentId: first.id, actor: PATIENT_ACTOR, byPatient: true }),
     ).resolves.toBeTruthy();
 
-    // 08:30：時段已開始、但早診 09:00 才開診 → 擋下（沒有這條規則就會放行）
-    freezeTaipei(today, "08:30");
+    // 09:30：早診已開診 → 擋下
+    freezeTaipei(today, "09:30");
     clearSettingsCache();
     await expect(
       cancelAppointment({ appointmentId: second.id, actor: PATIENT_ACTOR, byPatient: true }),
     ).rejects.toMatchObject({ code: "CUTOFF_PASSED" });
   });
 
-  it("櫃檯不受此限，時段開始後仍可代為取消", async () => {
+  it("櫃檯不受此限，診次開診後仍可代為取消", async () => {
     const { general, drTsai } = await seedBase();
     const today = todayStr();
     const appointment = await bookAtEight(drTsai.id, general.id, today);
     await moveMorningTo0900();
-    freezeTaipei(today, "08:30");
+    freezeTaipei(today, "09:30");
     clearSettingsCache();
     const r = await cancelAppointment({
       appointmentId: appointment.id, actor: STAFF_ACTOR, byPatient: false, reason: "家長來電",
