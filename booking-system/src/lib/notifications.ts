@@ -39,7 +39,12 @@ function buildMessage(
     case "CANCELLED":
       return `${base}您在${CLINIC.name}的預約（編號 ${appt.bookingNumber}）已取消。如需重新預約歡迎使用線上預約，或致電 ${CLINIC.phone}。`;
     case "REMINDER_DAY_BEFORE":
-      return `${base}提醒您明天在${CLINIC.name}有預約。\n${info}\n如無法前來，請提前線上取消或致電 ${CLINIC.phone}，以免影響後續預約權益。`;
+      // 目前是唯一一次提醒（當日提醒已關閉），故報到規則寫在這裡
+      return (
+        `${base}提醒您明天在${CLINIC.name}有預約。\n${info}\n` +
+        `請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。\n` +
+        `如無法前來，請提前線上取消或致電 ${CLINIC.phone}，以免影響後續預約權益。`
+      );
     case "REMINDER_SAME_DAY":
       // 官網公告：時段開始後保留 N 分鐘，報到時要主動告知櫃檯（系統不會自動跳通知）
       return `${base}提醒您今天在${CLINIC.name}有預約。\n${info}\n請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
