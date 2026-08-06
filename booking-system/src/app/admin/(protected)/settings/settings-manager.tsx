@@ -193,18 +193,16 @@ function HolidayCard({
     <Card className="space-y-3">
       <h2 className="font-bold text-sage-700">國定假日行事曆</h2>
       <p className="text-sm text-ink-700 leading-relaxed">
-        依行政院人事行政總處「政府行政機關辦公日曆表」。診所國定假日多半照常看診，
-        只有下列門診當天不開放預約：
+        依行政院人事行政總處「政府行政機關辦公日曆表」，收錄表上<strong>所有放假日</strong>
+        （含一般例假日）。診所放假日多半照常看診，只有下列門診當天不開放預約：
         <strong>{affected.length > 0 ? affected.map((t) => t.name).join("、") : "（目前無）"}</strong>
         。可在下方「門診類型」逐科勾選。
       </p>
 
       {holidays.count === 0 ? (
         <Alert tone="warn">
-          <p className="font-bold mb-1">尚未匯入國定假日</p>
-          <p>
-            在假日清單匯入前，國定假日當天這些門診仍會開放預約。請下載官方日曆表 CSV 後於主機執行：
-          </p>
+          <p className="font-bold mb-1">尚未匯入放假日行事曆</p>
+          <p>在匯入前，放假日當天這些門診仍會開放預約。請下載官方日曆表 CSV 後於主機執行：</p>
           <code className="block mt-1 text-sm">npx tsx scripts/import-holidays.ts 檔案.csv --source dgpa-115</code>
         </Alert>
       ) : (

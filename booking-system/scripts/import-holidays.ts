@@ -6,7 +6,7 @@
  * 官方 CSV 欄位：`西元日期,星期,是否放假,備註`
  *   - 是否放假：0＝上班、2＝放假
  *   - 備註：假日名稱（一般週末為空白）
- * 只收「放假且備註非空」的日子——週末不必入表，週末本來就沒有篩檢時段。
+ * **所有放假日都收**（含一般例假日）——院長 2026-08-05 指示：放假日一律不做兒童發展篩檢。
  *
  * 也接受手動維護的簡易格式，每行 `YYYY-MM-DD,假日名稱`（可用 # 開頭寫註解）。
  *
@@ -17,61 +17,16 @@
  */
 import { PrismaClient } from "@prisma/client";
 import { readFileSync } from "node:fs";
+import { parseHolidayFile, upsertHolidays } from "../src/lib/holidays";
 
 const prisma = new PrismaClient();
 
-interface Row {
-  date: string;
-  name: string;
-}
-
-/** 官方 CSV 的日期可能是 20260101 或 2026/1/1 或 2026-01-01 */
-function normaliseDate(raw: string): string | null {
-  const v = raw.trim().replace(/^"|"$/g, "");
-  let m = v.match(/^(\d{4})(\d{2})(\d{2})$/);
-  if (m) return `${m[1]}-${m[2]}-${m[3]}`;
-  m = v.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/);
-  if (m) return `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}`;
-  return null;
-}
-
-function parse(text: string): Row[] {
-  const rows: Row[] = [];
-  // 官方檔常帶 BOM，不去掉會讓第一欄比對失敗
-  const lines = text.replace(/^﻿/, "").split(/\r?\n/);
-  let skippedWorkdays = 0;
-  let skippedWeekends = 0;
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith("#")) continue;
-    const cols = trimmed.split(",").map((c) => c.trim().replace(/^"|"$/g, ""));
-    const date = normaliseDate(cols[0]);
-    if (!date) continue; // 標題列或空行
-
-    if (cols.length >= 4) {
-      // 官方格式：西元日期,星期,是否放假,備註
-      const isHoliday = cols[2] === "2";
-      const name = cols[3];
-      if (!isHoliday) {
-        skippedWorkdays++;
-        continue;
-      }
-      if (!name) {
-        skippedWeekends++; // 放假但沒有假日名稱＝一般週末
-        continue;
-      }
-      rows.push({ date, name });
-    } else if (cols.length >= 2 && cols[1]) {
-      // 簡易格式：YYYY-MM-DD,假日名稱
-      rows.push({ date, name: cols[1] });
-    }
-  }
-
+function parse(text: string) {
+  const { rows, skippedWorkdays, skippedWeekends } = parseHolidayFile(text);
   console.log(
     `解析完成：假日 ${rows.length} 天` +
       (skippedWorkdays ? `，略過上班日 ${skippedWorkdays} 天` : "") +
-      (skippedWeekends ? `，略過一般週末 ${skippedWeekends} 天` : ""),
+      (skippedWeekends ? `（其中一般例假日 ${skippedWeekends} 天）` : ""),
   );
   return rows;
 }
@@ -131,21 +86,7 @@ async function main() {
     console.log(`已清除 ${replaceYearArg} 年既有資料 ${removed.count} 筆`);
   }
 
-  let created = 0;
-  let updated = 0;
-  for (const r of rows) {
-    const date = new Date(`${r.date}T00:00:00.000Z`);
-    const existing = await prisma.publicHoliday.findUnique({ where: { date } });
-    if (existing) {
-      if (existing.name !== r.name || existing.source !== source) {
-        await prisma.publicHoliday.update({ where: { date }, data: { name: r.name, source } });
-        updated++;
-      }
-    } else {
-      await prisma.publicHoliday.create({ data: { date, name: r.name, source } });
-      created++;
-    }
-  }
+  const { created, updated } = await upsertHolidays(rows, source);
   console.log(`匯入完成：新增 ${created}、更新 ${updated}（來源標記 ${source}）`);
   await list();
   console.log(

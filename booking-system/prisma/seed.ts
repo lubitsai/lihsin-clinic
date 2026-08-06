@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 // 權限矩陣單一來源：authz.ts（此檔與 create-admin 腳本皆由此匯入，避免三份副本漂移）
 import { ROLE_PERMISSIONS } from "../src/lib/auth/authz";
 import { applySchedule, loadScheduleSource } from "../src/lib/schedule-source";
+import { importBundledHolidays } from "../src/lib/holidays";
 import { todayStr } from "../src/lib/tw-time";
 
 const prisma = new PrismaClient();
@@ -126,6 +127,12 @@ async function main() {
       `單日例外 ${applied.exceptionsApplied} 筆`,
   );
   for (const w of applied.warnings) console.log(`  ⚠️ ${w}`);
+
+  // 國定假日：匯入隨程式碼附帶的日曆表（prisma/holidays/*.csv），新部署即內建
+  const hol = await importBundledHolidays();
+  console.log(
+    `國定假日已匯入 ${hol.files} 個年度檔：新增 ${hol.created}、更新 ${hol.updated}`,
+  );
 
   // 角色與測試帳號（正式環境務必改密碼或改用 create-admin 腳本）
   for (const [code, permissions] of Object.entries(ROLE_PERMISSIONS)) {
