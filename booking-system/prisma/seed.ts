@@ -43,10 +43,11 @@ async function main() {
     {
       code: "DEVELOPMENT", name: "兒童發展篩檢", color: "#8B5E3C", icon: "growth", displayOrder: 2,
       doctorIds: bothDoctors,
-      description: "兒童發展評估與篩檢（需櫃檯確認）",
+      description: "兒童發展評估與篩檢",
       // 施測規則（健保卡＋手冊、一時段一位、矯正年齡）同樣由 clinic-notes.ts 固定顯示
-      notice: "送出後需櫃檯確認才成立。",
-      requiresReview: true,
+      notice: "",
+      // 院長 2026-08-05：特別門診與一般門診一樣，送出即成立、不需櫃檯確認
+      requiresReview: false,
       // 施測時間改由下方 windows 表達（逐日不同），故粗篩留空
       allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
       maxAgeMonths: 84,
@@ -67,19 +68,20 @@ async function main() {
     {
       code: "WEIGHT", name: "減重特別門診", color: "#E0592A", icon: "scale", displayOrder: 3,
       doctorIds: [drTsai.id], // 僅蔡醫師
-      description: "體重管理特別門診（需櫃檯確認）",
-      notice: "初診請預留較長看診時間；送出後需櫃檯確認才成立。",
+      description: "體重管理特別門診",
+      notice: "初診請預留較長看診時間。",
       // 院長 2026-08-05：蔡醫師有開診的時段皆開放 → 不另設星期／診別，
-      // 可預約時段直接跟著蔡醫師的班表走（門診醫師名單已限定只有蔡醫師）
-      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
+      // 可預約時段直接跟著蔡醫師的班表走（門診醫師名單已限定只有蔡醫師）；
+      // 同日裁示：送出即成立、不需櫃檯確認
+      requiresReview: false, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
     {
       code: "ALLERGY", name: "過敏特別門診", color: "#3d7a4e", icon: "allergy", displayOrder: 4,
       doctorIds: [drTsai.id], // 僅蔡醫師
-      description: "兒童過敏、氣喘評估與檢測（需櫃檯確認）",
-      notice: "如需過敏原檢測，請先電話詢問空腹等注意事項；送出後需櫃檯確認才成立。",
-      // 同減重：跟著蔡醫師的班表走
-      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
+      description: "兒童過敏、氣喘評估與檢測",
+      notice: "如需過敏原檢測，請先電話詢問空腹等注意事項。",
+      // 同減重：跟著蔡醫師的班表走、送出即成立
+      requiresReview: false, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
   ];
   for (const t of clinicTypes) {
@@ -171,9 +173,35 @@ async function main() {
     update: {},
   });
 
+  // 醫師唯讀帳號（院長 2026-08-05 裁示啟用）：只能看自己的預約，不能代約／改期／取消
+  const doctorRole = await prisma.staffRole.findUniqueOrThrow({
+    where: { code: "DOCTOR_READONLY" },
+  });
+  const doctorPassword = process.env.SEED_DOCTOR_PASSWORD ?? "lihsin-doctor-2026";
+  const doctorAccounts = [
+    { username: "dr-tsai", displayName: "蔡宗儒醫師", doctorId: drTsai.id },
+    { username: "dr-lee", displayName: "李佳玲醫師", doctorId: drLee.id },
+  ];
+  for (const a of doctorAccounts) {
+    await prisma.staffUser.upsert({
+      where: { username: a.username },
+      create: {
+        username: a.username,
+        displayName: a.displayName,
+        passwordHash: await bcrypt.hash(doctorPassword, 12),
+        roleId: doctorRole.id,
+        doctorId: a.doctorId,
+      },
+      update: {},
+    });
+  }
+
   console.log("Seed 完成：");
   console.log(`  管理員帳號 admin / ${adminPassword}`);
   console.log(`  櫃檯帳號 counter1 / ${staffPassword}`);
+  for (const a of doctorAccounts) {
+    console.log(`  醫師唯讀帳號 ${a.username}（${a.displayName}）/ ${doctorPassword}`);
+  }
   console.log("  ⚠️ 正式環境請立即修改密碼並為管理員啟用兩步驟驗證。");
 }
 

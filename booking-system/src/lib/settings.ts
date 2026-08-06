@@ -20,8 +20,9 @@ export const SETTING_DEFAULTS = {
   "booking.checkin_grace_minutes": 10, // 報到保留分鐘數（櫃檯總覽逾時標記用）
   "booking.default_slot_capacity": 1, // 每醫師每 30 分鐘預設線上名額
   "booking.allow_same_day": true, // 是否開放當日預約
-  "notify.same_day_reminder": true,
-  "notify.day_before_time": "19:00",
+  // 院長 2026-08-05 裁示：提醒只發一次，於前一日 20:00
+  "notify.same_day_reminder": false, // 當日提醒（關閉；開啟後於 same_day_time 發送）
+  "notify.day_before_time": "20:00",
   "notify.same_day_time": "08:00",
   "security.staff_idle_minutes": 30,
   "security.staff_session_hours": 12,
