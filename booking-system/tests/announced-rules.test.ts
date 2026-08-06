@@ -4,6 +4,7 @@
  *  - 該診次開診前都可自行取消或改期，開診後不行
  *  - 門診類型可預約時間窗（兒童發展篩檢逐日不同）
  * 這三條在 docs/09 分別是 D2／D4／發展篩檢施測時間。
+ * 另加院長 2026-08-06 新增的「時段開始後停止取消預約」（docs/09 D11）。
  */
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { prisma } from "@/lib/db";
@@ -112,6 +113,73 @@ describe("取消／改期以該診次開診時間為準（D4）", () => {
       patientInput: makePatient(), source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
     });
     freezeTaipei(today, "18:35");
+    clearSettingsCache();
+    const r = await cancelAppointment({
+      appointmentId: appointment.id, actor: STAFF_ACTOR, byPatient: false, reason: "家長來電",
+    });
+    expect(r.status).toBe("CANCELLED_BY_CLINIC");
+  });
+});
+
+describe("時段開始後停止取消（院長 2026-08-06 新增）", () => {
+  beforeEach(resetDb);
+
+  /**
+   * 這條規則擋的是「班表外手動加開的時段」：13:00 不在任何班表區間內，
+   * 會被歸到午診，而午診 14:30 才開診——只看開診時間的話，13:30
+   * （時段已經開始 30 分鐘）還取消得掉。
+   */
+  async function addManualSlotAt1300(doctorId: string, today: string) {
+    await prisma.appointmentSlot.create({
+      data: {
+        doctorId, date: dateToDb(today), startTime: "13:00", endTime: "13:30",
+        capacity: 1, source: "MANUAL", reason: "櫃檯加開",
+      },
+    });
+  }
+
+  async function bookManualSlotAt1300(doctorId: string, clinicTypeId: string, today: string) {
+    freezeTaipei(today, "09:00");
+    clearSettingsCache();
+    const { appointment } = await createAppointment({
+      clinicTypeId, doctorId, date: today, startTime: "13:00",
+      patientInput: makePatient(), source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
+    });
+    return appointment;
+  }
+
+  it("班表外加開的時段，開始後民眾就不能自行取消", async () => {
+    const { general, drTsai } = await seedBase();
+    const today = todayStr();
+    await addManualSlotAt1300(drTsai.id, today);
+    const appointment = await bookManualSlotAt1300(drTsai.id, general.id, today);
+
+    // 12:59 還沒開始 → 仍可取消
+    freezeTaipei(today, "12:59");
+    clearSettingsCache();
+    await expect(
+      rescheduleAppointment({
+        appointmentId: appointment.id, newDoctorId: drTsai.id,
+        newDate: futureDate(2), newStartTime: "09:00",
+        actor: PATIENT_ACTOR, byPatient: true,
+      }),
+    ).resolves.toBeTruthy();
+
+    // 另建一筆，13:30（時段已開始、但午診 14:30 才開診）→ 擋下
+    const second = await bookManualSlotAt1300(drTsai.id, general.id, today);
+    freezeTaipei(today, "13:30");
+    clearSettingsCache();
+    await expect(
+      cancelAppointment({ appointmentId: second.id, actor: PATIENT_ACTOR, byPatient: true }),
+    ).rejects.toMatchObject({ code: "CUTOFF_PASSED" });
+  });
+
+  it("櫃檯不受此限，時段開始後仍可代為取消", async () => {
+    const { general, drTsai } = await seedBase();
+    const today = todayStr();
+    await addManualSlotAt1300(drTsai.id, today);
+    const appointment = await bookManualSlotAt1300(drTsai.id, general.id, today);
+    freezeTaipei(today, "13:30");
     clearSettingsCache();
     const r = await cancelAppointment({
       appointmentId: appointment.id, actor: STAFF_ACTOR, byPatient: false, reason: "家長來電",
