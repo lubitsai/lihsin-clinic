@@ -67,6 +67,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lhpedclinic.com.tw/news/flu-vaccine-doses-2026.html</loc>
+    <lastmod>2026-08-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://lhpedclinic.com.tw/news/covid-19-2026.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/covid-19-2026-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
@@ -378,7 +384,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/flu-vaccine.html</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
