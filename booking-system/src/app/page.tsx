@@ -4,7 +4,7 @@ import { todayStr, addDays, formatDateTw } from "@/lib/tw-time";
 import { getDayScheduleBlocks, SESSION_LABEL } from "@/lib/schedule";
 import { dateToDb } from "@/lib/tw-time";
 import { CLINIC } from "@/lib/clinic-info";
-import { Card, DeerMascot, Alert } from "@/components/ui";
+import { Card, Alert } from "@/components/ui";
 import { isLineLoginConfigured } from "@/lib/line";
 
 export const dynamic = "force-dynamic";
@@ -35,13 +35,28 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-sage-50">
       <div className="mx-auto max-w-2xl px-4 py-8 space-y-6">
-      <header className="flex items-center gap-4">
-        <DeerMascot size={72} />
-        <div>
-          <p className="text-wood-600 text-sm font-medium tracking-wide">{CLINIC.englishName}</p>
-          <h1 className="text-3xl font-bold text-sage-700">{CLINIC.name}線上預約</h1>
-          <p className="text-ink-700 mt-1">小鹿醫師團隊陪伴大小朋友安心就診</p>
-        </div>
+      {/*
+        封面橫幅（院長 2026-08-07 提供）。圖內已有診所名、英文名與標語，
+        故不再重複輸出頁首文字；H1 改為視覺隱藏但螢幕閱讀器讀得到。
+        width/height 必填以免版面跳動（CLS）；不用 next/image，
+        standalone 產物的圖片最佳化需要額外相依，這張圖已先壓好、沒必要。
+      */}
+      <header>
+        <h1 className="sr-only">
+          {CLINIC.name}線上預約（{CLINIC.englishName}）
+        </h1>
+        <picture>
+          <source type="image/webp" media="(max-width: 767px)" srcSet="/cover-768.webp" />
+          <source type="image/webp" srcSet="/cover.webp" />
+          <img
+            src="/cover.jpg"
+            width={1600}
+            height={840}
+            alt={`${CLINIC.name} ${CLINIC.englishName}：安心預約，溫暖照護`}
+            className="w-full rounded-2xl shadow-md"
+            fetchPriority="high"
+          />
+        </picture>
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
