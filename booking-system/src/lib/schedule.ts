@@ -112,6 +112,60 @@ export function applyExceptions(
   });
 }
 
+/** 週班表列所需欄位（Prisma 列與「尚未寫入的提案班表」皆相容） */
+export interface WeeklyTemplateLike {
+  weekday: number;
+  session: SessionPeriod;
+  startTime: string;
+  endTime: string;
+  doctorId: string;
+  slotCapacity: number;
+  allowOnline: boolean;
+  isActive: boolean;
+}
+
+/**
+ * 由週班表列推出某週幾的看診區間（尚未套用日期例外）。
+ * 唯一實作：實際班表與「改班表前的受影響預約模擬」共用，
+ * 模擬才會跟真的算出來一樣。
+ */
+export function blocksFromTemplates(
+  templates: WeeklyTemplateLike[],
+  weekday: number,
+  activeDoctorIds?: ReadonlySet<string>,
+): WorkingBlock[] {
+  return templates
+    .filter(
+      (t) =>
+        t.weekday === weekday &&
+        t.isActive &&
+        (!activeDoctorIds || activeDoctorIds.has(t.doctorId)),
+    )
+    .map((t) => ({
+      doctorId: t.doctorId,
+      session: t.session,
+      startTime: t.startTime,
+      endTime: t.endTime,
+      slotCapacity: t.slotCapacity,
+      allowOnline: t.allowOnline,
+    }));
+}
+
+/**
+ * 某醫師的某個時段是否仍落在看診區間內。
+ * 判斷「這筆預約會不會因為班表改動而失去時段」用；
+ * 日期例外與週班表兩條路共用同一個判準。
+ */
+export function isSlotCovered(
+  blocks: WorkingBlock[],
+  doctorId: string,
+  startTime: string,
+): boolean {
+  return blocks.some(
+    (b) => b.doctorId === doctorId && b.startTime <= startTime && startTime < b.endTime,
+  );
+}
+
 /** 計算某日期各醫師實際看診區間（已套用所有日期例外）。 */
 export async function getDayScheduleBlocks(date: string, tx?: Tx): Promise<WorkingBlock[]> {
   const db = tx ?? prisma;
@@ -123,16 +177,7 @@ export async function getDayScheduleBlocks(date: string, tx?: Tx): Promise<Worki
     db.scheduleException.findMany({ where: { date: dateToDb(date) } }),
   ]);
 
-  const blocks: WorkingBlock[] = templates.map((t) => ({
-    doctorId: t.doctorId,
-    session: t.session,
-    startTime: t.startTime,
-    endTime: t.endTime,
-    slotCapacity: t.slotCapacity,
-    allowOnline: t.allowOnline,
-  }));
-
-  return applyExceptions(blocks, exceptions);
+  return applyExceptions(blocksFromTemplates(templates, weekday), exceptions);
 }
 
 /**

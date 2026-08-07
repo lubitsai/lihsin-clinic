@@ -1,10 +1,11 @@
 /**
- * 看診提醒排程腳本：由 cron 每日執行兩次（時間依系統設定）。
+ * 看診提醒排程腳本。
+ * 現行設定（院長 2026-08-05）：**只發一次，前一日 20:00**。
  * 例（正式環境 crontab，台灣時間）：
- *   0 19 * * *  cd /app && npm run send-reminders -- day-before
- *   0 8  * * *  cd /app && npm run send-reminders -- same-day
- * 不帶參數時：兩種提醒都檢查（適合每小時跑一次的簡易設定，
- * enqueueReminders 有防重複，不會重複發送）。
+ *   0 20 * * *  cd /app && npm run send-reminders -- day-before
+ * 若日後於後台開啟「當日提醒」，再加一行 `-- same-day`（時間依系統設定）。
+ * 不帶參數時兩種都檢查；當日提醒關閉時 enqueueReminders 會直接略過，
+ * 且有防重複機制，不會重複發送。
  */
 import { enqueueReminders, dispatchPendingNotifications } from "../src/lib/notifications";
 import { todayStr, addDays } from "../src/lib/tw-time";

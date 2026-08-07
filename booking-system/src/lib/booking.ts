@@ -374,6 +374,11 @@ async function assertClinicTypeBookable(
  * 民眾自行取消／改期的截止時間（官網公告：該診次開診前都可以，開診後就不行）。
  * 未來日期一律還沒開診；查不到診次開診時間（例如班表外手動加開的時段）時，
  * 退回設定的 booking.cancel_cutoff_minutes 分鐘數，避免完全沒有截止。
+ *
+ * 截止一律以**診次**為單位（院長 2026-08-06 確認）：診次開始後就停止取消該診次的預約，
+ * 不看個別時段的時間。曾短暫加過一道「時段開始就擋」的底線，已依裁示移除——班表改動後
+ * 落在區間外的預約（例如早診由 08:00 改為 09:00，既有的 08:00 預約）診所當下根本沒在
+ * 看診，擋住家長取消只會把他推向未到記點。理由見 docs/09 D11。
  */
 async function assertCancelCutoff(tx: Tx, date: string, startTime: string) {
   const today = todayStr();

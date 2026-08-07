@@ -41,11 +41,13 @@ export const MSG = {
   sessionStarted:
     "這個診次已經開診，不再受理該診次的預約。今天要看診請直接到院現場掛號候診；其他日期與診次仍可正常預約。",
   // 官網公告：該診次開診前都可自行取消或改期，開診後就無法再取消當診的預約
+  // 院長 2026-08-06 確認：截止只以診次為單位，不另看個別時段時間，故只有這一句
   cutoffPassed: `這個診次已經開診，無法再自行取消或改期。如需協助請致電立欣診所 ${CLINIC.phone}。`,
   notFound: "查無符合的預約資料，請確認輸入內容。",
   identityMismatch: "查無符合的預約資料，請確認輸入內容。", // 與 notFound 相同,避免身分探測
   clinicTypeClosed: "此門診目前未開放線上預約，請致電立欣診所詢問。",
   // 官網公告：兒童發展篩檢「國定假日不施測」；一般門診當天照常
   holidayClosed: (clinicTypeName: string, holidayName: string) =>
-    `${holidayName}為國定假日，「${clinicTypeName}」當天不施測，請改選其他日期。當天一般門診仍照常看診。`,
+    `該日為行事曆上的放假日（${holidayName}），「${clinicTypeName}」當天不施測，` +
+    `請改選其他日期。當天一般門診仍照常看診。`,
 } as const;

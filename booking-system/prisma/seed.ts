@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 // 權限矩陣單一來源：authz.ts（此檔與 create-admin 腳本皆由此匯入，避免三份副本漂移）
 import { ROLE_PERMISSIONS } from "../src/lib/auth/authz";
 import { applySchedule, loadScheduleSource } from "../src/lib/schedule-source";
+import { importBundledHolidays } from "../src/lib/holidays";
 import { todayStr } from "../src/lib/tw-time";
 
 const prisma = new PrismaClient();
@@ -42,10 +43,11 @@ async function main() {
     {
       code: "DEVELOPMENT", name: "兒童發展篩檢", color: "#8B5E3C", icon: "growth", displayOrder: 2,
       doctorIds: bothDoctors,
-      description: "兒童發展評估與篩檢（需櫃檯確認）",
+      description: "兒童發展評估與篩檢",
       // 施測規則（健保卡＋手冊、一時段一位、矯正年齡）同樣由 clinic-notes.ts 固定顯示
-      notice: "送出後需櫃檯確認才成立。",
-      requiresReview: true,
+      notice: "",
+      // 院長 2026-08-05：特別門診與一般門診一樣，送出即成立、不需櫃檯確認
+      requiresReview: false,
       // 施測時間改由下方 windows 表達（逐日不同），故粗篩留空
       allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
       maxAgeMonths: 84,
@@ -66,19 +68,20 @@ async function main() {
     {
       code: "WEIGHT", name: "減重特別門診", color: "#E0592A", icon: "scale", displayOrder: 3,
       doctorIds: [drTsai.id], // 僅蔡醫師
-      description: "體重管理特別門診（需櫃檯確認）",
-      notice: "初診請預留較長看診時間；送出後需櫃檯確認才成立。",
+      description: "體重管理特別門診",
+      notice: "初診請預留較長看診時間。",
       // 院長 2026-08-05：蔡醫師有開診的時段皆開放 → 不另設星期／診別，
-      // 可預約時段直接跟著蔡醫師的班表走（門診醫師名單已限定只有蔡醫師）
-      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
+      // 可預約時段直接跟著蔡醫師的班表走（門診醫師名單已限定只有蔡醫師）；
+      // 同日裁示：送出即成立、不需櫃檯確認
+      requiresReview: false, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
     {
       code: "ALLERGY", name: "過敏特別門診", color: "#3d7a4e", icon: "allergy", displayOrder: 4,
       doctorIds: [drTsai.id], // 僅蔡醫師
-      description: "兒童過敏、氣喘評估與檢測（需櫃檯確認）",
-      notice: "如需過敏原檢測，請先電話詢問空腹等注意事項；送出後需櫃檯確認才成立。",
-      // 同減重：跟著蔡醫師的班表走
-      requiresReview: true, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
+      description: "兒童過敏、氣喘評估與檢測",
+      notice: "如需過敏原檢測，請先電話詢問空腹等注意事項。",
+      // 同減重：跟著蔡醫師的班表走、送出即成立
+      requiresReview: false, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
   ];
   for (const t of clinicTypes) {
@@ -120,12 +123,26 @@ async function main() {
   // 班表：以官網門診時間表為準，讀 prisma/schedule.json
   // （該檔由 internal/tools/sync_schedule.py 從 index.html 產生，勿手改）。
   // 與 scripts/sync-schedule.ts 共用同一段套用邏輯，避免初次建置與日後同步不一致。
+  // seed 通常跑在全新資料庫（沒有預約），受影響檢查不會擋下；
+  // 若在已有預約的環境重跑而被擋下，改用 scripts/sync-schedule.ts 處理受影響名單。
   const applied = await applySchedule(prisma, loadScheduleSource(), todayStr());
+  if (!applied.applied) {
+    throw new Error(
+      `班表未同步：有 ${applied.affected.length} 筆既有預約會落在新班表之外。` +
+        `請改跑 npx tsx scripts/sync-schedule.ts 查看名單並處理。`,
+    );
+  }
   console.log(
     `班表已依官網同步：新增 ${applied.created}、更新 ${applied.updated}、移除 ${applied.removed}、` +
       `單日例外 ${applied.exceptionsApplied} 筆`,
   );
   for (const w of applied.warnings) console.log(`  ⚠️ ${w}`);
+
+  // 國定假日：匯入隨程式碼附帶的日曆表（prisma/holidays/*.csv），新部署即內建
+  const hol = await importBundledHolidays();
+  console.log(
+    `國定假日已匯入 ${hol.files} 個年度檔：新增 ${hol.created}、更新 ${hol.updated}`,
+  );
 
   // 角色與測試帳號（正式環境務必改密碼或改用 create-admin 腳本）
   for (const [code, permissions] of Object.entries(ROLE_PERMISSIONS)) {
@@ -164,9 +181,35 @@ async function main() {
     update: {},
   });
 
+  // 醫師唯讀帳號（院長 2026-08-05 裁示啟用）：只能看自己的預約，不能代約／改期／取消
+  const doctorRole = await prisma.staffRole.findUniqueOrThrow({
+    where: { code: "DOCTOR_READONLY" },
+  });
+  const doctorPassword = process.env.SEED_DOCTOR_PASSWORD ?? "lihsin-doctor-2026";
+  const doctorAccounts = [
+    { username: "dr-tsai", displayName: "蔡宗儒醫師", doctorId: drTsai.id },
+    { username: "dr-lee", displayName: "李佳玲醫師", doctorId: drLee.id },
+  ];
+  for (const a of doctorAccounts) {
+    await prisma.staffUser.upsert({
+      where: { username: a.username },
+      create: {
+        username: a.username,
+        displayName: a.displayName,
+        passwordHash: await bcrypt.hash(doctorPassword, 12),
+        roleId: doctorRole.id,
+        doctorId: a.doctorId,
+      },
+      update: {},
+    });
+  }
+
   console.log("Seed 完成：");
   console.log(`  管理員帳號 admin / ${adminPassword}`);
   console.log(`  櫃檯帳號 counter1 / ${staffPassword}`);
+  for (const a of doctorAccounts) {
+    console.log(`  醫師唯讀帳號 ${a.username}（${a.displayName}）/ ${doctorPassword}`);
+  }
   console.log("  ⚠️ 正式環境請立即修改密碼並為管理員啟用兩步驟驗證。");
 }
 

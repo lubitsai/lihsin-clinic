@@ -16,6 +16,7 @@ import {
   adminDeleteException,
   adminSetSlotCapacity,
   adminCopyWeekExceptions,
+  type AffectedRow,
 } from "@/app/actions/admin";
 import { Card, Alert } from "@/components/ui";
 import { addDays, formatDateTw, todayStr, WEEKDAY_ZH as WEEKDAYS } from "@/lib/tw-time";
@@ -60,6 +61,17 @@ interface ExceptionDto {
   reason: string;
 }
 
+interface TemplateInput {
+  weekday: number;
+  session: SessionPeriod;
+  startTime: string;
+  endTime: string;
+  doctorId: string;
+  slotCapacity: number;
+  allowOnline: boolean;
+  isActive: boolean;
+}
+
 interface Props {
   templates: TemplateDto[];
   exceptions: ExceptionDto[];
@@ -73,6 +85,12 @@ export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }:
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [pending, startTransition] = useTransition();
+  // 週班表變更因為有預約會失去時段而被擋下：記著要重送的那一筆與受影響名單
+  const [templatePending, setTemplatePending] = useState<
+    | { kind: "save"; input: TemplateInput; affected: AffectedRow[] }
+    | { kind: "delete"; id: string; affected: AffectedRow[] }
+    | null
+  >(null);
 
   const doctorName = (id: string | null) => doctors.find((d) => d.id === id)?.name ?? "全部";
 
@@ -102,28 +120,62 @@ export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }:
       {message && <Alert tone="success">{message}</Alert>}
 
       {tab === "weekly" && (
-        <WeeklyEditor
-          templates={templates}
-          doctors={doctors}
-          pending={pending}
-          onSave={(input) =>
-            startTransition(async () => {
-              const r = await adminUpsertTemplate(input);
-              if (!r.ok) return setError(r.message);
-              setError("");
-              setMessage("班表已儲存");
-              router.refresh();
-            })
-          }
-          onDelete={(id) =>
-            startTransition(async () => {
-              if (!window.confirm("確定刪除此班表段落？")) return;
-              const r = await adminDeleteTemplate(id);
-              if (!r.ok) return setError(r.message);
-              router.refresh();
-            })
-          }
-        />
+        <>
+          <WeeklyEditor
+            templates={templates}
+            doctors={doctors}
+            pending={pending}
+            onSave={(input) =>
+              startTransition(async () => {
+                const r = await adminUpsertTemplate(input);
+                if (!r.ok) return setError(r.message);
+                setError("");
+                if (r.data && !r.data.applied) {
+                  // 有預約會失去時段——班表沒動，交由櫃檯決定怎麼處理
+                  setMessage("");
+                  return setTemplatePending({ kind: "save", input, affected: r.data.affected });
+                }
+                setMessage("班表已儲存");
+                router.refresh();
+              })
+            }
+            onDelete={(id) =>
+              startTransition(async () => {
+                if (!window.confirm("確定刪除此班表段落？")) return;
+                const r = await adminDeleteTemplate(id);
+                if (!r.ok) return setError(r.message);
+                setError("");
+                if (r.data && !r.data.applied) {
+                  setMessage("");
+                  return setTemplatePending({ kind: "delete", id, affected: r.data.affected });
+                }
+                setMessage("班表段落已刪除");
+                router.refresh();
+              })
+            }
+          />
+          {templatePending && (
+            <AffectedByTemplateChange
+              affected={templatePending.affected}
+              pending={pending}
+              onCancelAll={(reason) =>
+                startTransition(async () => {
+                  const opts = { cancelAffected: true, cancelReason: reason };
+                  const r =
+                    templatePending.kind === "save"
+                      ? await adminUpsertTemplate(templatePending.input, opts)
+                      : await adminDeleteTemplate(templatePending.id, opts);
+                  if (!r.ok) return setError(r.message);
+                  setTemplatePending(null);
+                  setError("");
+                  setMessage("已取消受影響預約、發送通知，班表變更生效");
+                  router.refresh();
+                })
+              }
+              onDismiss={() => setTemplatePending(null)}
+            />
+          )}
+        </>
       )}
 
       {tab === "exceptions" && (
@@ -195,16 +247,7 @@ function WeeklyEditor({
   templates: TemplateDto[];
   doctors: { id: string; name: string }[];
   pending: boolean;
-  onSave: (input: {
-    weekday: number;
-    session: SessionPeriod;
-    startTime: string;
-    endTime: string;
-    doctorId: string;
-    slotCapacity: number;
-    allowOnline: boolean;
-    isActive: boolean;
-  }) => void;
+  onSave: (input: TemplateInput) => void;
   onDelete: (id: string) => void;
 }) {
   const [form, setForm] = useState({
@@ -295,6 +338,74 @@ function WeeklyEditor({
         </p>
       </Card>
     </div>
+  );
+}
+
+/**
+ * 改常態班表被擋下時的處理面板。與日期例外同一套做法，差別是週班表會一次影響
+ * 未來多天，所以每列要顯示日期。
+ */
+function AffectedByTemplateChange({
+  affected,
+  pending,
+  onCancelAll,
+  onDismiss,
+}: {
+  affected: AffectedRow[];
+  pending: boolean;
+  onCancelAll: (reason: string) => void;
+  onDismiss: () => void;
+}) {
+  const [reason, setReason] = useState("門診時間異動");
+  return (
+    <Card className="border-rose-500/50 space-y-3">
+      <h3 className="font-bold text-rose-600">
+        ⚠️ 此班表變更影響 {affected.length} 筆有效預約，班表尚未變更
+      </h3>
+      <p className="text-sm text-ink-700">
+        這些預約會落在新班表的看診時間之外。請逐筆改期，或批次以「診所取消」處理並通知家長，
+        班表變更才會生效。
+      </p>
+      <ul className="divide-y divide-sage-200 max-h-96 overflow-y-auto">
+        {affected.map((a) => (
+          <li key={a.id} className="py-2 flex flex-wrap items-center gap-2">
+            <span className="font-bold">{formatDateTw(a.date)}</span>
+            <span className="font-mono">{a.time}</span>
+            <span className="font-bold">{a.patientName}</span>
+            <span className="text-ink-500">{a.phone}</span>
+            <span className="text-ink-300 text-sm">{a.bookingNumber}</span>
+            <Link
+              href={`/admin/booking?reschedule=${a.id}`}
+              className="ml-auto qbtn bg-wood-600 text-white"
+            >
+              逐筆改期
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <input
+        className="input"
+        placeholder="取消原因（會寫進通知）"
+        value={reason}
+        onChange={(e) => setReason(e.target.value)}
+      />
+      <div className="flex gap-2">
+        <button
+          onClick={() => {
+            if (!window.confirm(`將以「診所取消」處理 ${affected.length} 筆預約並發送通知，確定？`))
+              return;
+            onCancelAll(reason.trim() || "門診時間異動");
+          }}
+          disabled={pending || !reason.trim()}
+          className="btn-danger"
+        >
+          批次診所取消＋通知，並套用班表變更
+        </button>
+        <button onClick={onDismiss} className="btn-secondary">
+          先不變更
+        </button>
+      </div>
+    </Card>
   );
 }
 
