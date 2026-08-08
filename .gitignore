@@ -1,0 +1,19 @@
+# ===== 立欣診所官網 .gitignore =====
+# 用途：只排除「工具執行產生的 Python bytecode 快取」，不做其他事。
+#
+# ⚠️ 這份檔案刻意極簡，請勿擴充成一般專案的 .gitignore。
+#    同目錄的 `_gitignore` 是**已停用**的舊版（改名停用、並由 _redirects §5
+#    攔截）：它含有 `*.md` 與 `*.py` 規則，在今天會反過來把 internal/ 的
+#    制度文件與 internal/tools/ 的驗證腳本整批排除掉——那些都必須入版控
+#    供跨 session 接續使用。**不要把 `_gitignore` 的規則搬回來。**
+#
+# 背景：internal/tools/validate_site.py 被以模組方式 import 時（例如驗證
+#       可見文字是否逐字未變），Python 會寫出 __pycache__；該產物不屬於
+#       網站檔案，也從未入過版控。
+#
+# ⚠️ 整棵樹由 Netlify 公開部署：本檔已在 _redirects §5 加上 /.gitignore
+#    強制 404 攔截（既有規則只擋了 /gitignore 與 /_gitignore，沒有帶點的
+#    版本）。日後若再新增任何內部檔案，務必同步補攔截規則與 spot-check。
+
+__pycache__/
+*.pyc
