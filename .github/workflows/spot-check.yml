@@ -45,6 +45,9 @@ jobs:
           check /CLAUDE.md 404
           check_gone /health/README.md
           check /internal/00_%E5%B0%88%E6%A1%88%E7%B8%BD%E8%A6%BD%E7%B4%A2%E5%BC%95.md 404
+          # archive/ 內是 00 全文備份(§8-4 改檔前備份),與 internal/ 同等內部,
+          # 2026-08-08b 起入版控故必須攔截;此處抽測實際存在的備份檔。
+          check /archive/00_%E5%B0%88%E6%A1%88%E7%B8%BD%E8%A6%BD%E7%B4%A2%E5%BC%95_backup_20260808.md 404
           check /.github/workflows/spot-check.yml 404
           echo "=== 打錯字網址應乾淨 404(迴圈回歸防護)==="
           check_gone /health/no-such-page

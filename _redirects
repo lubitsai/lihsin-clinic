@@ -82,12 +82,17 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #    純內部開發/AI 協作用,不對外。
 #    CSP 草案批擴充(2026-07-28):新增 /_headers_proposed.txt——CSP
 #    草案入版控(原為院長端留存、未版控),非站點檔、不對外提供。
+#    archive 批擴充(2026-08-08b):新增 /archive/*——§8-4 要求改 00／01 前
+#    先備份,備份檔即 00 全文複本(內部制度文件)。此前 archive/ 從未進版控
+#    (備份是院長端接續包側做法),本批依院長裁示在 repo 內建立實體目錄,
+#    故必須同時攔截,否則等於把 00 全文公開部署(陷阱①)。
 #    .gitignore 批擴充(2026-08-08):新增 /.gitignore。原有規則只擋了
 #    /gitignore 與 /_gitignore(網頁上傳副產物與已停用的舊版),獨缺帶點
 #    的正式版;本批新增極簡 .gitignore(只排除 __pycache__/ 與 *.pyc)
 #    故一併補上攔截。純開發用設定檔、不對外提供。
 # ------------------------------------------------------------
 /internal/*    /404.html  404!
+/archive/*     /404.html  404!
 /_headers_proposed.txt  /404.html  404!
 /booking-system/*  /404.html  404!
 /.claude/*     /404.html  404!
