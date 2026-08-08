@@ -170,18 +170,5 @@
       }
     ]
   },
-  "exceptions": {
-    "2026-07-31": [
-      {
-        "session": "AFTERNOON",
-        "start": "14:30",
-        "end": "18:00"
-      },
-      {
-        "session": "EVENING",
-        "start": "18:30",
-        "end": "21:30"
-      }
-    ]
-  }
+  "exceptions": {}
 }
