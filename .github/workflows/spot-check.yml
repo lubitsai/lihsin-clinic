@@ -73,4 +73,13 @@ jobs:
           if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
           v=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '分齡族群速查' || true)
           if [ "$v" -ge 1 ]; then echo "OK    vaccination hub『分齡族群速查』已上線"; else echo "FAIL  vaccination hub 內容未見"; fail=1; fi
+          # 反向抽驗(2026-08-08 新增):本站沒有站內搜尋功能——全站 <form>／
+          # type="search"／role="search" 命中數為 0。首頁 WebSite schema 曾宣告
+          # SearchAction 指向 /?s={search_term_string},屬 AP9 同類病灶(結構化
+          # 資料指向不存在的標的),且會招來爬蟲抓 ?s= 查詢字串網址、在 GSC 堆出
+          # 「替代頁面(有適當的標準標記)」。已於 PR #76 移除,此處盯住不讓它復活。
+          # ⚠️ 這是「期望為 0」的反向檢查,與上面兩條方向相反,勿誤刪或改成 -ge 1。
+          # 若日後真的做了站內搜尋,必須連同 SearchAction 一起補回,並改寫本檢查。
+          s=$(curl -s --max-time 20 "$BASE/" | grep -c 'SearchAction' || true)
+          if [ "$s" -eq 0 ]; then echo "OK    首頁無 SearchAction(不存在的搜尋端點未復活)"; else echo "FAIL  首頁出現 SearchAction × $s——schema 宣告了本站沒有的搜尋功能"; fail=1; fi
           exit $fail
