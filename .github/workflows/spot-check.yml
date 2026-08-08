@@ -40,6 +40,7 @@ jobs:
           check /mcp.json 404
           check /gitignore 404
           check /_gitignore 404
+          check /.gitignore 404
           check /.mcp.json 404
           check /CLAUDE.md 404
           check_gone /health/README.md
