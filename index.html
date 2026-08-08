@@ -672,7 +672,12 @@
  "url": "https://www.taso.org.tw"
  }
  ],
- "memberOf": {"@id": "https://lhpedclinic.com.tw/#organization"},
+ "memberOf": [
+ {"@id": "https://lhpedclinic.com.tw/#organization"},
+ {"@type": "Organization", "name": "台灣兒科醫學會", "url": "https://www.pediatr.org.tw/"},
+ {"@type": "Organization", "name": "台灣兒童過敏氣喘免疫及風濕病醫學會", "url": "https://www.air.org.tw/"}
+ ],
+ "colleague": {"@id": "https://lhpedclinic.com.tw/#physician-lee"},
  "knowsAbout": [
  {"@type": "MedicalCondition", "name": "兒童過敏"},
  {"@type": "MedicalCondition", "name": "兒童氣喘"},
@@ -733,6 +738,11 @@
  "description": "立欣診所主治醫師，具國防醫學院醫學士、國泰綜合醫院新生兒次專科研究醫師、台北禾馨民權婦幼診所兒科主治醫師、國泰綜合醫院兒科主治醫師等資歷，專長新生兒照護與小兒成長發育。",
  "url": "https://lhpedclinic.com.tw/team/dr-lee.html",
  "mainEntityOfPage": "https://lhpedclinic.com.tw/team/dr-lee.html",
+ "sameAs": [
+ "https://www.facebook.com/lhpedclinic",
+ "https://www.instagram.com/lhpedclinic"
+ ],
+ "colleague": {"@id": "https://lhpedclinic.com.tw/#physician-tsai"},
  "medicalSpecialty": [
  "Pediatric"
  ],
@@ -1908,12 +1918,7 @@
  "employee": [
  {"@id": "https://lhpedclinic.com.tw/#physician-tsai"},
  {"@id": "https://lhpedclinic.com.tw/#physician-lee"}
- ],
- "parentOrganization": {
- "@type": "Organization",
- "name": "台灣兒科醫學會",
- "url": "https://www.pediatr.org.tw"
- }
+ ]
 }
  </script>
  
