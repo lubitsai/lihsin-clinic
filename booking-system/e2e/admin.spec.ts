@@ -5,7 +5,7 @@
  * 但畫面上按鈕還在、連結還連得過去也是漏洞——那只有用瀏覽器點才驗得到。
  */
 import { test, expect } from "@playwright/test";
-import { login, typeInto, fillFormUntilEnabled, ACCOUNTS } from "./helpers";
+import { login, typeInto, clickUntil, fillFormUntilEnabled, ACCOUNTS } from "./helpers";
 
 const { admin: ADMIN, counter: COUNTER, doctor: DOCTOR } = ACCOUNTS;
 
@@ -70,8 +70,29 @@ test.describe("後台：櫃檯日常", () => {
     await page.goto("/admin/schedule");
     await expect(page.getByRole("button", { name: "固定週班表" })).toBeVisible();
     await expect(page.getByText(/蔡宗儒|李佳玲/).first()).toBeVisible({ timeout: 15_000 });
-    await page.getByRole("button", { name: /日期例外/ }).click();
-    await expect(page.getByText(/示範資料：醫師進修/)).toBeVisible({ timeout: 15_000 });
+    // 分頁切換是客戶端狀態，hydration 未完成時點了不會有反應
+    await clickUntil(page.getByRole("button", { name: /日期例外/ }), async () => {
+      await expect(page.getByText(/示範資料：醫師進修/)).toBeVisible({ timeout: 8_000 });
+    });
+  });
+
+  test("月曆總覽列出整月每天的名單，可翻月與篩選", async ({ page }) => {
+    await login(page, COUNTER);
+    await page.goto("/admin/month");
+    await expect(page.getByRole("heading", { name: /\d+ 年 \d+ 月/ })).toBeVisible({ timeout: 15_000 });
+    // 一定要看得到「某天有哪些人」——這頁的重點就是名單，不是只有數量。
+    // 只看月曆本體，篩選下拉選單裡也有醫師名字（隱藏的 <option>），會誤判。
+    const board = page.locator("main");
+    await expect(board.getByText(/^\d\d:\d\d$/).first()).toBeVisible({ timeout: 15_000 });
+    await expect(board.getByText("王小明").first()).toBeVisible({ timeout: 15_000 });
+    // 證件號一律遮罩，整月攤開更不該出現完整號碼
+    await expect(page.locator("body")).not.toContainText("A100000010");
+
+    const title = await page.getByRole("heading", { name: /\d+ 年 \d+ 月/ }).textContent();
+    await page.getByRole("link", { name: /上個月/ }).click();
+    await expect(page.getByRole("heading", { name: /\d+ 年 \d+ 月/ })).not.toHaveText(title ?? "", {
+      timeout: 15_000,
+    });
   });
 
   test("系統設定頁顯示國定假日涵蓋範圍到 2027 年底", async ({ page }) => {

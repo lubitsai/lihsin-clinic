@@ -33,7 +33,8 @@ execSync(`psql "${admin.toString()}" -v ON_ERROR_STOP=1 -c "CREATE DATABASE ${db
 
 run("npx prisma migrate deploy");
 run("npx tsx prisma/seed.ts");
-run("npx tsx prisma/seed-demo.ts");
+// DEMO_FULL_MONTH：多鋪一個月的預約，月曆總覽才看得出哪幾天滿
+run("npx tsx prisma/seed-demo.ts", { DEMO_FULL_MONTH: "1" });
 
 console.log(`
 ────────────────────────────────────────────────────

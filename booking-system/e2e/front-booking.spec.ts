@@ -4,7 +4,7 @@
  * 但家長讀到的字改了就該壞（那本來就要有人確認過）。
  */
 import { test, expect, type Page } from "@playwright/test";
-import { typeInto, clickUntil, makeTaiwanId } from "./helpers";
+import { typeInto, clickUntil, submitUntil, makeTaiwanId } from "./helpers";
 
 /** 每次跑都用新的假病人，避免撞到同日唯一與帳號額度上限 */
 function newPatient() {
@@ -121,8 +121,8 @@ test.describe("前台：查詢與取消", () => {
     await clickUntil(page.getByRole("button", { name: /傳送驗證碼/ }), async () => {
       await expect(page.getByPlaceholder("6 位數驗證碼")).not.toHaveValue("", { timeout: 8_000 });
     });
-    await clickUntil(page.getByRole("button", { name: "查詢我的預約" }), async () => {
-      await expect(page.getByText(patient.name).first()).toBeVisible({ timeout: 10_000 });
+    await submitUntil(page.getByRole("button", { name: "查詢我的預約" }), async () => {
+      await expect(page.getByText(patient.name).first()).toBeVisible({ timeout: 8_000 });
     });
 
     page.once("dialog", (d) => d.accept());

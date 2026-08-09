@@ -32,6 +32,17 @@ export async function clickUntil(loc: Locator, expectation: () => Promise<void>)
   }).toPass({ timeout: HYDRATE_TIMEOUT });
 }
 
+/**
+ * 送出表單並等結果。與 clickUntil 的差別：送出成功後按鈕會從畫面消失，
+ * 這時不能再點一次（會 timeout），只要確認結果出現即可。
+ */
+export async function submitUntil(loc: Locator, expectation: () => Promise<void>) {
+  await expect(async () => {
+    if ((await loc.count()) > 0) await loc.click({ timeout: 5_000 }).catch(() => {});
+    await expectation();
+  }).toPass({ timeout: HYDRATE_TIMEOUT });
+}
+
 /** 填完整組欄位後，等某個元素變成可用（例：登入鈕由 disabled 變 enabled） */
 export async function fillFormUntilEnabled(
   fields: [Locator, string][],

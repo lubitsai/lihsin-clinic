@@ -46,6 +46,8 @@ async function main() {
   const today = todayStr();
   const general = await prisma.clinicType.findUniqueOrThrow({ where: { code: "GENERAL" } });
   const development = await prisma.clinicType.findUniqueOrThrow({ where: { code: "DEVELOPMENT" } });
+  const weight = await prisma.clinicType.findUniqueOrThrow({ where: { code: "WEIGHT" } });
+  const allergy = await prisma.clinicType.findUniqueOrThrow({ where: { code: "ALLERGY" } });
   const blocks = await getDayScheduleBlocks(today);
   if (blocks.length === 0) {
     console.log("⚠️ 今天沒有門診（休診日），只建立未來日期的預約。");
@@ -146,6 +148,75 @@ async function main() {
         }).catch(() => {});
     }
     console.log(`  未到 3 次並自動受限：${DEMO[5].name}`);
+  }
+
+  // ── 鋪滿整個月：月曆總覽要看得出「哪幾天滿、哪幾天空」 ──────
+  // 涵蓋上個月中到下個月中，這樣前後翻月都有東西。
+  //
+  // 預設**不**產生：E2E 需要的是小而固定的資料，塞滿整月會把時段占光，
+  // 前台「還約得到嗎」那幾項就時好時壞。`npm run demo` 會開啟這段。
+  if (process.env.DEMO_FULL_MONTH === "1") {
+  const extraNames = [
+    "吳沛熙", "曾語彤", "許宥廷", "鄭子晴", "何昱翔", "呂芷萱", "蘇柏睿", "馮心妍",
+    "葉承翰", "潘知恩", "簡妤蓁", "藍柏勳", "康以柔", "汪宸睿", "邵欣妍", "溫立恆",
+    "顏梓晴", "白家瑜", "石宥辰", "涂沁妍",
+  ];
+  const idOf = (n: number) => {
+    // 產通過檢查碼的假號（與 e2e/helpers.ts 同一套算法）
+    const body = `1${String(3_000_000 + n * 137).slice(0, 7)}`;
+    const w = [8, 7, 6, 5, 4, 3, 2, 1];
+    let sum = 1; // A=10 → 1 + 0*9
+    for (let i = 0; i < 8; i++) sum += Number(body[i]) * w[i];
+    return `A${body}${(10 - (sum % 10)) % 10}`;
+  };
+  const types = [general, development, weight, allergy];
+  let seq = 0;
+  let monthMade = 0;
+  for (let offset = -20; offset <= 25; offset++) {
+    const date = addDays(today, offset);
+    const dayBlocks = await getDayScheduleBlocks(date);
+    if (dayBlocks.length === 0) continue;
+    const slots = dayBlocks
+      .flatMap((b) => slotTimes(b.startTime, b.endTime).map((t) => ({ time: t, doctorId: b.doctorId })))
+      .sort((a, b) => a.time.localeCompare(b.time));
+    // 每天 4–9 筆，用日期當亂數種子，重跑結果一致
+    const count = 4 + ((Math.abs(offset) * 7) % 6);
+    for (let k = 0; k < count && k < slots.length; k++) {
+      const slot = slots[Math.floor((k * slots.length) / count)];
+      const name = extraNames[seq % extraNames.length];
+      const type = types[seq % 4];
+      seq++;
+      // 特別門診只有蔡醫師、篩檢有年齡與時間窗限制——不符就跳過，這是規則在起作用
+      const r = await createAppointment({
+        clinicTypeId: type.id,
+        doctorId: slot.doctorId,
+        date,
+        startTime: slot.time,
+        patientInput: {
+          name: `${name}${seq}`,
+          phone: `09${String(20000000 + seq).slice(0, 8)}`,
+          birthDate: `20${20 - (seq % 5)}-0${1 + (seq % 8)}-1${seq % 9}`,
+          idType: "NATIONAL_ID" as const,
+          idNumber: idOf(seq),
+        },
+        source: seq % 3 === 0 ? "STAFF" : "WEB",
+        actor: STAFF,
+        isStaff: true,
+      }).catch(() => null);
+      if (r) {
+        monthMade++;
+        // 過去的日子給幾種結果，月曆才看得到已完成／未到的樣子
+        if (offset < 0) {
+          const to = seq % 7 === 0 ? "NO_SHOW" : "COMPLETED";
+          await updateAppointmentStatus({
+            appointmentId: r.appointment.id, toStatus: to, actor: STAFF,
+          }).catch(() => {});
+        }
+      }
+    }
+  }
+  made += monthMade;
+  console.log(`  整月資料：${monthMade} 筆（前後約 6 週，供月曆總覽檢視）`);
   }
 
   // ── 單日公告：前台首頁「近期門診異動」會顯示 ──────────────
