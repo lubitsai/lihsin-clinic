@@ -76,6 +76,15 @@ jobs:
           if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
           v=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '分齡族群速查' || true)
           if [ "$v" -ge 1 ]; then echo "OK    vaccination hub『分齡族群速查』已上線"; else echo "FAIL  vaccination hub 內容未見"; fail=1; fi
+          # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
+          # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
+          # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
+          # (curl 回 000)——線上狀態只能靠這裡回報,否則被舊版覆蓋回退不會有人發現。
+          # ⚠️ 若日後刻意改這兩處措辭,請連同本檢查一起改,不要直接刪掉。
+          k=$(curl -s --max-time 20 "$BASE/" | grep -c '台南小兒科哪間好' || true)
+          if [ "$k" -ge 1 ]; then echo "OK    首頁 keywords 同義問法詞路已上線"; else echo "FAIL  首頁『台南小兒科哪間好』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          g=$(curl -s --max-time 20 "$BASE/" | grep -c '供 AI 檢索的穩定實體關係' || true)
+          if [ "$g" -ge 1 ]; then echo "OK    首頁隱藏區 GEO 穩定實體關係段已上線"; else echo "FAIL  首頁 GEO 穩定實體關係段未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
           # 反向抽驗(2026-08-08 新增):本站沒有站內搜尋功能——全站 <form>／
           # type="search"／role="search" 命中數為 0。首頁 WebSite schema 曾宣告
           # SearchAction 指向 /?s={search_term_string},屬 AP9 同類病灶(結構化
