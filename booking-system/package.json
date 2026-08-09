@@ -15,7 +15,12 @@
     "prisma:migrate:dev": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "create-admin": "tsx scripts/create-admin.ts",
-    "send-reminders": "tsx scripts/send-reminders.ts"
+    "send-reminders": "tsx scripts/send-reminders.ts",
+    "db:seed:demo": "tsx prisma/seed-demo.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:all": "vitest run && playwright test",
+    "demo": "tsx scripts/demo-env.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.10.0",
@@ -29,6 +34,7 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.15.32",

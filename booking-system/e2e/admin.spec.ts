@@ -1,0 +1,109 @@
+/**
+ * 後台：櫃檯每天實際會做的事，以及權限有沒有真的擋住。
+ *
+ * 權限那幾項特別重要：`npm test` 驗的是「函式會不會拒絕」，
+ * 但畫面上按鈕還在、連結還連得過去也是漏洞——那只有用瀏覽器點才驗得到。
+ */
+import { test, expect } from "@playwright/test";
+import { login, typeInto, fillFormUntilEnabled, ACCOUNTS } from "./helpers";
+
+const { admin: ADMIN, counter: COUNTER, doctor: DOCTOR } = ACCOUNTS;
+
+test.describe("後台：登入", () => {
+  test("帳密錯誤不會登入，也不說是帳號錯還是密碼錯", async ({ page }) => {
+    await page.goto("/admin/login");
+    const btn = page.getByRole("button", { name: "登入" });
+    await fillFormUntilEnabled(
+      [
+        [page.locator("input[autocomplete='username']"), "admin"],
+        [page.locator("input[type='password']"), "wrong-password"],
+      ],
+      btn,
+    );
+    await btn.click();
+    await expect(page.locator("text=/帳號或密碼/")).toBeVisible({ timeout: 15_000 });
+    await expect(page).toHaveURL(/\/admin\/login/);
+  });
+
+  test("未登入直接開後台會被導回登入頁", async ({ page }) => {
+    await page.goto("/admin");
+    await expect(page).toHaveURL(/\/admin\/login/, { timeout: 15_000 });
+  });
+
+  test("櫃檯帳號登入後看得到今日總覽", async ({ page }) => {
+    await login(page, COUNTER);
+    await expect(page.getByText(/今日|預約總覽/).first()).toBeVisible();
+  });
+});
+
+test.describe("後台：櫃檯日常", () => {
+  test("今日總覽列出示範預約，並可完成報到", async ({ page }) => {
+    await login(page, COUNTER);
+    // 示範資料在今天鋪了幾筆一般門診
+    const row = page.locator("li, tr").filter({ hasText: /王小明|陳小美|林小豪/ }).first();
+    await expect(row).toBeVisible({ timeout: 20_000 });
+
+    // 報到成功的可靠訊號：該筆的「報到」按鈕會消失（狀態字在篩選下拉選單裡也有，撈不準）
+    const checkIn = page.getByRole("button", { name: "報到", exact: true });
+    const before = await checkIn.count();
+    if (before > 0) {
+      await checkIn.first().click();
+      await expect(checkIn).toHaveCount(before - 1, { timeout: 20_000 });
+    }
+  });
+
+  test("搜尋找得到病人，病歷頁證件號是遮罩的", async ({ page }) => {
+    await login(page, COUNTER);
+    await page.goto("/admin/patients");
+    await typeInto(page.locator("input").first(), "王小明");
+    await page.keyboard.press("Enter");
+    await expect(page.getByText("王小明").first()).toBeVisible({ timeout: 15_000 });
+
+    await page.getByText("王小明").first().click();
+    // 完整證件號不得出現在畫面上（院長要求：前台查詢結果一律遮罩）
+    await expect(page.locator("body")).not.toContainText("A100000010");
+    await expect(page.locator("body")).toContainText("*");
+  });
+
+  test("排班頁看得到週班表與日期例外", async ({ page }) => {
+    await login(page, ADMIN);
+    await page.goto("/admin/schedule");
+    await expect(page.getByRole("button", { name: "固定週班表" })).toBeVisible();
+    await expect(page.getByText(/蔡宗儒|李佳玲/).first()).toBeVisible({ timeout: 15_000 });
+    await page.getByRole("button", { name: /日期例外/ }).click();
+    await expect(page.getByText(/示範資料：醫師進修/)).toBeVisible({ timeout: 15_000 });
+  });
+
+  test("系統設定頁顯示國定假日涵蓋範圍到 2027 年底", async ({ page }) => {
+    await login(page, ADMIN);
+    await page.goto("/admin/settings");
+    await expect(page.getByText(/2027-12-31|2027\/12\/31/)).toBeVisible({ timeout: 15_000 });
+  });
+});
+
+test.describe("後台：權限界線", () => {
+  test("醫師唯讀帳號不能匯出 CSV，也點不到代約", async ({ page }) => {
+    await login(page, DOCTOR);
+    // 沒有 APPOINTMENTS_READ 權限就不該出現匯出入口
+    await expect(page.getByRole("link", { name: /匯出/ })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: /匯出/ })).toHaveCount(0);
+
+    // 直接打匯出網址也要被擋（畫面藏起來不算擋住）
+    const res = await page.request.get("/admin/api/export?date=" + new Date().toISOString().slice(0, 10));
+    expect(res.status()).toBeGreaterThanOrEqual(400);
+  });
+
+  test("醫師唯讀帳號進不了系統設定", async ({ page }) => {
+    await login(page, DOCTOR);
+    await page.goto("/admin/settings");
+    await expect(page.getByText(/權限|沒有.*權限|forbidden/i).first()).toBeVisible({
+      timeout: 15_000,
+    });
+  });
+
+  test("櫃檯帳號不能管理員工帳號", async ({ page }) => {
+    await login(page, COUNTER);
+    await page.goto("/admin/staff");
+    await expect(page.getByText(/權限|沒有.*權限/).first()).toBeVisible({ timeout: 15_000 });
+  });
+});

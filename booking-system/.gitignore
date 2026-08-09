@@ -6,3 +6,8 @@ node_modules/
 *.tsbuildinfo
 coverage/
 backups/*.dump
+
+# Playwright E2E 產物（截圖、trace、報告，每次跑都會重生）
+/test-results/
+/playwright-report/
+/blob-report/
