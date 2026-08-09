@@ -4,6 +4,7 @@ import { todayStr, addDays, formatDateTw } from "@/lib/tw-time";
 import { getDayScheduleBlocks, SESSION_LABEL } from "@/lib/schedule";
 import { dateToDb } from "@/lib/tw-time";
 import { CLINIC } from "@/lib/clinic-info";
+import { WALK_IN_REGISTRATION } from "@/lib/clinic-notes";
 import { Card, Alert } from "@/components/ui";
 import { isLineLoginConfigured } from "@/lib/line";
 
@@ -96,6 +97,13 @@ export default async function HomePage() {
               })}
           </ul>
         )}
+      </Card>
+
+      {/* 接在今日門診之後：看完今天有哪幾診，下一個問題就是幾點可以到櫃檯抽號 */}
+      <Card className="space-y-1">
+        <h2 className="text-lg font-bold text-sage-700">🕗 {WALK_IN_REGISTRATION.title}</h2>
+        <p className="text-lg sm:text-xl font-bold text-wood-700">{WALK_IN_REGISTRATION.times}</p>
+        <p className="text-ink-700 text-sm leading-relaxed">{WALK_IN_REGISTRATION.note}</p>
       </Card>
 
       {notices.length > 0 && (
