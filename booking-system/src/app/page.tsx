@@ -31,7 +31,33 @@ export default async function HomePage() {
     prisma.doctor.findMany({ where: { isActive: true }, orderBy: { displayOrder: "asc" } }),
   ]);
   const doctorName = new Map(doctors.map((d) => [d.id, d.name]));
+  // 醫師排序依 displayOrder（院長在前）；班表查出來的順序不保證，不排會忽前忽後
+  const doctorRank = new Map(doctors.map((d, i) => [d.id, i]));
   const todaySessions = [...new Set(blocks.map((b) => b.session))];
+
+  /**
+   * 同一診次可能不只一段看診時間：雙診（週一晚診、週日早診）兩位醫師時間相同，
+   * 但當日若只對其中一位套用「特殊時間」例外，兩人的時間就會不一樣。
+   * 依時間分組後逐段顯示，才不會拿其中一位的時間去標另一位。
+   */
+  function sessionRows(session: (typeof todaySessions)[number]) {
+    const groups = new Map<string, Set<string>>();
+    for (const b of blocks.filter((x) => x.session === session)) {
+      const range = `${b.startTime}–${b.endTime}`;
+      if (!groups.has(range)) groups.set(range, new Set());
+      groups.get(range)!.add(b.doctorId);
+    }
+    return [...groups.entries()]
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([range, ids]) => ({
+        range,
+        names: [...ids]
+          .sort((a, b) => (doctorRank.get(a) ?? 0) - (doctorRank.get(b) ?? 0))
+          .map((id) => doctorName.get(id))
+          .filter(Boolean)
+          .join("、"),
+      }));
+  }
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-sage-50">
@@ -83,18 +109,19 @@ export default async function HomePage() {
           <ul className="space-y-1">
             {(["MORNING", "AFTERNOON", "EVENING"] as const)
               .filter((s) => todaySessions.includes(s))
-              .map((s) => {
-                const bs = blocks.filter((b) => b.session === s);
-                return (
-                  <li key={s} className="flex flex-wrap gap-x-3 text-ink-900">
-                    <span className="font-medium text-wood-700 w-12">{SESSION_LABEL[s]}</span>
+              .flatMap((s) =>
+                sessionRows(s).map((row, i) => (
+                  <li key={`${s}-${row.range}`} className="flex flex-wrap gap-x-3 text-ink-900">
+                    {/* 同一診次拆成多段時，診別只標在第一行 */}
+                    <span className="font-medium text-wood-700 w-12">
+                      {i === 0 ? SESSION_LABEL[s] : ""}
+                    </span>
                     <span>
-                      {bs[0].startTime}–{bs[0].endTime}｜
-                      {[...new Set(bs.map((b) => doctorName.get(b.doctorId)))].join("、")}醫師
+                      {row.range}｜{row.names}醫師
                     </span>
                   </li>
-                );
-              })}
+                )),
+              )}
           </ul>
         )}
       </Card>
