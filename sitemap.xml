@@ -397,6 +397,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/meningococcal-b-vaccine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/meningococcal-b-vaccine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
