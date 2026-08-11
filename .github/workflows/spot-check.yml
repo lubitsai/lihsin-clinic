@@ -69,6 +69,7 @@ jobs:
           check /news/flu-vaccine-2026.html 200
           check /health/enterovirus71-vaccine.html 200
           check /health/rsv-immunization.html 200
+          check /health/meningococcal-b-vaccine.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           echo "=== 內容抽驗 ==="
@@ -85,6 +86,13 @@ jobs:
           if [ "$k" -ge 1 ]; then echo "OK    首頁 keywords 同義問法詞路已上線"; else echo "FAIL  首頁『台南小兒科哪間好』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
           g=$(curl -s --max-time 20 "$BASE/" | grep -c '供 AI 檢索的穩定實體關係' || true)
           if [ "$g" -ge 1 ]; then echo "OK    首頁隱藏區 GEO 穩定實體關係段已上線"; else echo "FAIL  首頁 GEO 穩定實體關係段未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          # B型腦膜炎雙球菌疫苗頁抽驗(2026-08-10 新增,PR #84 新頁):整頁都是新檔,
+          # 被舊版覆蓋回退時整頁會 404 或整段消失,而 session egress 不含本站網域
+          # (curl 回 000)、新頁的線上狀態只能靠這裡回報。上面的 200 檢查盯「頁還在」,
+          # 這條盯「本頁的核心內容還在」——劑次表是本頁與 Hub 列名的差別所在。
+          # ⚠️ 若日後刻意改這句措辭,請連同本檢查一起改,不要直接刪掉。
+          m=$(curl -s --max-time 20 "$BASE/health/meningococcal-b-vaccine.html" | grep -c '開始接種時的年齡' || true)
+          if [ "$m" -ge 1 ]; then echo "OK    B型腦膜炎疫苗頁劑次段已上線"; else echo "FAIL  B型腦膜炎疫苗頁『開始接種時的年齡』未見——本頁疑遭舊版覆蓋"; fail=1; fi
           # 反向抽驗(2026-08-08 新增):本站沒有站內搜尋功能——全站 <form>／
           # type="search"／role="search" 命中數為 0。首頁 WebSite schema 曾宣告
           # SearchAction 指向 /?s={search_term_string},屬 AP9 同類病灶(結構化
