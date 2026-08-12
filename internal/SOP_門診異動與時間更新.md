@@ -29,7 +29,10 @@
 ### 步驟
 
 1. **公告圖**（正方形）放入 `images/notice/`，**檔名帶日期**（如 `clinic-notice-20260819.webp`＋`.jpg`），避免同名檔被 CDN 快取舊圖。
-   - 若院長只給對話貼圖、無原始檔：用 `internal/tools/make_infographic.py`（或 Playwright 截圖＋PIL/sharp）重製 1000² webp＋jpg 後備。
+   - **院長在對話貼圖時，原始檔就在 `/root/.claude/uploads/<session-id>/`——先 `ls` 那裡，不要急著重畫。**
+     取得原檔後只做**轉檔**（Pillow：webp q84 ＋ jpg q88 後備，維持原生尺寸不放大），細節見 `infographic-upload` skill。
+   - 真的找不到原檔才談重繪（Chromium 無頭渲染 HTML 截圖）；**重繪是最後手段**，容器只有 WenQuanYi Zen Hei 一種中文字型，
+     做不出院長海報的手寫風標題與裝飾，成品與原稿明顯不同，**且院長要的是原圖**（2026-08-12 裁示）。
 2. **改 `index.html` 的 `#clinic-notice` 區塊**（搜 `id="clinic-notice"` 定位），共五處：
    - 圖片路徑 **兩處**（區塊本體 `#clinic-notice-zoom` 內 `<picture>` + lightbox `#notice-lightbox` 內 `<picture>`，webp source 與 jpg img 都要改）
    - `alt`（**公告全文逐字寫入**，爬蟲/螢幕閱讀器讀不到圖內文字）
