@@ -95,6 +95,32 @@ interface DesiredException {
 }
 
 /**
+ * 把一天的醫師級時段收斂成診所級時段：同診次取最早開始、最晚結束。
+ *
+ * 官網從 2026-09-01 起會出現「同一診次、兩位醫師不同起訖」
+ * （週一晚診蔡至 21:00／李至 21:30、週日早診蔡至 11:00／李至 11:30），
+ * 所以 weekly[weekday] 同一個 session 可能有兩筆。
+ *
+ * 單日例外（EXCEPTIONS）是**診所級**的、沒有醫師欄位，拿它去跟醫師級的兩筆
+ * 逐筆比對，會對同一個 (date, session) 產生兩筆重複的 SPECIAL_HOURS。
+ * 比對前一律先收斂成一個診次一筆。
+ */
+function clinicLevelSessions(slots: ScheduleSlot[]): { session: SessionPeriod; start: string; end: string }[] {
+  const bySession = new Map<SessionPeriod, { session: SessionPeriod; start: string; end: string }>();
+  for (const slot of slots) {
+    const cur = bySession.get(slot.session);
+    if (!cur) {
+      bySession.set(slot.session, { session: slot.session, start: slot.start, end: slot.end });
+    } else {
+      // 時間是零填補的 "HH:MM"，字串比大小即等於時間比大小
+      if (slot.start < cur.start) cur.start = slot.start;
+      if (slot.end > cur.end) cur.end = slot.end;
+    }
+  }
+  return [...bySession.values()];
+}
+
+/**
  * 由官網資料推出應有的週班表與單日例外（純計算，不碰資料庫）。
  * 先算出來才能在「還沒寫入」的狀態下檢查受影響預約。
  */
@@ -124,7 +150,7 @@ function planSchedule(
 
   for (const date of Object.keys(source.exceptions).filter((d) => d >= today)) {
     const dayOfWeek = new Date(`${date}T00:00:00.000Z`).getUTCDay();
-    const baseline = source.weekly[String(dayOfWeek)] ?? [];
+    const baseline = clinicLevelSessions(source.weekly[String(dayOfWeek)] ?? []);
     const actual = source.exceptions[date];
 
     if (actual.length === 0) {

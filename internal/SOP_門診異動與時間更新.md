@@ -97,6 +97,29 @@ grep -rn '平日夜診至21:30\|夜診至 21:30\|週六週日皆有門診' --inc
 | **其他 services/ 與 health/ 頁** | 探查指令列出的 meta desc | 多頁 desc 含「平日夜診至21:30」固定句 |
 | `llms.txt`／`llms-full.txt` | 搜門診時間相關條目 | 提供給 LLM 的摘要，須同步 |
 
+### 同一診次、不同醫師不同起訖（2026-08-12 起支援）
+
+可見表一格可以放**多組「badge ＋ 時間」**，時間歸屬於它前面最近的那個 badge：
+
+```html
+<td class="p-3 text-center">
+ <span class="badge-green" style="">蔡醫師</span>
+ <p class="text-sm text-gray-600 mt-1 font-english">18:30–21:00</p>
+ <span class="badge-green" style="background-color: rgb(255, 212, 211);">李醫師</span>
+ <p class="text-sm text-gray-600 mt-1 font-english">18:30–21:30</p>
+</td>
+```
+
+- **兩位醫師時間相同**就沿用舊寫法（單一 badge `蔡/李` ＋ 一組時間）；兩種寫法產出的 JSON 相同，換寫法不會平白製造 diff。
+- **`SCHEDULE` 常數不要跟著拆**。它餵的是 HERO 開診徽章＝「診所這個時間開不開」，與醫師無關；
+  比對時工具會自動把可見表收斂成診所級聯集（同診次取最早開始、最晚結束）再跟 `SCHEDULE` 對。
+  上例的週一晚診聯集仍是 `18:30–21:30`，`SCHEDULE` 維持 `[1110,1290,'晚診']` 不動。
+- 改完先跑 **`python3 internal/tools/sync_schedule.py --selftest`**（內建 2026-09-01 新表夾具＋負向測試，不讀 `index.html`、不寫檔），
+  再跑 `--check`／不帶旗標的同步。
+- 預約系統端：`schedule.json` 同一個 `session` 會出現兩筆，DB 的 `WeeklyScheduleTemplate` 唯一鍵是
+  `[weekday, session, doctorId]`，本來就吃得下。單日例外是**診所級**的（沒有醫師欄位），
+  `schedule-source.ts` 比對前會先收斂成一個診次一筆，否則同一個 `(date, session)` 會被推出兩筆重複的 `SPECIAL_HOURS`。
+
 ### 站外（提醒院長，session 無法直接改）
 
 - **Google 商家檔案**：營業時間（AI/地圖直接讀，影響最大）。
