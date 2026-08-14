@@ -197,6 +197,67 @@ describe("單日特例以官網為準", () => {
     expect(rows.filter((r) => r.createdBy === WEBSITE_SYNC_ACTOR)).toHaveLength(1);
   });
 
+  it("同診次兩位醫師不同起訖時，特例只產生一筆（不因醫師人數重複）", async () => {
+    // 2026-09-01 起的週一晚診：蔡至 21:00、李至 21:30。
+    // 單日特例是診所級的（沒有醫師欄位），比對前必須先收斂成一個診次一筆，
+    // 否則同一個 (date, session) 會被推出兩筆 SPECIAL_HOURS。
+    const { tsai, lee } = await seedDoctors();
+    expect(tsai.id).not.toBe(lee.id);
+    const splitEvening: ScheduleSource["weekly"] = {
+      ...WEEKLY_ONLY_MONDAY,
+      "1": [
+        { session: "MORNING", start: "08:00", end: "12:00", doctors: ["蔡"] },
+        { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: ["蔡"] },
+        { session: "EVENING", start: "18:30", end: "21:00", doctors: ["蔡"] },
+        { session: "EVENING", start: "18:30", end: "21:30", doctors: ["李"] },
+      ],
+    };
+
+    await applySchedule(
+      prisma,
+      {
+        weekly: splitEvening,
+        // 當天晚診提早到 20:30 收，診所級的聯集是 18:30–21:30 → 與 20:30 不同 → SPECIAL_HOURS
+        exceptions: {
+          [monday]: [
+            { session: "MORNING", start: "08:00", end: "12:00" },
+            { session: "AFTERNOON", start: "14:30", end: "18:00" },
+            { session: "EVENING", start: "18:30", end: "20:30" },
+          ],
+        },
+      },
+      TODAY,
+    );
+
+    const rows = await prisma.scheduleException.findMany({
+      where: { date: dateToDb(monday), session: "EVENING" },
+    });
+    expect(rows).toHaveLength(1);
+    expect(rows[0].type).toBe("SPECIAL_HOURS");
+    expect(rows[0].endTime).toBe("20:30");
+  });
+
+  it("同診次兩位醫師起訖不同，但當日等於診所級聯集時不產生特例", async () => {
+    await seedDoctors();
+    const splitEvening: ScheduleSource["weekly"] = {
+      ...WEEKLY_ONLY_MONDAY,
+      "1": [
+        { session: "EVENING", start: "18:30", end: "21:00", doctors: ["蔡"] },
+        { session: "EVENING", start: "18:30", end: "21:30", doctors: ["李"] },
+      ],
+    };
+    await applySchedule(
+      prisma,
+      {
+        weekly: splitEvening,
+        // 18:30–21:30 ＝ 兩位醫師的聯集，等於常態，不該被當成特例
+        exceptions: { [monday]: [{ session: "EVENING", start: "18:30", end: "21:30" }] },
+      },
+      TODAY,
+    );
+    expect(await prisma.scheduleException.count({ where: { date: dateToDb(monday) } })).toBe(0);
+  });
+
   it("官網撤掉某天的特例後，同步也會把該筆移除", async () => {
     await seedDoctors();
     await applySchedule(prisma, { ...base, exceptions: { [monday]: [] } }, TODAY);

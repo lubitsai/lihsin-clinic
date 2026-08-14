@@ -3,6 +3,8 @@ import { fileURLToPath } from "node:url";
 
 export default defineConfig({
   test: {
+    // 只收 tests/ 下的規則測試；e2e/ 是 Playwright 的，vitest 載入會直接失敗
+    include: ["tests/**/*.test.ts"],
     environment: "node",
     globalSetup: ["tests/global-setup.ts"],
     setupFiles: ["tests/setup.ts"],

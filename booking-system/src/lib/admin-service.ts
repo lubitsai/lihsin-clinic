@@ -1,6 +1,6 @@
 /** 後台查詢服務（server component 直接呼叫；權限檢查在頁面/action 層） */
 import { prisma } from "./db";
-import { dateToDb } from "./tw-time";
+import { dateToDb, dbToDate } from "./tw-time";
 import type { AppointmentStatus, Prisma, SessionPeriod } from "@prisma/client";
 import { hashIdNumber } from "./crypto";
 
@@ -148,4 +148,43 @@ export async function listNotifications(appointmentId?: string) {
     orderBy: { createdAt: "desc" },
     take: 100,
   });
+}
+
+/**
+ * 一個月的預約，依日期分組（後台月曆總覽用）。
+ *
+ * 只取畫面要用的欄位——月曆一次會載入整個月、上百筆，
+ * 帶完整 patient 列（含證件密文與雜湊）進 RSC payload 既慢又不該外流。
+ */
+export async function getMonthAppointments(
+  monthStart: string,
+  monthEnd: string,
+  filters: { doctorId?: string; clinicTypeId?: string } = {},
+) {
+  const rows = await prisma.appointment.findMany({
+    where: {
+      appointmentDate: { gte: dateToDb(monthStart), lte: dateToDb(monthEnd) },
+      ...(filters.doctorId ? { doctorId: filters.doctorId } : {}),
+      ...(filters.clinicTypeId ? { clinicTypeId: filters.clinicTypeId } : {}),
+    },
+    select: {
+      id: true,
+      appointmentDate: true,
+      startTime: true,
+      status: true,
+      patient: { select: { name: true, idNumberMasked: true } },
+      doctor: { select: { name: true, color: true } },
+      clinicType: { select: { name: true, code: true, color: true } },
+      _count: { select: { companions: true } },
+    },
+    orderBy: [{ appointmentDate: "asc" }, { startTime: "asc" }],
+  });
+
+  const byDate = new Map<string, typeof rows>();
+  for (const r of rows) {
+    const key = dbToDate(r.appointmentDate);
+    if (!byDate.has(key)) byDate.set(key, []);
+    byDate.get(key)!.push(r);
+  }
+  return byDate;
 }

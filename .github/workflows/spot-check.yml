@@ -69,6 +69,15 @@ jobs:
           check /news/flu-vaccine-2026.html 200
           check /health/enterovirus71-vaccine.html 200
           check /health/rsv-immunization.html 200
+          check /health/meningococcal-b-vaccine.html 200
+          # 2026-08-14 批的四個在地推薦詞承載頁。下方「內容抽驗」已各盯一層
+          # (keywords／隱藏 #ai-knowledge-block),這四行盯的是另一件事:頁還在不在。
+          # 兩者缺一不可——內容 grep 抓得到「頁在但內容被覆蓋」,卻分不出
+          # 「整頁 404」與「內容被改」;200 檢查則相反(2026-08-10 負向測試證實)。
+          check /services/pediatric-allergy-asthma.html 200
+          check /services/skin-conditions.html 200
+          check /health/child-chronic-cough.html 200
+          check /health/atopic-dermatitis.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           echo "=== 內容抽驗 ==="
@@ -76,6 +85,41 @@ jobs:
           if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
           v=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '分齡族群速查' || true)
           if [ "$v" -ge 1 ]; then echo "OK    vaccination hub『分齡族群速查』已上線"; else echo "FAIL  vaccination hub 內容未見"; fail=1; fi
+          # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
+          # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
+          # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
+          # (curl 回 000)——線上狀態只能靠這裡回報,否則被舊版覆蓋回退不會有人發現。
+          # ⚠️ 若日後刻意改這兩處措辭,請連同本檢查一起改,不要直接刪掉。
+          k=$(curl -s --max-time 20 "$BASE/" | grep -c '台南小兒科哪間好' || true)
+          if [ "$k" -ge 1 ]; then echo "OK    首頁 keywords 同義問法詞路已上線"; else echo "FAIL  首頁『台南小兒科哪間好』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          g=$(curl -s --max-time 20 "$BASE/" | grep -c '供 AI 檢索的穩定實體關係' || true)
+          if [ "$g" -ge 1 ]; then echo "OK    首頁隱藏區 GEO 穩定實體關係段已上線"; else echo "FAIL  首頁 GEO 穩定實體關係段未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          # B型腦膜炎雙球菌疫苗頁抽驗(2026-08-10 新增,PR #84 新頁):整頁都是新檔,
+          # 被舊版覆蓋回退時整頁會 404 或整段消失,而 session egress 不含本站網域
+          # (curl 回 000)、新頁的線上狀態只能靠這裡回報。上面的 200 檢查盯「頁還在」,
+          # 這條盯「本頁的核心內容還在」——劑次表是本頁與 Hub 列名的差別所在。
+          # ⚠️ 若日後刻意改這句措辭,請連同本檢查一起改,不要直接刪掉。
+          m=$(curl -s --max-time 20 "$BASE/health/meningococcal-b-vaccine.html" | grep -c '開始接種時的年齡' || true)
+          if [ "$m" -ge 1 ]; then echo "OK    B型腦膜炎疫苗頁劑次段已上線"; else echo "FAIL  B型腦膜炎疫苗頁『開始接種時的年齡』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+          # 在地推薦詞承載頁抽驗(2026-08-14 新增,「台南兒科/小兒科/假日/減重/過敏/
+          # 氣喘/久咳/異膚推薦」等 13 詞的四層補強):這批補的全是可見層看不出來的
+          # 技術層——keywords、FAQ schema、隱藏 #ai-knowledge-block、llms 雙檔。
+          # 該批的真缺口是「意圖宣告在首頁、承載頁掛零」,修好之後若被舊版覆蓋,
+          # 頁面照樣 200、可見層一字不差,沒有任何人會發現。以下四頁各盯一層:
+          # 前兩條盯隱藏區新增的 GEO 段,後兩條盯 keywords 層的裸詞。
+          # ⚠️ 若日後刻意改這些措辭,請連同本檢查一起改,不要直接刪掉。
+          pa=$(curl -s --max-time 20 "$BASE/services/pediatric-allergy-asthma.html" | grep -c '台南兒童過敏氣喘門診怎麼選' || true)
+          if [ "$pa" -ge 1 ]; then echo "OK    過敏氣喘頁隱藏區 GEO 段已上線"; else echo "FAIL  過敏氣喘頁『台南兒童過敏氣喘門診怎麼選』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          sc=$(curl -s --max-time 20 "$BASE/services/skin-conditions.html" | grep -c '台南異位性皮膚炎與皮膚門診怎麼選' || true)
+          if [ "$sc" -ge 1 ]; then echo "OK    皮膚門診頁隱藏區 GEO 段已上線"; else echo "FAIL  皮膚門診頁『台南異位性皮膚炎與皮膚門診怎麼選』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          cc=$(curl -s --max-time 20 "$BASE/health/child-chronic-cough.html" | grep -c '台南久咳推薦' || true)
+          if [ "$cc" -ge 1 ]; then echo "OK    久咳承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  久咳頁『台南久咳推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          ad=$(curl -s --max-time 20 "$BASE/health/atopic-dermatitis.html" | grep -c '台南異膚推薦' || true)
+          if [ "$ad" -ge 1 ]; then echo "OK    異膚承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  異膚頁『台南異膚推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # llms 層同批新增 2 條問句框架條目;llms.txt 上面只驗了 200(檔還在),
+          # 這條盯「本批補的內容還在」——llms 雙檔沒有結構驗證器,回退不會有 ERROR 攔。
+          lc=$(curl -s --max-time 20 "$BASE/llms.txt" | grep -c '台南久咳推薦' || true)
+          if [ "$lc" -ge 1 ]; then echo "OK    llms.txt 在地推薦詞問句框架條目已上線"; else echo "FAIL  llms.txt『台南久咳推薦』未見——llms 層疑遭舊版覆蓋"; fail=1; fi
           # 反向抽驗(2026-08-08 新增):本站沒有站內搜尋功能——全站 <form>／
           # type="search"／role="search" 命中數為 0。首頁 WebSite schema 曾宣告
           # SearchAction 指向 /?s={search_term_string},屬 AP9 同類病灶(結構化

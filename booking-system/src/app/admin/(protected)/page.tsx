@@ -134,6 +134,7 @@ export default async function AdminDashboard({
           q: sp.q ?? "",
         }}
         canWrite={ctx.permissions.has(PERMISSIONS.APPOINTMENTS_WRITE)}
+        canExport={ctx.permissions.has(PERMISSIONS.APPOINTMENTS_READ)}
         doctorLocked={isDoctorReadonly}
         graceMinutes={graceMinutes}
       />

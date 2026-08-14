@@ -96,28 +96,105 @@ def parse_visible_table(html: str) -> dict[int, list[dict]]:
             )
 
         for weekday, cell in zip(weekdays, cells[1:]):
-            badge = re.search(r'<span class="badge-[^"]*"[^>]*>(.*?)</span>\s*(?:</span>)?', cell, re.S)
-            label = strip_tags(badge.group(1)) if badge else ""
-            if not label:
-                raise ScheduleError(f"週{weekday} {row_label} 的欄位找不到醫師／休診標籤")
-            if label == "休診":
-                continue
+            for group in parse_cell(cell, f"週{weekday} {row_label}"):
+                # 明確列出鍵的順序：JSON 是逐字比對的產出檔，
+                # 用 **group 展開會把 doctors 排到 start/end 前面，平白製造一整份 diff
+                result[weekday].append(
+                    {
+                        "session": session,
+                        "start": group["start"],
+                        "end": group["end"],
+                        "doctors": group["doctors"],
+                    }
+                )
 
+    for weekday, slots in result.items():
+        result[weekday] = merge_same_span(slots)
+    return result
+
+
+# 一格內的 badge 與時間 <p>，依原始順序取出。
+# badge 可能是巢狀的 <span class="badge-green"><span style="…">蔡醫師</span></span>，
+# 非貪婪的 (.*?) 會停在內層 </span>，後面的 \s*(?:</span>)? 再把外層吃掉。
+CELL_TOKEN_RE = re.compile(
+    r'<span class="badge-[^"]*"[^>]*>(?P<badge>.*?)</span>\s*(?:</span>)?'
+    r"|<p[^>]*>(?P<para>.*?)</p>",
+    re.S,
+)
+TIME_SPAN_RE = re.compile(r"^\d{2}:\d{2}[–-]\d{2}:\d{2}$")
+
+
+def parse_cell(cell: str, where: str) -> list[dict]:
+    """解析一格 → [{start, end, doctors}]。
+
+    一格可以有多組「badge ＋ 時間」，用來表達**同一診次、不同醫師不同起訖**
+    （2026-09-01 起的週一晚診與週日早診就是這種）：
+
+        <span class="badge-green">蔡醫師</span>
+        <p …>18:30–21:00</p>
+        <span class="badge-green" style="…">李醫師</span>
+        <p …>18:30–21:30</p>
+
+    時間歸屬於它前面最近的那個 badge。整格休診（badge 寫「休診」）回傳空 list；
+    休診格後面的說明文字（如「※ 晚間有診」）不是時間、會被略過。
+    """
+    groups: list[dict] = []
+    current: dict | None = None
+
+    for m in CELL_TOKEN_RE.finditer(cell):
+        if m.group("badge") is not None:
+            label = strip_tags(m.group("badge"))
+            if not label:
+                continue
+            if label == "休診":
+                current = None
+                continue
             doctors = [d.strip() for d in re.split(r"[/／、]", label) if d.strip()]
             doctors = [re.sub(r"醫師$", "", d) for d in doctors]
+            current = {"doctors": doctors}
+            groups.append(current)
+        else:
+            text = strip_tags(m.group("para"))
+            if not TIME_SPAN_RE.match(text):
+                continue
+            if current is None:
+                raise ScheduleError(f"{where} 的時間「{text}」前面沒有醫師標籤")
+            if "start" in current:
+                raise ScheduleError(
+                    f"{where} 的「{'／'.join(current['doctors'])}」有兩組時間"
+                    f"（{current['start']}–{current['end']} 與 {text}）"
+                )
+            current["start"], current["end"] = re.split(r"[–-]", text)
 
-            time_texts = [strip_tags(p) for p in re.findall(r"<p[^>]*>(.*?)</p>", cell, re.S)]
-            span = next((t for t in time_texts if re.match(r"^\d{2}:\d{2}[–-]\d{2}:\d{2}$", t)), None)
-            if span is None:
-                raise ScheduleError(f"週{weekday} {row_label} 的欄位找不到時間（{time_texts!r}）")
-            start, end = re.split(r"[–-]", span)
-            result[weekday].append(
-                {"session": session, "start": start, "end": end, "doctors": doctors}
-            )
+    if not groups and not re.search(r'<span class="badge-[^"]*"', cell):
+        raise ScheduleError(f"{where} 的欄位找不到醫師／休診標籤")
+    for g in groups:
+        if "start" not in g:
+            raise ScheduleError(f"{where} 的「{'／'.join(g['doctors'])}」找不到時間")
+    return groups
 
-    for slots in result.values():
-        slots.sort(key=lambda s: SESSION_ORDER[s["session"]])
-    return result
+
+def merge_same_span(slots: list[dict]) -> list[dict]:
+    """同診次且起訖完全相同的組別合併成一筆（醫師併入同一個 doctors 陣列）。
+
+    這樣「蔡／李 同為 18:30–21:30」不論寫成一個 badge 還是兩個 badge，
+    產出的 JSON 都一樣，換寫法不會平白製造 diff。
+    """
+    merged: list[dict] = []
+    index: dict[tuple, dict] = {}
+    for s in slots:
+        key = (s["session"], s["start"], s["end"])
+        hit = index.get(key)
+        if hit is None:
+            hit = dict(s)
+            index[key] = hit
+            merged.append(hit)
+        else:
+            for d in s["doctors"]:
+                if d not in hit["doctors"]:
+                    hit["doctors"].append(d)
+    merged.sort(key=lambda s: (SESSION_ORDER[s["session"]], s["start"], s["end"]))
+    return merged
 
 
 def parse_js_ranges(block: str) -> list[dict]:
@@ -164,17 +241,38 @@ def parse_js_exceptions(html: str) -> dict[str, list[dict]]:
     return dict(sorted(result.items()))
 
 
+def session_union(slots: list[dict]) -> list[tuple]:
+    """把一天的醫師級時段收斂成診所級時段：同診次取 min(start)、max(end)。
+
+    `SCHEDULE` 常數餵的是 HERO 開診徽章＝「診所這個時間開不開」，
+    與哪位醫師無關。所以同診次有兩位醫師不同起訖時（如 2026-09-01 起的
+    週一晚診 蔡至 21:00／李至 21:30），要拿**聯集**去跟 SCHEDULE 比，
+    逐筆比會誤報。時間是零填補的 HH:MM，字串比大小即等於時間比大小。
+    """
+    agg: dict[str, list[str]] = {}
+    for s in slots:
+        cur = agg.get(s["session"])
+        if cur is None:
+            agg[s["session"]] = [s["start"], s["end"]]
+        else:
+            cur[0] = min(cur[0], s["start"])
+            cur[1] = max(cur[1], s["end"])
+    return sorted(
+        ((k, v[0], v[1]) for k, v in agg.items()), key=lambda t: SESSION_ORDER[t[0]]
+    )
+
+
 def cross_check(table: dict[int, list[dict]], js: dict[int, list[dict]]) -> list[str]:
     """可見表 vs SCHEDULE 常數逐格比對；兩份是官網自己的副本，本來就該一致"""
     problems = []
     names = ["日", "一", "二", "三", "四", "五", "六"]
     for weekday in range(7):
-        a = [(s["session"], s["start"], s["end"]) for s in table.get(weekday, [])]
-        b = [(s["session"], s["start"], s["end"]) for s in js.get(weekday, [])]
+        a = session_union(table.get(weekday, []))
+        b = session_union(js.get(weekday, []))
         if a != b:
             problems.append(
                 f"週{names[weekday]}：可見表 {a} ≠ SCHEDULE 常數 {b}"
-                "（其中一邊改了、另一邊沒跟上）"
+                "（其中一邊改了、另一邊沒跟上；可見表已收斂成診所級時段再比對）"
             )
     return problems
 
@@ -192,11 +290,117 @@ def build(html: str) -> dict:
     }
 
 
+def _cell(label: str, span: str | None = None, nested: bool = False) -> str:
+    inner = f'<span style="font-size: 16px;">{label}</span>' if nested else label
+    out = f'<span class="badge-green" style="">{inner}</span>'
+    if span:
+        out += f'<p class="text-sm text-gray-600 mt-1 font-english">{span}</p>'
+    return out
+
+
+# 2026-09-01 起的新班表夾具：涵蓋兩種「同診次不同醫師不同起訖」的寫法
+# （週一晚診、週日早診），以及巢狀 badge、休診格與休診格後的說明文字。
+SELFTEST_ROWS = {
+    "上午": [
+        _cell("蔡醫師", "08:00–12:00"),
+        _cell("蔡醫師", "08:00–12:00", nested=True),
+        _cell("蔡醫師", "08:00–12:00"),
+        _cell("李醫師", "08:00–12:00"),
+        _cell("蔡醫師", "08:00–12:00"),
+        _cell("蔡醫師", "08:00–11:30"),
+        _cell("蔡醫師", "08:00–11:00") + _cell("李醫師", "08:00–11:30"),
+    ],
+    "下午": [
+        _cell("蔡醫師", "14:30–18:00"),
+        _cell("蔡醫師", "14:30–18:00"),
+        _cell("蔡醫師", "14:30–18:00"),
+        _cell("李醫師", "14:30–18:00"),
+        _cell("蔡醫師", "14:30–18:00"),
+        _cell("李醫師", "14:30–18:00"),
+        '<span class="badge-gray">休診</span><p class="text-sm">※ 晚間有診</p>',
+    ],
+    "晚上": [
+        _cell("蔡醫師", "18:30–21:00") + _cell("李醫師", "18:30–21:30"),
+        _cell("蔡醫師", "18:30–21:30"),
+        _cell("李醫師", "18:30–21:30"),
+        _cell("蔡醫師", "18:30–21:30"),
+        _cell("蔡醫師", "18:30–21:30"),
+        '<span class="badge-gray">休診</span>',
+        _cell("蔡醫師", "18:30–21:00"),
+    ],
+}
+
+SELFTEST_EXPECTED = {
+    0: [("MORNING", "08:00", "11:00", ["蔡"]), ("MORNING", "08:00", "11:30", ["李"]),
+        ("EVENING", "18:30", "21:00", ["蔡"])],
+    1: [("MORNING", "08:00", "12:00", ["蔡"]), ("AFTERNOON", "14:30", "18:00", ["蔡"]),
+        ("EVENING", "18:30", "21:00", ["蔡"]), ("EVENING", "18:30", "21:30", ["李"])],
+    4: [("MORNING", "08:00", "12:00", ["李"]), ("AFTERNOON", "14:30", "18:00", ["李"]),
+        ("EVENING", "18:30", "21:30", ["蔡"])],
+    6: [("MORNING", "08:00", "11:30", ["蔡"]), ("AFTERNOON", "14:30", "18:00", ["李"])],
+}
+
+
+def selftest() -> int:
+    """驗證解析器吃得下 9/1 新表（不動 index.html）。"""
+    days = ["週一", "週二", "週三", "週四", "週五", "週六", "週日"]
+    head = "".join(f"<th>{d}</th>" for d in days)
+    body = "".join(
+        f"<tr><td>{row}</td>" + "".join(f"<td>{c}</td>" for c in cells) + "</tr>"
+        for row, cells in SELFTEST_ROWS.items()
+    )
+    html = (
+        f'<table class="schedule-table"><thead><tr><th>時段</th>{head}</tr></thead>'
+        f"<tbody>{body}</tbody></table>"
+        "<script>var SCHEDULE = {\n"
+        "  1: [[480,720,'早診'],[870,1080,'午診'],[1110,1290,'晚診']],\n"
+        "  2: [[480,720,'早診'],[870,1080,'午診'],[1110,1290,'晚診']],\n"
+        "  3: [[480,720,'早診'],[870,1080,'午診'],[1110,1290,'晚診']],\n"
+        "  4: [[480,720,'早診'],[870,1080,'午診'],[1110,1290,'晚診']],\n"
+        "  5: [[480,720,'早診'],[870,1080,'午診'],[1110,1290,'晚診']],\n"
+        "  6: [[480,690,'早診'],[870,1080,'午診']],\n"
+        "  0: [[480,690,'早診'],[1110,1260,'晚診']]\n"
+        "};\nvar EXCEPTIONS = {\n};</script>"
+    )
+
+    failures = []
+    table = parse_visible_table(html)
+    for weekday, expected in SELFTEST_EXPECTED.items():
+        got = [(s["session"], s["start"], s["end"], s["doctors"]) for s in table[weekday]]
+        if got != expected:
+            failures.append(f"週{weekday}：得到 {got}\n           期望 {expected}")
+
+    # 診所級聯集必須仍等於 SCHEDULE（週一晚診 18:30–21:30、週日早診 08:00–11:30）
+    problems = cross_check(table, parse_js_schedule(html))
+    failures.extend(problems)
+
+    # 負向：時間沒有對應的醫師標籤要報錯，不能默默吞掉
+    try:
+        parse_cell('<p class="x">18:30–21:00</p>', "負向測試")
+    except ScheduleError:
+        pass
+    else:
+        failures.append("負向測試失敗：孤兒時間沒有報錯")
+
+    if failures:
+        print("✗ selftest 失敗：\n  - " + "\n  - ".join(failures), file=sys.stderr)
+        return 1
+    print("✅ selftest 通過（9/1 新表可解析、診所級聯集與 SCHEDULE 一致、負向測試如期報錯）")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="官網門診時間表 → 預約系統班表")
     parser.add_argument("--root", default=".", help="repo 根目錄")
     parser.add_argument("--check", action="store_true", help="只檢查是否同步，不寫檔")
+    parser.add_argument(
+        "--selftest", action="store_true",
+        help="用內建的 2026-09-01 新表夾具驗證解析器（不讀 index.html、不寫檔）",
+    )
     args = parser.parse_args()
+
+    if args.selftest:
+        return selftest()
 
     root = Path(args.root).resolve()
     source = root / "index.html"

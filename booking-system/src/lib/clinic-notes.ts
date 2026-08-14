@@ -36,3 +36,19 @@ export const CLINIC_TYPE_NOTES: Record<string, ClinicNote> = {
 export function clinicNoteOf(code: string): ClinicNote | undefined {
   return CLINIC_TYPE_NOTES[code];
 }
+
+/**
+ * 現場掛號開始時間（院長 2026-08-07 提供，逐字比照官網首頁同名區塊）。
+ *
+ * 為什麼需要：系統有六處叫家長「重新抽現場號」「請直接到院現場掛號候診」，
+ * 卻沒有一處說得出**幾點可以去抽號**。約不到、或報到逾時的家長最需要的就是這個。
+ * 定義在這裡只寫一次，`/rules` 與首頁共用，避免兩邊各改一半而不一致。
+ * 官網版本結尾另有一句「網路預約另有規則…」，此處不重複——這裡本身就是預約系統。
+ */
+export const WALK_IN_REGISTRATION = {
+  title: "各診次現場掛號開始時間",
+  times: "早診 08:00｜午診 14:30｜晚診 18:00",
+  note:
+    "現場掛號（到櫃檯抽號）的受理時間，平日與週六、週日相同。" +
+    "晚診 18:00 開始掛號、18:30 開始看診；早診與午診的掛號時間與看診時間相同。",
+} as const;

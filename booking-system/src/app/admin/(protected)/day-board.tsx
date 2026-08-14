@@ -50,6 +50,8 @@ interface Props {
   clinicTypes: { id: string; name: string; color: string }[];
   filters: { session: string; doctor: string; type: string; status: string; q: string };
   canWrite: boolean;
+  /** 是否可匯出／列印整日名單（APPOINTMENTS_READ）；醫師唯讀帳號沒有 */
+  canExport: boolean;
   doctorLocked: boolean;
   /** 報到保留分鐘數（booking.checkin_grace_minutes），逾時即標記提醒 */
   graceMinutes: number;
@@ -62,6 +64,7 @@ export function DayBoard({
   clinicTypes,
   filters,
   canWrite,
+  canExport,
   doctorLocked,
   graceMinutes,
 }: Props) {
@@ -170,16 +173,22 @@ export function DayBoard({
         />
         <button className="btn-secondary !px-3 !py-2">篩選</button>
         <span className="flex-1" />
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="btn-secondary !px-3 !py-2"
-        >
-          🖨️ 列印
-        </button>
-        <a href={exportUrl} className="btn-secondary !px-3 !py-2" download>
-          ⬇️ 匯出 CSV
-        </a>
+        {/* 匯出與列印都是「整日完整名單」，醫師唯讀帳號無此權限。
+            後端本來就會擋（export route 回 401），但按鈕留著只會讓人按了得到錯誤。 */}
+        {canExport && (
+          <>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="btn-secondary !px-3 !py-2"
+            >
+              🖨️ 列印
+            </button>
+            <a href={exportUrl} className="btn-secondary !px-3 !py-2" download>
+              ⬇️ 匯出 CSV
+            </a>
+          </>
+        )}
       </form>
 
       {appointments.length === 0 && (

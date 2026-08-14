@@ -47,7 +47,9 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
 
 ## 工具
 
-- `internal/tools/make_infographic.py` — 公告圖改名＋轉 webp/jpg（院長只給貼圖時重製 1000² 方圖）。
+- `internal/tools/make_infographic.py` — 公告圖改名＋轉 webp/jpg。
+  ⚠️ **院長對話貼的圖，原始檔就在 `/root/.claude/uploads/<session-id>/`——先 `ls` 那裡再說。**
+  不要因為「只有貼圖」就自己重畫；重繪是最後手段（詳見 `infographic-upload` skill 與 SOP §一.1）。
 - `internal/tools/validate_site.py` — 全站驗證器。
 - `internal/tools/sync_schedule.py` — 官網門診時間表 → 預約系統班表（單向，官網為主）；`--check` 供 push 前把關。
 - `internal/tools/submit_indexnow.py` — IndexNow 提交。

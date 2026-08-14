@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui";
 import { CLINIC } from "@/lib/clinic-info";
+import { WALK_IN_REGISTRATION } from "@/lib/clinic-notes";
 import { getSetting } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
@@ -58,6 +59,13 @@ export default async function RulesPage() {
             </li>
             <li>同一位病人同一天僅能有 1 筆有效預約（不分醫師、門診類型）。</li>
           </ul>
+        </Card>
+
+        {/* 緊接在「該診次開診後請直接到院現場掛號」之後——約不到的家長下一個問題就是幾點能去抽號 */}
+        <Card className="space-y-2">
+          <h2 className="text-lg font-bold text-sage-700">🕗 {WALK_IN_REGISTRATION.title}</h2>
+          <p className="text-lg sm:text-xl font-bold text-wood-700">{WALK_IN_REGISTRATION.times}</p>
+          <p className="text-ink-900 leading-relaxed">{WALK_IN_REGISTRATION.note}</p>
         </Card>
 
         <Card className="space-y-2">

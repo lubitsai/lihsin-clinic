@@ -14,6 +14,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   const nav = [
     { href: "/admin", label: "今日總覽", show: true },
+    { href: "/admin/month", label: "月曆總覽", show: can(PERMISSIONS.APPOINTMENTS_READ) },
     { href: "/admin/booking", label: "代客預約", show: can(PERMISSIONS.APPOINTMENTS_WRITE) },
     { href: "/admin/schedule", label: "排班管理", show: can(PERMISSIONS.SCHEDULE_WRITE) },
     { href: "/admin/patients", label: "病人管理", show: can(PERMISSIONS.PATIENTS_READ) },

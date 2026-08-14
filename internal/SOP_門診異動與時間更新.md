@@ -29,7 +29,10 @@
 ### 步驟
 
 1. **公告圖**（正方形）放入 `images/notice/`，**檔名帶日期**（如 `clinic-notice-20260819.webp`＋`.jpg`），避免同名檔被 CDN 快取舊圖。
-   - 若院長只給對話貼圖、無原始檔：用 `internal/tools/make_infographic.py`（或 Playwright 截圖＋PIL/sharp）重製 1000² webp＋jpg 後備。
+   - **院長在對話貼圖時，原始檔就在 `/root/.claude/uploads/<session-id>/`——先 `ls` 那裡，不要急著重畫。**
+     取得原檔後只做**轉檔**（Pillow：webp q84 ＋ jpg q88 後備，維持原生尺寸不放大），細節見 `infographic-upload` skill。
+   - 真的找不到原檔才談重繪（Chromium 無頭渲染 HTML 截圖）；**重繪是最後手段**，容器只有 WenQuanYi Zen Hei 一種中文字型，
+     做不出院長海報的手寫風標題與裝飾，成品與原稿明顯不同，**且院長要的是原圖**（2026-08-12 裁示）。
 2. **改 `index.html` 的 `#clinic-notice` 區塊**（搜 `id="clinic-notice"` 定位），共五處：
    - 圖片路徑 **兩處**（區塊本體 `#clinic-notice-zoom` 內 `<picture>` + lightbox `#notice-lightbox` 內 `<picture>`，webp source 與 jpg img 都要改）
    - `alt`（**公告全文逐字寫入**，爬蟲/螢幕閱讀器讀不到圖內文字）
@@ -93,6 +96,42 @@ grep -rn '平日夜診至21:30\|夜診至 21:30\|週六週日皆有門診' --inc
 | `services/weekend-pediatrics.html` | JSON-LD `openingHoursSpecification`（約 78+）、description（約 62）、meta desc（7/16） | 假日/夜間時段（此頁專講假日夜診，務必改） |
 | **其他 services/ 與 health/ 頁** | 探查指令列出的 meta desc | 多頁 desc 含「平日夜診至21:30」固定句 |
 | `llms.txt`／`llms-full.txt` | 搜門診時間相關條目 | 提供給 LLM 的摘要，須同步 |
+
+### 同一診次、不同醫師不同起訖（2026-08-12 起支援）
+
+可見表一格可以放**多組「badge ＋ 時間」**，時間歸屬於它前面最近的那個 badge：
+
+```html
+<td class="p-3 text-center">
+ <span class="badge-green" style="">蔡醫師</span>
+ <p class="text-sm text-gray-600 mt-1 font-english">18:30–21:00</p>
+ <span class="badge-green" style="background-color: rgb(255, 212, 211);">李醫師</span>
+ <p class="text-sm text-gray-600 mt-1 font-english">18:30–21:30</p>
+</td>
+```
+
+- **兩位醫師時間相同**就沿用舊寫法（單一 badge `蔡/李` ＋ 一組時間）；兩種寫法產出的 JSON 相同，換寫法不會平白製造 diff。
+- **`SCHEDULE` 常數不要跟著拆**。它餵的是 HERO 開診徽章＝「診所這個時間開不開」，與醫師無關；
+  比對時工具會自動把可見表收斂成診所級聯集（同診次取最早開始、最晚結束）再跟 `SCHEDULE` 對。
+  上例的週一晚診聯集仍是 `18:30–21:30`，`SCHEDULE` 維持 `[1110,1290,'晚診']` 不動。
+- 改完先跑 **`python3 internal/tools/sync_schedule.py --selftest`**（內建 2026-09-01 新表夾具＋負向測試，不讀 `index.html`、不寫檔），
+  再跑 `--check`／不帶旗標的同步。
+- 預約系統端：`schedule.json` 同一個 `session` 會出現兩筆，DB 的 `WeeklyScheduleTemplate` 唯一鍵是
+  `[weekday, session, doctorId]`，本來就吃得下。單日例外是**診所級**的（沒有醫師欄位），
+  `schedule-source.ts` 比對前會先收斂成一個診次一筆，否則同一個 `(date, session)` 會被推出兩筆重複的 `SPECIAL_HOURS`。
+
+### 受影響預約怎麼抓（改常態班表必做）
+
+- **覆蓋判斷是逐醫師的**（`isSlotCovered` 比對 `doctorId`）。所以**醫師對調也會被擋**，
+  不是只有「時段縮短／取消」才會——某醫師在某診次的班被移除，約在那裡的預約就沒有對應區塊。
+  **不要以為「時段還在就沒事」**（2026-08-12 曾這樣誤判，實測推翻）。
+- **名單不必手動篩**：主機跑 `npx tsx scripts/sync-schedule.ts --dry-run`，
+  印出完整名單（日期／時間／姓名／電話／預約編號）且不寫入資料庫（交易內套用後回滾）。
+- **要在新班表生效當天跑，不要提早一天**。週班表沒有「生效日」欄位、套用即對所有未來日期生效，
+  提早一天跑會把「前一天同一星期幾」的時段一起改掉。
+- 名單沒清空前同步會整批擋下＝設計如此；**不要為了讓指令過就加 `--cancel-affected`**（見〈共同尾段〉第 3 點）。
+- 要在不碰資料庫的情況下先推演，`findAppointmentsOutsideSchedule` 支援注入 `client`
+  （`Pick<typeof prisma, "appointment" | "scheduleException">`），可餵合成預約逐種情況驗證。
 
 ### 站外（提醒院長，session 無法直接改）
 
