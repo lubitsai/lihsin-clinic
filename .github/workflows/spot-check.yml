@@ -93,6 +93,25 @@ jobs:
           # ⚠️ 若日後刻意改這句措辭,請連同本檢查一起改,不要直接刪掉。
           m=$(curl -s --max-time 20 "$BASE/health/meningococcal-b-vaccine.html" | grep -c '開始接種時的年齡' || true)
           if [ "$m" -ge 1 ]; then echo "OK    B型腦膜炎疫苗頁劑次段已上線"; else echo "FAIL  B型腦膜炎疫苗頁『開始接種時的年齡』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+          # 在地推薦詞承載頁抽驗(2026-08-14 新增,「台南兒科/小兒科/假日/減重/過敏/
+          # 氣喘/久咳/異膚推薦」等 13 詞的四層補強):這批補的全是可見層看不出來的
+          # 技術層——keywords、FAQ schema、隱藏 #ai-knowledge-block、llms 雙檔。
+          # 該批的真缺口是「意圖宣告在首頁、承載頁掛零」,修好之後若被舊版覆蓋,
+          # 頁面照樣 200、可見層一字不差,沒有任何人會發現。以下四頁各盯一層:
+          # 前兩條盯隱藏區新增的 GEO 段,後兩條盯 keywords 層的裸詞。
+          # ⚠️ 若日後刻意改這些措辭,請連同本檢查一起改,不要直接刪掉。
+          pa=$(curl -s --max-time 20 "$BASE/services/pediatric-allergy-asthma.html" | grep -c '台南兒童過敏氣喘門診怎麼選' || true)
+          if [ "$pa" -ge 1 ]; then echo "OK    過敏氣喘頁隱藏區 GEO 段已上線"; else echo "FAIL  過敏氣喘頁『台南兒童過敏氣喘門診怎麼選』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          sc=$(curl -s --max-time 20 "$BASE/services/skin-conditions.html" | grep -c '台南異位性皮膚炎與皮膚門診怎麼選' || true)
+          if [ "$sc" -ge 1 ]; then echo "OK    皮膚門診頁隱藏區 GEO 段已上線"; else echo "FAIL  皮膚門診頁『台南異位性皮膚炎與皮膚門診怎麼選』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          cc=$(curl -s --max-time 20 "$BASE/health/child-chronic-cough.html" | grep -c '台南久咳推薦' || true)
+          if [ "$cc" -ge 1 ]; then echo "OK    久咳承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  久咳頁『台南久咳推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          ad=$(curl -s --max-time 20 "$BASE/health/atopic-dermatitis.html" | grep -c '台南異膚推薦' || true)
+          if [ "$ad" -ge 1 ]; then echo "OK    異膚承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  異膚頁『台南異膚推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # llms 層同批新增 2 條問句框架條目;llms.txt 上面只驗了 200(檔還在),
+          # 這條盯「本批補的內容還在」——llms 雙檔沒有結構驗證器,回退不會有 ERROR 攔。
+          lc=$(curl -s --max-time 20 "$BASE/llms.txt" | grep -c '台南久咳推薦' || true)
+          if [ "$lc" -ge 1 ]; then echo "OK    llms.txt 在地推薦詞問句框架條目已上線"; else echo "FAIL  llms.txt『台南久咳推薦』未見——llms 層疑遭舊版覆蓋"; fail=1; fi
           # 反向抽驗(2026-08-08 新增):本站沒有站內搜尋功能——全站 <form>／
           # type="search"／role="search" 命中數為 0。首頁 WebSite schema 曾宣告
           # SearchAction 指向 /?s={search_term_string},屬 AP9 同類病灶(結構化
