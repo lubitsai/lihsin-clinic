@@ -70,6 +70,14 @@ jobs:
           check /health/enterovirus71-vaccine.html 200
           check /health/rsv-immunization.html 200
           check /health/meningococcal-b-vaccine.html 200
+          # 2026-08-14 批的四個在地推薦詞承載頁。下方「內容抽驗」已各盯一層
+          # (keywords／隱藏 #ai-knowledge-block),這四行盯的是另一件事:頁還在不在。
+          # 兩者缺一不可——內容 grep 抓得到「頁在但內容被覆蓋」,卻分不出
+          # 「整頁 404」與「內容被改」;200 檢查則相反(2026-08-10 負向測試證實)。
+          check /services/pediatric-allergy-asthma.html 200
+          check /services/skin-conditions.html 200
+          check /health/child-chronic-cough.html 200
+          check /health/atopic-dermatitis.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           echo "=== 內容抽驗 ==="
