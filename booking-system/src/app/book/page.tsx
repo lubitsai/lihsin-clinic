@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { fetchClinicTypes, fetchPortalStatus } from "@/app/actions/portal";
-import { isLineLoginConfigured } from "@/lib/line";
+import { isLineLoginConfigured, isLineDevLoginEnabled } from "@/lib/line";
 import { getSetting } from "@/lib/settings";
 import { DeerMascot } from "@/components/ui";
 import { BookingWizard } from "./wizard";
@@ -22,14 +22,15 @@ export default async function BookPage() {
           <DeerMascot size={40} />
           <span className="font-bold text-xl">立欣診所線上預約</span>
         </Link>
-        {portalStatus.loggedIn && portalStatus.viaLine && (
+        {portalStatus.loggedIn && (
           <span className="text-sm rounded-full bg-sage-500/10 text-sage-700 px-3 py-1">LINE 已登入</span>
         )}
       </header>
       <BookingWizard
         clinicTypes={clinicTypes}
+        loggedIn={portalStatus.loggedIn}
         lineConfigured={isLineLoginConfigured()}
-        viaLine={portalStatus.loggedIn && portalStatus.viaLine}
+        devLogin={isLineDevLoginEnabled()}
         checkinGraceMinutes={checkinGraceMinutes}
       />
     </div>

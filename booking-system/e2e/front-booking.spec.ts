@@ -17,10 +17,21 @@ function newPatient() {
   };
 }
 
-/** 走完七步驟預約精靈 */
+/**
+ * 以替身完成 LINE 登入。
+ * 線上預約與線上查詢的身分只剩 LINE Login，CI 連不到 LINE，
+ * 所以走 /api/line/dev-login（正式環境是 404，見 lib/line.ts isLineDevLoginEnabled）。
+ * 不帶 as= 就是全新的假 LINE 帳號，測試之間不會互相吃掉同時預約上限。
+ */
+async function loginAsLine(page: Page, next = "/book") {
+  await page.goto(`/api/line/dev-login?next=${encodeURIComponent(next)}`);
+  await expect(page).toHaveURL(new RegExp(next.replace("/", "\\/")), { timeout: 15_000 });
+}
+
+/** 走完七步驟預約精靈（需先 LINE 登入） */
 async function bookOnce(page: Page, clinicType = "一般門診") {
   const p = newPatient();
-  await page.goto("/book");
+  await loginAsLine(page);
 
   // 步驟 1：門診類型
   await clickUntil(page.getByRole("button", { name: new RegExp(clinicType) }), async () => {
@@ -62,13 +73,7 @@ async function bookOnce(page: Page, clinicType = "一般門診") {
     await expect(page.getByRole("heading", { name: "請確認預約內容" })).toBeVisible({ timeout: 8_000 });
   });
 
-  // 步驟 6：手機驗證（開發模式會把驗證碼自動帶入欄位）
-  const sendOtp = page.getByRole("button", { name: /傳送驗證碼/ });
-  if ((await sendOtp.count()) > 0) {
-    await clickUntil(sendOtp, async () => {
-      await expect(page.getByPlaceholder("6 位數驗證碼")).not.toHaveValue("", { timeout: 8_000 });
-    });
-  }
+  // 步驟 6：確認送出（身分在登入時就確認過，這一步沒有額外驗證）
   await clickUntil(page.getByRole("button", { name: "確認送出預約" }), async () => {
     await expect(page.getByText("預約成功")).toBeVisible({ timeout: 15_000 });
   });
@@ -77,6 +82,14 @@ async function bookOnce(page: Page, clinicType = "一般門診") {
 }
 
 test.describe("前台：預約流程", () => {
+  test("未登入時預約頁只給 LINE 登入，並講清楚電話與現場掛號照舊", async ({ page }) => {
+    await page.goto("/book");
+    await expect(page.getByRole("heading", { name: "線上預約請先以 LINE 登入" })).toBeVisible();
+    await expect(page.getByText("沒有使用 LINE 也能看診")).toBeVisible();
+    // 未登入不該看到任何門診類型按鈕（精靈根本沒開始）
+    await expect(page.getByRole("heading", { name: "請選擇門診類型" })).toHaveCount(0);
+  });
+
   test("家長可以從首頁一路完成預約", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { name: /立欣診所線上預約/ })).toBeVisible();
@@ -111,39 +124,37 @@ test.describe("前台：預約流程", () => {
 });
 
 test.describe("前台：查詢與取消", () => {
-  test("查得到自己的預約，並可自行取消", async ({ page }) => {
+  test("預約成立即綁定，查得到自己的預約並可自行取消", async ({ page }) => {
+    // bookOnce 走完後，這個 LINE 帳號已在預約成立時自動綁定該病人
     const { patient } = await bookOnce(page);
 
     await page.goto("/my");
-    await typeInto(page.locator('input[type="text"]').first(), patient.idNumber);
-    await typeInto(page.locator('input[type="date"]').first(), patient.birthDate);
-    await typeInto(page.getByPlaceholder("09xxxxxxxx"), patient.phone);
-    await clickUntil(page.getByRole("button", { name: /傳送驗證碼/ }), async () => {
-      await expect(page.getByPlaceholder("6 位數驗證碼")).not.toHaveValue("", { timeout: 8_000 });
-    });
-    await submitUntil(page.getByRole("button", { name: "查詢我的預約" }), async () => {
-      await expect(page.getByText(patient.name).first()).toBeVisible({ timeout: 8_000 });
-    });
+    await expect(page.getByText(patient.name).first()).toBeVisible({ timeout: 15_000 });
 
     page.once("dialog", (d) => d.accept());
     await page.getByRole("button", { name: "取消預約" }).first().click();
     await expect(page.getByText(/已取消/).first()).toBeVisible({ timeout: 15_000 });
   });
 
-  test("查無資料時的訊息不透露該證件號是否存在", async ({ page }) => {
+  test("未登入的查詢頁只給 LINE 登入", async ({ page }) => {
     await page.goto("/my");
-    await typeInto(page.locator('input[type="text"]').first(), makeTaiwanId(99_999_99));
-    await typeInto(page.locator('input[type="date"]').first(), "2000-01-01");
-    await typeInto(page.getByPlaceholder("09xxxxxxxx"), "0900999999");
-    await clickUntil(page.getByRole("button", { name: /傳送驗證碼/ }), async () => {
-      await expect(page.getByPlaceholder("6 位數驗證碼")).not.toHaveValue("", { timeout: 8_000 });
+    await expect(page.getByText("查詢與取消預約請先以 LINE 登入")).toBeVisible();
+    await expect(page.getByRole("button", { name: "取消預約" })).toHaveCount(0);
+  });
+
+  test("綁定家人時輸入不存在的證件號，訊息不透露該證件號是否存在", async ({ page }) => {
+    await loginAsLine(page, "/my");
+    await clickUntil(page.getByRole("button", { name: /新增成員/ }), async () => {
+      await expect(page.getByPlaceholder("證件號碼")).toBeVisible({ timeout: 8_000 });
     });
-    const query = page.getByRole("button", { name: "查詢我的預約" });
-    await expect(query).toBeEnabled({ timeout: 15_000 });
-    await query.click();
+    await typeInto(page.getByPlaceholder("證件號碼"), makeTaiwanId(9_999_999));
+    await typeInto(page.locator('input[type="date"]').first(), "2000-01-01");
+    await typeInto(page.getByPlaceholder(/病歷上的手機/), "0900999999");
     // 一律中性訊息，不能出現「查無此人」這類可用來探查病人是否存在的字眼
-    await expect(page.getByText("查無符合的預約資料，請確認輸入內容。")).toBeVisible({
-      timeout: 15_000,
+    await submitUntil(page.getByRole("button", { name: "確認綁定" }), async () => {
+      await expect(page.getByText("查無符合的預約資料，請確認輸入內容。")).toBeVisible({
+        timeout: 8_000,
+      });
     });
   });
 });

@@ -13,7 +13,8 @@ import { applySchedule, type ScheduleSource } from "@/lib/schedule-source";
 import { getDayScheduleBlocks } from "@/lib/schedule";
 import type { PrismaClient } from "@prisma/client";
 import {
-  resetDb, seedBase, makePatient, futureDate, todayStr, weekdayOf, STAFF_ACTOR, PATIENT_ACTOR,
+  resetDb, seedBase, makePatient, futureDate, todayStr, weekdayOf, linkLineAccount,
+  STAFF_ACTOR, PATIENT_ACTOR,
 } from "./helpers";
 
 /** 目標日：三天後的 08:00，早診第一格 */
@@ -58,6 +59,7 @@ describe("後台改常態班表", () => {
   it("確認取消後，班表變更與診所取消同時生效並排入通知", async () => {
     const { general, drTsai } = await seedBase();
     const { appointment, weekday } = await bookMorningEight(general.id, drTsai.id);
+    await linkLineAccount(appointment.patientId); // 有 LINE 綁定才收得到取消通知
     const row = await prisma.weeklyScheduleTemplate.findFirstOrThrow({
       where: { weekday, session: "MORNING", doctorId: drTsai.id },
     });

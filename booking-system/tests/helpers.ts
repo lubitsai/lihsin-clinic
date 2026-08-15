@@ -22,7 +22,6 @@ export async function resetDb() {
     "public_holidays",
     "line_patient_links",
     "line_accounts",
-    "otp_codes",
     "portal_sessions",
     "staff_sessions",
     "patient_contacts",
@@ -140,6 +139,23 @@ export function makePatient(overrides: Partial<PatientInput> = {}): PatientInput
 export function futureDate(n: number): string {
   return addDays(todayStr(), n);
 }
+
+/**
+ * 把病人綁到一個新的 LINE 帳號。
+ * 通知只推播給有綁定的病人（簡訊取消後沒有其他管道），
+ * 所以任何要驗通知的測試都得先綁——沒綁就完全不會排入佇列。
+ */
+export async function linkLineAccount(patientId: string, displayName = "測試家長") {
+  lineSeq++;
+  const account = await prisma.lineAccount.create({
+    data: { lineUserId: `Utest${lineSeq}`, displayName, isFollowing: true },
+  });
+  await prisma.linePatientLink.create({
+    data: { lineAccountId: account.id, patientId, verifiedAt: new Date() },
+  });
+  return account;
+}
+let lineSeq = 0;
 
 export const STAFF_ACTOR = { type: "STAFF" as const, id: "test-staff", name: "測試櫃檯" };
 export const PATIENT_ACTOR = { type: "PATIENT" as const };

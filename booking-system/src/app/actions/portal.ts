@@ -12,11 +12,6 @@ import { dispatchPendingNotifications } from "@/lib/notifications";
 import { BookingError } from "@/lib/errors";
 import { bookingRequestSchema, phoneSchema, dateStrSchema, timeStrSchema, idTypeSchema } from "@/lib/validation";
 import {
-  issueOtp,
-  verifyOtp,
-  checkOtp,
-  consumeOtp,
-  createPortalSession,
   getPortalContext,
   destroyPortalSession,
   verifyPatientIdentity,
@@ -90,64 +85,22 @@ export async function fetchDaySlots(clinicTypeId: string, date: string, doctorId
   }
 }
 
-// ── OTP ──────────────────────────────────────────────
-
-export async function requestBookingOtp(phone: string): Promise<ActionResult<{ devCode?: string }>> {
-  try {
-    const p = phoneSchema.parse(phone);
-    if (!rateLimit(`otp-ip:${await clientIp()}`, 10, 10 * 60_000))
-      return { ok: false, message: "請求過於頻繁，請稍後再試" };
-    const { devCode } = await issueOtp(p, "BOOKING");
-    return { ok: true, data: { devCode } };
-  } catch (e) {
-    return toUserError(e);
-  }
-}
-
 // ── 送出預約 ──────────────────────────────────────────
 
-const submitSchema = bookingRequestSchema.extend({ otpCode: z.string().optional() });
-
 export async function submitBooking(
-  input: z.infer<typeof submitSchema>,
-): Promise<ActionResult<{ bookingNumber: string; status: string }>> {
+  input: z.infer<typeof bookingRequestSchema>,
+): Promise<ActionResult<{ bookingNumber: string; status: string; linked: boolean }>> {
   try {
-    const parsed = submitSchema.parse(input);
+    const parsed = bookingRequestSchema.parse(input);
     if (!rateLimit(`book-ip:${await clientIp()}`, 20, 10 * 60_000))
       return { ok: false, message: "請求過於頻繁，請稍後再試" };
 
-    // 身分確認：LINE 已綁定此病人 → 免 OTP；否則需通過手機驗證碼
+    // 身分確認：一律要求 LINE 登入（院長 2026-08-13 裁示取消簡訊後，
+    // 手機驗證碼沒有可送達的管道）。沒有 LINE 的家長改走電話或現場掛號。
     const portal = await getPortalContext();
-    let viaLine = false;
-    if (portal?.lineAccountId) {
-      const { hashIdNumber } = await import("@/lib/crypto");
-      const existing = await prisma.patient.findUnique({
-        where: {
-          uniq_patient_identity: {
-            idType: parsed.patient.idType,
-            idNumberHash: hashIdNumber(parsed.patient.idNumber),
-          },
-        },
-        include: { lineLinks: true },
-      });
-      viaLine = !!existing?.lineLinks.some((l) => l.lineAccountId === portal.lineAccountId);
-    }
-    // 驗證碼先檢查不註銷：預約仍可能因額滿等原因失敗，
-    // 若此時就註銷，使用者改選別的時段會被要求重拿驗證碼。
-    let otpId: string | null = null;
-    if (!viaLine) {
-      otpId = parsed.otpCode
-        ? await checkOtp(parsed.patient.phone, "BOOKING", parsed.otpCode)
-        : null;
-      if (!otpId) return { ok: false, message: "手機驗證碼錯誤或已過期，請重新取得驗證碼" };
-    }
+    if (!portal) return { ok: false, message: "請先以 LINE 登入後再送出預約" };
 
-    // 額度以「預約帳號」計（官網公告：每個預約帳號同時最多 2 筆）。
-    // LINE 登入者用 LINE 帳號，其餘用剛通過驗證的手機號碼作為帳號識別。
-    const accountKey = portal?.lineAccountId
-      ? `line:${portal.lineAccountId}`
-      : `phone:${parsed.patient.phone}`;
-
+    // 額度以「預約帳號」計（官網公告：每個預約帳號同時最多 2 筆）＝ LINE 帳號
     const result = await createAppointment({
       clinicTypeId: parsed.clinicTypeId,
       doctorId: parsed.doctorId,
@@ -155,30 +108,31 @@ export async function submitBooking(
       startTime: parsed.startTime,
       patientInput: parsed.patient,
       companions: parsed.companions,
-      accountKey,
-      source: portal?.lineAccountId ? "LINE" : "WEB",
+      accountKey: `line:${portal.lineAccountId}`,
+      source: "LINE",
       requestId: parsed.requestId,
       actor: { type: "PATIENT", ip: await clientIp() },
     });
 
-    if (otpId) await consumeOtp(otpId); // 預約確定成立後才註銷驗證碼
-
-    // LINE 登入且已通過 OTP：自動綁定此病人到 LINE 帳號（之後通知走 LINE）
-    if (portal?.lineAccountId && !viaLine) {
-      await prisma.linePatientLink.upsert({
-        where: {
-          lineAccountId_patientId: {
-            lineAccountId: portal.lineAccountId,
-            patientId: result.patient.id,
-          },
-        },
-        create: {
-          lineAccountId: portal.lineAccountId,
-          patientId: result.patient.id,
-          verifiedAt: new Date(),
-        },
-        update: {},
-      });
+    /*
+     * 自動綁定的安全界線：綁定＝這個 LINE 帳號從此看得到該病人的所有預約紀錄，
+     * 所以不能只因為「填得出證件號」就給。條件與 verifyPatientIdentity 同一把尺：
+     * 生日與手機都要與病歷相符。
+     *  - 新建立的病歷：兩者都是這次填的，必然相符，等同「沒有歷史可外洩」。
+     *  - 既有病歷：生日不符在 upsertPatientForBooking 已被擋下；
+     *    手機不符（例如家長換號）則此處不綁，改由櫃檯核對 patient_contacts 後處理。
+     * 用交易回傳的病歷比對而非事前查詢，可一併涵蓋併發時剛被別人建立的情況。
+     */
+    const p = result.patient;
+    const key = { lineAccountId: portal.lineAccountId, patientId: p.id };
+    const alreadyLinked = !!(await prisma.linePatientLink.findUnique({
+      where: { lineAccountId_patientId: key },
+    }));
+    const linked =
+      alreadyLinked ||
+      (dbToDate(p.birthDate) === parsed.patient.birthDate && p.phone === parsed.patient.phone);
+    if (linked && !alreadyLinked) {
+      await prisma.linePatientLink.create({ data: { ...key, verifiedAt: new Date() } });
     }
 
     void dispatchPendingNotifications().catch(() => {});
@@ -187,6 +141,7 @@ export async function submitBooking(
       data: {
         bookingNumber: result.appointment.bookingNumber,
         status: result.appointment.status,
+        linked,
       },
     };
   } catch (e) {
@@ -194,61 +149,7 @@ export async function submitBooking(
   }
 }
 
-// ── 查詢／登入 ────────────────────────────────────────
-
-const identityLoginSchema = z.object({
-  idType: idTypeSchema,
-  idNumber: z.string().trim().min(4).max(20),
-  birthDate: dateStrSchema,
-  phone: phoneSchema,
-  otpCode: z.string().min(4).max(8),
-});
-
-export async function requestQueryOtp(phone: string): Promise<ActionResult<{ devCode?: string }>> {
-  try {
-    const p = phoneSchema.parse(phone);
-    if (!rateLimit(`otp-ip:${await clientIp()}`, 10, 10 * 60_000))
-      return { ok: false, message: "請求過於頻繁，請稍後再試" };
-    const { devCode } = await issueOtp(p, "QUERY");
-    return { ok: true, data: { devCode } };
-  } catch (e) {
-    return toUserError(e);
-  }
-}
-
-export async function identityLogin(
-  input: z.infer<typeof identityLoginSchema>,
-): Promise<ActionResult> {
-  try {
-    const parsed = identityLoginSchema.parse(input);
-    if (!rateLimit(`login-ip:${await clientIp()}`, 10, 10 * 60_000))
-      return { ok: false, message: "請求過於頻繁，請稍後再試" };
-    const okOtp = await verifyOtp(parsed.phone, "QUERY", parsed.otpCode);
-    if (!okOtp) return { ok: false, message: "手機驗證碼錯誤或已過期" };
-    const patientId = await verifyPatientIdentity(
-      parsed.idType,
-      parsed.idNumber,
-      parsed.birthDate,
-      parsed.phone,
-    );
-    const token = await createPortalSession({ patientId });
-    (await cookies()).set(PORTAL_COOKIE, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 2 * 3600,
-    });
-    await writeAudit(
-      { type: "PATIENT", id: patientId, ip: await clientIp() },
-      "portal.identity_login",
-      { type: "patient", id: patientId },
-    );
-    return { ok: true };
-  } catch (e) {
-    return toUserError(e);
-  }
-}
+// ── 登出 ──────────────────────────────────────────────
 
 export async function portalLogout(): Promise<ActionResult> {
   await destroyPortalSession();
@@ -273,8 +174,7 @@ export interface MyAppointmentDto {
 
 export async function fetchMyAppointments(): Promise<ActionResult<MyAppointmentDto[]>> {
   const portal = await getPortalContext();
-  if (!portal || portal.patientIds.length === 0)
-    return { ok: false, message: "請先完成身分驗證" };
+  if (!portal || portal.patientIds.length === 0) return { ok: false, message: "請先以 LINE 登入" };
   const rows = await listAppointmentsForPatients(portal.patientIds);
   return {
     ok: true,
@@ -298,7 +198,7 @@ export async function fetchMyAppointments(): Promise<ActionResult<MyAppointmentD
 export async function cancelMyAppointment(appointmentId: string): Promise<ActionResult> {
   try {
     const portal = await getPortalContext();
-    if (!portal) return { ok: false, message: "請先完成身分驗證" };
+    if (!portal) return { ok: false, message: "請先以 LINE 登入" };
     const appt = await getAppointmentForPortal(appointmentId, portal.patientIds);
     if (!appt) return { ok: false, message: "查無符合的預約資料，請確認輸入內容。" };
     await cancelAppointment({
@@ -323,7 +223,7 @@ export async function rescheduleMyAppointment(input: {
     dateStrSchema.parse(input.newDate);
     timeStrSchema.parse(input.newStartTime);
     const portal = await getPortalContext();
-    if (!portal) return { ok: false, message: "請先完成身分驗證" };
+    if (!portal) return { ok: false, message: "請先以 LINE 登入" };
     const appt = await getAppointmentForPortal(input.appointmentId, portal.patientIds);
     if (!appt) return { ok: false, message: "查無符合的預約資料，請確認輸入內容。" };
     const { newAppointment } = await rescheduleAppointment({
@@ -352,7 +252,7 @@ export interface LineBindingDto {
 
 export async function fetchMyBindings(): Promise<ActionResult<LineBindingDto[]>> {
   const portal = await getPortalContext();
-  if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
+  if (!portal) return { ok: false, message: "請先以 LINE 登入" };
   const links = await prisma.linePatientLink.findMany({
     where: { lineAccountId: portal.lineAccountId },
     include: { patient: true },
@@ -369,39 +269,33 @@ export async function fetchMyBindings(): Promise<ActionResult<LineBindingDto[]>>
   };
 }
 
-export async function requestBindingOtp(phone: string): Promise<ActionResult<{ devCode?: string }>> {
-  try {
-    const portal = await getPortalContext();
-    if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
-    const p = phoneSchema.parse(phone);
-    if (!rateLimit(`otp-ip:${await clientIp()}`, 10, 10 * 60_000))
-      return { ok: false, message: "請求過於頻繁，請稍後再試" };
-    const { devCode } = await issueOtp(p, "LINE_BINDING");
-    return { ok: true, data: { devCode } };
-  } catch (e) {
-    return toUserError(e);
-  }
-}
-
 const bindSchema = z.object({
   idType: idTypeSchema,
   idNumber: z.string().trim().min(4).max(20),
   birthDate: dateStrSchema,
   phone: phoneSchema,
-  otpCode: z.string().min(4).max(8),
   relation: z.string().trim().max(20).optional(),
 });
 
-/** 綁定家庭成員：證件＋生日＋手機 OTP 全數通過才建立（首次綁定需安全驗證） */
+/**
+ * 綁定家庭成員：證件＋生日＋手機三者與病歷相符才建立。
+ *
+ * 綁定後這個 LINE 帳號就看得到該病人的所有預約，因此嚴格限流：
+ * 同一 LINE 帳號 10 分鐘 5 次、同一 IP 10 分鐘 10 次。三項全對才算通過，
+ * 任一不符一律回中性訊息（不透露該證件號是否為本院病人）。
+ */
 export async function bindFamilyMember(
   input: z.infer<typeof bindSchema>,
 ): Promise<ActionResult<LineBindingDto>> {
   try {
     const portal = await getPortalContext();
-    if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
+    if (!portal) return { ok: false, message: "請先以 LINE 登入" };
     const parsed = bindSchema.parse(input);
-    const okOtp = await verifyOtp(parsed.phone, "LINE_BINDING", parsed.otpCode);
-    if (!okOtp) return { ok: false, message: "手機驗證碼錯誤或已過期" };
+    if (
+      !rateLimit(`bind:${portal.lineAccountId}`, 5, 10 * 60_000) ||
+      !rateLimit(`bind-ip:${await clientIp()}`, 10, 10 * 60_000)
+    )
+      return { ok: false, message: "嘗試次數過多，請稍後再試" };
     const patientId = await verifyPatientIdentity(
       parsed.idType,
       parsed.idNumber,
@@ -441,7 +335,7 @@ export async function bindFamilyMember(
 export async function unbindFamilyMember(patientId: string): Promise<ActionResult> {
   try {
     const portal = await getPortalContext();
-    if (!portal?.lineAccountId) return { ok: false, message: "請先以 LINE 登入" };
+    if (!portal) return { ok: false, message: "請先以 LINE 登入" };
     const deleted = await prisma.linePatientLink.deleteMany({
       where: { lineAccountId: portal.lineAccountId, patientId },
     });
@@ -458,13 +352,9 @@ export async function unbindFamilyMember(patientId: string): Promise<ActionResul
   }
 }
 
-/** 目前登入狀態（前台頁首顯示） */
+/** 目前登入狀態（前台頁首顯示）；登入一律等於 LINE 登入 */
 export async function fetchPortalStatus() {
   const portal = await getPortalContext();
-  if (!portal) return { loggedIn: false as const, viaLine: false };
-  return {
-    loggedIn: true as const,
-    viaLine: !!portal.lineAccountId,
-    patientCount: portal.patientIds.length,
-  };
+  if (!portal) return { loggedIn: false as const, patientCount: 0 };
+  return { loggedIn: true as const, patientCount: portal.patientIds.length };
 }

@@ -2,7 +2,9 @@
  * 通知模組：預約成立/異動/取消/提醒。
  * - 交易內僅「寫入 notifications 佇列」；實際發送於交易提交後執行，
  *   避免交易回滾卻已發出通知。
- * - 病人有 LINE 綁定（且仍為好友）→ LINE 推播；否則 → 簡訊。
+ * - 一律走 LINE 推播（院長 2026-08-13 裁示：取消簡訊、全部改 LINE）。
+ *   沒有 LINE 綁定的病人（例如櫃檯電話代約）**不排入通知**——沒有可送達的管道，
+ *   排進去只會變成一筆永遠失敗的紀錄。這種預約由櫃檯當場口頭告知。
  * - 內容一律不含完整證件號與敏感醫療資訊。
  */
 import type {
@@ -16,18 +18,16 @@ import type {
 import { prisma, type Tx } from "./db";
 import { dbToDate, formatDateTw } from "./tw-time";
 import { pushLineMessage, isLineMessagingConfigured } from "./line";
-import { getSmsProvider } from "./sms";
 import { getSetting } from "./settings";
-import { formatDateShortTw } from "./tw-time";
+
 import { CLINIC } from "./clinic-info";
 
 /**
- * 組通知內容。
+ * 組通知內容（LINE 推播）。
  *
- * `channel` 會影響長度取捨：**簡訊按字計費**（中文每則 70 字，超過後每則 67 字），
- * LINE 推播免費且無長度限制。因此看診提醒的簡訊版壓在單則 70 字內
- * （院長 2026-08-05 指示），LINE 版保留醫師、門診別與取消提示。
- * 其餘類型兩邊相同。
+ * 院長 2026-08-13 裁示取消簡訊後，這裡不再有「壓在 70 字內」的簡訊版本——
+ * 那是為了簡訊按字計費（中文每則 70 字）才做的取捨。LINE 推播不按字計費，
+ * 一律給完整版：醫師、門診別、報到規則與取消方式都寫清楚。
  */
 function buildMessage(
   type: NotificationType,
@@ -36,55 +36,35 @@ function buildMessage(
   doctor: Doctor | null,
   clinicType: ClinicType | null,
   graceMinutes: number,
-  channel: NotificationChannel,
 ): string {
   const when = `${formatDateTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
-  const shortWhen = `${formatDateShortTw(dbToDate(appt.appointmentDate))} ${appt.startTime}`;
   const base = `${patientName} 您好，`;
   // 院長 2026-08-05：通知不放預約編號（家長用證件號＋生日查詢即可；編號僅供櫃檯內部使用）
   const info = `${when}｜${doctor?.name ?? ""}醫師｜${clinicType?.name ?? ""}`;
   const checkIn = `請於時段開始後 ${graceMinutes} 分鐘內到櫃檯報到並主動告知您有預約，逾時需重新抽現場號。`;
-  const isSms = channel === "SMS";
 
   switch (type) {
     case "BOOKED":
-      // 簡訊版壓在單則 70 字：報到細節留給前一日提醒，這裡只確認「約成立了、怎麼取消」
-      if (isSms) {
-        return (
-          `${CLINIC.name} ${patientName} ${shortWhen} 預約成立。到櫃檯報到才算掛號。\n` +
-          `取消或改期請至預約系統或電 ${CLINIC.phone}。`
-        );
-      }
       return (
         `${base}您在${CLINIC.name}的預約已成立。\n${info}\n` +
         `提醒：到櫃檯報到才算完成掛號，時段開始後保留 ${graceMinutes} 分鐘。` +
         `如需取消或改期請至預約系統操作，或致電 ${CLINIC.phone}。`
       );
     case "MODIFIED":
-      if (isSms) {
-        return `${CLINIC.name} ${patientName} 預約已改為 ${shortWhen}。如非本人操作請電 ${CLINIC.phone}。`;
-      }
       return `${base}您在${CLINIC.name}的預約已更改為：\n${info}\n如非本人操作請致電 ${CLINIC.phone}。`;
     case "CANCELLED":
       // 原本以預約編號指稱，改以日期時間——家長更容易對得起來
-      if (isSms) {
-        return `${CLINIC.name} ${patientName} ${shortWhen} 的預約已取消。需重新預約請至預約系統或電 ${CLINIC.phone}。`;
-      }
       return (
         `${base}您在${CLINIC.name} ${when} 的預約已取消。` +
         `如需重新預約歡迎使用線上預約，或致電 ${CLINIC.phone}。`
       );
     case "REMINDER_DAY_BEFORE":
       // 目前是唯一一次提醒（當日提醒已關閉），故報到規則寫在這裡
-      if (isSms) {
-        return `${CLINIC.name} ${patientName} 明天 ${shortWhen}\n${checkIn}`;
-      }
       return (
         `${base}提醒您明天在${CLINIC.name}有預約。\n${info}\n` +
         `${checkIn}\n如無法前來，請提前線上取消或致電 ${CLINIC.phone}，以免影響後續預約權益。`
       );
     case "REMINDER_SAME_DAY":
-      if (isSms) return `${CLINIC.name} ${patientName} 今天 ${shortWhen}\n${checkIn}`;
       return `${base}提醒您今天在${CLINIC.name}有預約。\n${info}\n${checkIn}`;
     case "CLINIC_NOTICE":
       return `${base}${CLINIC.name}門診異動通知，請留意您的預約。如有疑問請致電 ${CLINIC.phone}。`;
@@ -110,19 +90,19 @@ export async function enqueueAppointmentNotification(
   ]);
   if (clinicType && !clinicType.notifyLine && type !== "CANCELLED") return;
 
-  const viaLine = lineLink && isLineMessagingConfigured();
+  // 沒有 LINE 綁定（或 LINE 未設定）就沒有送得出去的管道，直接不排入。
+  // 線上預約一律經 LINE 登入、成立時即綁定，所以這裡會落空的多半是櫃檯代約。
+  if (!lineLink || !isLineMessagingConfigured()) return;
+
   await tx.notification.create({
     data: {
       patientId: patient.id,
       appointmentId: appt.id,
-      channel: viaLine ? "LINE" : "SMS",
+      channel: "LINE",
       type,
-      recipient: viaLine ? lineLink.lineAccount.lineUserId : patient.phone,
+      recipient: lineLink.lineAccount.lineUserId,
       payload: {
-        message: buildMessage(
-          type, appt, patient.name, doctor, clinicType, grace,
-          viaLine ? "LINE" : "SMS",
-        ),
+        message: buildMessage(type, appt, patient.name, doctor, clinicType, grace),
       },
     },
   });
@@ -156,12 +136,8 @@ export async function dispatchPendingNotifications(limit = 50): Promise<number> 
         });
         continue;
       }
-      if (n.channel === "LINE") {
-        if (!isLineMessagingConfigured()) throw new Error("LINE Messaging 未設定");
-        await pushLineMessage(n.recipient, message);
-      } else {
-        await getSmsProvider().send(n.recipient, message);
-      }
+      if (!isLineMessagingConfigured()) throw new Error("LINE Messaging 未設定");
+      await pushLineMessage(n.recipient, message);
       sent++;
     } catch (e) {
       await prisma.notification.update({
@@ -219,27 +195,26 @@ export async function enqueueReminders(
 
   const rows = appts
     .filter((a) => clinicTypeMap.get(a.clinicTypeId)?.notifyLine !== false)
-    .map((a) => {
-      const lineUserId = lineReady ? lineMap.get(a.patientId) : undefined;
-      return {
-        patientId: a.patientId,
-        appointmentId: a.id,
-        channel: (lineUserId ? "LINE" : "SMS") as NotificationChannel,
-        type,
-        recipient: lineUserId ?? a.patient.phone,
-        payload: {
-          message: buildMessage(
-            type,
-            a,
-            a.patient.name,
-            doctorMap.get(a.doctorId) ?? null,
-            clinicTypeMap.get(a.clinicTypeId) ?? null,
-            grace,
-            lineUserId ? "LINE" : "SMS",
-          ),
-        },
-      };
-    });
+    .map((a) => ({ appt: a, lineUserId: lineReady ? lineMap.get(a.patientId) : undefined }))
+    // 沒有 LINE 綁定就送不出去（多為櫃檯代約），不排入佇列
+    .filter((x): x is { appt: (typeof appts)[number]; lineUserId: string } => !!x.lineUserId)
+    .map(({ appt: a, lineUserId }) => ({
+      patientId: a.patientId,
+      appointmentId: a.id,
+      channel: "LINE" as NotificationChannel,
+      type,
+      recipient: lineUserId,
+      payload: {
+        message: buildMessage(
+          type,
+          a,
+          a.patient.name,
+          doctorMap.get(a.doctorId) ?? null,
+          clinicTypeMap.get(a.clinicTypeId) ?? null,
+          grace,
+        ),
+      },
+    }));
   if (rows.length === 0) return 0;
   await prisma.notification.createMany({ data: rows });
   return rows.length;

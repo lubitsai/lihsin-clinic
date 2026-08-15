@@ -90,12 +90,6 @@ export function formatDateTw(dateStr: string): string {
 }
 
 /** 民國格式生日顯示用：2020/03/05 */
-/** 簡訊用短日期："8/7（五）"；簡訊以字數計費，年份與前導零省下 5 字 */
-export function formatDateShortTw(dateStr: string): string {
-  const [, m, d] = dateStr.split("-");
-  return `${Number(m)}/${Number(d)}（${WEEKDAY_ZH[weekdayOf(dateStr)]}）`;
-}
-
 export function formatBirthTw(d: Date): string {
   return dbToDate(d).replaceAll("-", "/");
 }

@@ -1,5 +1,5 @@
 /**
- * 驗收條件 13, 14, 15, 16：OTP 替代 LINE、一個 LINE 帳號多位家庭成員、
+ * 驗收條件 13, 14, 15, 16：LINE 綁定與通知送達、一個 LINE 帳號多位家庭成員、
  * 病人資料隔離、櫃檯無法使用管理員功能。
  */
 import { describe, it, expect, beforeEach } from "vitest";
@@ -7,39 +7,46 @@ import { prisma } from "@/lib/db";
 import { createAppointment, rescheduleAppointment, cancelAppointment } from "@/lib/booking";
 import { listAppointmentsForPatients, getAppointmentForPortal } from "@/lib/portal-service";
 import { requirePermission, PERMISSIONS, ROLE_PERMISSIONS } from "@/lib/auth/authz";
-import { issueOtp, verifyOtp } from "@/lib/auth/portal";
 import { BookingError } from "@/lib/errors";
 import type { StaffContext } from "@/lib/auth/staff";
-import { resetDb, seedBase, makePatient, futureDate, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
+import {
+  resetDb,
+  seedBase,
+  makePatient,
+  futureDate,
+  linkLineAccount,
+  STAFF_ACTOR,
+  PATIENT_ACTOR,
+} from "./helpers";
 
-describe("LINE 與 OTP", () => {
+describe("LINE 身分與通知", () => {
   beforeEach(resetDb);
 
-  it("13. LINE 未設定／登入失敗時，手機 OTP 流程仍可完成預約", async () => {
-    const { drTsai, general } = await seedBase();
-    // LINE 未設定（環境變數為空）→ isLineLoginConfigured 為 false
-    const { isLineLoginConfigured } = await import("@/lib/line");
-    expect(isLineLoginConfigured()).toBe(false);
-
-    // OTP 流程
-    const phone = "0912345678";
-    const { devCode } = await issueOtp(phone, "BOOKING");
-    expect(devCode).toMatch(/^\d{6}$/);
-    expect(await verifyOtp(phone, "BOOKING", "000000")).toBe(false);
-    expect(await verifyOtp(phone, "BOOKING", devCode!)).toBe(true);
-    // 驗證碼一次性：再驗即失敗
-    expect(await verifyOtp(phone, "BOOKING", devCode!)).toBe(false);
-
-    const booked = await createAppointment({
+  it("13. 有 LINE 綁定才推播；沒綁定（櫃檯代約）不排入通知", async () => {
+    const { drTsai, drLee, general } = await seedBase();
+    // 院長 2026-08-13 裁示取消簡訊後，LINE 是唯一的送達管道：
+    // 沒有綁定就沒有任何管道，排進佇列只會變成一筆永遠失敗的紀錄。
+    const walkIn = await createAppointment({
       clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(3), startTime: "09:00",
-      patientInput: makePatient({ phone }), source: "WEB", actor: PATIENT_ACTOR,
+      patientInput: makePatient(), source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
     });
-    expect(booked.appointment.status).toBe("CONFIRMED");
-    // 無 LINE 綁定 → 通知走簡訊
-    const notification = await prisma.notification.findFirstOrThrow({
-      where: { appointmentId: booked.appointment.id },
+    expect(
+      await prisma.notification.count({ where: { appointmentId: walkIn.appointment.id } }),
+    ).toBe(0);
+
+    const online = await createAppointment({
+      clinicTypeId: general.id, doctorId: drLee.id, date: futureDate(3), startTime: "09:00",
+      patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
     });
-    expect(notification.channel).toBe("SMS");
+    await linkLineAccount(online.patient.id);
+    const cancelled = await cancelAppointment({
+      appointmentId: online.appointment.id, actor: PATIENT_ACTOR, byPatient: true,
+    });
+    expect(cancelled.status).toBe("CANCELLED_BY_PATIENT");
+    const n = await prisma.notification.findFirstOrThrow({
+      where: { appointmentId: online.appointment.id, type: "CANCELLED" },
+    });
+    expect(n.channel).toBe("LINE");
   });
 
   it("14. 一個 LINE 帳號可替不同家庭成員預約，限制各自計算", async () => {
@@ -68,15 +75,9 @@ describe("LINE 與 OTP", () => {
     });
     const links = await prisma.linePatientLink.findMany({ where: { lineAccountId: line.id } });
     expect(links).toHaveLength(2);
-    // 有 LINE 綁定後，之後的通知走 LINE（需 Messaging token；未設定則自動退回 SMS）
-    const cancelled = await cancelAppointment({
-      appointmentId: b.appointment.id, actor: PATIENT_ACTOR, byPatient: true,
-    });
-    expect(cancelled.status).toBe("CANCELLED_BY_PATIENT");
-    const n = await prisma.notification.findFirstOrThrow({
-      where: { appointmentId: b.appointment.id, type: "CANCELLED" },
-    });
-    expect(n.channel).toBe("SMS"); // token 未設定 → 退回簡訊，通知不中斷
+    // 綁定＝這個 LINE 帳號看得到這兩位的預約，且只有這兩位
+    const visible = await listAppointmentsForPatients(links.map((l) => l.patientId));
+    expect(visible.map((v) => v.patientId).sort()).toEqual([a.patient.id, b.patient.id].sort());
   });
 });
 
@@ -133,8 +134,9 @@ describe("資料隔離與權限", () => {
     const { drTsai, general } = await seedBase({ doubleShift: false });
     const first = await createAppointment({
       clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(3), startTime: "09:00",
-      patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
     });
+    await linkLineAccount(first.patient.id); // 有 LINE 綁定才排得進改期通知
     const blocker = await createAppointment({
       clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(4), startTime: "09:00",
       patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,

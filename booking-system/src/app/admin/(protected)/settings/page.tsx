@@ -4,6 +4,7 @@ import { PERMISSIONS, requirePermission } from "@/lib/auth/authz";
 import { getSetting } from "@/lib/settings";
 import { getHolidayCoverage, isCoverageSufficient } from "@/lib/holidays";
 import { addDays, todayStr } from "@/lib/tw-time";
+import { isLineLoginConfigured } from "@/lib/line";
 import { SettingsManager } from "./settings-manager";
 
 export const dynamic = "force-dynamic";
@@ -73,7 +74,7 @@ export default async function SettingsPage() {
           displayOrder: d.displayOrder,
         }))}
         lineConfigured={!!process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN}
-        smsProvider={process.env.SMS_PROVIDER ?? "console"}
+        loginConfigured={isLineLoginConfigured()}
         holidays={{
           ...coverage,
           sufficient: isCoverageSufficient(coverage, lastOpenDate),

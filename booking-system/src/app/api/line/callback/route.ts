@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { exchangeLineCode } from "@/lib/line";
 import { createPortalSession, PORTAL_COOKIE } from "@/lib/auth/portal";
+import { redirectTo } from "@/lib/redirect";
 import { writeAudit } from "@/lib/audit";
 
 /** LINE Login OAuth callback：驗證 state → 換 token → 建立/更新 line_accounts → 開 portal session */
@@ -12,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   // 使用者取消授權或 LINE 回傳錯誤：退回手機驗證流程，不阻斷預約
   if (!code || !state || !savedState || state !== savedState) {
-    return NextResponse.redirect(new URL("/my?line=failed", req.url));
+    return redirectTo("/my?line=failed");
   }
   const next = (() => {
     try {
@@ -45,7 +46,7 @@ export async function GET(req: NextRequest) {
       "portal.line_login",
       { type: "line_account", id: account.id },
     );
-    const res = NextResponse.redirect(new URL(next, req.url));
+    const res = redirectTo(next);
     res.cookies.set(PORTAL_COOKIE, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -57,6 +58,6 @@ export async function GET(req: NextRequest) {
     return res;
   } catch (e) {
     console.error("[line callback]", e);
-    return NextResponse.redirect(new URL("/my?line=failed", req.url));
+    return redirectTo("/my?line=failed");
   }
 }

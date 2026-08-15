@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { verifyLineWebhookSignature } from "@/lib/line";
 
-/** LINE Messaging API webhook：維護好友狀態（封鎖者停止推播、改走簡訊） */
+/**
+ * LINE Messaging API webhook：維護好友狀態。
+ * 封鎖或退追蹤（isFollowing=false）就推不出去，通知會直接不排入——
+ * 簡訊取消後沒有替代管道，這種家長只能由櫃檯電話聯絡。
+ */
 export async function POST(req: NextRequest) {
   const body = await req.text();
   const signature = req.headers.get("x-line-signature") ?? "";

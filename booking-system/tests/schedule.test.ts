@@ -7,7 +7,15 @@ import { createAppointment } from "@/lib/booking";
 import { getDaySlotAvailability } from "@/lib/availability";
 import { createScheduleException, setSlotCapacity, setSlotBlocked } from "@/lib/schedule-admin";
 import { BookingError } from "@/lib/errors";
-import { resetDb, seedBase, makePatient, futureDate, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
+import {
+  resetDb,
+  seedBase,
+  makePatient,
+  futureDate,
+  linkLineAccount,
+  STAFF_ACTOR,
+  PATIENT_ACTOR,
+} from "./helpers";
 
 describe("排班例外", () => {
   beforeEach(resetDb);
@@ -51,8 +59,9 @@ describe("排班例外", () => {
     const date = futureDate(3);
     const booking = await createAppointment({
       clinicTypeId: general.id, doctorId: drTsai.id, date, startTime: "09:00",
-      patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+      patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
     });
+    await linkLineAccount(booking.patient.id); // 有 LINE 綁定才收得到取消通知
 
     const result = await createScheduleException(
       { date, type: "DOCTOR_OFF", doctorId: drTsai.id, reason: "蔡醫師臨時休診" },

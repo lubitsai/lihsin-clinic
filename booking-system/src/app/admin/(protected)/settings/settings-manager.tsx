@@ -72,14 +72,14 @@ export function SettingsManager({
   clinicTypes,
   doctors,
   lineConfigured,
-  smsProvider,
+  loginConfigured,
   holidays,
 }: {
   settings: SettingsDto;
   clinicTypes: ClinicTypeDto[];
   doctors: DoctorDto[];
   lineConfigured: boolean;
-  smsProvider: string;
+  loginConfigured: boolean;
   holidays: HolidayDto;
 }) {
   const router = useRouter();
@@ -163,7 +163,7 @@ export function SettingsManager({
 
       <HolidayCard holidays={holidays} clinicTypes={clinicTypes} />
 
-      <LineSetupCard lineConfigured={lineConfigured} smsProvider={smsProvider} />
+      <LineSetupCard lineConfigured={lineConfigured} loginConfigured={loginConfigured} />
 
       <ClinicTypesEditor clinicTypes={clinicTypes} doctors={doctors} onError={setError} onDone={(m) => { setMessage(m); router.refresh(); }} />
       <DoctorsEditor doctors={doctors} onError={setError} onDone={(m) => { setMessage(m); router.refresh(); }} />
@@ -227,10 +227,10 @@ function HolidayCard({
 /** LINE 串接設定與連線檢測 */
 function LineSetupCard({
   lineConfigured,
-  smsProvider,
+  loginConfigured,
 }: {
   lineConfigured: boolean;
-  smsProvider: string;
+  loginConfigured: boolean;
 }) {
   const [status, setStatus] = useState<Awaited<
     ReturnType<typeof adminCheckLineSetup>
@@ -249,11 +249,12 @@ function LineSetupCard({
       <h2 className="font-bold text-sage-700">LINE 官方帳號串接</h2>
       <p className="text-sm text-ink-700">
         金鑰由環境變數管理（見部署說明 docs/05）。填好後按「檢測連線」可立即確認是否接通，
-        不必等到有民眾預約。<strong>未設定 LINE 時系統仍可正常運作</strong>，
-        民眾改用手機驗證碼、通知改以簡訊發送。
+        不必等到有民眾預約。<strong>簡訊已於 2026-08-13 取消，LINE 是唯一管道</strong>——
+        Login 沒設定家長就無法線上預約，Messaging 沒設定則一則通知都發不出去。
       </p>
       <p className="text-sm text-ink-500">
-        目前狀態：LINE 推播 {lineConfigured ? "已設定" : "未設定（改用簡訊）"}｜簡訊供應商：{smsProvider}
+        目前狀態：民眾登入 {loginConfigured ? "已設定" : "未設定（家長無法線上預約）"}｜
+        推播通知 {lineConfigured ? "已設定" : "未設定（通知全部停擺）"}
       </p>
 
       <button onClick={check} disabled={pending} className="btn-secondary !py-2">
@@ -370,7 +371,7 @@ function ClinicTypesEditor({
             </label>
             <label className="flex items-center gap-2">
               <input type="checkbox" checked={selected.notifyLine} onChange={(e) => setSelected({ ...selected, notifyLine: e.target.checked })} className="size-4 accent-sage-500" />
-              發送 LINE/簡訊通知
+              發送 LINE 通知
             </label>
             <label className="flex items-center gap-2">
               <input type="checkbox" checked={selected.skipOnPublicHoliday} onChange={(e) => setSelected({ ...selected, skipOnPublicHoliday: e.target.checked })} className="size-4 accent-sage-500" />

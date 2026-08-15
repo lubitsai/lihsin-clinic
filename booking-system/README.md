@@ -1,9 +1,9 @@
 # 立欣診所線上預約系統（LI HSIN CLINIC Booking System)
 
-診所**完全自有**的線上預約系統：自有程式碼、自有 PostgreSQL 資料庫、自有 LINE／簡訊帳號，
+診所**完全自有**的線上預約系統：自有程式碼、自有 PostgreSQL 資料庫、自有 LINE 官方帳號，
 不依賴 BookNow 或任何第三方預約 SaaS，可整目錄搬移至任何主機。
 
-- 前台：民眾七步驟預約、查詢/取消/改期、LINE 登入或手機驗證碼
+- 前台：民眾七步驟預約、查詢/取消/改期（身分一律走 LINE Login）
 - 後台：櫃檯今日總覽、代約、排班與休診、病人與未到/黑名單管理、員工權限、系統設定、稽核
 - 引擎：交易＋資料庫鎖防超賣；同日唯一、同時 2 筆未完成預約（當日不計入）、14 天滾動開放、未到自動限制
 - 安全：bcrypt、管理員 TOTP 2FA、證件號 AES-256-GCM 加密＋遮罩、rate limiting、完整稽核
@@ -45,7 +45,7 @@ npm test                      # 31 項自動化測試（涵蓋 18 項驗收條�
 ```
 booking-system/
 ├── prisma/            # schema、migrations（含防超賣 partial unique index）、seed
-├── src/lib/           # 預約引擎、排班運算、驗證、加密、LINE/SMS、權限
+├── src/lib/           # 預約引擎、排班運算、驗證、加密、LINE、權限
 ├── src/app/           # 前台頁面、/admin 後台、server actions、LINE API routes
 ├── scripts/           # create-admin、send-reminders
 ├── tests/             # Vitest（名額/併發/限制/排班/安全/隔離）

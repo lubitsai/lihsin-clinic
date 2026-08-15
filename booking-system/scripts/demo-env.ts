@@ -40,7 +40,7 @@ console.log(`
 ────────────────────────────────────────────────────
 示範環境已就緒。接著執行：
 
-    DATABASE_URL="${DATABASE_URL}" npm run dev
+    DATABASE_URL="${DATABASE_URL}" LINE_LOGIN_DEV_STUB=1 LINE_MESSAGING_DRY_RUN=1 npm run dev
 
 然後用瀏覽器開：
 
@@ -52,9 +52,14 @@ console.log(`
   櫃檯     counter1 / lihsin-staff-2026
   醫師唯讀 dr-tsai  / lihsin-doctor-2026
 
-前台查詢預約可用這組示範病人：
+前台身分只認 LINE 登入。示範環境連不到 LINE，改用替身：
+  預約頁與查詢頁上的「測試登入（示範環境專用）」按鈕
+  （由 LINE_LOGIN_DEV_STUB=1 開啟；正式環境該路由一律 404）
+
+想試「查得到既有病人的預約」，登入後用「新增成員」綁定示範病人：
   證件號 A100000010　生日 2020-03-15　手機 0900000001
-  （驗證碼不會真的發簡訊，會直接顯示在畫面上；伺服器終端機也印得到）
+
+LINE 推播不會真的送出（LINE_MESSAGING_DRY_RUN=1），內容印在伺服器終端機。
 
 驗收項目逐條見 docs/10-測試與驗收.md。
 ────────────────────────────────────────────────────

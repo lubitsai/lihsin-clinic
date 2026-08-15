@@ -3,16 +3,12 @@
 /** 前台七步驟預約精靈：可返回上一步；requestId 防重複送出；規則以後端為準 */
 import { useCallback, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
-import {
-  fetchOpenDates,
-  fetchDaySlots,
-  requestBookingOtp,
-  submitBooking,
-} from "@/app/actions/portal";
+import { fetchOpenDates, fetchDaySlots, submitBooking } from "@/app/actions/portal";
 import { Card, StepProgress, Alert } from "@/components/ui";
 import { formatDateTw } from "@/lib/tw-time";
 import { SESSION_META, ID_TYPE_LABEL } from "@/lib/status-labels";
 import { clinicNoteOf } from "@/lib/clinic-notes";
+import { CLINIC } from "@/lib/clinic-info";
 
 interface ClinicTypeDto {
   id: string;
@@ -57,13 +53,17 @@ const CLINIC_ICONS: Record<string, string> = {
 
 export function BookingWizard({
   clinicTypes,
+  loggedIn,
   lineConfigured,
-  viaLine,
+  devLogin,
   checkinGraceMinutes,
 }: {
   clinicTypes: ClinicTypeDto[];
+  /** 已完成 LINE 登入；未登入時整個精靈不開始（見 LoginGate） */
+  loggedIn: boolean;
   lineConfigured: boolean;
-  viaLine: boolean;
+  /** 開發／示範環境的 LINE 登入替身是否可用 */
+  devLogin: boolean;
   /** 報到保留分鐘數（booking.checkin_grace_minutes） */
   checkinGraceMinutes: number;
 }) {
@@ -85,12 +85,13 @@ export function BookingWizard({
   });
   const [companions, setCompanions] = useState<Companion[]>([]);
   const [agree, setAgree] = useState(false);
-  const [otpCode, setOtpCode] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const [needOtp, setNeedOtp] = useState(!viaLine);
   const [requestId, setRequestId] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const [result, setResult] = useState<{ bookingNumber: string; status: string } | null>(null);
+  const [result, setResult] = useState<{
+    bookingNumber: string;
+    status: string;
+    linked: boolean;
+  } | null>(null);
   const [pending, startTransition] = useTransition();
 
   const doctorName = useMemo(() => {
@@ -153,16 +154,6 @@ export function BookingWizard({
     goto(6);
   };
 
-  const sendOtp = () => {
-    startTransition(async () => {
-      const r = await requestBookingOtp(patient.phone);
-      if (!r.ok) return setError(r.message);
-      setOtpSent(true);
-      setError("");
-      if (r.data?.devCode) setOtpCode(r.data.devCode); // 測試環境自動帶入
-    });
-  };
-
   const submit = () => {
     if (!clinicType || pending) return;
     startTransition(async () => {
@@ -172,7 +163,6 @@ export function BookingWizard({
         date,
         startTime,
         requestId,
-        otpCode: otpCode || undefined,
         patient: {
           name: patient.name.trim(),
           phone: patient.phone,
@@ -194,7 +184,6 @@ export function BookingWizard({
           : undefined,
       });
       if (!r.ok) {
-        if (viaLine && !needOtp && r.message.includes("驗證碼")) setNeedOtp(true);
         setError(r.message);
         return;
       }
@@ -202,6 +191,10 @@ export function BookingWizard({
       goto(7);
     });
   };
+
+  // 身分是 LINE 登入，且登入會離開本頁——所以擋在最前面，
+  // 不能讓家長把七步驟填完才被導走（回來時填的東西都不見了）。
+  if (!loggedIn) return <LoginGate lineConfigured={lineConfigured} devLogin={devLogin} />;
 
   return (
     <div>
@@ -235,15 +228,6 @@ export function BookingWizard({
               </span>
             </button>
           ))}
-          {!viaLine && lineConfigured && (
-            <p className="text-sm text-ink-700 text-center pt-2">
-              已加入 LINE？
-              <a href="/api/line/login?next=/book" className="text-sage-600 underline underline-offset-2">
-                以 LINE 登入
-              </a>
-              可加快填寫並接收通知
-            </p>
-          )}
         </div>
       )}
 
@@ -392,7 +376,7 @@ export function BookingWizard({
                 autoComplete="name"
               />
             </Field>
-            <Field label="手機號碼（必填，接收通知與驗證碼）">
+            <Field label="手機號碼（必填，櫃檯聯絡用）">
               <input
                 type="tel"
                 inputMode="numeric"
@@ -608,33 +592,11 @@ export function BookingWizard({
           {clinicType.requiresReview && (
             <Alert tone="warn">此門診預約送出後為「待確認」，櫃檯確認後會再通知您。</Alert>
           )}
-          {needOtp && (
-            <Card className="space-y-3">
-              <p className="font-bold text-sage-700">手機驗證</p>
-              <p className="text-sm text-ink-700">
-                為確認是本人預約，請點選「傳送驗證碼」，輸入 {patient.phone} 收到的 6 位數字。
-              </p>
-              <div className="flex gap-2">
-                <button onClick={sendOtp} disabled={pending} className="btn-secondary shrink-0">
-                  {otpSent ? "重新傳送" : "傳送驗證碼"}
-                </button>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={6}
-                  placeholder="6 位數驗證碼"
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value.trim())}
-                  className="input"
-                />
-              </div>
-            </Card>
-          )}
           <div className="flex gap-3">
             <BackButton onClick={() => goto(5)} />
             <button
               onClick={submit}
-              disabled={pending || (needOtp && !otpCode)}
+              disabled={pending}
               className="btn-primary flex-1 disabled:opacity-50"
             >
               {pending ? "送出中…" : "確認送出預約"}
@@ -666,9 +628,20 @@ export function BookingWizard({
               </p>
             )}
           </Card>
-          <p className="text-ink-700 text-sm px-4">
-            已透過 LINE 或簡訊發送預約通知。線上預約不等於實際看診號碼，請依現場狀況候診。
-          </p>
+          {result.linked ? (
+            <p className="text-ink-700 text-sm px-4">
+              預約通知已透過 LINE 發送。線上預約不等於實際看診號碼，請依現場狀況候診。
+            </p>
+          ) : (
+            <div className="px-4 text-left">
+              {/* 手機與病歷紀錄不同時不自動綁定（避免只憑證件號就讀到他人預約紀錄），
+                  這種情況通知發不出去，必須明講，不能讓家長以為會收到提醒 */}
+              <Alert tone="warn">
+                您填寫的手機與本院病歷紀錄不同，這筆預約的 LINE 通知與「查詢我的預約」尚未開通。
+                預約本身已成立，看診當天請照常到櫃檯報到；如需開通通知，請致電 {CLINIC.phone} 或到櫃檯協助核對。
+              </Alert>
+            </div>
+          )}
           {/* 官網公告：報到才算掛號、時段開始後只保留 N 分鐘、報到要主動告知櫃檯 */}
           <div className="px-4 text-left">
             <Alert tone="warn">
@@ -708,6 +681,50 @@ export function BookingWizard({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * 未登入時的入口：線上預約只認 LINE 身分。
+ * 沒有 LINE 的家長不是被拒於門外——電話與現場掛號照舊，這裡要講清楚。
+ */
+function LoginGate({ lineConfigured, devLogin }: { lineConfigured: boolean; devLogin: boolean }) {
+  return (
+    <div className="space-y-4">
+      <h1 className="text-xl font-bold text-sage-700">線上預約請先以 LINE 登入</h1>
+      <Card className="space-y-3 text-center">
+        <p className="text-ink-900">
+          登入後才能送出預約，並在 LINE 收到預約成立與看診前一天的提醒。
+        </p>
+        {lineConfigured ? (
+          <a
+            href="/api/line/login?next=/book"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#06C755] px-6 py-3 font-bold text-white"
+          >
+            以 LINE 登入
+          </a>
+        ) : (
+          <Alert tone="warn">LINE 登入目前無法使用，請致電 {CLINIC.phone} 預約。</Alert>
+        )}
+        {devLogin && (
+          <a href="/api/line/dev-login?next=/book" className="btn-secondary inline-block">
+            測試登入（示範環境專用）
+          </a>
+        )}
+      </Card>
+      <Alert tone="info">
+        <p className="font-bold mb-1">沒有使用 LINE 也能看診</p>
+        <ul className="list-disc list-inside space-y-0.5">
+          <li>直接到診所櫃檯抽號（現場掛號）。</li>
+          <li>或致電 {CLINIC.phone}，由櫃檯協助登記。</li>
+        </ul>
+      </Alert>
+      <div className="text-center">
+        <Link href="/" className="text-sm text-ink-500 underline underline-offset-2">
+          回首頁
+        </Link>
+      </div>
     </div>
   );
 }

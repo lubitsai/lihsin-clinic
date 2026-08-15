@@ -10,7 +10,7 @@
 import { request } from "@playwright/test";
 
 const PORT = Number(process.env.E2E_PORT ?? 3210);
-const ROUTES = ["/", "/book", "/my", "/rules", "/admin/login", "/admin"];
+const ROUTES = ["/", "/book", "/my", "/rules", "/admin/login", "/admin", "/api/line/dev-login"];
 
 export default async function warmup() {
   const ctx = await request.newContext({ baseURL: `http://127.0.0.1:${PORT}` });

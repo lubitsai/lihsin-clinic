@@ -155,7 +155,6 @@ CREATE UNIQUE INDEX "uniq_active_doctor_slot_seq"
 | 表 | 用途 |
 |---|---|
 | `line_patient_links` | 一個 LINE 帳號綁多位家庭成員（含驗證時間） |
-| `otp_codes` | 手機驗證碼（雜湊儲存、限次數、限時效） |
 | `portal_sessions` | 民眾登入 session（token 雜湊） |
 | `staff_sessions` | 員工登入 session（token 雜湊、閒置逾時） |
 | `clinic_type_doctors` | 門診類型可接受的醫師 |

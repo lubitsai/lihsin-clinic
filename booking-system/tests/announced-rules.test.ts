@@ -13,7 +13,16 @@ import { getDaySlotAvailability } from "@/lib/availability";
 import { enqueueReminders } from "@/lib/notifications";
 import { setSetting, clearSettingsCache } from "@/lib/settings";
 import { dateToDb } from "@/lib/tw-time";
-import { resetDb, seedBase, makePatient, futureDate, todayStr, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
+import {
+  resetDb,
+  seedBase,
+  makePatient,
+  futureDate,
+  todayStr,
+  linkLineAccount,
+  STAFF_ACTOR,
+  PATIENT_ACTOR,
+} from "./helpers";
 
 /** 把系統時間固定在台灣時間某日某時（tw-time 全部以 UTC+8 平移計算） */
 function freezeTaipei(date: string, time: string) {
@@ -422,30 +431,18 @@ describe("國定假日不施測（兒童發展篩檢）", () => {
   });
 });
 
-describe("看診提醒：簡訊壓在單則 70 字內、LINE 版保留完整資訊", () => {
+describe("通知內容（一律 LINE 推播）", () => {
   beforeEach(resetDb);
 
-  /** 中文簡訊以 UCS-2 計費：單則 70 字，超過則每則 67 字 */
-  const chars = (t: string) => [...t].length;
-
-  async function reminderFor(name: string, viaLine: boolean) {
+  /** 排一則看診前一天的提醒，回傳實際會送出去的那則訊息 */
+  async function reminderFor(name: string) {
     const { general, drTsai } = await seedBase();
     const date = futureDate(1);
     const { appointment, patient } = await createAppointment({
       clinicTypeId: general.id, doctorId: drTsai.id, date, startTime: "09:00",
-      patientInput: makePatient({ name }), source: "WEB", actor: PATIENT_ACTOR,
+      patientInput: makePatient({ name }), source: "LINE", actor: PATIENT_ACTOR,
     });
-    if (viaLine) {
-      const acc = await prisma.lineAccount.create({
-        data: { lineUserId: `U${Date.now()}`, isFollowing: true },
-      });
-      await prisma.linePatientLink.create({
-        data: { lineAccountId: acc.id, patientId: patient.id, verifiedAt: new Date() },
-      });
-      process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN = "test-token";
-    } else {
-      delete process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN;
-    }
+    await linkLineAccount(patient.id);
     await prisma.notification.deleteMany({ where: { appointmentId: appointment.id } });
     await enqueueReminders(date, "REMINDER_DAY_BEFORE");
     const n = await prisma.notification.findFirstOrThrow({
@@ -454,26 +451,35 @@ describe("看診提醒：簡訊壓在單則 70 字內、LINE 版保留完整資�
     return { channel: n.channel, message: (n.payload as { message: string }).message };
   }
 
-  it("簡訊版不超過 70 字（含較長姓名），且不含預約編號", async () => {
-    for (const name of ["王小明", "歐陽承翰", "陳彥廷宇"]) {
-      const r = await reminderFor(name, false);
-      expect(r.channel).toBe("SMS");
-      expect(chars(r.message)).toBeLessThanOrEqual(70);
-      expect(r.message).not.toMatch(/預約編號/);
-      // 該傳達的兩件事都在：是誰、報到規則
-      expect(r.message).toContain(name);
-      expect(r.message).toContain("10 分鐘內到櫃檯報到");
-      await resetDb();
-    }
+  it("提醒帶到姓名、醫師、門診別、報到規則與取消方式，且不含預約編號", async () => {
+    const r = await reminderFor("王小明");
+    expect(r.channel).toBe("LINE");
+    expect(r.message).toContain("王小明");
+    expect(r.message).toContain("蔡宗儒醫師");
+    expect(r.message).toContain("一般門診");
+    expect(r.message).toContain("10 分鐘內到櫃檯報到");
+    expect(r.message).toContain("請提前線上取消");
+    // 院長 2026-08-05：通知不放預約編號（家長用不到，編號只給櫃檯內部使用）
+    expect(r.message).not.toMatch(/預約編號|LH\d{6}-/);
   });
 
-  it("預約成立、更改、取消的簡訊也都在單則內，且都不含預約編號", async () => {
+  it("預約成立、更改、取消三則都送得出去，且都不含預約編號", async () => {
     const { general, drTsai } = await seedBase();
-    delete process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN;
-    const name = "歐陽承翰"; // 取較長姓名當上限測試
+    const input = makePatient({ name: "歐陽承翰" });
+    // 先建一次病歷並綁 LINE——沒有綁定就不會排入通知，這裡驗的是有綁定時的內容
+    const seeded = await createAppointment({
+      clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(2), startTime: "09:00",
+      patientInput: input, source: "LINE", actor: PATIENT_ACTOR,
+    });
+    await linkLineAccount(seeded.patient.id);
+    await cancelAppointment({
+      appointmentId: seeded.appointment.id, actor: PATIENT_ACTOR, byPatient: true,
+    });
+    await prisma.notification.deleteMany({});
+
     const { appointment } = await createAppointment({
       clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(3), startTime: "09:00",
-      patientInput: makePatient({ name }), source: "WEB", actor: PATIENT_ACTOR,
+      patientInput: input, source: "LINE", actor: PATIENT_ACTOR,
     });
     await rescheduleAppointment({
       appointmentId: appointment.id, newDoctorId: drTsai.id,
@@ -490,19 +496,20 @@ describe("看診提醒：簡訊壓在單則 70 字內、LINE 版保留完整資�
     expect(types).toContain("CANCELLED");
     for (const r of rows) {
       const msg = (r.payload as { message: string }).message;
-      expect(r.channel).toBe("SMS");
-      expect(chars(msg), `${r.type} 超過單則簡訊：${msg}`).toBeLessThanOrEqual(70);
+      expect(r.channel).toBe("LINE");
       expect(msg, `${r.type} 仍含預約編號`).not.toMatch(/預約編號|LH\d{6}-/);
-      expect(msg).toContain(name);
+      expect(msg).toContain("歐陽承翰");
     }
   });
 
-  it("LINE 版保留醫師、門診別與取消提示（無長度限制）", async () => {
-    const r = await reminderFor("王小明", true);
-    expect(r.channel).toBe("LINE");
-    expect(r.message).toContain("蔡宗儒醫師");
-    expect(r.message).toContain("一般門診");
-    expect(r.message).toContain("請提前線上取消");
-    expect(r.message).toContain("10 分鐘內到櫃檯報到");
+  it("沒有 LINE 綁定的病人（櫃檯電話代約）不排入通知", async () => {
+    const { general, drTsai } = await seedBase();
+    const { appointment } = await createAppointment({
+      clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(3), startTime: "09:00",
+      patientInput: makePatient(), source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
+    });
+    // 沒有可送達的管道，排進去只會變成一筆永遠失敗的紀錄；由櫃檯當場口頭告知
+    const rows = await prisma.notification.findMany({ where: { appointmentId: appointment.id } });
+    expect(rows).toHaveLength(0);
   });
 });

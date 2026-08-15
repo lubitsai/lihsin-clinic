@@ -1,14 +1,9 @@
 "use client";
 
-/** LINE 帳號綁定管理：列出已綁定的家庭成員、新增綁定（證件＋生日＋手機 OTP）、解除 */
+/** LINE 帳號綁定管理：列出已綁定的家庭成員、新增綁定（證件＋生日＋手機三者相符）、解除 */
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import {
-  requestBindingOtp,
-  bindFamilyMember,
-  unbindFamilyMember,
-  type LineBindingDto,
-} from "@/app/actions/portal";
+import { bindFamilyMember, unbindFamilyMember, type LineBindingDto } from "@/app/actions/portal";
 import { Card, Alert } from "@/components/ui";
 import { ID_TYPE_LABEL } from "@/lib/status-labels";
 
@@ -20,40 +15,27 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
     idNumber: "",
     birthDate: "",
     phone: "",
-    otpCode: "",
     relation: "",
   });
-  const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [pending, startTransition] = useTransition();
 
-  const sendOtp = () => {
-    if (!/^09\d{8}$/.test(form.phone)) return setError("手機號碼格式不正確");
-    startTransition(async () => {
-      const r = await requestBindingOtp(form.phone);
-      if (!r.ok) return setError(r.message);
-      setError("");
-      setOtpSent(true);
-      if (r.data?.devCode) setForm((f) => ({ ...f, otpCode: r.data!.devCode! }));
-    });
-  };
-
   const bind = () => {
+    if (!/^09\d{8}$/.test(form.phone)) return setError("手機號碼格式不正確");
     startTransition(async () => {
       const r = await bindFamilyMember({ ...form, relation: form.relation || undefined });
       if (!r.ok) return setError(r.message);
       setError("");
       setMessage(`已綁定 ${r.data?.name}，之後可直接以 LINE 管理其預約並接收通知。`);
       setAdding(false);
-      setForm({ idType: "NATIONAL_ID", idNumber: "", birthDate: "", phone: "", otpCode: "", relation: "" });
-      setOtpSent(false);
+      setForm({ idType: "NATIONAL_ID", idNumber: "", birthDate: "", phone: "", relation: "" });
       router.refresh();
     });
   };
 
   const unbind = (b: LineBindingDto) => {
-    if (!window.confirm(`解除與 ${b.name} 的綁定？解除後其通知將改以簡訊發送。`)) return;
+    if (!window.confirm(`解除與 ${b.name} 的綁定？解除後將收不到 ${b.name} 的預約通知。`)) return;
     startTransition(async () => {
       const r = await unbindFamilyMember(b.patientId);
       if (!r.ok) return setError(r.message);
@@ -76,7 +58,8 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
 
       {initial.length === 0 && !adding && (
         <p className="text-ink-700 text-sm">
-          尚未綁定任何看診成員。綁定後預約免手機驗證，通知直接透過 LINE 傳送；
+          尚未綁定任何看診成員。線上預約成立時會自動綁定該位病人；
+          若要把先前（例如電話或現場掛號）建立的家人一併納入管理，可用下方「新增成員」。
           同一個 LINE 可綁定多位孩子或家人。
         </p>
       )}
@@ -100,7 +83,8 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
       {adding && (
         <div className="space-y-3 border-t border-sage-200 pt-3">
           <p className="text-sm text-ink-700">
-            為保護個資，首次綁定需輸入該成員的證件號碼、出生日期，並以其預約用手機完成驗證。
+            為保護個資，需輸入該成員的證件號碼、出生日期，以及本院病歷上登記的手機號碼，
+            三項全部相符才能綁定。若手機已換號，請先致電診所更新病歷聯絡資料。
           </p>
           <div className="flex gap-2">
             {(Object.keys(ID_TYPE_LABEL) as (keyof typeof ID_TYPE_LABEL)[]).map((t) => (
@@ -135,26 +119,16 @@ export function LineBindings({ initial }: { initial: LineBindingDto[] }) {
             type="tel"
             inputMode="numeric"
             className="input"
-            placeholder="預約時填寫的手機 09xxxxxxxx"
+            placeholder="病歷上的手機 09xxxxxxxx"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value.trim() })}
           />
           <div className="flex gap-2">
-            <button onClick={sendOtp} disabled={pending} className="btn-secondary shrink-0 !py-2">
-              {otpSent ? "重新傳送" : "傳送驗證碼"}
-            </button>
-            <input
-              type="text"
-              inputMode="numeric"
-              maxLength={6}
-              className="input"
-              placeholder="6 位數驗證碼"
-              value={form.otpCode}
-              onChange={(e) => setForm({ ...form, otpCode: e.target.value.trim() })}
-            />
-          </div>
-          <div className="flex gap-2">
-            <button onClick={bind} disabled={pending || !form.otpCode} className="btn-primary flex-1">
+            <button
+              onClick={bind}
+              disabled={pending || !form.idNumber || !form.birthDate || !form.phone}
+              className="btn-primary flex-1"
+            >
               {pending ? "綁定中…" : "確認綁定"}
             </button>
             <button onClick={() => { setAdding(false); setError(""); }} className="btn-secondary">

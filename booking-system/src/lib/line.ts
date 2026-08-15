@@ -1,8 +1,12 @@
 /**
  * LINE 整合（官方 OAuth 2.0 流程；絕不接觸使用者 LINE 密碼）。
- * - LINE Login：快速登入與帳號綁定（https://developers.line.biz/en/services/line-login/）
+ * - LINE Login：線上預約與線上查詢的唯一身分來源
+ *   （https://developers.line.biz/en/services/line-login/）
  * - Messaging API：預約通知推播
- * 未設定環境變數時，兩者自動停用：前台隱藏 LINE 按鈕、通知退回簡訊。
+ *
+ * 院長 2026-08-13 裁示取消簡訊後，**這兩項都是上線的必要條件**：
+ * 未設定 Login 就沒有人能線上預約，未設定 Messaging 就沒有任何通知發得出去。
+ * 兩者的檢測結果顯示在後台「系統設定 → LINE 串接」。
  */
 import { createHmac } from "node:crypto";
 
@@ -15,8 +19,29 @@ export function isLineLoginConfigured(): boolean {
   return !!(process.env.LINE_LOGIN_CHANNEL_ID && process.env.LINE_LOGIN_CHANNEL_SECRET);
 }
 
+/**
+ * 開發／示範／測試用：推播只印到終端機、不真的呼叫 LINE。
+ * 取代原本的 SMS_PROVIDER=console——沒有這個，示範環境每送一筆預約
+ * 都會對 api.line.me 發一次注定失敗的請求，通知全部變成 FAILED。
+ */
+export function isLineMessagingDryRun(): boolean {
+  return process.env.NODE_ENV !== "production" && process.env.LINE_MESSAGING_DRY_RUN === "1";
+}
+
 export function isLineMessagingConfigured(): boolean {
-  return !!process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN;
+  return !!process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN || isLineMessagingDryRun();
+}
+
+/**
+ * 開發／示範／自動化測試用的 LINE 登入替身是否啟用。
+ *
+ * 前台唯一的身分來源是 LINE Login，本機與 CI 連不到 LINE，
+ * 沒有替身就沒有任何辦法驗「家長點得動」。因此保留一條**只在非正式環境**、
+ * 且必須另外明寫 LINE_LOGIN_DEV_STUB=1 才開啟的捷徑（見 api/line/dev-login）。
+ * 正式建置時 NODE_ENV=production，此函式恆為 false，該路由直接回 404。
+ */
+export function isLineDevLoginEnabled(): boolean {
+  return process.env.NODE_ENV !== "production" && process.env.LINE_LOGIN_DEV_STUB === "1";
 }
 
 /** LINE console 需填入的 callback 網址（設定畫面顯示用） */
@@ -32,8 +57,8 @@ export function lineWebhookUrl(): string {
 /**
  * 產生 LINE Login 授權導向網址（state 由呼叫端存入 cookie 防 CSRF）。
  * bot_prompt=aggressive：登入時一併詢問是否加入診所官方帳號為好友。
- * 沒有加好友就無法推播，通知只能改走簡訊（會產生費用），
- * 因此在登入當下就引導加入；使用者仍可拒絕，預約流程不受影響。
+ * 沒有加好友就無法推播，而簡訊已取消——不加好友＝完全收不到預約通知，
+ * 因此在登入當下就引導加入。使用者仍可拒絕，預約本身照樣成立。
  */
 export function buildLineLoginUrl(state: string, redirectPath = "/api/line/callback"): string {
   const params = new URLSearchParams({
@@ -82,6 +107,10 @@ export async function exchangeLineCode(
 
 /** Messaging API 推播文字訊息 */
 export async function pushLineMessage(lineUserId: string, text: string): Promise<void> {
+  if (isLineMessagingDryRun()) {
+    console.info(`[LINE dry-run] → ${lineUserId}\n${text}`);
+    return;
+  }
   const res = await fetch(LINE_PUSH_URL, {
     method: "POST",
     headers: {
@@ -140,11 +169,13 @@ export async function checkLineSetup(): Promise<LineSetupStatus> {
   }
 
   // Messaging：以 /v2/bot/info 驗證 access token
-  if (!isLineMessagingConfigured()) {
+  if (!process.env.LINE_MESSAGING_CHANNEL_ACCESS_TOKEN) {
     checks.push({
       ok: false,
       label: "Messaging API（推播通知）",
-      detail: "尚未設定 LINE_MESSAGING_CHANNEL_ACCESS_TOKEN，通知目前一律以簡訊發送。",
+      detail:
+        "尚未設定 LINE_MESSAGING_CHANNEL_ACCESS_TOKEN。" +
+        "簡訊已於 2026-08-13 取消，沒有這把金鑰就沒有任何通知發得出去（預約成立、改期、取消、看診前提醒全部停擺）。",
     });
   } else {
     try {
@@ -192,8 +223,10 @@ export async function checkLineSetup(): Promise<LineSetupStatus> {
   if (!isLineLoginConfigured()) {
     checks.push({
       ok: false,
-      label: "LINE Login（快速登入）",
-      detail: "尚未設定，前台不會顯示 LINE 登入按鈕，民眾改用手機驗證碼（功能不受影響）。",
+      label: "LINE Login（民眾登入）",
+      detail:
+        "尚未設定。LINE 登入是線上預約與線上查詢的唯一入口，未設定＝家長完全無法自行預約，" +
+        "只能改走電話或現場掛號。",
     });
   } else {
     try {
@@ -208,17 +241,17 @@ export async function checkLineSetup(): Promise<LineSetupStatus> {
       });
       checks.push(
         res.ok
-          ? { ok: true, label: "LINE Login（快速登入）", detail: "Channel ID 與 secret 配對正確" }
+          ? { ok: true, label: "LINE Login（民眾登入）", detail: "Channel ID 與 secret 配對正確" }
           : {
               ok: false,
-              label: "LINE Login（快速登入）",
+              label: "LINE Login（民眾登入）",
               detail: `LINE 回應 HTTP ${res.status}，請確認 Channel ID 與 Channel secret。`,
             },
       );
     } catch (e) {
       checks.push({
         ok: false,
-        label: "LINE Login（快速登入）",
+        label: "LINE Login（民眾登入）",
         detail: `無法連線至 LINE：${e instanceof Error ? e.message : String(e)}`,
       });
     }

@@ -13,8 +13,16 @@ import {
 } from "@/lib/booking";
 import { getDaySlotAvailability } from "@/lib/availability";
 import { createScheduleException, setSlotCapacity } from "@/lib/schedule-admin";
-import { dispatchPendingNotifications } from "@/lib/notifications";
-import { resetDb, seedBase, makePatient, futureDate, STAFF_ACTOR, PATIENT_ACTOR } from "./helpers";
+import { dispatchPendingNotifications, enqueueReminders } from "@/lib/notifications";
+import {
+  resetDb,
+  seedBase,
+  makePatient,
+  futureDate,
+  linkLineAccount,
+  STAFF_ACTOR,
+  PATIENT_ACTOR,
+} from "./helpers";
 
 describe("引擎強化（審查修復回歸）", () => {
   beforeEach(resetDb);
@@ -125,12 +133,17 @@ describe("引擎強化（審查修復回歸）", () => {
 
   it("並發 dispatcher 不會重複發送同一則通知（原子認領）", async () => {
     const { drTsai, general } = await seedBase();
-    for (let i = 1; i <= 3; i++) {
-      await createAppointment({
-        clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(i), startTime: "09:00",
-        patientInput: makePatient(), source: "WEB", actor: PATIENT_ACTOR,
+    const date = futureDate(1);
+    for (const startTime of ["09:00", "09:30", "10:00"]) {
+      const r = await createAppointment({
+        clinicTypeId: general.id, doctorId: drTsai.id, date, startTime,
+        patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
       });
+      await linkLineAccount(r.patient.id); // 沒綁 LINE 就沒有管道，通知不排入佇列
     }
+    // 綁定是在預約成立之後才建立的，成立通知因此沒排入；改以提醒批次產生三則待送
+    await prisma.notification.deleteMany({});
+    expect(await enqueueReminders(date, "REMINDER_DAY_BEFORE")).toBe(3);
     const pendingBefore = await prisma.notification.count({ where: { status: "PENDING" } });
     expect(pendingBefore).toBe(3);
     const [a, b] = await Promise.all([

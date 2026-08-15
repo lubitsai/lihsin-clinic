@@ -56,7 +56,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    // 用 dev server：OTP 會回傳 devCode（NODE_ENV !== production），測試才點得完
+    // 用 dev server：LINE 登入替身與推播 dry-run 只在 NODE_ENV !== production 才生效
     command: `next dev -p ${PORT}`,
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
@@ -66,7 +66,9 @@ export default defineConfig({
       SESSION_SECRET: "e2e-session-secret-0123456789abcdef",
       PII_ENCRYPTION_KEY: "e2e-encryption-key-0123456789abcdef0123456789",
       PII_HASH_KEY: "e2e-hash-key-0123456789abcdef",
-      SMS_PROVIDER: "console",
+      // 前台身分只剩 LINE Login，CI 連不到 LINE：用替身登入、推播只印不送
+      LINE_LOGIN_DEV_STUB: "1",
+      LINE_MESSAGING_DRY_RUN: "1",
       TZ: "Asia/Taipei",
     },
   },

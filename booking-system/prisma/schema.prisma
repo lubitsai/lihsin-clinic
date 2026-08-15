@@ -83,6 +83,9 @@ enum RestrictionStatus {
 
 enum NotificationChannel {
   LINE
+  /// 保留但不再產生：院長 2026-08-13 裁示取消簡訊，通知一律走 LINE。
+  /// 之所以留著值而不刪：PostgreSQL 移除 enum 值要整型別重建，
+  /// 為一個永遠不會被寫入的值付這個代價不划算。
   SMS
 }
 
@@ -106,12 +109,6 @@ enum ActorType {
   STAFF
   PATIENT
   SYSTEM
-}
-
-enum OtpPurpose {
-  BOOKING       // 預約時驗證手機
-  QUERY         // 查詢/取消預約
-  LINE_BINDING  // LINE 首次綁定病人
 }
 
 // ── 病人 ────────────────────────────────────────────────
@@ -181,7 +178,9 @@ model LineAccount {
   @@map("line_accounts")
 }
 
-/// 一個 LINE 帳號可綁定多位家庭成員；首次綁定需手機 OTP 驗證
+/// 一個 LINE 帳號可綁定多位家庭成員。
+/// 綁定＝該 LINE 帳號看得到此病人的所有預約，因此建立條件是
+/// 「證件＋生日＋手機三者與病歷相符」，或該病歷就是這次線上預約新建的。
 model LinePatientLink {
   id            String   @id @default(cuid())
   lineAccountId String   @map("line_account_id")
@@ -546,34 +545,18 @@ model StaffSession {
   @@map("staff_sessions")
 }
 
-// ── 民眾 session 與 OTP ────────────────────────────────
+// ── 民眾 session ────────────────────────────────────────
 
+/// 前台登入 session。身分來源只有 LINE Login，故 lineAccountId 必填
+/// （原本還有手機 OTP 驗證後的 verified_phone / patient_id，隨簡訊一併移除）。
 model PortalSession {
   id            String   @id @default(cuid())
   tokenHash     String   @unique @map("token_hash")
-  lineAccountId String?  @map("line_account_id")
-  /// OTP 驗證通過的手機號（非 LINE 登入時）
-  verifiedPhone String?  @map("verified_phone")
-  /// OTP 驗證通過的病人（證件+生日查詢流程）
-  patientId     String?  @map("patient_id")
+  lineAccountId String   @map("line_account_id")
   expiresAt     DateTime @map("expires_at")
   createdAt     DateTime @default(now()) @map("created_at")
 
   @@map("portal_sessions")
-}
-
-model OtpCode {
-  id         String     @id @default(cuid())
-  phone      String
-  codeHash   String     @map("code_hash")
-  purpose    OtpPurpose
-  attempts   Int        @default(0)
-  expiresAt  DateTime   @map("expires_at")
-  consumedAt DateTime?  @map("consumed_at")
-  createdAt  DateTime   @default(now()) @map("created_at")
-
-  @@index([phone, purpose])
-  @@map("otp_codes")
 }
 
 // ── 通知、設定、稽核 ────────────────────────────────────
