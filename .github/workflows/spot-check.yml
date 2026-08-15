@@ -78,6 +78,11 @@ jobs:
           check /services/skin-conditions.html 200
           check /health/child-chronic-cough.html 200
           check /health/atopic-dermatitis.html 200
+          # 2026-08-15 批(PR #94)的兩個過敏原檢測承載頁。下方「內容抽驗」已各盯一層
+          # (實體層 schema／keywords),這兩行盯的是另一件事:頁還在不在。
+          # 依 2026-08-14b 通則「兩者缺一不可」,與上面四個承載頁同樣的配置。
+          check /services/allergy-testing.html 200
+          check /health/allergy-test-results.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           echo "=== 內容抽驗 ==="
@@ -120,6 +125,20 @@ jobs:
           # 這條盯「本批補的內容還在」——llms 雙檔沒有結構驗證器,回退不會有 ERROR 攔。
           lc=$(curl -s --max-time 20 "$BASE/llms.txt" | grep -c '台南久咳推薦' || true)
           if [ "$lc" -ge 1 ]; then echo "OK    llms.txt 在地推薦詞問句框架條目已上線"; else echo "FAIL  llms.txt『台南久咳推薦』未見——llms 層疑遭舊版覆蓋"; fail=1; fi
+          # 過敏原檢測第四輪抽驗(2026-08-15 新增,PR #94「台南過敏原檢測」第四輪):
+          # 該批補的是「實體層」——MedicalTest 區塊(alternateName 10 條同義說法)、
+          # MedicalProcedure 的 alternateName、MedicalWebPage 的 relatedLink 7 條,
+          # 外加 keywords 的科別分流／口語 where／就診節奏三條詞路。
+          # 全部是 JSON-LD 與 meta,可見層一字未改——被舊版覆蓋時頁面照樣 200、
+          # 家長看到的內容一字不差,沒有任何人會發現,只能靠這裡回報。
+          # 上面的 200 檢查盯「頁還在」,以下兩條盯「本批補的實體層還在」。
+          # ⚠️ 若日後刻意改這些 schema 或措辭,請連同本檢查一起改,不要直接刪掉。
+          at=$(curl -s --max-time 20 "$BASE/services/allergy-testing.html")
+          atm=$(printf '%s' "$at" | grep -c 'MedicalTest' || true)
+          atr=$(printf '%s' "$at" | grep -c 'relatedLink' || true)
+          if [ "$atm" -ge 1 ] && [ "$atr" -ge 1 ]; then echo "OK    過敏原檢測頁實體層已上線(MedicalTest × $atm、relatedLink × $atr)"; else echo "FAIL  過敏原檢測頁實體層未見(MedicalTest × $atm、relatedLink × $atr)——JSON-LD 疑遭舊版覆蓋"; fail=1; fi
+          ar=$(curl -s --max-time 20 "$BASE/health/allergy-test-results.html" | grep -c '過敏原報告要看哪一科' || true)
+          if [ "$ar" -ge 1 ]; then echo "OK    過敏原報告頁 keywords 科別分流詞路已上線"; else echo "FAIL  過敏原報告頁『過敏原報告要看哪一科』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
           # 反向抽驗(2026-08-08 新增):本站沒有站內搜尋功能——全站 <form>／
           # type="search"／role="search" 命中數為 0。首頁 WebSite schema 曾宣告
           # SearchAction 指向 /?s={search_term_string},屬 AP9 同類病灶(結構化
