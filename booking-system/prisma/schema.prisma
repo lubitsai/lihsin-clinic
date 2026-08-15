@@ -81,12 +81,9 @@ enum RestrictionStatus {
   LIFTED    // 已解除
 }
 
+/// 只有 LINE：院長 2026-08-13 裁示取消簡訊，SMS 值已於 08-15 一併移除。
 enum NotificationChannel {
   LINE
-  /// 保留但不再產生：院長 2026-08-13 裁示取消簡訊，通知一律走 LINE。
-  /// 之所以留著值而不刪：PostgreSQL 移除 enum 值要整型別重建，
-  /// 為一個永遠不會被寫入的值付這個代價不划算。
-  SMS
 }
 
 enum NotificationType {
@@ -174,19 +171,45 @@ model LineAccount {
   lastLoginAt DateTime? @map("last_login_at")
 
   patientLinks LinePatientLink[]
+  bindingCodes LineBindingCode[]
 
   @@map("line_accounts")
 }
 
+/// 櫃檯綁定用的一次性代碼。
+///
+/// 民眾在前台以 LINE 登入後產生短代碼，到櫃檯出示；櫃檯**當面核對健保卡**
+/// 確認就是本人或其家長後，在該病人的病歷頁輸入代碼才建立綁定。
+/// 之所以不讓民眾自助綁定既有病歷（院長 2026-08-15 裁示）：綁定等於取得該病人
+/// 全部預約紀錄的讀取權，只憑「填得出證件號＋生日＋手機」就給，等於讓知道
+/// 這三項的人冒用證件綁走病歷身分。核對這件事只有櫃檯做得到。
+model LineBindingCode {
+  id            String    @id @default(cuid())
+  /// HMAC-SHA256(正規化代碼)；代碼本身不落地
+  codeHash      String    @unique @map("code_hash")
+  lineAccountId String    @map("line_account_id")
+  expiresAt     DateTime  @map("expires_at")
+  consumedAt    DateTime? @map("consumed_at")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  lineAccount LineAccount @relation(fields: [lineAccountId], references: [id])
+
+  @@index([lineAccountId])
+  @@map("line_binding_codes")
+}
+
 /// 一個 LINE 帳號可綁定多位家庭成員。
-/// 綁定＝該 LINE 帳號看得到此病人的所有預約，因此建立條件是
-/// 「證件＋生日＋手機三者與病歷相符」，或該病歷就是這次線上預約新建的。
+/// 綁定＝該 LINE 帳號看得到此病人的所有預約，因此只有兩種來源：
+///   1. 該病歷就是這個 LINE 帳號線上預約時新建的（沒有既有紀錄可外洩）
+///   2. 櫃檯當面核對身分後，以綁定代碼建立（verifiedByStaffId 記錄經手人）
 model LinePatientLink {
   id            String   @id @default(cuid())
   lineAccountId String   @map("line_account_id")
   patientId     String   @map("patient_id")
   relation      String? // 本人/子女/家屬
   verifiedAt    DateTime @map("verified_at")
+  /// 由櫃檯核對後建立時記錄經手員工；線上預約自動建立時為 null
+  verifiedByStaffId String? @map("verified_by_staff_id")
   createdAt     DateTime @default(now()) @map("created_at")
 
   lineAccount LineAccount @relation(fields: [lineAccountId], references: [id])

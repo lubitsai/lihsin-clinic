@@ -49,17 +49,21 @@ export async function findPatientByIdentity(
  * 預約時建立或更新病人（交易內）。
  * - 已存在：核對生日，更新姓名/電話為最新填寫值
  * - 不存在：建立，證件號加密＋雜湊＋遮罩
+ *
+ * 回傳的 `created` 表示這筆病歷**是不是這次交易新建的**。LINE 自動綁定只認這個旗標：
+ * 新建的病歷沒有既有紀錄可外洩，綁定是安全的；既有病歷一律要櫃檯核對。
+ * 用旗標而不是「事前查一次有沒有」，是因為兩者之間可能被別的交易插隊建立同一筆。
  */
 export async function upsertPatientForBooking(
   tx: Tx,
   input: PatientInput,
   opts: { trusted?: boolean } = {},
-): Promise<Patient> {
+): Promise<{ patient: Patient; created: boolean }> {
   const existing = await findPatientByIdentity(tx, input.idType, input.idNumber, input.birthDate);
   if (existing) {
     // 櫃檯代約（trusted）：人員已當面或電話確認身分，可更新聯絡資料。
     if (opts.trusted) {
-      return tx.patient.update({
+      const updated = await tx.patient.update({
         where: { id: existing.id },
         data: {
           name: input.name,
@@ -67,6 +71,7 @@ export async function upsertPatientForBooking(
           gender: input.gender ?? existing.gender,
         },
       });
+      return { patient: updated, created: false };
     }
     // 前台預約：證件號＋生日不足以證明是本人（家屬、學校、外流名單都可能知道），
     // 若允許覆寫姓名／電話，知道這兩項的人即可把病歷聯絡方式改成自己的，
@@ -75,10 +80,10 @@ export async function upsertPatientForBooking(
     if (input.phone !== existing.phone) {
       await recordPendingContact(tx, existing.id, input.phone);
     }
-    return existing;
+    return { patient: existing, created: false };
   }
   try {
-    return await tx.patient.create({
+    const patient = await tx.patient.create({
       data: {
         name: input.name,
         phone: input.phone,
@@ -90,11 +95,13 @@ export async function upsertPatientForBooking(
         idNumberMasked: maskIdNumber(input.idNumber),
       },
     });
+    return { patient, created: true };
   } catch (e) {
-    // 併發時另一交易剛建立同一病人：改為讀取既有列（仍核對生日）
+    // 併發時另一交易剛建立同一病人：改為讀取既有列（仍核對生日）。
+    // 這種情況**不算這次建立的**——建立者是另一個交易，綁定權也在那邊。
     if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
       const found = await findPatientByIdentity(tx, input.idType, input.idNumber, input.birthDate);
-      if (found) return found;
+      if (found) return { patient: found, created: false };
     }
     throw e;
   }

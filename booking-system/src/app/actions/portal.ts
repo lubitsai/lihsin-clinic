@@ -11,12 +11,11 @@ import { getOpenDates, getDaySlotAvailability } from "@/lib/availability";
 import { dispatchPendingNotifications } from "@/lib/notifications";
 import { BookingError } from "@/lib/errors";
 import { bookingRequestSchema, phoneSchema, dateStrSchema, timeStrSchema, idTypeSchema } from "@/lib/validation";
-import {
-  getPortalContext,
-  destroyPortalSession,
-  verifyPatientIdentity,
-  PORTAL_COOKIE,
-} from "@/lib/auth/portal";
+import { getPortalContext, destroyPortalSession, PORTAL_COOKIE } from "@/lib/auth/portal";
+import { hashToken, hashIdNumber, randomBindingCode } from "@/lib/crypto";
+import { resolveMergedPatient } from "@/lib/patients";
+import { BINDING_CODE_TTL_MS } from "@/lib/line-binding";
+import type { IdType } from "@prisma/client";
 import { listAppointmentsForPatients, getAppointmentForPortal } from "@/lib/portal-service";
 import { maskPhone } from "@/lib/masking";
 import { dbToDate } from "@/lib/tw-time";
@@ -100,6 +99,26 @@ export async function submitBooking(
     const portal = await getPortalContext();
     if (!portal) return { ok: false, message: "請先以 LINE 登入後再送出預約" };
 
+    /*
+     * 既有病歷但尚未綁定此 LINE 帳號 → 擋下，請櫃檯核對後綁定
+     * （院長 2026-08-15 裁示）。放行的話會產生一種半殘狀態：預約成立、
+     * 但通知發不出去也不會出現在「查詢我的預約」，家長只會以為系統壞了；
+     * 而若順手綁定，就等於讓知道證件號與生日的人冒用證件綁走病歷身分。
+     */
+    const link = await lookupLinkState(
+      portal.lineAccountId,
+      parsed.patient.idType,
+      parsed.patient.idNumber,
+    );
+    if (link && !link.linked) {
+      return {
+        ok: false,
+        message:
+          "這位看診者的病歷已在本院建檔，但尚未與您的 LINE 綁定。" +
+          `為保護病人資料，請攜帶健保卡到櫃檯完成綁定，或致電立欣診所 ${CLINIC.phone} 由櫃檯協助。`,
+      };
+    }
+
     // 額度以「預約帳號」計（官網公告：每個預約帳號同時最多 2 筆）＝ LINE 帳號
     const result = await createAppointment({
       clinicTypeId: parsed.clinicTypeId,
@@ -115,25 +134,18 @@ export async function submitBooking(
     });
 
     /*
-     * 自動綁定的安全界線：綁定＝這個 LINE 帳號從此看得到該病人的所有預約紀錄，
-     * 所以不能只因為「填得出證件號」就給。條件與 verifyPatientIdentity 同一把尺：
-     * 生日與手機都要與病歷相符。
-     *  - 新建立的病歷：兩者都是這次填的，必然相符，等同「沒有歷史可外洩」。
-     *  - 既有病歷：生日不符在 upsertPatientForBooking 已被擋下；
-     *    手機不符（例如家長換號）則此處不綁，改由櫃檯核對 patient_contacts 後處理。
-     * 用交易回傳的病歷比對而非事前查詢，可一併涵蓋併發時剛被別人建立的情況。
+     * 自動綁定只認「這次交易新建的病歷」——沒有既有紀錄可外洩，綁定是安全的。
+     * 同行家人也一併綁：那些病歷同樣是這個帳號剛建立的，不綁的話下次單獨替
+     * 該位家人預約會被上面的檢查擋下，等於系統自己挖坑給家長跳。
+     * 用引擎回傳的旗標而非事前查詢，是因為兩者之間可能被別的交易插隊建立同一筆。
      */
-    const p = result.patient;
-    const key = { lineAccountId: portal.lineAccountId, patientId: p.id };
-    const alreadyLinked = !!(await prisma.linePatientLink.findUnique({
-      where: { lineAccountId_patientId: key },
-    }));
-    const linked =
-      alreadyLinked ||
-      (dbToDate(p.birthDate) === parsed.patient.birthDate && p.phone === parsed.patient.phone);
-    if (linked && !alreadyLinked) {
-      await prisma.linePatientLink.create({ data: { ...key, verifiedAt: new Date() } });
+    for (const patientId of result.createdPatientIds) {
+      await prisma.linePatientLink.create({
+        data: { lineAccountId: portal.lineAccountId, patientId, verifiedAt: new Date() },
+      });
     }
+    const linked =
+      !!link?.linked || result.createdPatientIds.includes(result.patient.id);
 
     void dispatchPendingNotifications().catch(() => {});
     return {
@@ -147,6 +159,27 @@ export async function submitBooking(
   } catch (e) {
     return toUserError(e);
   }
+}
+
+/**
+ * 這個證件對應的病歷是否已綁定此 LINE 帳號。
+ * 回傳 null＝本院查無此病歷（＝這次預約會新建，可自動綁定）。
+ * 病歷若已被合併，以保留的那筆為準——否則舊證件號會被判定成「查無」而繞過檢查。
+ */
+async function lookupLinkState(
+  lineAccountId: string,
+  idType: IdType,
+  idNumber: string,
+): Promise<{ patientId: string; linked: boolean } | null> {
+  const found = await prisma.patient.findUnique({
+    where: { uniq_patient_identity: { idType, idNumberHash: hashIdNumber(idNumber) } },
+  });
+  if (!found) return null;
+  const patient = await resolveMergedPatient(prisma, found);
+  const link = await prisma.linePatientLink.findUnique({
+    where: { lineAccountId_patientId: { lineAccountId, patientId: patient.id } },
+  });
+  return { patientId: patient.id, linked: !!link };
 }
 
 // ── 登出 ──────────────────────────────────────────────
@@ -269,64 +302,37 @@ export async function fetchMyBindings(): Promise<ActionResult<LineBindingDto[]>>
   };
 }
 
-const bindSchema = z.object({
-  idType: idTypeSchema,
-  idNumber: z.string().trim().min(4).max(20),
-  birthDate: dateStrSchema,
-  phone: phoneSchema,
-  relation: z.string().trim().max(20).optional(),
-});
-
 /**
- * 綁定家庭成員：證件＋生日＋手機三者與病歷相符才建立。
+ * 產生櫃檯綁定代碼（30 分鐘、一次性）。
  *
- * 綁定後這個 LINE 帳號就看得到該病人的所有預約，因此嚴格限流：
- * 同一 LINE 帳號 10 分鐘 5 次、同一 IP 10 分鐘 10 次。三項全對才算通過，
- * 任一不符一律回中性訊息（不透露該證件號是否為本院病人）。
+ * 民眾自己**不能**綁定既有病歷（院長 2026-08-15 裁示）——綁定等於取得該病人
+ * 全部預約紀錄的讀取權，只憑填得出證件號、生日、手機就給，等於讓知道這三項的人
+ * 冒用證件綁走病歷身分。這裡只發一組代碼，真正的關卡是櫃檯當面核對健保卡。
+ *
+ * 重新產生會作廢先前未使用的代碼：家長手上永遠只有一組有效的，
+ * 唸錯或櫃檯輸錯時不會有兩組同時能用。
  */
-export async function bindFamilyMember(
-  input: z.infer<typeof bindSchema>,
-): Promise<ActionResult<LineBindingDto>> {
+export async function issueBindingCode(): Promise<
+  ActionResult<{ code: string; expiresAt: string }>
+> {
   try {
     const portal = await getPortalContext();
     if (!portal) return { ok: false, message: "請先以 LINE 登入" };
-    const parsed = bindSchema.parse(input);
-    if (
-      !rateLimit(`bind:${portal.lineAccountId}`, 5, 10 * 60_000) ||
-      !rateLimit(`bind-ip:${await clientIp()}`, 10, 10 * 60_000)
-    )
-      return { ok: false, message: "嘗試次數過多，請稍後再試" };
-    const patientId = await verifyPatientIdentity(
-      parsed.idType,
-      parsed.idNumber,
-      parsed.birthDate,
-      parsed.phone,
-    );
-    const link = await prisma.linePatientLink.upsert({
-      where: { lineAccountId_patientId: { lineAccountId: portal.lineAccountId, patientId } },
-      create: {
-        lineAccountId: portal.lineAccountId,
-        patientId,
-        relation: parsed.relation,
-        verifiedAt: new Date(),
-      },
-      update: { relation: parsed.relation },
-      include: { patient: true },
-    });
-    await writeAudit(
-      { type: "PATIENT", id: patientId, ip: await clientIp() },
-      "line.bind_patient",
-      { type: "line_patient_link", id: link.id },
-    );
-    return {
-      ok: true,
-      data: {
-        patientId,
-        name: link.patient.name,
-        idNumberMasked: link.patient.idNumberMasked,
-        relation: link.relation,
-      },
-    };
+    if (!rateLimit(`bindcode:${portal.lineAccountId}`, 5, 10 * 60_000))
+      return { ok: false, message: "產生次數過多，請稍後再試" };
+
+    const code = randomBindingCode();
+    const expiresAt = new Date(Date.now() + BINDING_CODE_TTL_MS);
+    await prisma.$transaction([
+      prisma.lineBindingCode.updateMany({
+        where: { lineAccountId: portal.lineAccountId, consumedAt: null },
+        data: { consumedAt: new Date() },
+      }),
+      prisma.lineBindingCode.create({
+        data: { codeHash: hashToken(code), lineAccountId: portal.lineAccountId, expiresAt },
+      }),
+    ]);
+    return { ok: true, data: { code, expiresAt: expiresAt.toISOString() } };
   } catch (e) {
     return toUserError(e);
   }

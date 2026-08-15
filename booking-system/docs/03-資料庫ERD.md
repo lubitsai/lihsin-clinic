@@ -154,6 +154,7 @@ CREATE UNIQUE INDEX "uniq_active_doctor_slot_seq"
 
 | 表 | 用途 |
 |---|---|
+| `line_binding_codes` | 櫃檯綁定用的一次性代碼（雜湊儲存、30 分鐘、用過即失效） |
 | `line_patient_links` | 一個 LINE 帳號綁多位家庭成員（含驗證時間） |
 | `portal_sessions` | 民眾登入 session（token 雜湊） |
 | `staff_sessions` | 員工登入 session（token 雜湊、閒置逾時） |

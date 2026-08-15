@@ -11,6 +11,7 @@ import {
   PatientContactForm,
   RevealIdButton,
   RestrictionControls,
+  LineBindingControls,
 } from "./patient-controls";
 
 export const dynamic = "force-dynamic";
@@ -52,12 +53,6 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
           </p>
           <p>出生日期：{dbToDate(patient.birthDate)}</p>
           <p>
-            LINE 綁定：
-            {patient.lineLinks.length > 0
-              ? patient.lineLinks.map((l) => l.lineAccount.displayName ?? "已綁定").join("、")
-              : "未綁定"}
-          </p>
-          <p>
             取消 {patient.cancelCount} 次｜
             <span className={patient.noShowCount > 0 ? "text-rose-600 font-bold" : ""}>
               未到 {patient.noShowCount} 次
@@ -81,6 +76,27 @@ export default async function PatientDetailPage({ params }: { params: Promise<{ 
           />
         </Card>
       </div>
+
+      {hasPermission(ctx, PERMISSIONS.PATIENTS_WRITE) ? (
+        <LineBindingControls
+          patientId={patient.id}
+          patientName={patient.name}
+          links={patient.lineLinks.map((l) => ({
+            lineAccountId: l.lineAccountId,
+            displayName: l.lineAccount.displayName,
+            verifiedByStaff: !!l.verifiedByStaffId,
+          }))}
+        />
+      ) : (
+        <Card>
+          <h2 className="font-bold text-sage-700 mb-2">LINE 綁定</h2>
+          <p className="text-sm text-ink-700">
+            {patient.lineLinks.length > 0
+              ? patient.lineLinks.map((l) => l.lineAccount.displayName ?? "已綁定").join("、")
+              : "未綁定"}
+          </p>
+        </Card>
+      )}
 
       <Card>
         <h2 className="font-bold text-sage-700 mb-2">後台備註</h2>

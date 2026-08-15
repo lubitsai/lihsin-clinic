@@ -4,7 +4,7 @@
  * 但家長讀到的字改了就該壞（那本來就要有人確認過）。
  */
 import { test, expect, type Page } from "@playwright/test";
-import { typeInto, clickUntil, submitUntil, makeTaiwanId } from "./helpers";
+import { typeInto, clickUntil, makeTaiwanId } from "./helpers";
 
 /** 每次跑都用新的假病人，避免撞到同日唯一與帳號額度上限 */
 function newPatient() {
@@ -28,10 +28,14 @@ async function loginAsLine(page: Page, next = "/book") {
   await expect(page).toHaveURL(new RegExp(next.replace("/", "\\/")), { timeout: 15_000 });
 }
 
-/** 走完七步驟預約精靈（需先 LINE 登入） */
-async function bookOnce(page: Page, clinicType = "一般門診") {
-  const p = newPatient();
-  await loginAsLine(page);
+type TestPatient = ReturnType<typeof newPatient>;
+
+/**
+ * 走到步驟 6「請確認預約內容」為止，不送出。
+ * 抽出來是因為「送出會成功」與「送出會被擋下」兩種案例，前面六步完全一樣。
+ */
+async function fillWizardTo6(page: Page, p: TestPatient, clinicType = "一般門診") {
+  await page.goto("/book");
 
   // 步驟 1：門診類型
   await clickUntil(page.getByRole("button", { name: new RegExp(clinicType) }), async () => {
@@ -72,6 +76,15 @@ async function bookOnce(page: Page, clinicType = "一般門診") {
   await clickUntil(page.getByRole("button", { name: "下一步：確認預約內容" }), async () => {
     await expect(page.getByRole("heading", { name: "請確認預約內容" })).toBeVisible({ timeout: 8_000 });
   });
+
+  return slotLabel;
+}
+
+/** 走完七步驟預約精靈（需先 LINE 登入） */
+async function bookOnce(page: Page, clinicType = "一般門診") {
+  const p = newPatient();
+  await loginAsLine(page);
+  const slotLabel = await fillWizardTo6(page, p, clinicType);
 
   // 步驟 6：確認送出（身分在登入時就確認過，這一步沒有額外驗證）
   await clickUntil(page.getByRole("button", { name: "確認送出預約" }), async () => {
@@ -142,19 +155,27 @@ test.describe("前台：查詢與取消", () => {
     await expect(page.getByRole("button", { name: "取消預約" })).toHaveCount(0);
   });
 
-  test("綁定家人時輸入不存在的證件號，訊息不透露該證件號是否存在", async ({ page }) => {
+  test("既有病歷未綁定時擋下預約，並指向櫃檯（不讓人冒用證件綁走病歷）", async ({ page }) => {
+    // 第一個 LINE 帳號預約，病歷因此建立並綁在該帳號下
+    const { patient } = await bookOnce(page);
+
+    // 換一個 LINE 帳號、用同一組證件與生日預約 → 必須被擋下
+    await page.context().clearCookies();
+    await loginAsLine(page);
+    await fillWizardTo6(page, patient);
+    await clickUntil(page.getByRole("button", { name: "確認送出預約" }), async () => {
+      await expect(page.getByText(/尚未與您的 LINE 綁定/)).toBeVisible({ timeout: 10_000 });
+    });
+    await expect(page.getByText("預約成功")).toHaveCount(0);
+  });
+
+  test("既有病歷可向櫃檯取得綁定代碼", async ({ page }) => {
     await loginAsLine(page, "/my");
-    await clickUntil(page.getByRole("button", { name: /新增成員/ }), async () => {
-      await expect(page.getByPlaceholder("證件號碼")).toBeVisible({ timeout: 8_000 });
+    // 自助綁定已移除，只剩「取得代碼 → 到櫃檯核對健保卡」
+    await expect(page.getByPlaceholder("證件號碼")).toHaveCount(0);
+    await clickUntil(page.getByRole("button", { name: "取得櫃檯綁定代碼" }), async () => {
+      await expect(page.getByText("請告知櫃檯這組代碼")).toBeVisible({ timeout: 8_000 });
     });
-    await typeInto(page.getByPlaceholder("證件號碼"), makeTaiwanId(9_999_999));
-    await typeInto(page.locator('input[type="date"]').first(), "2000-01-01");
-    await typeInto(page.getByPlaceholder(/病歷上的手機/), "0900999999");
-    // 一律中性訊息，不能出現「查無此人」這類可用來探查病人是否存在的字眼
-    await submitUntil(page.getByRole("button", { name: "確認綁定" }), async () => {
-      await expect(page.getByText("查無符合的預約資料，請確認輸入內容。")).toBeVisible({
-        timeout: 8_000,
-      });
-    });
+    await expect(page.getByText(/^[A-Z0-9]{6}$/)).toBeVisible();
   });
 });

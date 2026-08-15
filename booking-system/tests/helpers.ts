@@ -21,6 +21,7 @@ export async function resetDb() {
     "clinic_type_windows",
     "public_holidays",
     "line_patient_links",
+    "line_binding_codes",
     "line_accounts",
     "portal_sessions",
     "staff_sessions",

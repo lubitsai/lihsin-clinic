@@ -83,6 +83,12 @@ export interface CreateAppointmentResult {
   patient: Patient;
   duplicated: boolean; // requestId 重複送出時回傳既有預約
   companions?: Patient[];
+  /**
+   * 這次交易**新建立**的病歷 id（預約人與同行家人都算）。
+   * 前台據此決定能不能自動綁定 LINE：新建的病歷沒有既有紀錄可外洩，
+   * 既有病歷一律要櫃檯核對（院長 2026-08-15 裁示）。requestId 重送時為空陣列。
+   */
+  createdPatientIds: string[];
 }
 
 function genBookingNumber(date: string): string {
@@ -103,7 +109,12 @@ export async function createAppointment(
       include: { patient: true },
     });
     if (existing) {
-      return { appointment: existing, patient: existing.patient, duplicated: true };
+      return {
+        appointment: existing,
+        patient: existing.patient,
+        duplicated: true,
+        createdPatientIds: [],
+      };
     }
   }
 
@@ -120,7 +131,13 @@ export async function createAppointment(
         where: { requestId: params.requestId },
         include: { patient: true },
       });
-      if (existing) return { appointment: existing, patient: existing.patient, duplicated: true };
+      if (existing)
+        return {
+          appointment: existing,
+          patient: existing.patient,
+          duplicated: true,
+          createdPatientIds: [],
+        };
     }
     throw e;
   }
@@ -144,6 +161,7 @@ async function runCreateTransaction(
 
       // 病人
       let patient: Patient;
+      const createdPatientIds: string[] = [];
       if (params.patientId) {
         const found = await tx.patient.findUnique({ where: { id: params.patientId } });
         if (!found) throw new BookingError("NOT_FOUND", MSG.notFound);
@@ -151,9 +169,11 @@ async function runCreateTransaction(
         patient = await resolveMergedPatient(tx, found);
       } else if (params.patientInput) {
         // 僅櫃檯代約可更新既有病歷的姓名／電話（人員已確認身分）；前台預約不覆寫
-        patient = await upsertPatientForBooking(tx, params.patientInput, {
+        const upserted = await upsertPatientForBooking(tx, params.patientInput, {
           trusted: !!params.isStaff,
         });
+        patient = upserted.patient;
+        if (upserted.created) createdPatientIds.push(patient.id);
       } else {
         throw new BookingError("VALIDATION", "缺少病人資料");
       }
@@ -177,6 +197,7 @@ async function runCreateTransaction(
 
       // 家庭代表預約：同行家人各自建立／取回病歷並檢查，但不另占名額
       const companionPatients = await prepareCompanions(tx, params, clinicType, patient.id);
+      for (const c of companionPatients) if (c.created) createdPatientIds.push(c.patient.id);
 
       // 醫師與名額（含「不限醫師」自動分配）
       const { doctorId, slotId, endTime, capacitySlotNo } = await allocateSlot(tx, {
@@ -219,7 +240,10 @@ async function runCreateTransaction(
 
       if (companionPatients.length > 0) {
         await tx.appointmentCompanion.createMany({
-          data: companionPatients.map((c) => ({ appointmentId: appointment.id, patientId: c.id })),
+          data: companionPatients.map((c) => ({
+            appointmentId: appointment.id,
+            patientId: c.patient.id,
+          })),
         });
       }
 
@@ -253,7 +277,13 @@ async function runCreateTransaction(
 
       await enqueueAppointmentNotification(tx, "BOOKED", appointment, patient);
 
-      return { appointment, patient, duplicated: false, companions: companionPatients };
+      return {
+        appointment,
+        patient,
+        duplicated: false,
+        companions: companionPatients.map((c) => c.patient),
+        createdPatientIds,
+      };
     },
     { timeout: 15000 },
   );
@@ -269,7 +299,7 @@ async function prepareCompanions(
   params: CreateAppointmentParams,
   clinicType: { allowCompanions: boolean; name: string; minAgeMonths: number | null; maxAgeMonths: number | null },
   primaryPatientId: string,
-): Promise<Patient[]> {
+): Promise<{ patient: Patient; created: boolean }[]> {
   const inputs = params.companions ?? [];
   if (inputs.length === 0) return [];
   if (!clinicType.allowCompanions) {
@@ -283,12 +313,14 @@ async function prepareCompanions(
     throw new BookingError("VALIDATION", `同行家人最多 ${max} 位，超過請另外預約時段。`);
   }
 
-  const out: Patient[] = [];
+  const out: { patient: Patient; created: boolean }[] = [];
   for (const input of inputs) {
-    const companion = await upsertPatientForBooking(tx, input, { trusted: !!params.isStaff });
+    const { patient: companion, created } = await upsertPatientForBooking(tx, input, {
+      trusted: !!params.isStaff,
+    });
     if (companion.id === primaryPatientId)
       throw new BookingError("VALIDATION", "同行家人與預約人重複，請確認填寫內容。");
-    if (out.some((p) => p.id === companion.id))
+    if (out.some((p) => p.patient.id === companion.id))
       throw new BookingError("VALIDATION", "同行家人重複填寫，請確認填寫內容。");
 
     await lockPatientRow(tx, companion.id);
@@ -318,7 +350,7 @@ async function prepareCompanions(
           `同行家人「${companion.name}」當天已有預約，無法重複預約。`,
         );
     }
-    out.push(companion);
+    out.push({ patient: companion, created });
   }
   return out;
 }

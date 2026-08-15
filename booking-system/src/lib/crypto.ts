@@ -39,7 +39,7 @@ export function hashIdNumber(idNumber: string): string {
   return createHmac("sha256", hashKey()).update(idNumber.trim().toUpperCase()).digest("hex");
 }
 
-/** 一般 token 雜湊（session token、OTP 等，存 DB 不存原文） */
+/** 一般 token 雜湊（session token、綁定代碼等，存 DB 不存原文） */
 export function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
@@ -48,9 +48,26 @@ export function randomToken(bytes = 32): string {
   return randomBytes(bytes).toString("base64url");
 }
 
-/** 6 位數 OTP */
-export function randomOtp(): string {
-  return String(randomBytes(4).readUInt32BE() % 1000000).padStart(6, "0");
+/** 綁定代碼可用字元：排除 0/O、1/I/L 等唸出來或抄下來會混淆的（櫃檯要用聽的、用看的） */
+const BINDING_CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+
+/**
+ * 櫃檯綁定代碼（6 碼）。
+ * 短是刻意的——民眾要唸給櫃檯、櫃檯要手動輸入。強度不靠長度，
+ * 靠 30 分鐘效期、一次性、以及櫃檯端的輸入限流；真正的關卡是當面核對健保卡。
+ */
+export function randomBindingCode(length = 6): string {
+  const bytes = randomBytes(length);
+  let out = "";
+  for (let i = 0; i < length; i++) {
+    out += BINDING_CODE_ALPHABET[bytes[i] % BINDING_CODE_ALPHABET.length];
+  }
+  return out;
+}
+
+/** 代碼正規化：大小寫、空白與連字號都當成同一組（民眾會抄成 ABC-123） */
+export function normalizeBindingCode(code: string): string {
+  return code.toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 
 export function safeEqual(a: string, b: string): boolean {

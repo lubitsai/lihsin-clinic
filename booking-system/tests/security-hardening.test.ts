@@ -7,8 +7,7 @@ import { prisma } from "@/lib/db";
 import { createAppointment } from "@/lib/booking";
 import { createScheduleException } from "@/lib/schedule-admin";
 import { enqueueReminders } from "@/lib/notifications";
-import { verifyPatientIdentity } from "@/lib/auth/portal";
-import { BookingError } from "@/lib/errors";
+import { findPatientByIdentity } from "@/lib/patients";
 import {
   resetDb,
   seedBase,
@@ -35,9 +34,9 @@ describe("前台預約不得覆寫既有病歷（身分接管防護）", () => {
 
     // 他人以相同證件＋生日、但填自己的姓名與手機預約
     const attacker = { ...victim, name: "假名", phone: "0922222222" };
-    await createAppointment({
+    const second = await createAppointment({
       clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(4), startTime: "09:00",
-      patientInput: attacker, source: "WEB", actor: PATIENT_ACTOR,
+      patientInput: attacker, source: "LINE", actor: PATIENT_ACTOR,
     });
 
     // 病歷的姓名與電話必須維持原狀
@@ -45,14 +44,10 @@ describe("前台預約不得覆寫既有病歷（身分接管防護）", () => {
     expect(after.name).toBe("王小明");
     expect(after.phone).toBe("0911111111");
 
-    // 因此無法用攻擊者的手機通過查詢驗證（證件＋生日＋手機三者需相符）
-    await expect(
-      verifyPatientIdentity("NATIONAL_ID", victim.idNumber, victim.birthDate, "0922222222"),
-    ).rejects.toBeInstanceOf(BookingError);
-    // 本人仍可正常查詢
-    await expect(
-      verifyPatientIdentity("NATIONAL_ID", victim.idNumber, victim.birthDate, "0911111111"),
-    ).resolves.toBe(first.patient.id);
+    // 而且這筆不算「這次新建的病歷」——前台據此拒絕自動綁定 LINE，
+    // 知道證件號與生日的人因此拿不到該病人的預約紀錄讀取權
+    expect(second.createdPatientIds).not.toContain(first.patient.id);
+    expect(second.createdPatientIds).toHaveLength(0);
 
     // 不符的電話留成待確認聯絡方式，供櫃檯核對
     const pending = await prisma.patientContact.findMany({ where: { patientId: first.patient.id } });
@@ -148,44 +143,11 @@ describe("病歷合併後的後續預約與查詢", () => {
       }),
     ).rejects.toMatchObject({ code: "DUPLICATE_SAME_DAY" });
 
-    // 前台查詢用舊證件號，也要導向保留的病歷
-    await expect(
-      verifyPatientIdentity("NATIONAL_ID", oldInput.idNumber, oldInput.birthDate, "0911111111"),
-    ).resolves.toBe(keep.id);
-  });
-});
-
-describe("查詢與綁定的身分關卡：證件＋生日＋手機三者全對才過", () => {
-  beforeEach(resetDb);
-
-  it("證件與生日相符、手機不同，一律回中性訊息（不透露該證件是否為本院病人）", async () => {
-    const { drTsai, general } = await seedBase();
-    const input = makePatient({ phone: "0911111111" });
-    await createAppointment({
-      clinicTypeId: general.id, doctorId: drTsai.id, date: futureDate(2), startTime: "09:00",
-      patientInput: input, source: "LINE", actor: PATIENT_ACTOR,
-    });
-
-    // 三者全對 → 過
-    await expect(
-      verifyPatientIdentity("NATIONAL_ID", input.idNumber, input.birthDate, "0911111111"),
-    ).resolves.toBeTruthy();
-
-    // 手機不符 → 擋下。簡訊取消後這是唯一的關卡，鬆掉就等於
-    // 「知道證件號與生日」即可讀到他人完整預約紀錄。
-    await expect(
-      verifyPatientIdentity("NATIONAL_ID", input.idNumber, input.birthDate, "0922222222"),
-    ).rejects.toMatchObject({ userMessage: expect.stringContaining("查無符合的預約資料") });
-
-    // 生日不符 → 同一句中性訊息，錯在哪一項看不出來
-    await expect(
-      verifyPatientIdentity("NATIONAL_ID", input.idNumber, "2001-01-01", "0911111111"),
-    ).rejects.toMatchObject({ userMessage: expect.stringContaining("查無符合的預約資料") });
-
-    // 查無此證件 → 也是同一句
-    await expect(
-      verifyPatientIdentity("NATIONAL_ID", "A199999999", input.birthDate, "0911111111"),
-    ).rejects.toMatchObject({ userMessage: expect.stringContaining("查無符合的預約資料") });
+    // 用舊證件號查，也要導向保留的病歷（綁定與通知才會算在同一個人身上）
+    const resolved = await findPatientByIdentity(
+      prisma, "NATIONAL_ID", oldInput.idNumber, oldInput.birthDate,
+    );
+    expect(resolved?.id).toBe(keep.id);
   });
 });
 

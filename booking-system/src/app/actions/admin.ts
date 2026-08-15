@@ -51,6 +51,7 @@ import { patientInputSchema, dateStrSchema, timeStrSchema, slotTimeSchema } from
 import { writeAudit, type AuditActor } from "@/lib/audit";
 import { setSetting, SETTING_DEFAULTS, type SettingKey } from "@/lib/settings";
 import { rateLimit } from "@/lib/rate-limit";
+import { consumeBindingCode } from "@/lib/line-binding";
 import { decryptPii } from "@/lib/crypto";
 
 type ActionResult<T = undefined> = { ok: true; data?: T } | { ok: false; message: string };
@@ -421,6 +422,83 @@ export async function adminUpdatePatientContact(
       );
     });
     revalidatePath(`/admin/patients/${parsed.patientId}`);
+    return { ok: true };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
+// ── LINE 綁定（櫃檯核對制）─────────────────────────────
+
+/**
+ * 以綁定代碼把某個 LINE 帳號綁到這位病人。
+ *
+ * **前提是櫃檯已當面核對健保卡**——這道程式檢查的只有「代碼有效」，
+ * 真正證明「這個人有權看這份病歷」的是櫃檯的核對動作，系統代替不了。
+ * 因此操作者一律記進稽核（誰、綁了誰、什麼時候）。
+ */
+export async function adminBindLineAccount(input: {
+  patientId: string;
+  code: string;
+  relation?: string;
+}): Promise<ActionResult<{ displayName: string | null }>> {
+  try {
+    const ctx = requirePermission(await getStaffContext(), PERMISSIONS.PATIENTS_WRITE);
+    // 代碼只有 6 碼，限流是防止有人拿後台帳號窮舉別人的代碼
+    if (!rateLimit(`bind-staff:${ctx.user.id}`, 20, 10 * 60_000))
+      return { ok: false, message: "嘗試次數過多，請稍後再試" };
+
+    const patient = await prisma.patient.findUnique({ where: { id: input.patientId } });
+    if (!patient) return { ok: false, message: "查無此病人" };
+
+    const owner = await consumeBindingCode(input.code);
+    const link = await prisma.linePatientLink.upsert({
+      where: {
+        lineAccountId_patientId: {
+          lineAccountId: owner.lineAccountId,
+          patientId: input.patientId,
+        },
+      },
+      create: {
+        lineAccountId: owner.lineAccountId,
+        patientId: input.patientId,
+        relation: input.relation?.trim() || null,
+        verifiedAt: new Date(),
+        verifiedByStaffId: ctx.user.id,
+      },
+      update: { relation: input.relation?.trim() || null, verifiedByStaffId: ctx.user.id },
+    });
+    await writeAudit(
+      await actorOf(ctx),
+      "line.bind_patient_by_staff",
+      { type: "line_patient_link", id: link.id },
+      { patientId: input.patientId, lineAccountId: owner.lineAccountId },
+    );
+    revalidatePath(`/admin/patients/${input.patientId}`);
+    return { ok: true, data: { displayName: owner.displayName } };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
+/** 解除某個 LINE 帳號與這位病人的綁定（家長換手機、綁錯人、家庭成員變動） */
+export async function adminUnbindLineAccount(
+  patientId: string,
+  lineAccountId: string,
+): Promise<ActionResult> {
+  try {
+    const ctx = requirePermission(await getStaffContext(), PERMISSIONS.PATIENTS_WRITE);
+    const deleted = await prisma.linePatientLink.deleteMany({
+      where: { patientId, lineAccountId },
+    });
+    if (deleted.count === 0) return { ok: false, message: "查無此綁定" };
+    await writeAudit(
+      await actorOf(ctx),
+      "line.unbind_patient_by_staff",
+      { type: "patient", id: patientId },
+      { lineAccountId },
+    );
+    revalidatePath(`/admin/patients/${patientId}`);
     return { ok: true };
   } catch (e) {
     return toUserError(e);

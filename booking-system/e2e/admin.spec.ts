@@ -65,6 +65,23 @@ test.describe("後台：櫃檯日常", () => {
     await expect(page.locator("body")).toContainText("*");
   });
 
+  test("病歷頁可用綁定代碼綁 LINE，代碼錯誤時明確拒絕", async ({ page }) => {
+    await login(page, COUNTER);
+    await page.goto("/admin/patients");
+    await typeInto(page.locator("input").first(), "王小明");
+    await page.keyboard.press("Enter");
+    await expect(page.getByText("王小明").first()).toBeVisible({ timeout: 15_000 });
+    await page.getByText("王小明").first().click();
+
+    // 綁定一律由櫃檯核對健保卡後執行，所以入口在後台而不是前台
+    await expect(page.getByRole("heading", { name: "LINE 綁定" })).toBeVisible({ timeout: 15_000 });
+    page.on("dialog", (d) => d.accept()); // 「已當面核對健保卡了嗎？」
+    await typeInto(page.getByPlaceholder("綁定代碼"), "ZZZZZZ");
+    await clickUntil(page.getByRole("button", { name: "確認綁定" }), async () => {
+      await expect(page.getByText(/無效或已過期/)).toBeVisible({ timeout: 8_000 });
+    });
+  });
+
   test("排班頁看得到週班表與日期例外", async ({ page }) => {
     await login(page, ADMIN);
     await page.goto("/admin/schedule");

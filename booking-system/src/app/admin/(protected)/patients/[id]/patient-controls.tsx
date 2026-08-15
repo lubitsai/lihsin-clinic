@@ -10,6 +10,8 @@ import {
   adminLiftRestriction,
   adminResetNoShow,
   adminCreateRestriction,
+  adminBindLineAccount,
+  adminUnbindLineAccount,
 } from "@/app/actions/admin";
 import { Card, Alert } from "@/components/ui";
 
@@ -250,6 +252,118 @@ export function RestrictionControls({
           )}
         </div>
       )}
+    </Card>
+  );
+}
+
+
+/**
+ * LINE 綁定（櫃檯核對制）。
+ *
+ * 流程：家長在前台「查詢我的預約」按「取得櫃檯綁定代碼」→ 到櫃檯出示健保卡並告知代碼
+ * → 櫃檯**當面核對是本人或其家長**後，在這裡輸入代碼。
+ *
+ * 系統只驗代碼有效，證明身分的是核對動作本身——所以務必先看健保卡再輸入。
+ * 每次綁定與解除都會記進稽核（誰、什麼時候、綁了誰）。
+ */
+export function LineBindingControls({
+  patientId,
+  patientName,
+  links,
+}: {
+  patientId: string;
+  patientName: string;
+  links: { lineAccountId: string; displayName: string | null; verifiedByStaff: boolean }[];
+}) {
+  const router = useRouter();
+  const [code, setCode] = useState("");
+  const [relation, setRelation] = useState("");
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [pending, startTransition] = useTransition();
+
+  const bind = () => {
+    if (!window.confirm(`已當面核對 ${patientName} 的健保卡了嗎？確認後才建立綁定。`)) return;
+    startTransition(async () => {
+      const r = await adminBindLineAccount({ patientId, code, relation: relation || undefined });
+      if (!r.ok) {
+        setMessage("");
+        return setError(r.message);
+      }
+      setError("");
+      setMessage(`已綁定 LINE 帳號「${r.data?.displayName ?? "（未提供名稱）"}」。`);
+      setCode("");
+      setRelation("");
+      router.refresh();
+    });
+  };
+
+  const unbind = (lineAccountId: string, displayName: string | null) => {
+    if (!window.confirm(`解除 ${patientName} 與「${displayName ?? "該 LINE 帳號"}」的綁定？解除後對方將收不到通知，也查不到這位病人的預約。`))
+      return;
+    startTransition(async () => {
+      const r = await adminUnbindLineAccount(patientId, lineAccountId);
+      if (!r.ok) return setError(r.message);
+      setError("");
+      setMessage("已解除綁定。");
+      router.refresh();
+    });
+  };
+
+  return (
+    <Card className="space-y-3">
+      <h2 className="font-bold text-sage-700">LINE 綁定</h2>
+      {error && <Alert tone="error">{error}</Alert>}
+      {message && <Alert tone="success">{message}</Alert>}
+
+      {links.length === 0 ? (
+        <p className="text-ink-500 text-sm">尚未綁定任何 LINE 帳號——這位病人收不到預約通知。</p>
+      ) : (
+        <ul className="divide-y divide-sage-200 text-sm">
+          {links.map((l) => (
+            <li key={l.lineAccountId} className="py-2 flex flex-wrap items-center gap-2">
+              <span className="font-bold">{l.displayName ?? "（未提供名稱）"}</span>
+              <span className="text-ink-500">
+                {l.verifiedByStaff ? "櫃檯核對綁定" : "線上預約時自動綁定"}
+              </span>
+              <button
+                onClick={() => unbind(l.lineAccountId, l.displayName)}
+                disabled={pending}
+                className="ml-auto text-ink-500 underline underline-offset-2"
+              >
+                解除綁定
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="border-t border-sage-200 pt-3 space-y-2">
+        <p className="text-sm text-ink-700">
+          請家長在「查詢我的預約」頁按「取得櫃檯綁定代碼」，
+          <strong>核對健保卡確認身分後</strong>再輸入下方代碼。
+        </p>
+        <div className="grid sm:grid-cols-[1fr_1fr_auto] gap-2">
+          <input
+            className="input font-mono tracking-widest"
+            placeholder="綁定代碼"
+            value={code}
+            onChange={(e) => setCode(e.target.value.toUpperCase())}
+            maxLength={12}
+            autoComplete="off"
+          />
+          <input
+            className="input"
+            placeholder="稱謂（選填，如：媽媽）"
+            value={relation}
+            onChange={(e) => setRelation(e.target.value)}
+            maxLength={20}
+          />
+          <button onClick={bind} disabled={pending || code.trim().length < 4} className="btn-primary !py-2">
+            {pending ? "綁定中…" : "確認綁定"}
+          </button>
+        </div>
+      </div>
     </Card>
   );
 }

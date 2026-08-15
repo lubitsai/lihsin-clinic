@@ -6,15 +6,13 @@
  * 線上預約與線上查詢一律先經 LINE Login OAuth 建立 PortalSession；
  * 沒有 LINE 的家長改走電話或現場掛號，由櫃檯以後台代為處理。
  *
- * 綁定既有病歷仍需知識性驗證（證件＋生日＋手機三者與病歷相符），
- * 見 verifyPatientIdentity——這是能否讀到該病人預約紀錄的唯一關卡。
+ * 這個 session 看得到誰的預約，完全取決於 LinePatientLink。
+ * 綁定既有病歷需櫃檯當面核對（院長 2026-08-15 裁示，見 lib/line-binding.ts）——
+ * 原本的「證件＋生日＋手機三者相符」自助綁定已移除：這三項知道的人不只本人。
  */
 import { cookies } from "next/headers";
 import { prisma } from "../db";
-import { hashToken, randomToken, hashIdNumber } from "../crypto";
-import { BookingError, MSG } from "../errors";
-import { resolveMergedPatient } from "../patients";
-import type { IdType } from "@prisma/client";
+import { hashToken, randomToken } from "../crypto";
 
 export const PORTAL_COOKIE = "lihsin_portal_session";
 const PORTAL_SESSION_HOURS = 2;
@@ -42,7 +40,7 @@ export async function getPortalContext(): Promise<PortalContext | null> {
   const token = (await cookies()).get(PORTAL_COOKIE)?.value;
   if (!token) return null;
   const session = await prisma.portalSession.findUnique({ where: { tokenHash: hashToken(token) } });
-  if (!session || session.expiresAt < new Date() || !session.lineAccountId) return null;
+  if (!session || session.expiresAt < new Date()) return null;
 
   const links = await prisma.linePatientLink.findMany({
     where: { lineAccountId: session.lineAccountId },
@@ -59,29 +57,4 @@ export async function getPortalContext(): Promise<PortalContext | null> {
 export async function destroyPortalSession() {
   const token = (await cookies()).get(PORTAL_COOKIE)?.value;
   if (token) await prisma.portalSession.deleteMany({ where: { tokenHash: hashToken(token) } });
-}
-
-/**
- * 證件＋生日＋手機三者全部與病歷相符才回傳病人；
- * 任一不符一律回中性錯誤（避免以證件號探測某人是否為本院病人）。
- *
- * 這是「這個 LINE 帳號可以看到誰的預約」的唯一判準，
- * 預約時的自動綁定（actions/portal.ts）用的也是同一把尺。
- */
-export async function verifyPatientIdentity(
-  idType: IdType,
-  idNumber: string,
-  birthDate: string,
-  phone: string,
-): Promise<string> {
-  const patient = await prisma.patient.findUnique({
-    where: { uniq_patient_identity: { idType, idNumberHash: hashIdNumber(idNumber) } },
-  });
-  if (!patient) throw new BookingError("NOT_FOUND", MSG.notFound);
-  // 病歷若已被合併，改以保留的那筆核對與回傳，否則查不到合併後的預約
-  const resolved = await resolveMergedPatient(prisma, patient);
-  const birthOk = resolved.birthDate.toISOString().slice(0, 10) === birthDate;
-  const phoneOk = resolved.phone === phone;
-  if (!birthOk || !phoneOk) throw new BookingError("NOT_FOUND", MSG.notFound);
-  return resolved.id;
 }
