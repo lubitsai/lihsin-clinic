@@ -86,6 +86,17 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #    先備份,備份檔即 00 全文複本(內部制度文件)。此前 archive/ 從未進版控
 #    (備份是院長端接續包側做法),本批依院長裁示在 repo 內建立實體目錄,
 #    故必須同時攔截,否則等於把 00 全文公開部署(陷阱①)。
+#    遊戲包附件(2026-08-16):院長裁示「README.md 與 checksums.sha256 保留在
+#    repo 內,放進 internal/ 並補攔截」——兩檔已置於 /internal/game/,
+#    **由下方既有的 /internal/* 規則涵蓋,不需要也不應該新增規則**:
+#    Netlify 的 * 是 splat、會吃掉含斜線的剩餘路徑,/internal/game/README.md
+#    完全命中;且首個符合者優先,另寫 /internal/game/* 只會是永遠輪不到的
+#    死規則(同 2026-07-10 移除三條佔位符規則的教訓)。
+#    ⚠️ 為什麼這兩檔不能留在公開的 game/:README.md 末尾載有一個外部託管網址,
+#    整棵樹公開部署(陷阱①)下等於把它掛上官網。網址本身刻意不抄在這裡——
+#    **本檔自己也在公開樹內**,寫進註解等於換個地方洩漏同一個網址。
+#    來源、該網址與校驗說明見 /internal/game/00_遊戲包來源與校驗說明.md。
+#    ⚠️ 反之 /game/ 本身是「刻意公開」的遊戲頁,不得加任何攔截規則。
 #    .gitignore 批擴充(2026-08-08):新增 /.gitignore。原有規則只擋了
 #    /gitignore 與 /_gitignore(網頁上傳副產物與已停用的舊版),獨缺帶點
 #    的正式版;本批新增極簡 .gitignore(只排除 __pycache__/ 與 *.pyc)
