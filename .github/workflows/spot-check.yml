@@ -49,6 +49,15 @@ jobs:
           # 2026-08-08b 起入版控故必須攔截;此處抽測實際存在的備份檔。
           check /archive/00_%E5%B0%88%E6%A1%88%E7%B8%BD%E8%A6%BD%E7%B4%A2%E5%BC%95_backup_20260808.md 404
           check /.github/workflows/spot-check.yml 404
+          # 遊戲包附件抽驗(2026-08-16 新增,PR #98):院長裁示把原包的 README.md 與
+          # checksums.sha256「保留在 repo 內、放進 internal/ 並擋住」。README 末尾
+          # 載有一個外部託管網址,漏出去等於把它掛上官網。
+          # ⚠️ 這條同時是本 repo 第一次線上驗證「/internal/* 對**巢狀**路徑有沒有效」
+          # ——既有那條只測到 /internal/00_….md 這一層。當初判斷靠的是 Netlify
+          # splat 語義(* 會吃掉含斜線的剩餘路徑),沒有線上實證;這條就是實證。
+          # 若本條 FAIL 而 /internal/00_….md 仍 OK ＝ splat 判斷錯了,
+          # 必須立刻在 _redirects 補 /internal/game/* 規則。
+          check /internal/game/README.md 404
           echo "=== 打錯字網址應乾淨 404(迴圈回歸防護)==="
           check_gone /health/no-such-page
           check_gone /services/no-such-page
@@ -85,6 +94,13 @@ jobs:
           check /health/allergy-test-results.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
+          # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
+          # 互動小程式(六關看診流程),院長把連結直接發給家長。它 noindex、不進
+          # sitemap、官網沒有任何頁面連過去——**沒有任何其他機制會發現它不見了**,
+          # 家長點連結撞 404 才會知道。這兩條就是唯一的哨兵。
+          # ⚠️ /game/ 是公開的,不要誤以為它跟 internal/ 一樣該回 404。
+          check /game/ 200
+          check /game/game.html 200
           echo "=== 內容抽驗 ==="
           n=$(curl -s --max-time 20 "$BASE/visit-guide.html" | grep -c 'og:locale' || true)
           if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
@@ -139,6 +155,18 @@ jobs:
           if [ "$atm" -ge 1 ] && [ "$atr" -ge 1 ]; then echo "OK    過敏原檢測頁實體層已上線(MedicalTest × $atm、relatedLink × $atr)"; else echo "FAIL  過敏原檢測頁實體層未見(MedicalTest × $atm、relatedLink × $atr)——JSON-LD 疑遭舊版覆蓋"; fail=1; fi
           ar=$(curl -s --max-time 20 "$BASE/health/allergy-test-results.html" | grep -c '過敏原報告要看哪一科' || true)
           if [ "$ar" -ge 1 ]; then echo "OK    過敏原報告頁 keywords 科別分流詞路已上線"; else echo "FAIL  過敏原報告頁『過敏原報告要看哪一科』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # 反向抽驗(2026-08-16 新增,PR #97):院長提供的遊戲原包,其 game.html 檔末
+          # 夾帶 Cloudflare challenge 注入腳本(window.__CF$cv$params ＋
+          # /cdn-cgi/challenge-platform/…)——原站掛在 CF 後方、存檔時被一併帶下來。
+          # 該路徑在 Netlify 不存在,留著等於每次載入插一個隱藏 iframe 打 404,
+          # 而**畫面上完全看不出來**。已於 PR #97 移除,此處盯住不讓它復活——
+          # 最可能的復活方式是有人拿新版原包直接覆蓋 game/。
+          # ⚠️ 這是「期望為 0」的反向檢查,勿誤刪或改成 -ge 1。
+          # ⚠️ 它必須與上面的 `check /game/game.html 200` 成對存在:若該頁 404,
+          # 抓回來的是 404 頁、grep 一樣是 0,本條會**假性通過**(同 08-14b
+          # 「200 與內容抽驗兩者缺一不可」)。刪 200 檢查等於廢掉這條。
+          cf=$(curl -s --max-time 20 "$BASE/game/game.html" | grep -c 'cdn-cgi' || true)
+          if [ "$cf" -eq 0 ]; then echo "OK    遊戲頁無 Cloudflare 注入腳本(未隨新版原包復活)"; else echo "FAIL  遊戲頁出現 cdn-cgi × $cf——CF challenge 注入腳本疑隨原包覆蓋回來,會每次載入打一個 404"; fail=1; fi
           # 反向抽驗(2026-08-08 新增):本站沒有站內搜尋功能——全站 <form>／
           # type="search"／role="search" 命中數為 0。首頁 WebSite schema 曾宣告
           # SearchAction 指向 /?s={search_term_string},屬 AP9 同類病灶(結構化
