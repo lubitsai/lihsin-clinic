@@ -134,6 +134,11 @@ VISIBLE_ALLOWLIST = [
     "「台南耳鼻喉推薦」。立欣診所為健保特約",
     "台南腸胃炎推薦：大人小孩",
     "台南腸胃炎推薦就診重點",
+    # --- 2026-08-16 院長核可：小鹿醫師 3D 看診趣（/game/）遊戲結算獎勵語 ---
+    #     「小鹿醫師最佳助手」＝遊戲對完成六關的小朋友的稱讚詞，主詞是孩子、
+    #     不是診所或醫師自稱，不構成 00 §4-1 的自稱式超級詞。院長 2026-08-16
+    #     裁示「加白名單、原文不動」。僅限 game/ 遊戲頁脈絡使用。
+    "小鹿醫師最佳助手",
 ]
 
 # ---------------------------------------------------------------------------
@@ -176,17 +181,32 @@ HIDDEN_SELF_PROMO_PATTERNS = [
 ]
 
 # 各檢查的豁免頁（相對路徑）。來源：00 現況「404／privacy 未動」「offline noindex」。
+#
+# 2026-08-16 新增 game/（小鹿醫師 3D 看診趣）：自帶 manifest／sw.js／版面的獨立
+# 互動小程式，非官網內容頁。院長 2026-08-16 裁示「只給連結、不進搜尋」→ 兩檔皆
+# noindex、不進 sitemap，故 canonical／desc／sitemap 類檢查由 noindex 自動略過；
+# 以下三項需明列豁免：
+#   • pwa    ：遊戲有自己的 manifest.webmanifest ＋ /game/sw.js（scope=/game/）。
+#              硬掛站台 /pwa-register.js 會讓根 SW 與遊戲 SW 互搶同一批請求，
+#              且 patch_pwa.py 本就不處理本目錄。
+#   • h1     ：game/index.html 是全視窗 iframe 外框（只有一個 <iframe>、零文字內容），
+#              真正的 H1 在被嵌入的 game/game.html。noindex 頁不需要 H1 結構。
+#   • twcard ：noindex 頁不會被分享卡片抓取，補 twitter:card 無意義。
+# ⚠️ 若日後改為「上架 SEO」（進 sitemap／首頁放連結），這三條豁免必須同步撤除，
+#    並補 canonical／H1／OG／twitter:card。
 EXEMPT = {
     # app.html 已於 2026-07-07 對齊 07-06 政策（lang=zh-Hant-TW、desc 75 字、og 同步），
     # 不再豁免，回歸與其他頁相同的完整檢查。
     "lang":       {"404.html", "privacy.html", "offline.html"},
-    "twcard":     {"404.html", "privacy.html", "offline.html"},
+    "twcard":     {"404.html", "privacy.html", "offline.html",
+                   "game/index.html", "game/game.html"},
     "desc":       {"404.html", "offline.html"},
     "ogsync":     {"growth.html", "404.html", "privacy.html", "offline.html"},  # growth og 68字維持=07-06裁定
     "canonical":  {"offline.html", "404.html"},
-    "pwa":        {"offline.html", "404.html"},   # patch_pwa.py 排除頁；growth 是否納入以 patch_pwa.py 為準
+    "pwa":        {"offline.html", "404.html",
+                   "game/index.html", "game/game.html"},   # patch_pwa.py 排除頁；growth 是否納入以 patch_pwa.py 為準
     "forbidden":  set(),
-    "h1":         set(),
+    "h1":         {"game/index.html"},
 }
 
 # Tailwind purge 偵測忽略清單（非樣式用途 class；附來源與查證日期，勿盲目擴充。
@@ -396,7 +416,9 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
     # E-H1
     body = strip_noncontent(raw)
     h1 = len(re.findall(r"<h1(?=[\s>])", body, re.I))
-    if h1 != 1:
+    # EXEMPT["h1"] 自 v1.0 起即存在但從未被讀取（當時集合為空、無差異）；
+    # 2026-08-16 game/index.html（純 iframe 外框）納入豁免時一併接上。
+    if h1 != 1 and rel not in EXEMPT["h1"]:
         rep.err(rel, "E-H1", f"H1 數量={h1}（應為 1）")
 
     # E-CANON
