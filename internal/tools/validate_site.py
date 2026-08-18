@@ -182,31 +182,27 @@ HIDDEN_SELF_PROMO_PATTERNS = [
 
 # 各檢查的豁免頁（相對路徑）。來源：00 現況「404／privacy 未動」「offline noindex」。
 #
-# 2026-08-16 新增 game/（小鹿醫師 3D 看診趣）：自帶 manifest／sw.js／版面的獨立
-# 互動小程式，非官網內容頁。院長 2026-08-16 裁示「只給連結、不進搜尋」→ 兩檔皆
-# noindex、不進 sitemap，故 canonical／desc／sitemap 類檢查由 noindex 自動略過；
-# 以下三項需明列豁免：
-#   • pwa    ：遊戲有自己的 manifest.webmanifest ＋ /game/sw.js（scope=/game/）。
-#              硬掛站台 /pwa-register.js 會讓根 SW 與遊戲 SW 互搶同一批請求，
-#              且 patch_pwa.py 本就不處理本目錄。
-#   • h1     ：game/index.html 是全視窗 iframe 外框（只有一個 <iframe>、零文字內容），
-#              真正的 H1 在被嵌入的 game/game.html。noindex 頁不需要 H1 結構。
+# 2026-08-16 新增 game/（小鹿醫師 3D 看診趣）；**2026-08-18 上架 SEO 後大幅收斂**。
+# 現況：`game/index.html` 已是完整官網頁面（growth 式頁首頁尾、H1、canonical、
+#   og/twitter、3 Schema、進 sitemap），**三項豁免全部撤除、回歸與其他頁相同的完整檢查**。
+#   `EXEMPT["h1"]` 因此回到空集合（接線保留，見 E-H1 處註解）。
+# 仍豁免的只剩 `game/game.html`＝被 index 嵌入的遊戲本體（noindex、不進 sitemap）：
+#   • pwa    ：它自帶 manifest.webmanifest ＋ /game/sw.js（scope=/game/）。外框頁已依政策
+#              掛 /pwa-register.js；內框再掛一次會重複註冊，且 patch_pwa.py 不處理本目錄。
 #   • twcard ：noindex 頁不會被分享卡片抓取，補 twitter:card 無意義。
-# ⚠️ 若日後改為「上架 SEO」（進 sitemap／首頁放連結），這三條豁免必須同步撤除，
-#    並補 canonical／H1／OG／twitter:card。
 EXEMPT = {
     # app.html 已於 2026-07-07 對齊 07-06 政策（lang=zh-Hant-TW、desc 75 字、og 同步），
     # 不再豁免，回歸與其他頁相同的完整檢查。
     "lang":       {"404.html", "privacy.html", "offline.html"},
     "twcard":     {"404.html", "privacy.html", "offline.html",
-                   "game/index.html", "game/game.html"},
+                   "game/game.html"},
     "desc":       {"404.html", "offline.html"},
     "ogsync":     {"growth.html", "404.html", "privacy.html", "offline.html"},  # growth og 68字維持=07-06裁定
     "canonical":  {"offline.html", "404.html"},
     "pwa":        {"offline.html", "404.html",
-                   "game/index.html", "game/game.html"},   # patch_pwa.py 排除頁；growth 是否納入以 patch_pwa.py 為準
+                   "game/game.html"},   # patch_pwa.py 排除頁；growth 是否納入以 patch_pwa.py 為準
     "forbidden":  set(),
-    "h1":         {"game/index.html"},
+    "h1":         set(),
 }
 
 # Tailwind purge 偵測忽略清單（非樣式用途 class；附來源與查證日期，勿盲目擴充。
@@ -606,7 +602,15 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
             # noindex 頁不得入 sitemap；可索引頁應入 sitemap（反向覆蓋）
             # v1.0.1（2026-07-10 院長核可待決⑨）：首頁 loc「/」正規化為 index.html，
             # 與上方存在性檢查的對映一致，消除必然誤報。
-            in_map = {l[len(SITE_ORIGIN):].lstrip("/") or "index.html" for l in page_locs}
+            # loc → repo 相對路徑。v1.0.1（07-10）已把首頁「/」對映到 index.html；
+            # 2026-08-18 擴充：目錄型網址（如 /game/）同樣對映到該目錄的 index.html，
+            # 否則 canonical 用 /game/ 而 sitemap 也寫 /game/ 時，反向覆蓋檢查會誤報未列入。
+            def _loc_to_rel(loc):
+                rel_ = loc[len(SITE_ORIGIN):].lstrip("/")
+                if rel_ == "" or rel_.endswith("/"):
+                    rel_ += "index.html"
+                return rel_
+            in_map = {_loc_to_rel(l) for l in page_locs}
             for rel, noindex in html_files.items():
                 if noindex and rel in in_map:
                     rep.err("sitemap.xml", "E-NOIDXMAP", f"noindex 頁被列入：{rel}")
