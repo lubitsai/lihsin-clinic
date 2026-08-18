@@ -155,6 +155,26 @@ jobs:
           if [ "$atm" -ge 1 ] && [ "$atr" -ge 1 ]; then echo "OK    過敏原檢測頁實體層已上線(MedicalTest × $atm、relatedLink × $atr)"; else echo "FAIL  過敏原檢測頁實體層未見(MedicalTest × $atm、relatedLink × $atr)——JSON-LD 疑遭舊版覆蓋"; fail=1; fi
           ar=$(curl -s --max-time 20 "$BASE/health/allergy-test-results.html" | grep -c '過敏原報告要看哪一科' || true)
           if [ "$ar" -ge 1 ]; then echo "OK    過敏原報告頁 keywords 科別分流詞路已上線"; else echo "FAIL  過敏原報告頁『過敏原報告要看哪一科』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # 遊戲頁 SEO 層抽驗(2026-08-18 新增,PR #100 上架 SEO):/game/ 由純 iframe 外框
+          # 改寫為完整官網頁面(H1、canonical、og/twitter、3 段 JSON-LD、進 sitemap)。
+          # ⚠️ 這條防的失效模式,上面的 200 檢查抓不到:若有人拿舊版 index.html(40 行的
+          # 純 iframe 外框)覆蓋上去,頁面照樣 200、遊戲照樣能玩,但 H1／canonical／schema
+          # 全部消失、SEO 層靜默歸零,不會有任何人發現。
+          # 刻意盯「結構」而非可見文案:canonical 與 JSON-LD 不隨文案改寫變動,維護成本低;
+          # 兩者任一消失即 FAIL。單次 curl 合併判定。
+          gp=$(curl -s --max-time 20 "$BASE/game/")
+          gc=$(printf '%s' "$gp" | grep -c 'rel="canonical"' || true)
+          gj=$(printf '%s' "$gp" | grep -c 'application/ld+json' || true)
+          if [ "$gc" -ge 1 ] && [ "$gj" -ge 1 ]; then echo "OK    遊戲頁 SEO 層已上線(canonical × $gc、JSON-LD × $gj)"; else echo "FAIL  遊戲頁 SEO 層未見(canonical × $gc、JSON-LD × $gj)——/game/ 疑遭舊版純 iframe 外框覆蓋"; fail=1; fi
+          # 反向抽驗(2026-08-18 新增,PR #100):game.html 是被 /game/ 嵌入的遊戲本體,
+          # 必須維持 noindex——它與外框頁內容高度重疊,若 noindex 被誤刪會變成兩個版本
+          # 互相競食同一組查詢詞(AP8 同型)。canonical 已指向外框頁,但 noindex 是主防線。
+          # ⚠️ 期望「有」noindex,與下面 SearchAction 那條的方向不同,勿混淆。
+          # ⚠️ 比對的是 meta 標籤本身,不是裸詞 'noindex':該檔同一段有一行說明用的
+          # HTML 註解也含 noindex 三個字,用裸詞 grep 會在 meta 被刪掉時**假性通過**
+          # (2026-08-18 注入式負向測試當場抓到,已改為下列精確樣式)。
+          gn=$(curl -s --max-time 20 "$BASE/game/game.html" | grep -c 'name="robots" content="noindex' || true)
+          if [ "$gn" -ge 1 ]; then echo "OK    遊戲本體 game.html 仍為 noindex(未與外框頁雙版本競食)"; else echo "FAIL  game.html 的 noindex 消失——會與 /game/ 形成雙版本競食"; fail=1; fi
           # 反向抽驗(2026-08-16 新增,PR #97):院長提供的遊戲原包,其 game.html 檔末
           # 夾帶 Cloudflare challenge 注入腳本(window.__CF$cv$params ＋
           # /cdn-cgi/challenge-platform/…)——原站掛在 CF 後方、存檔時被一併帶下來。
