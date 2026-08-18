@@ -8,7 +8,7 @@
 
 安全機制：
   - 冪等：頁面已含 cta-track.js 即整頁跳過（可重複執行）
-  - 排除清單：offline.html、404.html（比照 patch_pwa 慣例）
+  - 排除清單：offline.html、404.html、game.html（後者＝/game/ 內嵌遊戲本體，外框頁已掛）
   - 只用 str.find 精準插入，不重新序列化 HTML
   - growth.html 一併掛載（院長 2026-07-10 核可：零外部相依的唯一例外＝GA）
 
@@ -19,7 +19,10 @@ import os
 import sys
 
 CTA_TAG = '<script src="/cta-track.js" defer></script>'
-EXCLUDE = {'offline.html', '404.html'}
+# 'game.html'（2026-08-18 新增）＝/game/ 外框頁嵌入的遊戲本體，不是獨立頁面。
+# 外框頁 game/index.html 已掛同一支腳本，內框再掛會讓每次開遊戲送出兩份事件
+# （GA4 雙計、Clarity 多一份 iframe 錄影）。首跑就是這樣被抓到的，勿移除本項。
+EXCLUDE = {'offline.html', '404.html', 'game.html'}
 
 
 def patch_file(path, dry=False):

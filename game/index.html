@@ -1,42 +1,414 @@
 <!doctype html>
 <html lang="zh-Hant-TW">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, follow" />
-    <meta name="theme-color" content="#466755" />
-    <meta
-      name="description"
-      content="立欣診所小鹿醫師 3D 看診趣，讓孩子透過遊戲熟悉看診流程。"
-    />
-    <link rel="icon" href="app-icon-3d.png" />
-    <link rel="apple-touch-icon" href="app-icon-3d.png" />
-    <link rel="manifest" href="manifest.webmanifest" />
-    <title>小鹿醫師 3D 看診趣｜立欣診所</title>
-    <style>
-      html,
-      body {
-        width: 100%;
-        min-height: 100%;
-        margin: 0;
-        background: #fff8e9;
-      }
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小鹿醫師 3D 看診趣｜台南立欣診所兒童看診流程遊戲</title>
+<meta name="description" content="小鹿醫師 3D 看診趣：免費線上遊戲，讓孩子先玩過問診、聽診、看耳朵、看喉嚨與吸鼻涕的順序，看診前熟悉流程。台南立欣診所提供。">
+<meta name="keywords" content="小鹿醫師看診趣,兒童看診流程遊戲,小孩怕看醫生怎麼辦,孩子怕看醫生,看診恐懼,看醫生會怕,看診前準備,兒童就醫準備,看醫生遊戲,醫生遊戲,角色扮演看診,兒童醫療遊戲,看診流程,兒科看診流程,第一次看醫生,小孩第一次看診,聽診器遊戲,看耳朵,看喉嚨,吸鼻涕,台南小兒科,台南北區小兒科,立欣診所,兒童衛教互動,親子共玩,免費線上兒童遊戲">
+<link rel="canonical" href="https://lhpedclinic.com.tw/game/">
+<meta name="theme-color" content="#7C9A6E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="立欣診所 LiHsin Clinic">
+<meta property="og:title" content="小鹿醫師 3D 看診趣｜台南立欣診所兒童看診流程遊戲">
+<meta property="og:description" content="小鹿醫師 3D 看診趣：免費線上遊戲，讓孩子先玩過問診、聽診、看耳朵、看喉嚨與吸鼻涕的順序，看診前熟悉流程。台南立欣診所提供。">
+<meta property="og:url" content="https://lhpedclinic.com.tw/game/">
+<meta property="og:image" content="https://lhpedclinic.com.tw/images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="小鹿醫師 3D 看診趣｜台南立欣診所兒童看診流程遊戲">
+<meta name="twitter:description" content="小鹿醫師 3D 看診趣：免費線上遊戲，讓孩子先玩過問診、聽診、看耳朵、看喉嚨與吸鼻涕的順序，看診前熟悉流程。台南立欣診所提供。">
+<meta name="twitter:image" content="https://lhpedclinic.com.tw/images/og-image.jpg">
+<link rel="icon" href="app-icon-3d.png" type="image/png">
+<link rel="apple-touch-icon" href="app-icon-3d.png">
+<link rel="manifest" href="manifest.webmanifest">
+<script src="/pwa-register.js" defer></script>
+<script src="/cta-track.js" defer></script>
+<script src="/clarity.js" defer></script>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#fdfbf5;color:#374151;font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif;line-height:1.85;-webkit-text-size-adjust:100%}
+  img{max-width:100%}
+  /* 視覺隱藏、保留語意（螢幕閱讀器與爬蟲可讀） */
+  .hide-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  /* ===== 導覽列／手機選單／頁尾（逐字沿用 growth.html，純 CSS 不依賴 Tailwind）===== */
+  .font-chinese{font-family:'Noto Sans TC','Microsoft JhengHei',sans-serif}
+  .site-nav{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}
+  .site-nav .nav-inner{max-width:1280px;margin:0 auto;padding:1rem 1rem;display:flex;align-items:center;justify-content:space-between}
+  .site-nav .brand-link{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+  .site-nav .brand-name{font-size:1.5rem;font-weight:700;color:#7C9A6E;line-height:1.2}
+  .site-nav .brand-en{font-size:.875rem;color:#4b5563;margin:0}
+  .nav-links{display:flex;align-items:center;gap:1.5rem}
+  .nav-links a{color:#374151;text-decoration:none;font-weight:500;transition:color .15s}
+  .nav-links a:hover{color:#7C9A6E}
+  .nav-links .nav-tel{padding:.625rem 1.25rem;border-radius:9999px;color:#fff;background:linear-gradient(135deg,#7C9A6E,#A8C69F)}
+  .nav-links .nav-fb{display:flex;align-items:center}
+  .nav-burger{display:none;font-size:1.875rem;color:#7C9A6E;background:none;border:none;min-width:44px;min-height:44px;align-items:center;justify-content:center;cursor:pointer}
+  .mobile-menu{transform:translateX(100%);transition:transform .3s ease-in-out;position:fixed;top:0;right:0;width:18rem;height:100%;background:#fff;box-shadow:-4px 0 24px rgba(0,0,0,.15);z-index:50;padding:1.5rem;overflow-y:auto}
+  .mobile-menu.open{transform:translateX(0)}
+  .mobile-menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:40}
+  .mobile-menu-overlay.hidden{display:none}
+  .mobile-menu .mm-close{font-size:1.875rem;color:#4b5563;margin-bottom:2rem;background:none;border:none;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .mobile-menu .mm-links{display:flex;flex-direction:column;gap:1.5rem}
+  .mobile-menu .mm-links a{color:#374151;text-decoration:none;font-weight:500;font-size:1.125rem;transition:color .15s;min-height:44px;display:flex;align-items:center}
+  .mobile-menu .mm-links a:hover{color:#7C9A6E}
+  .mobile-menu .mm-links .nav-tel{padding:.75rem 1.5rem;border-radius:9999px;color:#fff;text-align:center;background:linear-gradient(135deg,#7C9A6E,#A8C69F);justify-content:center}
+  .nav-spacer{height:76px}
+  .site-footer{background:#fff;border-top:1px solid #f3f4f6;padding:1.5rem 0;margin-top:2rem;flex-shrink:0}
+  .site-footer p{text-align:center;font-size:.75rem;color:#9ca3af;margin:0}
+  @media (max-width:767px){.nav-links{display:none}.nav-burger{display:flex}}
+  @media print{.site-nav,#mobile-menu,#mobile-menu-overlay,.nav-spacer,.site-footer,.game-stage{display:none!important}}
+  /* ===== 本頁版面 ===== */
+  .wrap{max-width:860px;margin:0 auto;padding:0 1rem 1rem}
+  .top{display:flex;align-items:center;gap:.9rem;padding:1.6rem 0 .6rem}
+  .top .mark{width:56px;height:56px;flex:0 0 auto}
+  .top h1{font-size:1.5rem;line-height:1.4;color:#5d7a52;margin:0 0 .25rem;font-weight:700}
+  .top .sub{font-size:.8rem;color:#8a9484;letter-spacing:.08em}
+  .lede{background:#fff;border:1px solid #eae4d6;border-radius:14px;padding:1.1rem 1.2rem;margin:.6rem 0 1.2rem;font-size:1.02rem}
+  .game-stage{background:#fff8e9;border:1px solid #eadfc6;border-radius:18px;padding:.5rem;margin:0 0 .6rem;overflow:hidden}
+  .game-stage iframe{display:block;width:100%;height:min(78vh,760px);min-height:520px;border:0;border-radius:14px}
+  .stage-note{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;font-size:.85rem;color:#7a8272;margin:0 0 2rem}
+  .stage-note a{color:#5d7a52;font-weight:600}
+  h2{font-size:1.2rem;color:#5d7a52;margin:2rem 0 .7rem;line-height:1.5}
+  h3{font-size:1rem;color:#4b5563;margin:1.2rem 0 .4rem}
+  p{margin:.6rem 0}
+  .steps{width:100%;border-collapse:collapse;font-size:.94rem;margin:.6rem 0 .4rem;display:block;overflow-x:auto;white-space:nowrap}
+  .steps th,.steps td{border:1px solid #e7e2d6;padding:.55rem .7rem;text-align:left;vertical-align:top}
+  .steps th{background:#f2f5ef;color:#4b5563;font-weight:600}
+  .tips li{margin:.35rem 0}
+  .notice{background:#f6f8f4;border-left:4px solid #A8C69F;border-radius:0 10px 10px 0;padding:.85rem 1rem;margin:1.2rem 0;font-size:.95rem}
+  details{background:#fff;border:1px solid #eae4d6;border-radius:12px;padding:.75rem 1rem;margin:.55rem 0}
+  details summary{cursor:pointer;font-weight:600;color:#4b5563}
+  details p{margin:.6rem 0 .1rem;font-size:.95rem}
+  .backlinks{font-size:.92rem;margin:1.4rem 0 0}
+  .backlinks a{color:#5d7a52}
+  @media (max-width:520px){
+    .top h1{font-size:1.22rem}
+    .game-stage iframe{height:min(74vh,680px);min-height:480px}
+  }
+</style>
+</head>
+<body>
 
-      body {
-        min-height: 100vh;
-        min-height: 100dvh;
-      }
+<!-- 頂部導覽列（與首頁一致，10項）-->
+<nav role="navigation" aria-label="主選單" class="site-nav">
+ <div class="nav-inner">
+ <a href="/" class="brand-link">
+ <img src="/images/logo.png" alt="立欣診所 LOGO" style="width:40px;height:40px;object-fit:contain" onerror="this.style.display='none'">
+ <div>
+ <div class="brand-name font-chinese">立欣診所</div>
+ <p class="brand-en">LiHsin Clinic</p>
+ </div>
+ </a>
+ <div class="nav-links font-chinese">
+ <a href="/#schedule">門診時間</a>
+ <a href="/#services">服務項目</a>
+ <a href="/#team">醫療團隊</a>
+ <a href="/#director-message">認識立欣</a>
+ <a href="/#health-tips">衛教知識</a>
+ <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener">看診進度</a>
+ <a href="/#faq">常見問題</a>
+ <a href="/#contact">聯絡我們</a>
+ <a href="/growth.html">📈生長評估</a>
+ <a href="https://www.facebook.com/lhpedclinic" target="_blank" rel="noopener" class="nav-fb" aria-label="官方臉書">
+ <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+ </a>
+ <a href="tel:062516086" class="nav-tel">📞 06-2516086</a>
+ </div>
+ <button id="mobile-menu-btn" class="nav-burger" aria-label="開啟選單">☰</button>
+ </div>
+</nav>
 
-      iframe {
-        display: block;
-        width: 100%;
-        height: 100vh;
-        height: 100dvh;
-        border: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <iframe src="game.html" title="立欣診所小鹿醫師 3D 看診趣" allow="autoplay"></iframe>
-  </body>
+<div id="mobile-menu-overlay" class="mobile-menu-overlay hidden"></div>
+<div id="mobile-menu" class="mobile-menu">
+ <button id="mobile-menu-close" class="mm-close" aria-label="關閉選單">✕</button>
+ <div class="mm-links font-chinese">
+ <a href="/#schedule">門診時間</a>
+ <a href="/#services">服務項目</a>
+ <a href="/#team">醫療團隊</a>
+ <a href="/#director-message">認識立欣</a>
+ <a href="/#health-tips">衛教知識</a>
+ <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener">看診進度</a>
+ <a href="/#faq">常見問題</a>
+ <a href="/#contact">聯絡我們</a>
+ <a href="/growth.html">📈生長評估</a>
+ <a href="https://www.facebook.com/lhpedclinic" target="_blank" rel="noopener">官方臉書</a>
+ <a href="tel:062516086" class="nav-tel">📞 06-2516086</a>
+ </div>
+</div>
+<div class="nav-spacer"></div>
+
+<div class="wrap">
+
+  <div class="top">
+    <img class="mark" src="mascot-3d.png" alt="小鹿醫師角色圖" style="object-fit:contain">
+    <div>
+      <h1>小鹿醫師 3D 看診趣：陪孩子先玩一次看診流程<span class="hide-sr"> — 立欣診所 台南北區小兒科</span></h1>
+      <div class="sub font-chinese">立欣診所　DEER DOCTOR</div>
+    </div>
+  </div>
+
+  <p class="lede speakable-summary">小鹿醫師 3D 看診趣是立欣診所提供的免費線上遊戲，孩子在裡面扮演小鹿醫師，依序完成問診、聽診、看耳朵、看喉嚨並噴藥、吸鼻涕並噴藥、選小玩具六個步驟。這六步就是孩子在診間會遇到的順序，先在家玩過一次，到診間時知道接下來會發生什麼。不用下載、不用註冊，開網頁就能玩。</p>
+
+  <div class="game-stage">
+    <iframe src="game.html" title="小鹿醫師 3D 看診趣互動遊戲" allow="autoplay"></iframe>
+  </div>
+  <p class="stage-note">
+    <span>畫面太小的話，可以開全螢幕玩。</span>
+    <a href="game.html">全螢幕開啟遊戲 →</a>
+  </p>
+
+  <h2>遊戲的六個步驟，對應診間的哪一段</h2>
+  <p>遊戲把看診拆成六關，順序和實際看診一樣。孩子先在遊戲裡當醫師做一遍，再到診間換成被檢查的人，心裡會有底。</p>
+  <table class="steps">
+    <thead><tr><th>關卡</th><th>遊戲裡做什麼</th><th>診間裡對應什麼</th></tr></thead>
+    <tbody>
+      <tr><td>問診</td><td>選出小病患不舒服的地方</td><td>醫師問哪裡不舒服、燒幾天、有沒有咳嗽</td></tr>
+      <tr><td>聽診</td><td>把聽診器放到胸口和背後</td><td>聽心跳與呼吸音，需要孩子安靜幾秒</td></tr>
+      <tr><td>看耳朵</td><td>拿耳鏡照進耳朵看</td><td>耳鏡檢查耳膜，會有一點涼涼的觸感</td></tr>
+      <tr><td>看喉嚨、噴藥</td><td>張大嘴巴檢查，再噴一下藥</td><td>壓舌板看喉嚨，必要時噴喉嚨藥</td></tr>
+      <tr><td>吸鼻涕、噴藥</td><td>把鼻涕吸乾淨，再噴鼻噴劑</td><td>抽吸鼻腔分泌物，會有吸吸的聲音</td></tr>
+      <tr><td>選小玩具</td><td>完成後挑一個小禮物</td><td>看診結束，小朋友可以領一個小獎勵</td></tr>
+    </tbody>
+  </table>
+  <p>孩子最常怕的是不知道下一步要做什麼，尤其是耳鏡和吸鼻涕這兩關，聲音和觸感都是陌生的。先看過一次，到現場就不是全新的東西。</p>
+
+  <h2>家長可以怎麼陪著玩</h2>
+  <ul class="tips">
+    <li><strong>看診前一天玩，比出門前才玩好。</strong>當天匆忙玩容易變成趕進度，前一晚玩完還有時間回答孩子的問題。</li>
+    <li>玩到耳鏡、吸鼻涕那兩關時停一下，跟孩子說「明天醫師也會這樣做，會有一點聲音」。</li>
+    <li>孩子問「會不會痛」，照實說。多數檢查不會痛，吸鼻涕則會有點不舒服。先講清楚，比含糊帶過好。孩子被騙過一次，下次更難帶。</li>
+    <li>玩完可以把角色換過來，讓孩子當病人、家長當小鹿醫師，再走一次流程。</li>
+  </ul>
+
+  <h2>什麼時候特別用得上</h2>
+  <p>第一次看兒科、換新診所、上次看診有不好的經驗、或是孩子這幾天就要打針或做檢查的時候，先玩過會比較好帶。已經很習慣看診的孩子，就當成一般小遊戲玩也可以。</p>
+
+  <div class="notice">
+    <p>這個遊戲是看診流程的示範，不是診斷工具，也不能取代醫師評估。孩子實際需要做哪些檢查、要不要用藥，由醫師當場判斷。本院為門診、非急診；孩子出現高燒不退、呼吸急促、意識不清或抽搐，請直接就醫或撥打 119。</p>
+  </div>
+
+  <h2>常見問題</h2>
+
+  <details>
+    <summary>小鹿醫師 3D 看診趣是什麼？需要下載嗎？</summary>
+    <p>是立欣診所提供的免費線上互動遊戲，讓孩子在看診前先熟悉看診流程。用手機、平板或電腦的瀏覽器開啟網頁就能玩，不需要下載 App、不需要註冊帳號。</p>
+  </details>
+
+  <details>
+    <summary>適合幾歲的孩子玩？</summary>
+    <p>大約 3 歲到 8 歲最合適，這個年紀的孩子聽得懂步驟、也正好是最容易對看診感到緊張的階段。更小的孩子建議家長抱著一起玩，由家長操作、孩子看畫面。</p>
+  </details>
+
+  <details>
+    <summary>遊戲裡的六個步驟，和真的看診一樣嗎？</summary>
+    <p>順序一樣，但實際做哪幾項要看孩子當天的狀況。遊戲固定跑完問診、聽診、看耳朵、看喉嚨噴藥、吸鼻涕噴藥、選小玩具六關；診間裡醫師會依症狀決定要不要看耳朵或吸鼻涕，不是每次都全做。</p>
+  </details>
+
+  <details>
+    <summary>孩子玩過就不會怕看醫生了嗎？</summary>
+    <p>不一定。遊戲能做到的是讓孩子知道接下來會發生什麼、減少陌生感，對本來就很緊張的孩子，通常還是需要家長陪著和醫師放慢速度。如果孩子每次看診都極度抗拒，看診時可以直接告訴醫師，我們會調整檢查的順序和節奏。</p>
+  </details>
+
+  <details>
+    <summary>要收費嗎？會蒐集孩子的資料嗎？</summary>
+    <p>免費，不需要註冊或填任何個人資料。遊戲的進度只留在孩子玩的那台裝置上，關掉就結束。本站的隱私權說明見<a href="/privacy.html">隱私權政策</a>。</p>
+  </details>
+
+  <details>
+    <summary>可以加到手機主畫面，像 App 一樣打開嗎？</summary>
+    <p>可以。在手機瀏覽器開啟遊戲後，選單裡選「加入主畫面」，之後從桌面圖示就能直接打開，網路不穩時也還能玩。</p>
+  </details>
+
+  <details>
+    <summary>沒有聲音、聽不到小鹿醫師說話怎麼辦？</summary>
+    <p>先確認手機沒有靜音，再點一次畫面上的「開始勇氣任務」。瀏覽器規定要先有點擊動作才允許播放語音，所以直接開啟網頁時通常是安靜的。語音使用裝置內建的中文發音，不同手機的聲音會有些差異。</p>
+  </details>
+
+  <p class="backlinks">看診前想先了解掛號、看診進度與初診要帶什麼，可以看<a href="/visit-guide.html">立欣診所就診指南</a>；想追蹤孩子的身高體重，可以用<a href="/growth.html">兒童生長曲線評估工具</a>。門診時間與預約方式見<a href="/">立欣診所首頁</a>。</p>
+
+</div>
+
+<footer class="site-footer">
+ <p class="font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086｜<a href="/privacy.html" style="color:inherit;text-decoration:underline;">隱私權政策</a></p>
+</footer>
+
+<script>
+ (function(){
+ var btn=document.getElementById('mobile-menu-btn');
+ var menu=document.getElementById('mobile-menu');
+ var closeBtn=document.getElementById('mobile-menu-close');
+ var overlay=document.getElementById('mobile-menu-overlay');
+ function open(){menu.classList.add('open');if(overlay)overlay.classList.remove('hidden');document.body.style.overflow='hidden';}
+ function close(){menu.classList.remove('open');if(overlay)overlay.classList.add('hidden');document.body.style.overflow='';}
+ if(btn)btn.addEventListener('click',open);
+ if(closeBtn)closeBtn.addEventListener('click',close);
+ if(overlay)overlay.addEventListener('click',close);
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+ if(menu)menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+ })();
+</script>
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [
+  {
+   "@type": "ListItem",
+   "position": 1,
+   "name": "首頁",
+   "item": "https://lhpedclinic.com.tw/"
+  },
+  {
+   "@type": "ListItem",
+   "position": 2,
+   "name": "小鹿醫師 3D 看診趣",
+   "item": "https://lhpedclinic.com.tw/game/"
+  }
+ ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "MedicalWebPage",
+ "@id": "https://lhpedclinic.com.tw/game/#webpage",
+ "url": "https://lhpedclinic.com.tw/game/",
+ "name": "小鹿醫師 3D 看診趣｜立欣診所 台南北區小兒科",
+ "headline": "小鹿醫師 3D 看診趣：陪孩子先玩一次看診流程",
+ "description": "立欣診所提供的免費線上互動遊戲，孩子扮演小鹿醫師，依序完成問診、聽診、看耳朵、看喉嚨並噴藥、吸鼻涕並噴藥、選小玩具六個步驟，順序與實際看診相同，用意是讓孩子在就診前先熟悉流程、減少陌生感。遊戲為看診流程示範，不是診斷工具；實際需要哪些檢查與處置由醫師當場評估。",
+ "inLanguage": "zh-Hant",
+ "datePublished": "2026-08-18",
+ "dateModified": "2026-08-18T21:00:00+08:00",
+ "lastReviewed": "2026-08-18T21:00:00+08:00",
+ "audience": {
+  "@type": "ParentAudience",
+  "name": "學齡前與學齡兒童家長"
+ },
+ "about": {
+  "@type": "MedicalCondition",
+  "name": "兒童就醫焦慮與看診流程準備"
+ },
+ "author": {
+  "@type": "Physician",
+  "@id": "https://lhpedclinic.com.tw/#physician-tsai",
+  "name": "蔡宗儒醫師",
+  "url": "https://lhpedclinic.com.tw/team/dr-tsai.html"
+ },
+ "reviewedBy": {
+  "@type": "Physician",
+  "@id": "https://lhpedclinic.com.tw/#physician-tsai",
+  "name": "蔡宗儒醫師",
+  "url": "https://lhpedclinic.com.tw/team/dr-tsai.html"
+ },
+ "isPartOf": {
+  "@id": "https://lhpedclinic.com.tw/#website"
+ },
+ "publisher": {
+  "@id": "https://lhpedclinic.com.tw/#organization"
+ },
+ "speakable": {
+  "@type": "SpeakableSpecification",
+  "cssSelector": [
+   "h1",
+   ".speakable-summary"
+  ]
+ },
+ "relatedLink": [
+  "https://lhpedclinic.com.tw/visit-guide.html",
+  "https://lhpedclinic.com.tw/growth.html",
+  "https://lhpedclinic.com.tw/"
+ ],
+ "mainEntity": {
+  "@type": "SoftwareApplication",
+  "name": "小鹿醫師 3D 看診趣",
+  "alternateName": [
+   "小鹿醫師看診趣",
+   "兒童看診流程遊戲",
+   "看診角色扮演遊戲"
+  ],
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Web",
+  "url": "https://lhpedclinic.com.tw/game/",
+  "inLanguage": "zh-Hant",
+  "browserRequirements": "需支援 HTML5 的瀏覽器，不需安裝",
+  "offers": {
+   "@type": "Offer",
+   "price": "0",
+   "priceCurrency": "TWD"
+  },
+  "provider": {
+   "@id": "https://lhpedclinic.com.tw/#organization"
+  }
+ }
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "小鹿醫師 3D 看診趣是什麼？需要下載嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "是立欣診所提供的免費線上互動遊戲，讓孩子在看診前先熟悉看診流程。用手機、平板或電腦的瀏覽器開啟網頁就能玩，不需要下載 App、不需要註冊帳號。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "適合幾歲的孩子玩？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "大約 3 歲到 8 歲最合適，這個年紀的孩子聽得懂步驟、也正好是最容易對看診感到緊張的階段。更小的孩子建議家長抱著一起玩，由家長操作、孩子看畫面。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "遊戲裡的六個步驟，和真的看診一樣嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "順序一樣，但實際做哪幾項要看孩子當天的狀況。遊戲固定跑完問診、聽診、看耳朵、看喉嚨噴藥、吸鼻涕噴藥、選小玩具六關；診間裡醫師會依症狀決定要不要看耳朵或吸鼻涕，不是每次都全做。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "孩子玩過就不會怕看醫生了嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "不一定。遊戲能做到的是讓孩子知道接下來會發生什麼、減少陌生感，對本來就很緊張的孩子，通常還是需要家長陪著和醫師放慢速度。如果孩子每次看診都極度抗拒，看診時可以直接告訴醫師，我們會調整檢查的順序和節奏。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "要收費嗎？會蒐集孩子的資料嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "免費，不需要註冊或填任何個人資料。遊戲的進度只留在孩子玩的那台裝置上，關掉就結束。本站的隱私權說明見隱私權政策。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "可以加到手機主畫面，像 App 一樣打開嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "可以。在手機瀏覽器開啟遊戲後，選單裡選「加入主畫面」，之後從桌面圖示就能直接打開，網路不穩時也還能玩。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "沒有聲音、聽不到小鹿醫師說話怎麼辦？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "先確認手機沒有靜音，再點一次畫面上的「開始勇氣任務」。瀏覽器規定要先有點擊動作才允許播放語音，所以直接開啟網頁時通常是安靜的。語音使用裝置內建的中文發音，不同手機的聲音會有些差異。"
+   }
+  }
+ ]
+}
+</script>
+
+</body>
 </html>
