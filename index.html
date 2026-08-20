@@ -74,8 +74,8 @@
  <link rel="dns-prefetch" href="https://line.me">
  <link rel="dns-prefetch" href="https://www.facebook.com">
  <link rel="dns-prefetch" href="https://maps.google.com">
- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
- <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"></noscript>
+ <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+ <noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"></noscript>
  <link rel="stylesheet" href="/tailwind.css">
  <!-- ═══ Schema.org：完整介紹 PDF 文件（DigitalDocument）═══ -->
  <script type="application/ld+json">
@@ -1145,7 +1145,9 @@
  /* Hero Background */
  .hero-bg {
  position: relative;
- background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(168, 198, 159, 0.3) 100%), url('images/hero-bg.jpg'), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIHNsaWNlIj4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJza3kiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRjBGN0VDIi8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNENEU1QzkiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNBOEM2OUYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNza3kpIi8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iODAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjQiLz4KPGNpcmNsZSBjeD0iMTcwMCIgY3k9IjMwMCIgcj0iNjAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjMiLz4KPGNpcmNsZSBjeD0iODAwIiBjeT0iMTUwIiByPSI0MCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4=');
+ /* 手機用 768px 版底圖（80KB），桌機維持 1920px 原圖（225KB）*/
+ --hero-photo: url('images/hero-bg.jpg');
+ background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(168, 198, 159, 0.3) 100%), var(--hero-photo), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIHNsaWNlIj4KPGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJza3kiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRjBGN0VDIi8+PHN0b3Agb2Zmc2V0PSI2MCUiIHN0b3AtY29sb3I9IiNENEU1QzkiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNBOEM2OUYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjE5MjAiIGhlaWdodD0iMTA4MCIgZmlsbD0idXJsKCNza3kpIi8+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjIwMCIgcj0iODAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjQiLz4KPGNpcmNsZSBjeD0iMTcwMCIgY3k9IjMwMCIgcj0iNjAiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjMiLz4KPGNpcmNsZSBjeD0iODAwIiBjeT0iMTUwIiByPSI0MCIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuNSIvPgo8L3N2Zz4=');
  background-size: cover;
  background-position: center;
  /* 桌面才用 fixed，行動裝置用 scroll 避免效能問題（iOS Safari 上 fixed 會閃爍）*/
@@ -1159,6 +1161,7 @@
  /* 行動版 Hero 區降低 padding，讓 CTA 更早出現 */
  @media (max-width: 768px) {
  .hero-bg {
+ --hero-photo: url('images/hero-bg-768.jpg');
  min-height: auto !important;
  padding-top: 5rem;
  padding-bottom: 2rem;
