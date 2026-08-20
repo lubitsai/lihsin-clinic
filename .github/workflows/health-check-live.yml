@@ -86,7 +86,10 @@ jobs:
           check "https://www.air.org.tw/"
           check "https://www.pediatr.org.tw/"
           check "https://www.google.com/maps/dir/?api=1&destination=%E7%AB%8B%E6%AC%A3%E8%A8%BA%E6%89%80+%E5%8F%B0%E5%8D%97%E5%B8%82%E5%8C%97%E5%8D%80%E8%82%B2%E5%BE%B7%E8%B7%AF467%E8%99%9F"
-          check "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+          # ⚠️ 維護：本行須與站上 <link> 的字型 URL 逐字一致。
+          # 2026-08-20 移除未使用字重 300（全站 font-light 0 次、tailwind.css 只產 500/600/700），
+          # 若日後再調字重，這裡要同步改，否則等於驗一個站上根本沒用的 URL。
+          check "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
           echo "=== JSON-LD sameAs 維基實體(抽測)==="
           check "https://zh.wikipedia.org/wiki/%E4%BB%A3%E8%AC%9D%E7%97%87%E5%80%99%E7%BE%A4"
           check "https://zh.wikipedia.org/wiki/%E9%81%8E%E6%95%8F"
@@ -124,8 +127,23 @@ jobs:
       - name: 7. Live content fingerprint
         run: |
           B=https://lhpedclinic.com.tw
+          fail=0
+          ok()  { printf "OK   %s\n" "$1"; }
+          bad() { printf "FAIL %s\n" "$1"; fail=1; }
           html=$(curl -s --max-time 20 "$B/team/dr-tsai.html")
-          echo "$html" | grep -q "19篇" && echo "OK   dr-tsai 19篇(07-13 批已上線)" || echo "FAIL dr-tsai 19篇 未見"
+          # 文章數只增不減，故驗「≥ 基準」而非等於某個定值：
+          # 新增文章不會讓這條過期，但版本回退(數字變小)仍抓得到。
+          # 基準沿革：19(2026-07-13) → 32(2026-08-20 實測)。
+          n=$(grep -o "[0-9]\+篇" <<<"$html" | head -1 | tr -d "篇")
+          if [ -n "$n" ] && [ "$n" -ge 32 ]; then
+            ok "dr-tsai 文章數 ${n}篇(基準 >=32)"
+          else
+            bad "dr-tsai 文章數 ${n:-未取得} 低於基準 32"
+          fi
           idx=$(curl -s --max-time 20 "$B/")
-          echo "$idx" | grep -q "speakable-summary" && echo "OK   index speakable hook 已上線" || echo "FAIL index speakable hook 未見"
-          echo "$idx" | grep -qi "googletagmanager" && echo "OK   GA4 已掛載" || echo "FAIL GA4 未見"
+          grep -q "speakable-summary" <<<"$idx" && ok "index speakable hook 已上線" || bad "index speakable hook 未見"
+          grep -qi "googletagmanager" <<<"$idx" && ok "GA4 已掛載" || bad "GA4 未見"
+          # 本步驟是版本回退(AP1)的偵測器：斷言失準必須讓 job 紅燈。
+          # 舊版一律 echo 不改 exit code，於是 19篇 從 07-13 之後一路 FAIL
+          # 卻仍回報 success —— 習慣性誤報的偵測器等於沒有偵測器。
+          [ "$fail" = "0" ] || { echo "::error::內容指紋有項目未通過"; exit 1; }
