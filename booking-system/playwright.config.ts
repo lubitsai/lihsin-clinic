@@ -13,7 +13,7 @@
  * 示範資料，測試之間不互相污染，也不會動到開發或正式資料庫。
  */
 import { defineConfig, devices } from "@playwright/test";
-import { prepareE2eDatabase, E2E_DATABASE_URL } from "./e2e/prepare-db";
+import { prepareE2eDatabase, E2E_DATABASE_URL, E2E_APP_ENV } from "./e2e/prepare-db";
 
 // 在設定檔載入時就把資料庫準備好——Playwright 會先啟動 webServer 再跑 globalSetup，
 // 放在 globalSetup 會來不及，首頁一開始就會因為沒有資料庫而 500。
@@ -61,15 +61,7 @@ export default defineConfig({
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-    env: {
-      DATABASE_URL: E2E_DATABASE_URL,
-      SESSION_SECRET: "e2e-session-secret-0123456789abcdef",
-      PII_ENCRYPTION_KEY: "e2e-encryption-key-0123456789abcdef0123456789",
-      PII_HASH_KEY: "e2e-hash-key-0123456789abcdef",
-      // 前台身分只剩 LINE Login，CI 連不到 LINE：用替身登入、推播只印不送
-      LINE_LOGIN_DEV_STUB: "1",
-      LINE_MESSAGING_DRY_RUN: "1",
-      TZ: "Asia/Taipei",
-    },
+    // 與灌資料的子行程共用同一份設定（見 e2e/prepare-db.ts E2E_APP_ENV）
+    env: { DATABASE_URL: E2E_DATABASE_URL, ...E2E_APP_ENV },
   },
 });

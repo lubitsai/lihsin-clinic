@@ -13,6 +13,25 @@ import { execSync } from "node:child_process";
 export const E2E_DATABASE_URL =
   process.env.E2E_DATABASE_URL ?? "postgresql://postgres@127.0.0.1:5433/lihsin_booking_e2e";
 
+/**
+ * 測試環境的應用程式設定。**灌資料的子行程與 webServer 共用同一份**——
+ * 少給任何一項都會壞在很難看懂的地方：例如缺 PII_HASH_KEY 時，
+ * 示範資料的每一筆預約都會被靜靜略過（seed 仍以 0 收場、不報錯），
+ * 後台測試就變成「找不到王小明」，看起來像畫面壞了而不是資料沒灌進去。
+ *
+ * 不從 `.env` 讀：那個檔不入版控，換一台機器或重建容器就沒了，
+ * 而測試不該依賴一個看不見、也不保證存在的檔案。
+ */
+export const E2E_APP_ENV = {
+  SESSION_SECRET: "e2e-session-secret-0123456789abcdef",
+  PII_ENCRYPTION_KEY: "e2e-encryption-key-0123456789abcdef0123456789",
+  PII_HASH_KEY: "e2e-hash-key-0123456789abcdef",
+  // 前台身分只剩 LINE Login，CI 連不到 LINE：用替身登入、推播只印不送
+  LINE_LOGIN_DEV_STUB: "1",
+  LINE_MESSAGING_DRY_RUN: "1",
+  TZ: "Asia/Taipei",
+} as const;
+
 export function prepareE2eDatabase() {
   // Playwright 會在主行程與每個 worker 各載入一次設定檔。只重建一次，
   // 否則 worker 啟動時會把正在被測試使用的資料庫砍掉。
@@ -41,7 +60,12 @@ export function prepareE2eDatabase() {
   psql(`DROP DATABASE IF EXISTS ${dbName}`);
   psql(`CREATE DATABASE ${dbName}`);
 
-  const env = { ...process.env, DATABASE_URL: E2E_DATABASE_URL, NODE_ENV: "development" as const };
+  const env = {
+    ...process.env,
+    ...E2E_APP_ENV,
+    DATABASE_URL: E2E_DATABASE_URL,
+    NODE_ENV: "development" as const,
+  };
   execSync("npx prisma migrate deploy", { env, stdio: "pipe" });
   execSync("npx tsx prisma/seed.ts", { env, stdio: "pipe" });
   execSync("npx tsx prisma/seed-demo.ts", { env, stdio: "pipe" });

@@ -42,6 +42,16 @@ async function main() {
       "拒絕在 NODE_ENV=production 建立示範資料。確定要做請設 ALLOW_DEMO_SEED=1。",
     );
   }
+  // 缺金鑰要當場停下來。少了它，下面每一筆預約都會在 catch 裡被靜靜略過，
+  // 最後印出「共建立 0 筆預約」——看起來像跑完了，其實整份示範資料都是空的。
+  for (const key of ["PII_ENCRYPTION_KEY", "PII_HASH_KEY"] as const) {
+    if (!process.env[key]) {
+      throw new Error(
+        `${key} 未設定，示範資料無法建立病歷。請先 cp .env.example .env 並填入開發用金鑰，` +
+          `或在指令前帶入環境變數。`,
+      );
+    }
+  }
 
   const today = todayStr();
   const general = await prisma.clinicType.findUniqueOrThrow({ where: { code: "GENERAL" } });

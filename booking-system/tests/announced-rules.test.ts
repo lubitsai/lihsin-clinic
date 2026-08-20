@@ -13,6 +13,9 @@ import { getDaySlotAvailability } from "@/lib/availability";
 import { enqueueReminders } from "@/lib/notifications";
 import { setSetting, clearSettingsCache } from "@/lib/settings";
 import { dateToDb } from "@/lib/tw-time";
+import { importBundledHolidays, parseHolidayFile, type HolidayRow } from "@/lib/holidays";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   resetDb,
   seedBase,
@@ -341,6 +344,14 @@ describe("一位醫師同一時段只會有一位病人（跨門診共用名額�
   });
 });
 
+/** 讀取隨程式碼附帶的官方日曆表（prisma/holidays/*.csv） */
+function bundledHolidayRows(): HolidayRow[] {
+  const dir = join(process.cwd(), "prisma", "holidays");
+  return readdirSync(dir)
+    .filter((f) => f.endsWith(".csv"))
+    .flatMap((f) => parseHolidayFile(readFileSync(join(dir, f), "utf-8")).rows);
+}
+
 describe("國定假日不施測（兒童發展篩檢）", () => {
   beforeEach(resetDb);
 
@@ -428,6 +439,67 @@ describe("國定假日不施測（兒童發展篩檢）", () => {
       patientInput: makePatient(), source: "STAFF", actor: STAFF_ACTOR, isStaff: true,
     });
     expect(r.appointment.id).toBeTruthy();
+  });
+
+  /*
+   * 補假日（院長 2026-08-16 確認：國定假日的補休日也停開篩檢）。
+   *
+   * 補假之所以要特別驗：它一定落在週一至週五——補假的存在本身就是因為
+   * 節日撞到例假日而往平日挪。而篩檢正好只在週一至週五施測，
+   * 所以每一個補假日都是「本來會有篩檢時段」的日子。
+   * 這幾條直接讀內建的官方日曆表，不用假資料——日後若有人整理 CSV 時
+   * 把補假當成「不是真正的國定假日」而刪掉，這裡就會紅。
+   */
+  describe("補假日", () => {
+    it("內建日曆表確實收錄補假日，且都落在平日（篩檢日）", async () => {
+      const rows = bundledHolidayRows();
+      const makeUps = rows.filter((r) => r.name.includes("補假"));
+      expect(makeUps.length).toBeGreaterThan(0);
+      for (const r of makeUps) {
+        const weekday = new Date(`${r.date}T00:00:00.000Z`).getUTCDay();
+        expect(weekday, `${r.date} ${r.name} 不在週一至週五`).toBeGreaterThanOrEqual(1);
+        expect(weekday, `${r.date} ${r.name} 不在週一至週五`).toBeLessThanOrEqual(5);
+      }
+    });
+
+    it("每一個補假日，篩檢都沒有時段；一般門診照常", async () => {
+      const { general, development } = await seedBase();
+      await setupScreening(development.id);
+      await importBundledHolidays();
+
+      // 對照組：非假日的週三，篩檢本來就有時段
+      const control = nextWednesday();
+      expect((await getDaySlotAvailability(control, development.id)).length).toBeGreaterThan(0);
+
+      const makeUps = bundledHolidayRows().filter((x) => x.name.includes("補假"));
+      expect(makeUps.length, "沒有補假日可驗，這條會變成空轉").toBeGreaterThan(0);
+      for (const r of makeUps) {
+        expect(
+          await getDaySlotAvailability(r.date, development.id),
+          `${r.date} ${r.name} 仍有篩檢時段`,
+        ).toEqual([]);
+        // 診所當天照常看診，停的只有這一科
+        expect(
+          (await getDaySlotAvailability(r.date, general.id)).length,
+          `${r.date} 一般門診被誤停`,
+        ).toBeGreaterThan(0);
+      }
+    });
+
+    it("補假日送出篩檢預約會被擋下，訊息帶出該日名稱", async () => {
+      const { development, drTsai } = await seedBase();
+      await setupScreening(development.id);
+      await importBundledHolidays();
+      const makeUp = bundledHolidayRows().find((r) => r.name.includes("補假"))!;
+
+      await expect(
+        createAppointment({
+          clinicTypeId: development.id, doctorId: drTsai.id,
+          date: makeUp.date, startTime: "09:00",
+          patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
+        }),
+      ).rejects.toMatchObject({ code: "CLINIC_TYPE_CLOSED" });
+    });
   });
 });
 
