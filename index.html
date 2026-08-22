@@ -2072,7 +2072,7 @@
  "inLanguage": {"@type": "Language", "name": "Chinese", "alternateName": "zh-TW"},
  "isPartOf": {"@type": "WebSite", "@id": "https://lhpedclinic.com.tw/#website", "url": "https://lhpedclinic.com.tw/", "name": "立欣診所 LiHsin Clinic"},
  "datePublished": "2024-07-01",
- "dateModified": "2026-08-21T12:00:00+08:00",
+ "dateModified": "2026-08-22T12:00:00+08:00",
  "lastReviewed": "2026-05-15T09:00:00+08:00",
  "reviewedBy": {
   "@type": "Person",
@@ -2389,10 +2389,25 @@
  <div class="container mx-auto px-4">
  <div class="text-center mb-8 fade-in-up">
  <h2 id="clinic-notice-heading" class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-3 font-chinese">最新門診異動</h2>
- <p class="text-gray-600 font-chinese">實施日期：<time datetime="2026-09-01">2026 年 9 月 1 日（二）起</time></p>
  </div>
- <div class="max-w-3xl mx-auto fade-in-up">
- <button type="button" id="clinic-notice-zoom" aria-label="放大檢視門診異動公告圖" class="block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" style="padding:0;cursor:zoom-in;">
+
+ <!-- 公告①：2026-08-23（日）豪大雨警報 門診臨時異動 -->
+ <div class="notice-item max-w-3xl mx-auto fade-in-up mb-14" data-expires="2026-08-23">
+ <p class="text-gray-600 font-chinese text-center mb-4">適用日期：<time datetime="2026-08-23">2026 年 8 月 23 日（日）當日</time></p>
+ <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視 8 月 23 日豪大雨門診臨時異動公告圖" style="padding:0;cursor:zoom-in;">
+ <picture>
+ <source type="image/webp" srcset="/images/notice/clinic-notice-20260823.webp">
+ <img src="/images/notice/clinic-notice-20260823.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="立欣診所門診臨時異動公告：台南豪大雨警報停班停課，2026 年 8 月 23 日（星期日）早上正常門診，晚上視雨勢情況滾動式調整，將於 11:30 公布。造成不便，敬請見諒。立欣診所小鹿醫師團隊關心您的健康。" class="w-full h-auto">
+ </picture>
+ </button>
+ <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
+ <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">台南市因豪大雨警報停班停課，本院 <strong>8 月 23 日（日）早上門診正常看診（08:00–11:30）</strong>；<strong>晚間門診（18:30–21:00）視雨勢情況滾動式調整，當日 11:30 公布</strong>，屆時請留意本院 LINE 與本頁公告。出門前請留意路況、注意自身與孩子的安全。造成不便，敬請見諒。</p>
+ </div>
+
+ <!-- 公告②：2026-09-01 起 新門診時間表 -->
+ <div class="notice-item max-w-3xl mx-auto fade-in-up" data-expires="2026-08-31">
+ <p class="text-gray-600 font-chinese text-center mb-4">實施日期：<time datetime="2026-09-01">2026 年 9 月 1 日（二）起</time></p>
+ <button type="button" id="clinic-notice-zoom" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視 9 月 1 日起新門診時間表公告圖" style="padding:0;cursor:zoom-in;">
  <picture>
  <source type="image/webp" srcset="/images/notice/clinic-notice-20260901.webp">
  <img src="/images/notice/clinic-notice-20260901.jpg" width="1492" height="1054" loading="lazy" decoding="async" alt="立欣診所新門診時間表，自民國115年9月1日起實施。上午08:00~12:00：星期一、二、三蔡醫師，星期四李醫師，星期五蔡醫師，星期六蔡醫師08:00~11:30，星期日蔡醫師08:00~11:00與李醫師08:00~11:30。下午14:30~18:00：星期一、二、三蔡醫師，星期四李醫師，星期五蔡醫師，星期六李醫師，星期日休診。晚上18:30~21:30：星期一蔡醫師18:30~21:00與李醫師18:30~21:30，星期二蔡醫師，星期三李醫師，星期四蔡醫師，星期五蔡醫師，星期六休診，星期日蔡醫師18:30~21:00。" class="w-full h-auto">
@@ -2400,9 +2415,10 @@
  </button>
  <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
  <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">新門診時間表自 2026 年 9 月 1 日（民國 115 年 9 月 1 日）起實施，<strong>8 月 31 日前仍依現行門診時間表看診</strong>。各診次的開診時段不變（上午 08:00–12:00、下午 14:30–18:00、晚上 18:30–21:30；週六上午至 11:30、週六無夜診；週日上午至 11:30、週日無午診、夜診至 21:00），異動的是醫師排班：<strong>週四下午改由李醫師看診、週五下午改由蔡醫師看診</strong>；週一晚診蔡醫師看診至 21:00、李醫師看診至 21:30；週日上午蔡醫師看診至 11:00、李醫師看診至 11:30。</p>
- <div class="text-center mt-5">
- <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" onclick="trackCTA('Notice_LINE')" class="btn-primary inline-block px-8 py-3 rounded-full font-chinese font-semibold">💬 有疑問？LINE 諮詢立欣診所</a>
  </div>
+
+ <div class="text-center mt-8">
+ <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" onclick="trackCTA('Notice_LINE')" class="btn-primary inline-block px-8 py-3 rounded-full font-chinese font-semibold">💬 有疑問？LINE 諮詢立欣診所</a>
  </div>
  </div>
  </section>
@@ -2411,10 +2427,7 @@
  <div id="notice-lightbox" role="dialog" aria-modal="true" aria-label="門診異動公告放大檢視" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.78);align-items:center;justify-content:center;padding:20px;">
  <div style="position:relative;max-width:min(92vw,86vh);width:100%;">
  <button type="button" id="notice-lightbox-close" aria-label="關閉放大檢視" style="position:absolute;top:-14px;right:-6px;width:40px;height:40px;border-radius:50%;background:#fff;color:#333;font-size:20px;font-weight:700;line-height:1;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.35);">✕</button>
- <picture>
- <source type="image/webp" srcset="/images/notice/clinic-notice-20260901.webp">
- <img src="/images/notice/clinic-notice-20260901.jpg" width="1492" height="1054" loading="lazy" decoding="async" alt="立欣診所新門診時間表放大圖：自民國115年9月1日起實施，週四下午改由李醫師看診、週五下午改由蔡醫師看診，週一晚診蔡醫師至21:00、李醫師至21:30，週日上午蔡醫師至11:00、李醫師至11:30" style="width:100%;height:auto;border-radius:16px;display:block;">
- </picture>
+ <picture id="notice-lightbox-pic"><!-- 內容由被點擊的公告卡動態填入 --></picture>
  <div style="text-align:center;margin-top:14px;">
  <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" onclick="trackCTA('Notice_Lightbox_LINE')" class="btn-primary inline-block px-8 py-3 rounded-full font-chinese font-semibold">💬 LINE 諮詢立欣診所</a>
  </div>
@@ -2424,18 +2437,35 @@
  (function () {
  var sec = document.getElementById('clinic-notice');
  if (!sec) return;
- // 過期自動隱藏：data-expires 當日（含）仍顯示，翌日起隱藏；以 UTC+8 判斷
- var exp = sec.getAttribute('data-expires');
- if (exp) {
+ // 過期自動隱藏：data-expires 當日（含）仍顯示，翌日起隱藏；以 UTC+8 判斷。
+ // 區塊本身與其中每則公告（.notice-item）各自判斷，公告全部過期時整區隱藏。
  var tw = new Date(Date.now() + 8*60*60000);
  var pad = function (n) { return (n<10?'0':'')+n; };
  var today = tw.getUTCFullYear()+'-'+pad(tw.getUTCMonth()+1)+'-'+pad(tw.getUTCDate());
- if (today > exp) { sec.style.display = 'none'; return; }
+ var exp = sec.getAttribute('data-expires');
+ if (exp && today > exp) { sec.style.display = 'none'; return; }
+ var items = sec.querySelectorAll('.notice-item');
+ var alive = 0;
+ for (var i = 0; i < items.length; i++) {
+ var iexp = items[i].getAttribute('data-expires');
+ if (iexp && today > iexp) { items[i].style.display = 'none'; } else { alive++; }
  }
+ if (items.length && alive === 0) { sec.style.display = 'none'; return; }
  var lb = document.getElementById('notice-lightbox');
- var openBtn = document.getElementById('clinic-notice-zoom');
+ var lbPic = document.getElementById('notice-lightbox-pic');
+ var openBtns = sec.querySelectorAll('.notice-zoom');
  var closeBtn = document.getElementById('notice-lightbox-close');
- function openLb() {
+ function openLb(btn) {
+ var pic = btn.querySelector('picture');
+ if (pic && lbPic) {
+ lbPic.innerHTML = pic.innerHTML;
+ var im = lbPic.querySelector('img');
+ if (im) {
+ im.className = '';
+ im.setAttribute('loading', 'eager');
+ im.setAttribute('style', 'width:100%;height:auto;border-radius:16px;display:block;');
+ }
+ }
  lb.style.display = 'flex';
  document.body.style.overflow = 'hidden';
  if (typeof trackCTA === 'function') trackCTA('Notice_Enlarge');
@@ -2444,7 +2474,11 @@
  lb.style.display = 'none';
  document.body.style.overflow = '';
  }
- openBtn.addEventListener('click', openLb);
+ for (var b = 0; b < openBtns.length; b++) {
+ openBtns[b].addEventListener('click', (function (btn) {
+ return function () { openLb(btn); };
+ })(openBtns[b]));
+ }
  closeBtn.addEventListener('click', closeLb);
  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && lb.style.display === 'flex') closeLb(); });

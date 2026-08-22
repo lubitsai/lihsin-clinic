@@ -9,3 +9,10 @@
 .text-\[\#3f5136\]{color:#3f5136}
 .text-\[\#5f7a52\]{color:#5f7a52}
 .text-\[\#8aa07d\]{color:#8aa07d}
+
+/* ── 2026-08-22 增補：最新門診異動公告卡 JS 掛鉤 class ──
+   #clinic-notice 改為可並列多則公告，.notice-item 供逐則 data-expires 過期隱藏、
+   .notice-zoom 供 lightbox 綁定；樣式主體仍由 utility class 承擔，此處僅補交互樣式，
+   避免 W-TWIND 誤判為 purge 風險。 */
+.notice-item{position:relative}
+.notice-zoom{padding:0;cursor:zoom-in}

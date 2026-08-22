@@ -14,7 +14,9 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
 ## 兩種情境（先判別）
 
 - **A. 臨時單日異動**（某天停診/提早截止/醫師進修/颱風，下週恢復）
-  → 換首頁 `#clinic-notice` 公告圖 + 視情況加 HERO 徽章 `EXCEPTIONS` 單日特例 + `data-expires` 自動過期。**臨時公告不進 llms。**
+  → 首頁 `#clinic-notice` 加／換公告圖 + 視情況加 HERO 徽章 `EXCEPTIONS` 單日特例 + `data-expires` 自動過期。**臨時公告不進 llms。**
+  → **公告區塊可並列多則**（08-22c 起）：每則一個 `.notice-item` 各自帶 `data-expires`。**動手前先看現有公告在不在效期內——仍在效期就並列，不要覆蓋。**
+  → **「視情況滾動式調整、稍後公布」的時段，`EXCEPTIONS` 先留空**，等院長公布再補；同時把公布時間寫進 `00` 第六節待辦。
   → **院長常設指示：對話貼圖公告走「即刻公告 + 立即部署」**（不設起始日、通過驗證即快進合併 `main` 部署，不再逐次徵詢文案核可／部署確認；紅線與驗證關卡照舊）。詳見 SOP §一「預設交付模式」。
 - **B. 常態門診時間變更**（改固定週班表：新增/取消時段、改起訖、改休診日）
   → 改 HERO `SCHEDULE` 表 **＋ 全站散落的門診時間**（JSON-LD `openingHoursSpecification`、首頁時間表、多處 FAQ/正文、`visit-guide.html`、`services/weekend-pediatrics.html`、多頁 meta desc、`llms.txt`/`llms-full.txt`、站外 Google 商家與 MainPi）。

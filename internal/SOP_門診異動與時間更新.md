@@ -33,18 +33,30 @@
      取得原檔後只做**轉檔**（Pillow：webp q84 ＋ jpg q88 後備，維持原生尺寸不放大），細節見 `infographic-upload` skill。
    - 真的找不到原檔才談重繪（Chromium 無頭渲染 HTML 截圖）；**重繪是最後手段**，容器只有 WenQuanYi Zen Hei 一種中文字型，
      做不出院長海報的手寫風標題與裝飾，成品與原稿明顯不同，**且院長要的是原圖**（2026-08-12 裁示）。
-2. **改 `index.html` 的 `#clinic-notice` 區塊**（搜 `id="clinic-notice"` 定位），共五處：
-   - 圖片路徑 **兩處**（區塊本體 `#clinic-notice-zoom` 內 `<picture>` + lightbox `#notice-lightbox` 內 `<picture>`，webp source 與 jpg img 都要改）
+2. **先看現有公告還在不在效期內**（`grep -n 'notice-item' index.html` 看每則的 `data-expires`）：
+   - **還在效期內 → 並列，不要覆蓋**。新公告插在前面（新的在上），舊的原封不動留著。
+     2026-08-22c 就是這個情形：8/23 豪大雨臨時公告若覆蓋掉 9/1 新門診時間表公告（效期到 8/31），
+     會讓 Chatbase 問答稿的口徑基準與 3 處 `#clinic-notice` 連結指到看不見的東西。
+   - **已過期 → 直接換掉那則**（過期的公告留著也不會顯示，但別累積，換掉最乾淨）。
+3. **改 `index.html` 的 `#clinic-notice` 區塊**（搜 `id="clinic-notice"` 定位）。每則公告＝一個
+   `<div class="notice-item max-w-3xl mx-auto fade-in-up" data-expires="YYYY-MM-DD">`，內含五處要改：
+   - 圖片路徑（該卡 `.notice-zoom` 內 `<picture>` 的 webp source 與 jpg img；**lightbox 不必改**，
+     它是共用的 `<picture id="notice-lightbox-pic">`，內容由被點擊的卡動態填入）
    - `alt`（**公告全文逐字寫入**，爬蟲/螢幕閱讀器讀不到圖內文字）
    - 適用日期（`<time datetime>` 與可見「適用日期」文字）
-   - 圖下可見說明文字（AEO：把圖內關鍵資訊重述一遍）
-   - `data-expires="YYYY-MM-DD"`（適用末日，翌日起 UTC+8 自動隱藏整個區塊）
-3. **若異動影響「當日開診時段」**（提早截止、當日某段停診、整日休診）→ 同步改 HERO 徽章的 `EXCEPTIONS` 表（`index.html` 內嵌 script，搜 `var EXCEPTIONS`）：
+   - 圖下可見說明文字（AEO：把圖內關鍵資訊重述一遍；圖上寫「正常門診」就把實際起訖時間補出來）
+   - `data-expires="YYYY-MM-DD"`（該則適用末日，翌日起 UTC+8 自動隱藏**這一則**）
+   並確認 `<section id="clinic-notice">` 自己的 `data-expires` ＝**所有公告中最晚的那個**（backstop：
+   全部過期才整區隱藏）；卡與卡之間用 `mb-14` 留白，最後一則不加。
+4. **若異動影響「當日開診時段」**（提早截止、當日某段停診、整日休診）→ 同步改 HERO 徽章的 `EXCEPTIONS` 表（`index.html` 內嵌 script，搜 `var EXCEPTIONS`）：
    - 鍵＝UTC+8 日期 `YYYY-MM-DD`，值＝**當日完整時段表**（整筆取代該日 `SCHEDULE`）
    - 格式：`[[開始分鐘,結束分鐘,'名稱'], …]`；分鐘＝時×60＋分（08:00=480、11:00=660、11:30=690、12:00=720、14:30=870、18:00=1080、18:30=1110、21:00=1260、21:30=1290）
    - **整日休診 = 空陣列 `[]`**（徽章自動顯示「目前休診，下個有診日…」）
+   - **⚠️ 還沒定案的時段不要寫。** 公告若是「視情況滾動式調整、稍後公布」（颱風／豪雨常見），
+     **先只放公告卡、`EXCEPTIONS` 留空**，等院長公布再補——寫「停」或「照常」都是猜，
+     猜錯就是徽章對家長說謊。同時把「幾點公布、補哪一條」寫進 `00` 第六節待辦，別靠記憶。
    - 過期條目不影響運作，下次更新公告時順手清掉舊的即可
-4. **收尾**（見 §三 共同尾段）：dateModified 跳 + sitemap 首頁 lastmod + 驗證 + Chromium 實測 + 部署。**臨時公告不進 llms**（時效資訊，過期即誤導 AI 引用）。
+5. **收尾**（見 §三 共同尾段）：dateModified 跳 + sitemap 首頁 lastmod + 驗證 + Chromium 實測 + 部署。**臨時公告不進 llms**（時效資訊，過期即誤導 AI 引用）。
 
 ### 預設交付模式：即刻公告 + 立即部署（院長 2026-07-23 常設指示）
 
@@ -162,7 +174,8 @@ grep -rn '平日夜診至21:30\|夜診至 21:30\|週六週日皆有門診' --inc
 |---|---|---|
 | 情境 B 只改了首頁表格，漏改 JSON-LD | AI/Google 引用到舊時間 | 先跑探查指令、改完回頭複跑確認零殘留 |
 | 公告圖用同檔名覆蓋 | CDN 快取舊圖、家長看到過期資訊 | 檔名一律帶日期 |
-| 臨時異動只改公告圖、沒改 EXCEPTIONS | 徽章與公告矛盾（徽章仍顯示原時段） | §一.3：影響當日時段就加 EXCEPTIONS |
+| 臨時異動只改公告圖、沒改 EXCEPTIONS | 徽章與公告矛盾（徽章仍顯示原時段） | §一.4：影響當日時段就加 EXCEPTIONS（**尚未定案的時段除外，見該節 ⚠️**） |
+| 新公告直接覆蓋掉還在效期內的舊公告 | 舊公告（及指向它的客服稿／連結）憑空消失 | §一.2：先看 `data-expires`，仍在效期就並列 |
 | 忘記設 data-expires | 過期公告一直掛首頁誤導家長 | §一.2：一律設 `data-expires` |
 | 臨時公告寫進 llms | 過期後 AI 仍引用 | 臨時公告不進 llms |
 | 改了時間沒跳 dateModified／sitemap | SEO 訊號過期 | §三.1（R4） |
