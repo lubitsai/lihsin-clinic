@@ -210,7 +210,8 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/oral-thrush.html</loc>
-    <lastmod>2026-08-21</lastmod>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/oral-thrush-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-08-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
