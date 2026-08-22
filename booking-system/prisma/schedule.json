@@ -170,5 +170,13 @@
       }
     ]
   },
-  "exceptions": {}
+  "exceptions": {
+    "2026-08-23": [
+      {
+        "session": "MORNING",
+        "start": "08:00",
+        "end": "11:30"
+      }
+    ]
+  }
 }
