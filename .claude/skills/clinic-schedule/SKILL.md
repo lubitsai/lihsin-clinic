@@ -20,7 +20,7 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
 | ③ | Instagram 限時動態 | 院長 |
 | ④ | **Google 商家檔案「特殊營業時間」**（影響最大：地圖／搜尋／AI 直接讀） | 院長 |
 | ⑤ | **BookNow**：只關閉休診當節的時段＋既有預約改期 | 院長／櫃檯 |
-| ⑥ | **診所門口實體公告**（A4 列印）：`python3 internal/tools/make_door_notice.py <公告圖>` → `internal/print/*-A4.pdf` | 櫃檯 |
+| ⑥ | **診所門口實體公告**（**A4 橫式**列印）：`python3 internal/tools/make_door_notice.py <公告圖>` → `internal/print/*-A4.pdf`（`--portrait` 可改直式） | 櫃檯 |
 
 - **⑤ 現況**：線上是 **BookNow**，`booking-system/` 自建系統**尚未切換**；`sync_schedule.py` 對齊的是自建系統的班表，**不等於 ⑤ 已完成**。切換後 ⑤ 才改為自建系統（主機上 `npx tsx scripts/sync-schedule.ts`，先 `--dry-run`）。
 - 建議順序 ⑤ → ④ → ⑥ → ① → ②③（**⑤④⑥＝實害組**：約到空診次／Google 說有開／走到門口才發現沒開）。

@@ -9,9 +9,12 @@ make_door_notice.py — 把門診異動公告圖排成診所門口張貼用的 A
 刻意不加任何文字：公告圖上已經有全部資訊（日期、時段、診所名），
 在這裡另寫字＝新增未經核可的可見文字，且與網路版會有對不齊的風險。
 
+**預設 A4 橫式**（院長 2026-08-23 指定）。正方形公告圖在橫式與直式列印出來一樣大
+（都受 A4 短邊 210mm 限制，扣掉留白＝190×190mm），差別只在紙張方向與留白落在哪一側。
+
 用法：
   python3 internal/tools/make_door_notice.py images/notice/clinic-notice-20260823b.jpg
-  python3 internal/tools/make_door_notice.py <來源圖> [-o 輸出.pdf] [--landscape] [--dpi 300]
+  python3 internal/tools/make_door_notice.py <來源圖> [-o 輸出.pdf] [--portrait] [--dpi 300]
 
 輸出預設放 internal/print/（由 _redirects 擋在站外，不會被公開部署）。
 列印時選「實際大小 / 100%」，不要選「配合頁面縮放」。
@@ -36,7 +39,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("src", help="公告圖（jpg/png/webp）")
     ap.add_argument("-o", "--out", default=None, help="輸出 PDF 路徑")
-    ap.add_argument("--landscape", action="store_true", help="橫式 A4（正方形圖通常直式較大）")
+    ap.add_argument("--portrait", action="store_true", help="改用直式 A4（預設橫式）")
     ap.add_argument("--dpi", type=int, default=300)
     args = ap.parse_args()
 
@@ -47,7 +50,7 @@ def main():
     out = Path(args.out) if args.out else Path("internal/print") / (src.stem + "-A4.pdf")
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    w_mm, h_mm = (A4_MM[1], A4_MM[0]) if args.landscape else A4_MM
+    w_mm, h_mm = A4_MM if args.portrait else (A4_MM[1], A4_MM[0])
     px = lambda mm: int(round(mm / 25.4 * args.dpi))
     page = Image.new("RGB", (px(w_mm), px(h_mm)), "white")
 
@@ -59,7 +62,7 @@ def main():
 
     page.save(out, "PDF", resolution=args.dpi)
     print(f"✅ {out}")
-    print(f"   A4 {'橫式' if args.landscape else '直式'} {args.dpi}dpi，"
+    print(f"   A4 {'直式' if args.portrait else '橫式'} {args.dpi}dpi，"
           f"圖片列印尺寸約 {im.width / args.dpi * 25.4:.0f}×{im.height / args.dpi * 25.4:.0f} mm")
     print("   列印時請選「實際大小 / 100%」，不要選「配合頁面縮放」。")
 

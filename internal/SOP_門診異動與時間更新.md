@@ -36,7 +36,8 @@
 ②③ 是觸及層，晚幾分鐘無妨。
 
 **⑥ 怎麼做**：`python3 internal/tools/make_door_notice.py images/notice/clinic-notice-YYYYMMDD.jpg`
-→ 產出 `internal/print/<檔名>-A4.pdf`（A4 直式 300dpi，圖片列印約 190×190mm，正方形圖已是 A4 能放的最大尺寸）。
+→ 產出 `internal/print/<檔名>-A4.pdf`（**A4 橫式** 300dpi，院長 2026-08-23 指定；加 `--portrait` 可改直式）。
+正方形公告圖列印約 **190×190mm**，橫式直式一樣大（都受 A4 短邊 210mm 限制），**差別只在紙張方向與留白落在哪一側**。
 **列印選「實際大小／100%」**，不要選「配合頁面縮放」。**PDF 上刻意不加任何文字**——公告圖本身資訊完整，
 另寫字＝新增未經核可的可見文字，且容易與網路版對不齊。`internal/print/` 由 `_redirects` 擋在站外。
 
