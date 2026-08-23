@@ -5,13 +5,21 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { prisma } from "@/lib/db";
 import { createAppointment } from "@/lib/booking";
 import { getDaySlotAvailability } from "@/lib/availability";
-import { createScheduleException, setSlotCapacity, setSlotBlocked } from "@/lib/schedule-admin";
+import {
+  createScheduleException,
+  setSlotCapacity,
+  setSlotBlocked,
+  applyTemplateChange,
+} from "@/lib/schedule-admin";
 import { BookingError } from "@/lib/errors";
 import {
   resetDb,
   seedBase,
   makePatient,
   futureDate,
+  addDays,
+  todayStr,
+  weekdayOf,
   linkLineAccount,
   STAFF_ACTOR,
   PATIENT_ACTOR,
@@ -137,5 +145,75 @@ describe("排班例外", () => {
     const slots = await getDaySlotAvailability(date, general.id);
     expect(slots.some((s) => s.doctors.some((d) => d.doctorId === drLee.id))).toBe(true);
     expect(slots.some((s) => s.doctors.some((d) => d.doctorId === drTsai.id))).toBe(false);
+  });
+});
+
+/**
+ * 單日停診 vs 改週班表——這是切換系統最容易出事的地方。
+ *
+ * BookNow 是「關掉某天某節，關了就算了」；自建系統的週班表改下去卻是
+ * 對所有未來日期生效。櫃檯若照搬舊習慣去改週班表，會把往後每一個
+ * 同一星期幾的診次一起關掉，而且畫面上不會有任何一處立刻顯示這件事。
+ * 後台已把「臨時異動（只停一天）」設為預設分頁，這裡把兩者的差別釘住。
+ */
+describe("單日停診與週班表的作用範圍不同", () => {
+  beforeEach(resetDb);
+
+  const morningOf = async (date: string, clinicTypeId: string) =>
+    (await getDaySlotAvailability(date, clinicTypeId)).filter((s) => s.session === "MORNING");
+
+  it("單日停診只影響那一天：下週同一個星期幾照常，當天其他診次也照常", async () => {
+    const { general } = await seedBase();
+    const date = futureDate(3);
+    const nextWeekSameWeekday = addDays(date, 7);
+    expect(weekdayOf(nextWeekSameWeekday)).toBe(weekdayOf(date));
+
+    expect((await morningOf(date, general.id)).length).toBeGreaterThan(0);
+    expect((await morningOf(nextWeekSameWeekday, general.id)).length).toBeGreaterThan(0);
+
+    await createScheduleException(
+      { date, type: "SESSION_CLOSED", session: "MORNING", reason: "醫師臨時有事" },
+      STAFF_ACTOR,
+    );
+
+    // 那一天的早診沒了
+    expect(await morningOf(date, general.id)).toEqual([]);
+    // 下週同一個星期幾照常——這正是與「改週班表」最關鍵的差別
+    expect((await morningOf(nextWeekSameWeekday, general.id)).length).toBeGreaterThan(0);
+    // 當天午診、晚診也不受影響
+    const sameDay = await getDaySlotAvailability(date, general.id);
+    expect(sameDay.some((s) => s.session === "AFTERNOON")).toBe(true);
+    expect(sameDay.some((s) => s.session === "EVENING")).toBe(true);
+  });
+
+  it("對照：停用週班表那一列，往後每一個同一星期幾都跟著關掉", async () => {
+    const { general, drTsai, drLee } = await seedBase({ doubleShift: false });
+    const date = futureDate(3);
+    const nextWeekSameWeekday = addDays(date, 7);
+    expect(drLee.id).toBeTruthy();
+
+    const row = await prisma.weeklyScheduleTemplate.findFirstOrThrow({
+      where: { weekday: weekdayOf(date), session: "MORNING", doctorId: drTsai.id },
+    });
+    const r = await applyTemplateChange(
+      {
+        id: row.id,
+        weekday: row.weekday,
+        session: "MORNING",
+        startTime: row.startTime,
+        endTime: row.endTime,
+        doctorId: drTsai.id,
+        slotCapacity: row.slotCapacity,
+        allowOnline: row.allowOnline,
+        isActive: false, // 停用這一列
+      },
+      STAFF_ACTOR,
+      { today: todayStr() },
+    );
+    expect(r.ok).toBe(true);
+
+    // 兩天的早診都沒了——只是想停一天的人會在這裡踩雷
+    expect(await morningOf(date, general.id)).toEqual([]);
+    expect(await morningOf(nextWeekSameWeekday, general.id)).toEqual([]);
   });
 });

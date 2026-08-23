@@ -82,12 +82,30 @@ test.describe("後台：櫃檯日常", () => {
     });
   });
 
-  test("排班頁看得到週班表與日期例外", async ({ page }) => {
+  test("排班頁預設停在「臨時異動」，看得到當天各診次與停診鈕", async ({ page }) => {
     await login(page, ADMIN);
     await page.goto("/admin/schedule");
-    await expect(page.getByRole("button", { name: "固定週班表" })).toBeVisible();
-    await expect(page.getByText(/蔡宗儒|李佳玲/).first()).toBeVisible({ timeout: 15_000 });
+    // 切換系統最容易出事的地方：預設不能是會影響所有未來日期的週班表
+    await expect(page.getByText("這一頁只改「這一天」")).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText(/不會影響往後其他同一個星期幾/)).toBeVisible();
+    await expect(page.getByRole("button", { name: "停診" }).first()).toBeVisible({
+      timeout: 15_000,
+    });
+  });
+
+  test("固定週班表分頁會先警告「往後每個同一星期幾都會改」", async ({ page }) => {
+    await login(page, ADMIN);
+    await page.goto("/admin/schedule");
     // 分頁切換是客戶端狀態，hydration 未完成時點了不會有反應
+    await clickUntil(page.getByRole("button", { name: "固定週班表" }), async () => {
+      await expect(page.getByText(/往後每一個同一星期幾都會跟著改/)).toBeVisible({ timeout: 8_000 });
+    });
+    await expect(page.getByText(/蔡宗儒|李佳玲/).first()).toBeVisible({ timeout: 15_000 });
+  });
+
+  test("日期例外分頁仍看得到示範的單日停診", async ({ page }) => {
+    await login(page, ADMIN);
+    await page.goto("/admin/schedule");
     await clickUntil(page.getByRole("button", { name: /日期例外/ }), async () => {
       await expect(page.getByText(/示範資料：醫師進修/)).toBeVisible({ timeout: 8_000 });
     });

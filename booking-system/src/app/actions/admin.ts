@@ -28,7 +28,7 @@ import {
   type ExceptionInput,
   type TemplateChange,
 } from "@/lib/schedule-admin";
-import { dbToDate, todayStr } from "@/lib/tw-time";
+import { dateToDb, dbToDate, todayStr } from "@/lib/tw-time";
 import {
   liftRestriction,
   resetNoShowCount,
@@ -668,6 +668,110 @@ export async function adminCreateRestriction(patientId: string, reason: string):
 }
 
 // ── 排班 ─────────────────────────────────────────────
+
+export interface DaySessionDto {
+  session: "MORNING" | "AFTERNOON" | "EVENING";
+  startTime: string;
+  endTime: string;
+  doctors: { id: string; name: string }[];
+  /** 停掉這個診次會影響幾筆有效預約（與實際建立例外時的判斷同一套邏輯） */
+  affectedCount: number;
+  /** 已停診時帶出例外 id，供「恢復看診」用 */
+  closedExceptionId: string | null;
+}
+
+export interface DayScheduleDto {
+  date: string;
+  closedAllDayExceptionId: string | null;
+  sessions: DaySessionDto[];
+  /** 當天其他既有例外（代診／加診／特殊時間等），只列出來提醒櫃檯 */
+  otherExceptions: { id: string; label: string; reason: string }[];
+}
+
+const OTHER_EXCEPTION_LABEL: Record<string, string> = {
+  DOCTOR_OFF: "醫師休診",
+  DOCTOR_SUBSTITUTE: "醫師代診",
+  SPECIAL_HOURS: "特殊營業時間",
+  EXTRA_SESSION: "臨時加診",
+  SLOT_BLOCKED: "封鎖單一時段",
+  CLINIC_TYPE_SUSPENDED: "暫停門診類型",
+};
+
+/**
+ * 某一天的診次現況（臨時異動用）。
+ *
+ * 從**週班表**推出當天原本有哪些診次，再對照當天的例外標記哪一個已經停診——
+ * 不能直接用 getDayScheduleBlocks，那個已經把停掉的診次濾掉了，
+ * 畫面上就會看不到「已停診（可恢復）」這個狀態。
+ */
+export async function adminFetchDaySchedule(
+  date: string,
+): Promise<ActionResult<DayScheduleDto>> {
+  try {
+    requirePermission(await getStaffContext(), PERMISSIONS.SCHEDULE_WRITE);
+    const day = dateStrSchema.parse(date);
+    const weekday = dateToDb(day).getUTCDay();
+
+    const [templates, exceptions] = await Promise.all([
+      prisma.weeklyScheduleTemplate.findMany({
+        where: { weekday, isActive: true, doctor: { isActive: true } },
+        include: { doctor: true },
+        orderBy: { startTime: "asc" },
+      }),
+      prisma.scheduleException.findMany({ where: { date: dateToDb(day) } }),
+    ]);
+
+    const bySession = new Map<string, typeof templates>();
+    for (const t of templates) {
+      const list = bySession.get(t.session) ?? [];
+      list.push(t);
+      bySession.set(t.session, list);
+    }
+
+    const order = ["MORNING", "AFTERNOON", "EVENING"] as const;
+    const sessions: DaySessionDto[] = [];
+    for (const session of order) {
+      const rows = bySession.get(session);
+      if (!rows || rows.length === 0) continue;
+      const closed = exceptions.find((e) => e.type === "SESSION_CLOSED" && e.session === session);
+      // 已停診就不必再算影響人數（預約早在停診當下處理掉了）
+      const affected = closed
+        ? []
+        : await findAffectedAppointments({ date: day, type: "SESSION_CLOSED", session, reason: "" });
+      const doctorSeen = new Set<string>();
+      sessions.push({
+        session,
+        startTime: rows.reduce((min, r) => (r.startTime < min ? r.startTime : min), rows[0].startTime),
+        endTime: rows.reduce((max, r) => (r.endTime > max ? r.endTime : max), rows[0].endTime),
+        doctors: rows
+          .filter((r) => !doctorSeen.has(r.doctorId) && doctorSeen.add(r.doctorId))
+          .map((r) => ({ id: r.doctorId, name: r.doctor.name })),
+        affectedCount: affected.length,
+        closedExceptionId: closed?.id ?? null,
+      });
+    }
+
+    return {
+      ok: true,
+      data: {
+        date: day,
+        closedAllDayExceptionId:
+          exceptions.find((e) => e.type === "CLINIC_CLOSED_DAY")?.id ?? null,
+        sessions,
+        otherExceptions: exceptions
+          .filter((e) => OTHER_EXCEPTION_LABEL[e.type])
+          .map((e) => ({
+            id: e.id,
+            label: OTHER_EXCEPTION_LABEL[e.type],
+            reason: e.reason,
+          })),
+      },
+    };
+  } catch (e) {
+    return toUserError(e);
+  }
+}
+
 
 const exceptionSchema = z.object({
   date: dateStrSchema,

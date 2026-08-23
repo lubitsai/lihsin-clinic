@@ -1,7 +1,13 @@
 "use client";
 
 /**
- * 排班管理：固定週班表編輯＋日期例外（休診/代診/加診/封鎖/加開名額）。
+ * 排班管理。分頁順序是刻意的：**「臨時異動」排第一並作為預設**。
+ *
+ * BookNow 的心智模型是「關掉某天某節的個別時段，關了就算了」；自建系統的
+ * 固定週班表改下去卻是對所有未來日期生效。切換系統後照搬舊習慣，
+ * 會把往後每一個同一星期幾的診次一起關掉，而且不會有人立刻發現。
+ * 因此「只停這一天」要是最好按到的那一顆，週班表退到最後並加警語。
+ *
  * 建立例外若影響既有預約：先顯示受影響病人名單，
  * 由櫃檯選擇「逐筆改期（前往改期頁）」或「批次診所取消＋通知」後才生效。
  */
@@ -18,6 +24,7 @@ import {
   adminCopyWeekExceptions,
   type AffectedRow,
 } from "@/app/actions/admin";
+import { DayOffBoard } from "./day-off-board";
 import { Card, Alert } from "@/components/ui";
 import { addDays, formatDateTw, todayStr, WEEKDAY_ZH as WEEKDAYS } from "@/lib/tw-time";
 import { SESSION_META } from "@/lib/status-labels";
@@ -81,7 +88,7 @@ interface Props {
 
 export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }: Props) {
   const router = useRouter();
-  const [tab, setTab] = useState<"weekly" | "exceptions" | "month" | "capacity">("weekly");
+  const [tab, setTab] = useState<"day" | "month" | "exceptions" | "capacity" | "weekly">("day");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [pending, startTransition] = useTransition();
@@ -99,10 +106,11 @@ export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }:
       <div className="flex gap-2 no-print">
         {(
           [
-            ["weekly", "固定週班表"],
-            ["exceptions", "日期例外（休診/代診/加診）"],
+            ["day", "臨時異動（只停一天）"],
             ["month", "月曆檢視"],
+            ["exceptions", "日期例外（代診/加診/特殊時間）"],
             ["capacity", "時段名額調整"],
+            ["weekly", "固定週班表"],
           ] as const
         ).map(([key, label]) => (
           <button
@@ -119,8 +127,24 @@ export function ScheduleManager({ templates, exceptions, doctors, clinicTypes }:
       {error && <Alert tone="error">{error}</Alert>}
       {message && <Alert tone="success">{message}</Alert>}
 
+      {tab === "day" && <DayOffBoard onError={setError} />}
+
       {tab === "weekly" && (
         <>
+          <Alert tone="warn">
+            <p className="font-bold mb-1">⚠️ 這裡改的是「每週固定」的門診時間</p>
+            <p>
+              儲存後<strong>往後每一個同一星期幾都會跟著改</strong>，不是只改某一天。
+              只是某天臨時停診、醫師請假，請改用第一個分頁
+              <button
+                onClick={() => setTab("day")}
+                className="underline underline-offset-2 font-bold mx-1"
+              >
+                「臨時異動（只停一天）」
+              </button>
+              ——那才是關了就算了的那一種。
+            </p>
+          </Alert>
           <WeeklyEditor
             templates={templates}
             doctors={doctors}
