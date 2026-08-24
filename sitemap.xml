@@ -451,6 +451,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/child-uti.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/child-uti-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
