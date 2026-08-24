@@ -28,7 +28,7 @@ model: sonnet
 
 ## 交付
 
-- 實作完成的程式碼(commit 到指定分支;commit 訊息用英文)。
+- 實作完成的程式碼(commit 到指定分支;commit 訊息用繁體中文,見 internal/00 §8-6)。
 - 實作筆記寫入 `workflow/<任務名>/02_implementation.md`,內容:
   - 完成的工作項與對應檔案清單
   - 實際執行/測試結果(貼上輸出)

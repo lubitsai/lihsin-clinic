@@ -29,7 +29,7 @@ model: fable
 
 ## 交付
 
-- 優化後的最終程式碼(commit 到指定分支;commit 訊息用英文)。
+- 優化後的最終程式碼(commit 到指定分支;commit 訊息用繁體中文,見 internal/00 §8-6)。
 - 優化報告寫入 `workflow/<任務名>/04_optimization.md`,內容:
   - 基準 vs 優化後的量測數據(表格)
   - 每項改動:動機、做法、量測差異

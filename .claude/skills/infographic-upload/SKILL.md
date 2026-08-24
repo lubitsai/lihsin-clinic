@@ -74,7 +74,7 @@ python3 internal/tools/validate_site.py --root . --stage deploy
 E-LINK（圖不存在）代表檔名沒對上或漏檔——回第 2/3 步。WARN 逐條判讀。
 
 ### 5 commit ＋ push（上 GitHub）
-- commit 訊息用**英文**，清楚描述（見 00 使用者偏好）。
+- commit 訊息用**繁體中文**，清楚描述（權威出處＝`internal/00_專案總覽索引.md` §8-6）。
 - push 到當前工作分支：`git push -u origin <branch>`（網路失敗才指數退避重試）。
 - 除非院長明講，**不主動開 PR**。
 
