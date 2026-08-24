@@ -96,8 +96,16 @@ jobs:
           # 回退時整頁會 404。下方「內容抽驗」盯本頁核心內容,這行盯「頁還在不在」,
           # 依 2026-08-14b 通則「兩者缺一不可」成對存在。
           check /health/child-uti.html 200
+          # 2026-08-25b 新增(平行 session 08-24b 新頁〈兒童尿床〉):院長指示比照 child-uti
+          # 補位。該頁上線後一直沒有任何哨兵——與 08-23d 新頁當初同型的缺口。
+          # 同樣與下方內容抽驗成對存在(08-14b 通則)。
+          check /health/child-bedwetting.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
+          # 2026-08-25b 新增(院長指示):child-uti 的懶人包圖。它同時是該頁的 og:image
+          # 與 sitemap image:image 標的,圖掉了不只內文開天窗,社群分享卡與圖片索引
+          # 也一起失效,而頁面照樣 200——上面那條 200 檢查抓不到。
+          check /images/child-uti-infographic.jpg 200
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
           # 互動小程式(六關看診流程),院長把連結直接發給家長。它 noindex、不進
           # sitemap、官網沒有任何頁面連過去——**沒有任何其他機制會發現它不見了**,
@@ -168,6 +176,14 @@ jobs:
           # ⚠️ 若日後刻意改這句措辭,請連同本檢查一起改,不要直接刪掉(防呆 17)。
           cu=$(curl -s --max-time 20 "$BASE/health/child-uti.html" | grep -c '白血球酯酶' || true)
           if [ "$cu" -ge 1 ]; then echo "OK    兒童泌尿道感染頁尿液常規指標段已上線"; else echo "FAIL  兒童泌尿道感染頁『白血球酯酶』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+          # 兒童尿床頁抽驗(2026-08-25b 新增,平行 session 08-24b 新頁):上面的 200 檢查
+          # 盯「頁還在」,這條盯「本頁的核心內容還在」。挑「排尿日記」的理由:它是本頁
+          # 門診評估段的核心,也**正是本頁與站內其他提到尿床之處的差別所在**——
+          # child-uti 只把「突然又尿床」當泌尿道感染的線索帶過一句,沒有任何評估流程。
+          # 全站 HTML 僅本頁含此詞,不會誤配;臨床名詞、不隨文案潤飾變動。
+          # ⚠️ 若日後刻意改這句措辭,請連同本檢查一起改,不要直接刪掉(防呆 17)。
+          cb=$(curl -s --max-time 20 "$BASE/health/child-bedwetting.html" | grep -c '排尿日記' || true)
+          if [ "$cb" -ge 1 ]; then echo "OK    兒童尿床頁門診評估段已上線"; else echo "FAIL  兒童尿床頁『排尿日記』未見——本頁疑遭舊版覆蓋"; fail=1; fi
           # 遊戲頁 SEO 層抽驗(2026-08-18 新增,PR #100 上架 SEO):/game/ 由純 iframe 外框
           # 改寫為完整官網頁面(H1、canonical、og/twitter、3 段 JSON-LD、進 sitemap)。
           # ⚠️ 這條防的失效模式,上面的 200 檢查抓不到:若有人拿舊版 index.html(40 行的
