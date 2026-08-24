@@ -92,6 +92,10 @@ jobs:
           # 依 2026-08-14b 通則「兩者缺一不可」,與上面四個承載頁同樣的配置。
           check /services/allergy-testing.html 200
           check /health/allergy-test-results.html 200
+          # 2026-08-23f 新增(08-23d 新頁〈兒童泌尿道感染〉):整頁都是新檔,被舊版覆蓋
+          # 回退時整頁會 404。下方「內容抽驗」盯本頁核心內容,這行盯「頁還在不在」,
+          # 依 2026-08-14b 通則「兩者缺一不可」成對存在。
+          check /health/child-uti.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
@@ -155,6 +159,15 @@ jobs:
           if [ "$atm" -ge 1 ] && [ "$atr" -ge 1 ]; then echo "OK    過敏原檢測頁實體層已上線(MedicalTest × $atm、relatedLink × $atr)"; else echo "FAIL  過敏原檢測頁實體層未見(MedicalTest × $atm、relatedLink × $atr)——JSON-LD 疑遭舊版覆蓋"; fail=1; fi
           ar=$(curl -s --max-time 20 "$BASE/health/allergy-test-results.html" | grep -c '過敏原報告要看哪一科' || true)
           if [ "$ar" -ge 1 ]; then echo "OK    過敏原報告頁 keywords 科別分流詞路已上線"; else echo "FAIL  過敏原報告頁『過敏原報告要看哪一科』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # 兒童泌尿道感染頁抽驗(2026-08-23f 新增,08-23d 新頁):上面的 200 檢查盯
+          # 「頁還在」,這條盯「本頁的核心內容還在」。挑「白血球酯酶」的理由:它是
+          # 尿液常規四項指標之一,正是本頁與站內其他提到泌尿道感染之處(首頁 FAQ、
+          # family-medicine 的成人腎臟段)的差別所在——那兩處只說院內可驗尿,
+          # 沒有講判讀依據。全站 HTML 僅本頁含此詞(另在 llms 雙檔),不會誤配。
+          # 醫學名詞、不隨文案潤飾變動,維護成本低。
+          # ⚠️ 若日後刻意改這句措辭,請連同本檢查一起改,不要直接刪掉(防呆 17)。
+          cu=$(curl -s --max-time 20 "$BASE/health/child-uti.html" | grep -c '白血球酯酶' || true)
+          if [ "$cu" -ge 1 ]; then echo "OK    兒童泌尿道感染頁尿液常規指標段已上線"; else echo "FAIL  兒童泌尿道感染頁『白血球酯酶』未見——本頁疑遭舊版覆蓋"; fail=1; fi
           # 遊戲頁 SEO 層抽驗(2026-08-18 新增,PR #100 上架 SEO):/game/ 由純 iframe 外框
           # 改寫為完整官網頁面(H1、canonical、og/twitter、3 段 JSON-LD、進 sitemap)。
           # ⚠️ 這條防的失效模式,上面的 200 檢查抓不到:若有人拿舊版 index.html(40 行的
