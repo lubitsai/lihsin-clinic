@@ -60,6 +60,8 @@ validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝202
   W-HFORBID   隱藏 #ai-knowledge-block 禁語掃描                 ｜08-02b P5（白名單=逐條複核）
   W-CITEDOC   醫療頁 citation 應為「文件層級」書目（有 publisher
               且非機構首頁），不得退化回「機構名＋首頁」        ｜08-03 回退攔截
+  W-BCRUMB    可見麵包屑末項必須是該頁自己講過的詞（出現在 title／
+              H1／BreadcrumbList 任一）                          ｜08-24b scaffold 抽段回退攔截
 
 已知設計取捨（弱模型請勿「修正」這些行為）
 ------------------------------------------
@@ -78,6 +80,13 @@ validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝202
   → 純關鍵詞掃描永遠掃不到。**問題型態是句型，不是詞**，故另立句型比對且不受豁免。
 - W-TWIND 會有少量誤報（純 JS 掛鉤 class、schema 掛鉤 class）→ 收進 TAILWIND_IGNORE
   並附註來源，不要為了消音而放寬偵測邏輯。
+- **W-BCRUMB 為什麼比對的是「有沒有講過」而不是「跟 schema 相不相等」**：站內慣例是
+  可見麵包屑用**短標**、BreadcrumbList 用**完整敘述名**（「流感疫苗」vs
+  「流感疫苗（公費與自費）」），全等比對會在 21 個正常頁誤報。改判「可見末項（去空白後）
+  是否出現在 title＋H1＋BreadcrumbList 的合併字串中」，2026-08-24b 全樹實測**誤報 0**。
+  抓的是 08-24b 的真實病灶：新頁由既有頁 scaffold 逐段抽取時，**可見麵包屑跟著被複製**，
+  schema 改對了、DOM 沒改 → 一頁講尿床、麵包屑寫「兒童泌尿道感染」。設 WARN 而非 ERROR，
+  是保留「同義短標」的正當空間，避免逼出為消音而放寬偵測的壞誘因。
 - 本工具對「datePublished/datePosted 純日期 30 處」刻意不檢查：00 §4-9 記載該項
   待院長決定，未裁示前不得自行規範化。
 """
@@ -462,6 +471,42 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
                          "citation 全為機構首頁層級（缺文件名／publisher／深層連結）"
                          "——退回 08-03 前狀態，AI 無從查核")
             break
+
+    # W-BCRUMB（2026-08-24b：scaffold 抽段回退攔截）
+    # 病徵：新頁由既有頁逐段程式化抽取 scaffold 時，可見麵包屑（含頁面專屬詞）
+    # 跟著被複製；JSON-LD 的 BreadcrumbList 改對了、可見 DOM 沒改 → 兩者互相打臉。
+    # 判準刻意不是「與 schema 全等」（站內慣例是可見用短標、schema 用完整敘述名，
+    # 全等會誤報 21 頁），而是「可見末項有沒有出現在這一頁自己講過的詞裡」。
+    bc = re.search(r'<nav[^>]*aria-label\s*=\s*["\']breadcrumb["\'][^>]*>(.*?)</nav\s*>',
+                   raw, re.S | re.I)
+    if bc:
+        crumbs = [t.strip() for t in re.findall(r'>([^<>]+)<', bc.group(1))
+                  if t.strip() and t.strip() != "/"]
+        if crumbs:
+            leaf = re.sub(r"\s+", "", crumbs[-1])
+            hay = ""
+            mt = re.search(r"<title[^>]*>(.*?)</title\s*>", raw, re.S | re.I)
+            if mt:
+                hay += re.sub(r"\s+", "", mt.group(1))
+            mh = re.search(r"<h1[^>]*>(.*?)</h1\s*>", raw, re.S | re.I)
+            if mh:
+                hay += re.sub(r"\s+", "", re.sub(r"<[^>]+>", "", mh.group(1)))
+            for m in re.finditer(
+                    r'<script[^>]*type\s*=\s*["\']application/ld\+json["\'][^>]*>(.*?)</script\s*>',
+                    raw, re.S | re.I):
+                try:
+                    d = json.loads(m.group(1))
+                except Exception:
+                    continue
+                for it in (d if isinstance(d, list) else [d]):
+                    if isinstance(it, dict) and it.get("@type") == "BreadcrumbList":
+                        for e in it.get("itemListElement", []):
+                            if isinstance(e, dict):
+                                hay += re.sub(r"\s+", "", str(e.get("name", "")))
+            if leaf and leaf not in hay:
+                rep.warn(rel, "W-BCRUMB",
+                         f"可見麵包屑末項「{crumbs[-1]}」未出現在本頁 title／H1／"
+                         f"BreadcrumbList 任一處——scaffold 抽段殘留？")
 
     # E-AGGRT
     if "aggregateRating" in raw:
