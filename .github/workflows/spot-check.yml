@@ -132,6 +132,14 @@ jobs:
           if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
           v=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '分齡族群速查' || true)
           if [ "$v" -ge 1 ]; then echo "OK    vaccination hub『分齡族群速查』已上線"; else echo "FAIL  vaccination hub 內容未見"; fail=1; fi
+          # 疫苗 Hub 流感季隱藏區(2026-08-25f 新增,「台南疫苗／2026 流感季」四層補強):
+          # 盯住 Hub 隱藏 #ai-knowledge-block 新增的流感季實體關係段。該段是純隱藏層——
+          # 被舊版覆蓋時頁面照樣 200、可見層一字不差、validator 不會亮,沒有人會發現;
+          # 上一行的『分齡族群速查』在可見層,抓不到隱藏區單獨回退。刻意盯區塊標題而非段內
+          # 文案(標題是結構、不隨文案潤飾漂移),該字串全站僅本頁 1 次、llms 雙檔為 0。
+          # ⚠️ 防呆 17:日後改寫該段標題必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
+          vf=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '台南流感疫苗（公費與自費）實體關係與相關頁面' || true)
+          if [ "$vf" -ge 1 ]; then echo "OK    vaccination hub 流感季隱藏區已上線"; else echo "FAIL  vaccination hub 流感季隱藏區未見"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
