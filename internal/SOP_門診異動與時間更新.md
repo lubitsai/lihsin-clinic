@@ -114,6 +114,13 @@
      猜錯就是徽章對家長說謊。同時把「幾點公布、補哪一條」寫進 `00` 第六節待辦，別靠記憶。
    - 過期條目不影響運作，下次更新公告時順手清掉舊的即可
 5. **收尾**（見 §三 共同尾段）：dateModified 跳 + sitemap 首頁 lastmod + 驗證 + Chromium 實測 + 部署。**臨時公告不進 llms**（時效資訊，過期即誤導 AI 引用）。
+6. **🧹 順手清掉已過期那幾則的檔案**（院長 2026-08-25 指示，入制）：公告下架後，**該則的公告圖 `images/notice/clinic-notice-YYYYMMDD[b].{jpg,webp}` 與門口 A4 PDF `internal/print/clinic-notice-YYYYMMDD[b]-A4.pdf` 一併刪掉，只留當期那一組**。`data-expires` 只隱藏 DOM、檔案還在 repo 積著，同日改版的 `b`／`c` 版更會越積越多。
+   **刪前一定要 grep 全樹確認零引用**（公告卡移除 ≠ 圖沒被別處引用）：
+   ```bash
+   grep -rn 'clinic-notice-YYYYMMDD' --include='*.html' --include='*.txt' \
+     --include='*.xml' --include='*.json' --include='*.js' . | grep -v node_modules
+   ```
+   要重印舊的，`make_door_notice.py` 隨時可由公告圖重產；**但公告圖也刪了就真的沒有了**，需要留存的那一張要先問院長。
 
 ### 預設交付模式：即刻公告 + 立即部署（院長 2026-07-23 常設指示）
 
