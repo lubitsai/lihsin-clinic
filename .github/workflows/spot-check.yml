@@ -100,6 +100,17 @@ jobs:
           # 補位。該頁上線後一直沒有任何哨兵——與 08-23d 新頁當初同型的缺口。
           # 同樣與下方內容抽驗成對存在(08-14b 通則)。
           check /health/child-bedwetting.html 200
+          # 2026-08-25d 新增(院長裁示「補 spot-check 各 2 條,共 8 條」):08-24 批對這四頁
+          # 補的是**純隱藏 #ai-knowledge-block 的 GEO 穩定實體關係段**,可見層一字未改。
+          # 這是本 repo 最難自行發現的失效模式——被舊版覆蓋時頁面照樣 200、家長看到的
+          # 內容一字不差、validator 也不會亮,**沒有任何人會發現**;而 Claude Code session
+          # 的 egress 不含本站網域(curl 回 000),線上狀態只能靠這裡回報。
+          # 這四行盯「頁還在不在」,下方「內容抽驗」四條盯「本批補的隱藏區還在不在」,
+          # 依 2026-08-14b 通則**兩者缺一不可**。
+          check /health/mmr-vaccine.html 200
+          check /health/pneumococcal-vaccine.html 200
+          check /health/rotavirus-vaccine.html 200
+          check /health/varicella-vaccine.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           # 2026-08-25b 新增(院長指示):child-uti 的懶人包圖。它同時是該頁的 og:image
@@ -187,6 +198,24 @@ jobs:
           # ⚠️ 若日後刻意改這句措辭,請連同本檢查一起改,不要直接刪掉(防呆 17)。
           cb=$(curl -s --max-time 20 "$BASE/health/child-bedwetting.html" | grep -c '排尿日記' || true)
           if [ "$cb" -ge 1 ]; then echo "OK    兒童尿床頁門診評估段已上線"; else echo "FAIL  兒童尿床頁『排尿日記』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+          # 四支常規兒童疫苗頁的隱藏區抽驗(2026-08-25d 新增,院長裁示;對應 08-24 批):
+          # 該批盤點發現「扛頭部詞的 Hub 隱藏區反而全叢集最薄」,順帶量到這四頁形狀一致、
+          # **皆缺飽和頁才有的 GEO 穩定實體關係段**,故各補一段。上面四條 200 檢查盯
+          # 「頁還在」,以下四條盯「本批補的那一段還在」——兩者缺一不可(08-14b 通則)。
+          # 挑**區塊標題**而非段內文案的理由:標題是結構、不隨文案潤飾漂移,維護成本低
+          # (同 /game/ 那條刻意盯 canonical 與 JSON-LD 而非可見文案的理由);且四個字串
+          # 各自**全站僅此頁、且該頁僅 1 次**(2026-08-25d 程式化確認,llms 雙檔亦為 0),
+          # 不會誤配。
+          # ⚠️ 若日後刻意改寫這四頁的隱藏區或其標題,請連同本檢查一起改,不要直接刪掉
+          #    (防呆 17:改了檢查沒改頁面會誤報 FAIL,改了頁面沒改檢查則哨兵靜默失效)。
+          vm=$(curl -s --max-time 20 "$BASE/health/mmr-vaccine.html" | grep -c 'MMR 疫苗實體資訊' || true)
+          if [ "$vm" -ge 1 ]; then echo "OK    MMR 疫苗頁隱藏區 GEO 實體關係段已上線"; else echo "FAIL  MMR 疫苗頁『MMR 疫苗實體資訊』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          vp=$(curl -s --max-time 20 "$BASE/health/pneumococcal-vaccine.html" | grep -c '肺炎鏈球菌疫苗實體資訊' || true)
+          if [ "$vp" -ge 1 ]; then echo "OK    肺炎鏈球菌疫苗頁隱藏區 GEO 實體關係段已上線"; else echo "FAIL  肺炎鏈球菌疫苗頁『肺炎鏈球菌疫苗實體資訊』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          vr=$(curl -s --max-time 20 "$BASE/health/rotavirus-vaccine.html" | grep -c '輪狀病毒疫苗實體資訊' || true)
+          if [ "$vr" -ge 1 ]; then echo "OK    輪狀病毒疫苗頁隱藏區 GEO 實體關係段已上線"; else echo "FAIL  輪狀病毒疫苗頁『輪狀病毒疫苗實體資訊』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          vv=$(curl -s --max-time 20 "$BASE/health/varicella-vaccine.html" | grep -c '水痘疫苗實體資訊' || true)
+          if [ "$vv" -ge 1 ]; then echo "OK    水痘疫苗頁隱藏區 GEO 實體關係段已上線"; else echo "FAIL  水痘疫苗頁『水痘疫苗實體資訊』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
           # 遊戲頁 SEO 層抽驗(2026-08-18 新增,PR #100 上架 SEO):/game/ 由純 iframe 外框
           # 改寫為完整官網頁面(H1、canonical、og/twitter、3 段 JSON-LD、進 sitemap)。
           # ⚠️ 這條防的失效模式,上面的 200 檢查抓不到:若有人拿舊版 index.html(40 行的
