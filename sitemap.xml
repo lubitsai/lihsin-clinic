@@ -147,6 +147,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/measles.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/measles-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -309,6 +310,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/services/vaccination.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/vaccination-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -394,7 +396,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/pneumococcal-vaccine.html</loc>
-    <lastmod>2026-08-03</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
