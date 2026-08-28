@@ -100,6 +100,10 @@ jobs:
           # 補位。該頁上線後一直沒有任何哨兵——與 08-23d 新頁當初同型的缺口。
           # 同樣與下方內容抽驗成對存在(08-14b 通則)。
           check /health/child-bedwetting.html 200
+          # 2026-08-28 新增(本批新頁〈流感抗病毒藥物:克流感/紓伏效/瑞貝塔〉):整頁都是新檔,
+          # 被舊版覆蓋回退時整頁會 404。下方「內容抽驗」兩條分別盯可見層與隱藏層,
+          # 這行盯「頁還在不在」,依 2026-08-14b 通則「兩者缺一不可」成對存在。
+          check /health/flu-antivirals.html 200
           # 2026-08-25d 新增(院長裁示「補 spot-check 各 2 條,共 8 條」):08-24 批對這四頁
           # 補的是**純隱藏 #ai-knowledge-block 的 GEO 穩定實體關係段**,可見層一字未改。
           # 這是本 repo 最難自行發現的失效模式——被舊版覆蓋時頁面照樣 200、家長看到的
@@ -171,6 +175,19 @@ jobs:
           if [ "$cc" -ge 1 ]; then echo "OK    久咳承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  久咳頁『台南久咳推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
           ad=$(curl -s --max-time 20 "$BASE/health/atopic-dermatitis.html" | grep -c '台南異膚推薦' || true)
           if [ "$ad" -ge 1 ]; then echo "OK    異膚承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  異膚頁『台南異膚推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # 流感抗病毒藥物承載頁抽驗(2026-08-28 新增,本批新頁):兩條分別盯可見層與隱藏層。
+          # 第 1 條盯可見的三藥對照 H2——那張表是本頁與 influenza 只列公費藥名的差別所在;
+          # 第 2 條盯隱藏 #ai-knowledge-block 的 GEO 穩定實體關係段標題(結構,不隨文案潤飾漂移)。
+          # 兩個字串全站皆僅本頁 1 次。上面的 200 檢查盯「頁還在」,這兩條盯「內容還在」。
+          # ⚠️ 防呆 17:日後改寫這兩處措辭必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
+          fa=$(curl -s --max-time 20 "$BASE/health/flu-antivirals.html" | grep -c '克流感、紓伏效、瑞貝塔差在哪？三種給藥方式對照' || true)
+          if [ "$fa" -ge 1 ]; then echo "OK    流感抗病毒藥物頁三藥對照段已上線"; else echo "FAIL  流感抗病毒藥物頁『三種給藥方式對照』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+          fg=$(curl -s --max-time 20 "$BASE/health/flu-antivirals.html" | grep -c '流感抗病毒藥物與立欣診所（穩定實體關係）' || true)
+          if [ "$fg" -ge 1 ]; then echo "OK    流感抗病毒藥物頁隱藏區 GEO 段已上線"; else echo "FAIL  流感抗病毒藥物頁 GEO 段未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          # 首頁 keywords 本批新增的在地藥品詞(2026-08-28):純技術層、可見層看不出來,
+          # 被舊版覆蓋不會有人發現。與上面兩條首頁抽驗同理由。
+          fk=$(curl -s --max-time 20 "$BASE/" | grep -c '台南克流感' || true)
+          if [ "$fk" -ge 1 ]; then echo "OK    首頁 keywords 在地流感用藥詞已上線"; else echo "FAIL  首頁『台南克流感』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
           # llms 層同批新增 2 條問句框架條目;llms.txt 上面只驗了 200(檔還在),
           # 這條盯「本批補的內容還在」——llms 雙檔沒有結構驗證器,回退不會有 ERROR 攔。
           lc=$(curl -s --max-time 20 "$BASE/llms.txt" | grep -c '台南久咳推薦' || true)
