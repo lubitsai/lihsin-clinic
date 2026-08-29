@@ -191,6 +191,13 @@ jobs:
           # 被舊版覆蓋不會有人發現。與上面兩條首頁抽驗同理由。
           fk=$(curl -s --max-time 20 "$BASE/" | grep -c '台南克流感' || true)
           if [ "$fk" -ge 1 ]; then echo "OK    首頁 keywords 在地流感用藥詞已上線"; else echo "FAIL  首頁『台南克流感』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # 2026-08-28b 新增(「台南流感特效藥／台南流感抗病毒藥物」四層補強):本批的產出
+          # **全部在看不見的層**(FAQPage schema／隱藏區／llms／keywords),可見層一字未動
+          # ——被舊版覆蓋時頁面照樣 200、上面兩條哨兵照樣過、家長看到的內容一字不差,
+          # 沒有任何人會發現。盯本批新增的俗名定義題(該字串全站僅本頁 1 次)。
+          # ⚠️ 防呆 17:日後改寫這題題目要同批改本檢查,不可為了讓 CI 過而直接刪掉。
+          ff=$(curl -s --max-time 20 "$BASE/health/flu-antivirals.html" | grep -c '流感特效藥是什麼？和一般感冒藥、退燒藥差在哪裡？' || true)
+          if [ "$ff" -ge 1 ]; then echo "OK    流感抗病毒藥物頁『流感特效藥』俗名 FAQ 已上線"; else echo "FAIL  流感抗病毒藥物頁俗名 FAQ 未見——FAQPage schema 疑遭舊版覆蓋"; fail=1; fi
           # llms 層同批新增 2 條問句框架條目;llms.txt 上面只驗了 200(檔還在),
           # 這條盯「本批補的內容還在」——llms 雙檔沒有結構驗證器,回退不會有 ERROR 攔。
           lc=$(curl -s --max-time 20 "$BASE/llms.txt" | grep -c '台南久咳推薦' || true)
