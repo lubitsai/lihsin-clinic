@@ -89,6 +89,7 @@ jobs:
           check /health/atopic-dermatitis.html 200
           check /health/atopic-march.html 200
           check /health/rapid-tests.html 200
+          check /news/back-to-school-infections.html 200
           # 2026-08-15 批(PR #94)的兩個過敏原檢測承載頁。下方「內容抽驗」已各盯一層
           # (實體層 schema／keywords),這兩行盯的是另一件事:頁還在不在。
           # 依 2026-08-14b 通則「兩者缺一不可」,與上面四個承載頁同樣的配置。
@@ -315,4 +316,11 @@ jobs:
           #    (防呆 17:改了檢查沒改頁面會誤報 FAIL,改了頁面沒改檢查則哨兵靜默失效)。
           rt=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '快篩陰性不能完全排除感染' || true)
           if [ "$rt" -ge 1 ]; then echo "OK    快篩頁判讀限制段已上線"; else echo "FAIL  快篩頁『快篩陰性不能完全排除感染』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+
+          # 2026-08-30 續 e：開學季三病毒頁。哨兵挑「單看症狀無法確診」——本頁把三種病毒
+          # 的症狀並排比較，最大的誤讀風險就是家長照表自我診斷；這句是擋掉該誤讀的支點，
+          # 同時是醫療正確性與合規（不宣稱可憑症狀判定）的落點。全站僅本頁含此句。
+          # ⚠️ 若日後刻意改寫這句，請連同本檢查一起改，不要直接刪掉（防呆 17）。
+          bts=$(curl -s --max-time 20 "$BASE/news/back-to-school-infections.html" | grep -c '單看症狀無法確診' || true)
+          if [ "$bts" -ge 1 ]; then echo "OK    開學季三病毒頁不可自我診斷的判準已上線"; else echo "FAIL  開學季頁『單看症狀無法確診』未見——本頁疑遭舊版覆蓋"; fail=1; fi
           exit $fail
