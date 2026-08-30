@@ -131,6 +131,7 @@ jobs:
           # 與 sitemap image:image 標的,圖掉了頁面照樣 200,上面那條頁檢查抓不到。
           check /images/flu-antivirals-infographic.jpg 200
           check /images/atopic-march-infographic.jpg 200
+          check /images/back-to-school-infections-infographic.jpg 200
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
           # 互動小程式(六關看診流程),院長把連結直接發給家長。它 noindex、不進
           # sitemap、官網沒有任何頁面連過去——**沒有任何其他機制會發現它不見了**,
