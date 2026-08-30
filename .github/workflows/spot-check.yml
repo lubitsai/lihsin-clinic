@@ -87,6 +87,7 @@ jobs:
           check /services/skin-conditions.html 200
           check /health/child-chronic-cough.html 200
           check /health/atopic-dermatitis.html 200
+          check /health/atopic-march.html 200
           # 2026-08-15 批(PR #94)的兩個過敏原檢測承載頁。下方「內容抽驗」已各盯一層
           # (實體層 schema／keywords),這兩行盯的是另一件事:頁還在不在。
           # 依 2026-08-14b 通則「兩者缺一不可」,與上面四個承載頁同樣的配置。
@@ -292,4 +293,14 @@ jobs:
           # 若日後真的做了站內搜尋,必須連同 SearchAction 一起補回,並改寫本檢查。
           s=$(curl -s --max-time 20 "$BASE/" | grep -c 'SearchAction' || true)
           if [ "$s" -eq 0 ]; then echo "OK    首頁無 SearchAction(不存在的搜尋端點未復活)"; else echo "FAIL  首頁出現 SearchAction × $s——schema 宣告了本站沒有的搜尋功能"; fail=1; fi
+          # 過敏進行曲頁抽驗(2026-08-30 新增,同批新頁):上面的 200 檢查盯「頁還在」,
+          # 這條盯「本頁的核心機轉段還在」。挑「雙重過敏原暴露假說」的理由:它是本頁
+          # 解釋「過敏為什麼會換器官」的核心,**正是本頁與站內其他過敏頁的差別所在**
+          # ——allergy.html 只說表現會隨年齡從一個器官轉到另一個器官,沒有講機轉。
+          # 全站 HTML 僅本頁含此詞(2026-08-30 程式化確認),不會誤配;學術名詞、
+          # 不隨文案潤飾漂移,維護成本低。
+          # ⚠️ 若日後刻意改寫本頁機轉段或此措辭,請連同本檢查一起改,不要直接刪掉
+          #    (防呆 17:改了檢查沒改頁面會誤報 FAIL,改了頁面沒改檢查則哨兵靜默失效)。
+          am=$(curl -s --max-time 20 "$BASE/health/atopic-march.html" | grep -c '雙重過敏原暴露假說' || true)
+          if [ "$am" -ge 1 ]; then echo "OK    過敏進行曲頁機轉段已上線"; else echo "FAIL  過敏進行曲頁『雙重過敏原暴露假說』未見——本頁疑遭舊版覆蓋"; fail=1; fi
           exit $fail
