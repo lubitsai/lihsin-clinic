@@ -88,6 +88,7 @@ jobs:
           check /health/child-chronic-cough.html 200
           check /health/atopic-dermatitis.html 200
           check /health/atopic-march.html 200
+          check /health/rapid-tests.html 200
           # 2026-08-15 批(PR #94)的兩個過敏原檢測承載頁。下方「內容抽驗」已各盯一層
           # (實體層 schema／keywords),這兩行盯的是另一件事:頁還在不在。
           # 依 2026-08-14b 通則「兩者缺一不可」,與上面四個承載頁同樣的配置。
@@ -304,4 +305,14 @@ jobs:
           #    (防呆 17:改了檢查沒改頁面會誤報 FAIL,改了頁面沒改檢查則哨兵靜默失效)。
           am=$(curl -s --max-time 20 "$BASE/health/atopic-march.html" | grep -c '雙重過敏原暴露假說' || true)
           if [ "$am" -ge 1 ]; then echo "OK    過敏進行曲頁機轉段已上線"; else echo "FAIL  過敏進行曲頁『雙重過敏原暴露假說』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+          # 快篩頁抽驗(2026-08-30 續 c 新增,同批新頁):上面的 200 檢查盯「頁還在」,
+          # 這條盯「本頁最核心、也最容易在改寫中被稀釋的一句」——「快篩陰性不能完全排除感染」。
+          # 挑它的理由:它同時是醫療正確性與合規的支點(擋掉「驗過就沒事」的誤讀),
+          # 且是本頁在四層佈局裡真正要立的判準。全站另有數頁含近似句(covid/influenza 用
+          # 「快篩陰性也不能完全排除」「家用快篩陰性仍不能完全排除感染」),但**本檢查只打
+          # 本頁的 URL**,不會誤配到別頁。
+          # ⚠️ 若日後刻意改寫這句(例如改成「無法排除」),請連同本檢查一起改,不要直接刪掉
+          #    (防呆 17:改了檢查沒改頁面會誤報 FAIL,改了頁面沒改檢查則哨兵靜默失效)。
+          rt=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '快篩陰性不能完全排除感染' || true)
+          if [ "$rt" -ge 1 ]; then echo "OK    快篩頁判讀限制段已上線"; else echo "FAIL  快篩頁『快篩陰性不能完全排除感染』未見——本頁疑遭舊版覆蓋"; fail=1; fi
           exit $fail
