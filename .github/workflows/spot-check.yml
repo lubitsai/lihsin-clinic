@@ -118,6 +118,12 @@ jobs:
           check /health/pneumococcal-vaccine.html 200
           check /health/rotavirus-vaccine.html 200
           check /health/varicella-vaccine.html 200
+          # 2026-08-31d 續(院長指示「補頁 200 哨兵」):補上同批圖哨兵當時記下的不對稱。
+          # 這頁 2026-08-31d 新增內文資訊圖與「科學減重課程」段,是 services/ 少數
+          # 有內文圖的頁。這行盯「頁還在不在」,下方圖哨兵盯「圖還在不在」,
+          # 依 2026-08-14b 通則兩者缺一不可——只有圖哨兵時,FAIL 分不出是圖掉了
+          # 還是整頁不見。
+          check /services/weight-management.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           # 2026-08-25b 新增(院長指示):child-uti 的懶人包圖。它同時是該頁的 og:image
@@ -139,10 +145,8 @@ jobs:
           # 這行是這張圖唯一每次部署都會重跑的回歸保護。
           # ⚠️ 連動維護義務(防呆 17):日後換圖或改檔名要同批改這一行,不可直接刪。
           check /images/weight-management-infographic.jpg 200
-          # ⚠️ 已知不對稱:services/weight-management.html 本身沒有頁 200 哨兵
-          # (上方 services 只掛了 vaccination/pediatric-allergy-asthma/skin-conditions/
-          # allergy-testing 四頁),故本行 FAIL 時分不出「圖掉了」還是「整頁不見」。
-          # 依 2026-08-14b 通則兩者本應成對;院長本批只交辦圖哨兵,補頁哨兵待指示。
+          # 2026-08-31d 續:上方已補 check /services/weight-management.html 200,
+          # 該不對稱已解除——本行 FAIL 而頁哨兵 OK ＝ 只有圖掉了;兩行同時 FAIL ＝ 整頁不見。
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
           # 互動小程式(六關看診流程),院長把連結直接發給家長。它 noindex、不進
           # sitemap、官網沒有任何頁面連過去——**沒有任何其他機制會發現它不見了**,
