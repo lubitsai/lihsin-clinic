@@ -32,6 +32,22 @@ description: 立欣診所官網「對話上傳圖片 → 改名轉檔 → 上 Gi
 - **先找原檔：`ls /root/.claude/uploads/<session-id>/`。** 院長在對話貼的圖一律落在這裡，
   即使訊息沒帶 `@"…"`、看起來「只有貼圖沒有檔案」也一樣。檔名會把中文轉成底線（如 `2544a550-__________115_9_1____.png`），
   認不出來就用 `Read` 開起來看。**沒先看這個目錄就自己重畫，等於丟掉院長的原稿。**
+- **⚠️ 該目錄不存在時（Claude Code 遠端／CCR 容器就沒有），改從 session transcript 還原，不要當成「院長沒附圖」。**
+  這種環境的對話附件**不落地成檔**，只存在於 `~/.claude/projects/<專案 slug>/<session-id>.jsonl` 的 base64 `image` block
+  （2026-08-31d 實例：`image/webp`、還原後恰 1254²）。抽法——逐行 `json.loads`，找 `message.content` 陣列裡
+  `type == "image"` 的元素，把 `source.data` 做 base64 decode 寫成檔，再把該檔路徑餵給第 2 步的 `make_infographic.py`：
+
+  ```python
+  import json, base64
+  for line in open("<transcript>.jsonl", encoding="utf-8"):
+      try: d = json.loads(line)
+      except ValueError: continue
+      for b in (d.get("message") or {}).get("content") or []:
+          if isinstance(b, dict) and b.get("type") == "image":
+              open("/tmp/upload.webp", "wb").write(base64.b64decode(b["source"]["data"]))
+  ```
+
+  **`ls` 撲空不是退回院長重傳的理由，更不是自己重畫的理由**（教訓來源：`00` 2026-08-31d 批）。
 
 ### 1 讀圖驗證（動手前必做）
 - 用 **Read** 開啟上傳圖，**親眼確認**：
