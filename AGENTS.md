@@ -12,7 +12,7 @@
 - 可見文字（title / description / H1 / 可見段落 / 醫師引言）**逐字經院長核可**才改；技術層（schema、meta 結構、lang、favicon、dateModified 格式）可直接做，但交付說明要講清楚。
 - 合規紅線完整清單見 `internal/00` §4，**每次對照**。最常踩線的是：可見區超級詞（推薦／最佳／第一／權威／資深）、疫苗四但書、價格數字、絕對宣稱、自評 aggregateRating。
 - dateModified 判準（`02` R4）：家長讀到的醫療資訊有沒有被醫師重新審過？沒有就不跳。
-- 改 `00`／`01` 前先備份至 `archive/`，合規規則與待決狀態需院長核可（`00` §8）。
+- 改 `00`／`01` 前先備份至 **`internal/archive/`**（院長 2026-09-01 裁示的唯一備份目錄；repo 根 `archive/` 只讀不寫），合規規則與待決狀態需院長核可（`00` §8）。
 - 任何批次交付前跑 `python3 internal/tools/validate_site.py --root . --stage deploy`，**ERROR 清零才 push**，WARN 逐條判讀寫進交付說明。
 
 ## 這個 repo 的兩個陷阱

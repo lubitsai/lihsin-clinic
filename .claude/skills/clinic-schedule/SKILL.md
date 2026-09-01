@@ -67,7 +67,7 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
    > **同步不到**；代診要另外在預約系統後台「排班管理」建立。
 4. 動到徽章 `SCHEDULE`/`EXCEPTIONS` → Chromium 模擬時間實測四態與跨日。
 5. **🧹 過期公告檔案清理**（院長 2026-08-25 入制）：公告下架後，該則的公告圖與門口 A4 PDF **一併刪掉、只留當期那一組**；刪前 grep 全樹確認零引用（`data-expires` 只隱藏 DOM，檔案仍在 repo 積著）。詳見 SOP §一.6。
-5. 可見文字待院長逐字核可；改 00/01 前先備份至 `archive/`（§8）。
+5. 可見文字待院長逐字核可；改 00/01 前先備份至 `internal/archive/`（§8-4；**唯一備份目錄**，repo 根 `archive/` 只讀不寫）。
 6. 情境 B（多頁）部署後補送 IndexNow（`internal/tools/submit_indexnow.py`）。
 
 ## 工具
