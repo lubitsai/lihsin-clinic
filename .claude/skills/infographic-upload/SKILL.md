@@ -98,6 +98,19 @@ E-LINK（圖不存在）代表檔名沒對上或漏檔——回第 2/3 步。WAR
 - 若圖對應**新頁**或**可見內容實質變更** → 提交 IndexNow
   （`python3 internal/tools/submit_indexnow.py <URL…>`）。純換圖不改醫療內文 → 見下。
 
+### 7 依 00 §8-3 更新文件（**收尾必做，掛完圖不等於做完**）
+備份 00／01 至 `internal/archive/`（`cp` 為 `00_專案總覽索引_backup_YYYYMMDD[b…].md`，
+改檔前 `md5sum` 比對 byte-identical）→ 00 檔頭版本行（**先 `git fetch origin main`
+確認當日批號未被平行 session 佔用**）→ 00 文末 append「附：本批（YYYY-MM-DD）」
+→ 01 現在狀態段同步。**教訓寫法固定三段式：現象 → 根因 → 一句可執行規則。**
+
+⚠️ **本步驟 2026-09-01 才補進本 Skill。** 現象：該日掛圖批（`allergic-rhinitis-treatment`
+衛教圖）走完本 Skill 全部步驟、PR 也 merge 了，**00／01 卻整批沒登錄**，隔一批才補登。
+根因：**本 Skill 的步驟表止於「commit＋push／merge 後 IndexNow」，把文件收尾留在
+`seo-geo-content` 那一份**——而掛圖批不會載入 seo-geo-content，執行者照著本表做就是
+「做完了」。規則：**每一份 Skill 的步驟表都必須自足到最後一步，不可假設執行者
+會另外載入別的 Skill 補齊收尾。**
+
 ## dateModified 判準（R4）
 換圖屬**可見素材更新、非醫療內文重審** → 一般**不跳** dateModified
 （同 desc/og/schema 技術層）。唯有同時實質改寫醫療內文並經醫師核可才跳。
