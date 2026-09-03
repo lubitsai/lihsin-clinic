@@ -557,6 +557,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/hepatitis-c.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/hepatitis-c-infographic.jpg</image:loc></image:image>
     <lastmod>2026-09-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
