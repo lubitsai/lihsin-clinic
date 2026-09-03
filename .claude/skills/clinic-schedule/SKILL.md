@@ -67,13 +67,33 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
    > **同步不到**；代診要另外在預約系統後台「排班管理」建立。
 4. 動到徽章 `SCHEDULE`/`EXCEPTIONS` → Chromium 模擬時間實測四態與跨日。
 5. **🧹 過期公告檔案清理**（院長 2026-08-25 入制）：公告下架後，該則的公告圖與門口 A4 PDF **一併刪掉、只留當期那一組**；刪前 grep 全樹確認零引用（`data-expires` 只隱藏 DOM，檔案仍在 repo 積著）。詳見 SOP §一.6。
-5. 可見文字待院長逐字核可；改 00/01 前先備份至 `archive/`（§8）。
-6. 情境 B（多頁）部署後補送 IndexNow（`internal/tools/submit_indexnow.py`）。
+6. 可見文字待院長逐字核可（公告文案、班表格內醫師與時間、表格下方「最後更新」戳記皆屬之）。
+7. 情境 B（多頁）部署後補送 IndexNow（`internal/tools/submit_indexnow.py`）。
+8. **依 00 §8-3 更新文件（收尾必做，班表改完、CI 綠燈都不等於做完）**
+
+   備份 00／01 至 `internal/archive/`（`cp` 為 `00_專案總覽索引_backup_YYYYMMDD[b…].md`，
+   改檔前 `md5sum` 比對 byte-identical；**§8-4 唯一備份目錄**，repo 根 `archive/` 只讀不寫）
+   → 00 檔頭版本區塊（**先 `git fetch origin main` 確認當日批號未被平行 session 佔用**，
+   已有新批次就先 merge 再寫）→ 00 文末 append「附：本批（YYYY-MM-DD）」
+   → 01 現在狀態段同步。**教訓寫法固定三段式：現象 → 根因 → 一句可執行規則。**
+
+   **本 Skill 專屬的必記項**（門診批特有，別漏）：⛔ 零變更基準計數的**切換前後兩次數字**、
+   `sync_schedule.py --check` 的 exit code、徽章四態實測結果、以及**站外六載體逐項 ✅／⬜**
+   （官網做完只是 ①，②～⑥ 在院長與櫃檯手上，不逐項標會被當成整批做完）。
+
+   ⚠️ **本步驟 2026-09-01 才補進本 Skill（院長交辦）。** 現象：本 Skill 的尾段只寫
+   「可見文字待院長逐字核可；改 00/01 前先備份至 `archive/`」，**沒有 §8-3 的四段順序**。
+   根因：**步驟表止於驗證與部署，把文件收尾當成「§8 自己會講」**——但門診批不會載入
+   `seo-geo-content`（四段順序寫在那一份），執行者照著本表做就是「做完了」。
+   規則：**每一份 Skill 的步驟表都必須自足到最後一步，不可假設執行者會另外載入別的
+   Skill 補齊收尾。**（同型缺口 09-01c 已在 `infographic-upload` 補過一次，本批補第二處。）
 
 ## 工具
 
 - `internal/tools/make_infographic.py` — 公告圖改名＋轉 webp/jpg。
-  ⚠️ **院長對話貼的圖，原始檔就在 `/root/.claude/uploads/<session-id>/`——先 `ls` 那裡再說。**
+  ⚠️ **院長對話貼的圖，原始檔多半就在 `/root/.claude/uploads/<session-id>/`——先 `ls` 那裡再說。**
+  **該目錄不存在時（Claude Code 遠端／CCR 容器就沒有）改從 session transcript 的 base64 `image` block 還原，
+  `ls` 撲空不是「院長沒附圖」**——抽取碼與完整作法見 `infographic-upload` skill §0。
   不要因為「只有貼圖」就自己重畫；重繪是最後手段（詳見 `infographic-upload` skill 與 SOP §一.1）。
 - `internal/tools/validate_site.py` — 全站驗證器。
 - `internal/tools/sync_schedule.py` — 官網門診時間表 → 預約系統班表（單向，官網為主）；`--check` 供 push 前把關。

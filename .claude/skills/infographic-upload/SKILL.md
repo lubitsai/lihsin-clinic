@@ -32,6 +32,22 @@ description: 立欣診所官網「對話上傳圖片 → 改名轉檔 → 上 Gi
 - **先找原檔：`ls /root/.claude/uploads/<session-id>/`。** 院長在對話貼的圖一律落在這裡，
   即使訊息沒帶 `@"…"`、看起來「只有貼圖沒有檔案」也一樣。檔名會把中文轉成底線（如 `2544a550-__________115_9_1____.png`），
   認不出來就用 `Read` 開起來看。**沒先看這個目錄就自己重畫，等於丟掉院長的原稿。**
+- **⚠️ 該目錄不存在時（Claude Code 遠端／CCR 容器就沒有），改從 session transcript 還原，不要當成「院長沒附圖」。**
+  這種環境的對話附件**不落地成檔**，只存在於 `~/.claude/projects/<專案 slug>/<session-id>.jsonl` 的 base64 `image` block
+  （2026-08-31d 實例：`image/webp`、還原後恰 1254²）。抽法——逐行 `json.loads`，找 `message.content` 陣列裡
+  `type == "image"` 的元素，把 `source.data` 做 base64 decode 寫成檔，再把該檔路徑餵給第 2 步的 `make_infographic.py`：
+
+  ```python
+  import json, base64
+  for line in open("<transcript>.jsonl", encoding="utf-8"):
+      try: d = json.loads(line)
+      except ValueError: continue
+      for b in (d.get("message") or {}).get("content") or []:
+          if isinstance(b, dict) and b.get("type") == "image":
+              open("/tmp/upload.webp", "wb").write(base64.b64decode(b["source"]["data"]))
+  ```
+
+  **`ls` 撲空不是退回院長重傳的理由，更不是自己重畫的理由**（教訓來源：`00` 2026-08-31d 批）。
 
 ### 1 讀圖驗證（動手前必做）
 - 用 **Read** 開啟上傳圖，**親眼確認**：
@@ -81,6 +97,19 @@ E-LINK（圖不存在）代表檔名沒對上或漏檔——回第 2/3 步。WAR
 ### 6 merge 後
 - 若圖對應**新頁**或**可見內容實質變更** → 提交 IndexNow
   （`python3 internal/tools/submit_indexnow.py <URL…>`）。純換圖不改醫療內文 → 見下。
+
+### 7 依 00 §8-3 更新文件（**收尾必做，掛完圖不等於做完**）
+備份 00／01 至 `internal/archive/`（`cp` 為 `00_專案總覽索引_backup_YYYYMMDD[b…].md`，
+改檔前 `md5sum` 比對 byte-identical）→ 00 檔頭版本行（**先 `git fetch origin main`
+確認當日批號未被平行 session 佔用**）→ 00 文末 append「附：本批（YYYY-MM-DD）」
+→ 01 現在狀態段同步。**教訓寫法固定三段式：現象 → 根因 → 一句可執行規則。**
+
+⚠️ **本步驟 2026-09-01 才補進本 Skill。** 現象：該日掛圖批（`allergic-rhinitis-treatment`
+衛教圖）走完本 Skill 全部步驟、PR 也 merge 了，**00／01 卻整批沒登錄**，隔一批才補登。
+根因：**本 Skill 的步驟表止於「commit＋push／merge 後 IndexNow」，把文件收尾留在
+`seo-geo-content` 那一份**——而掛圖批不會載入 seo-geo-content，執行者照著本表做就是
+「做完了」。規則：**每一份 Skill 的步驟表都必須自足到最後一步，不可假設執行者
+會另外載入別的 Skill 補齊收尾。**
 
 ## dateModified 判準（R4）
 換圖屬**可見素材更新、非醫療內文重審** → 一般**不跳** dateModified

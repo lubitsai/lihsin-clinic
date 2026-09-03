@@ -229,7 +229,7 @@ grep -rn '平日夜診至21:30\|夜診至 21:30\|週六週日皆有門診' --inc
 3. **驗證器**：`python3 internal/tools/validate_site.py --stage deploy` → **ERROR 清零才 push**。
 4. **實機驗證**：改動 HERO 徽章（`SCHEDULE`/`EXCEPTIONS`）時，用 Chromium 模擬時間實測（腳本範例：`Date.now` 覆寫成目標時刻，讀 `#clinic-status-text`），確認「開診中/即將/休診/下個時段」四態正確、跨日正確、特例生效。
 5. **院長核可**：可見文字（公告文案、表格時間、FAQ 敘述、徽章訊息）逐字經院長核可才 push（`00` 鐵律）。
-6. **文件維護（§8）**：改 `00`/`01` 前先 `cp` 備份至 `archive/`；本批於 `00` 文末 append 附錄、檔頭更新版本行、`01` 同步。
+6. **文件維護（§8）**：改 `00`/`01` 前先 `cp` 備份至 `internal/archive/`（§8-4 唯一備份目錄，repo 根 `archive/` 只讀不寫）；本批於 `00` 文末 append 附錄、檔頭更新版本行、`01` 同步。
 7. **部署後**：內容實質變更批（尤其情境 B 多頁）→ 補送 IndexNow；情境 A 單頁公告可省。
 
 ---

@@ -12,7 +12,7 @@
 - 合規紅線完整清單見 `internal/00` §4，**每次對照**。最常踩線的是：可見區超級詞（推薦／最佳／第一／權威／資深）、疫苗四但書、價格數字、絕對宣稱、自評 aggregateRating。
 - 寫任何可見文字（衛教文、公告、卡標題）前，讀 `.claude/skills/seo-geo-content/references/anti-ai-tone.md` 去 AI 味 38 項；該檔 §0 列出 SOP 要件的豁免（FAQ、四但書、危險徵象條列不算 AI 味）。
 - dateModified 判準（`02` R4）：家長讀到的醫療資訊有沒有被醫師重新審過？沒有就不跳。
-- 改 `00`／`01` 前先備份至 `archive/`，合規規則與待決狀態需院長核可（`00` §8）。
+- 改 `00`／`01` 前先備份至 **`internal/archive/`**（院長 2026-09-01 裁示的唯一備份目錄；repo 根 `archive/` 只讀不寫），合規規則與待決狀態需院長核可（`00` §8）。
 - 任何批次交付前跑 `python3 internal/tools/validate_site.py --root . --stage deploy`，**ERROR 清零才 push**，WARN 逐條判讀寫進交付說明。
 
 ## 這個 repo 的兩個陷阱

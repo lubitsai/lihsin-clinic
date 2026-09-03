@@ -87,6 +87,9 @@ jobs:
           check /services/skin-conditions.html 200
           check /health/child-chronic-cough.html 200
           check /health/atopic-dermatitis.html 200
+          check /health/atopic-march.html 200
+          check /health/rapid-tests.html 200
+          check /news/back-to-school-infections.html 200
           # 2026-08-15 批(PR #94)的兩個過敏原檢測承載頁。下方「內容抽驗」已各盯一層
           # (實體層 schema／keywords),這兩行盯的是另一件事:頁還在不在。
           # 依 2026-08-14b 通則「兩者缺一不可」,與上面四個承載頁同樣的配置。
@@ -115,6 +118,12 @@ jobs:
           check /health/pneumococcal-vaccine.html 200
           check /health/rotavirus-vaccine.html 200
           check /health/varicella-vaccine.html 200
+          # 2026-08-31d 續(院長指示「補頁 200 哨兵」):補上同批圖哨兵當時記下的不對稱。
+          # 這頁 2026-08-31d 新增內文資訊圖與「科學減重課程」段,是 services/ 少數
+          # 有內文圖的頁。這行盯「頁還在不在」,下方圖哨兵盯「圖還在不在」,
+          # 依 2026-08-14b 通則兩者缺一不可——只有圖哨兵時,FAIL 分不出是圖掉了
+          # 還是整頁不見。
+          check /services/weight-management.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           # 2026-08-25b 新增(院長指示):child-uti 的懶人包圖。它同時是該頁的 og:image
@@ -127,6 +136,17 @@ jobs:
           # 2026-08-28 續：flu-antivirals 的衛教圖。理由同上兩條——它是該頁的 og:image
           # 與 sitemap image:image 標的,圖掉了頁面照樣 200,上面那條頁檢查抓不到。
           check /images/flu-antivirals-infographic.jpg 200
+          check /images/atopic-march-infographic.jpg 200
+          check /images/back-to-school-infections-infographic.jpg 200
+          # 2026-08-31d 新增(院長指示「加 spot-check.yml 的圖 200 哨兵」):
+          # services/weight-management.html 的科學減重課程衛教圖。理由同上幾條——它是該頁的
+          # og:image 與內文 <figure> 唯一的圖,圖掉了頁面照樣 200,沒有任何其他機制會發現。
+          # ⚠️ 本批的線上驗證只靠院長目視一次(session 網路政策擋本站網域,curl 回 000),
+          # 這行是這張圖唯一每次部署都會重跑的回歸保護。
+          # ⚠️ 連動維護義務(防呆 17):日後換圖或改檔名要同批改這一行,不可直接刪。
+          check /images/weight-management-infographic.jpg 200
+          # 2026-08-31d 續:上方已補 check /services/weight-management.html 200,
+          # 該不對稱已解除——本行 FAIL 而頁哨兵 OK ＝ 只有圖掉了;兩行同時 FAIL ＝ 整頁不見。
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
           # 互動小程式(六關看診流程),院長把連結直接發給家長。它 noindex、不進
           # sitemap、官網沒有任何頁面連過去——**沒有任何其他機制會發現它不見了**,
@@ -147,6 +167,16 @@ jobs:
           # ⚠️ 防呆 17:日後改寫該段標題必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
           vf=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '台南流感疫苗（公費與自費）實體關係與相關頁面' || true)
           if [ "$vf" -ge 1 ]; then echo "OK    vaccination hub 流感季隱藏區已上線"; else echo "FAIL  vaccination hub 流感季隱藏區未見"; fail=1; fi
+          # 流感疫苗頁 10 月公費開打四層抽驗(2026-09-03g 新增,「公費流感疫苗開打／左流右新」模式 A 補強):
+          # 兩條分別盯住 health/flu-vaccine.html 的隱藏 #ai-knowledge-block 與 FAQPage schema。
+          # 本批全屬技術層、可見層一字未動 → 被舊版覆蓋時頁面照樣 200、validator 不會亮,
+          # 沒有任何自動化會發現(同上一段 vaccination hub 的理由)。刻意盯區塊標題與 FAQ
+          # question name(結構字串,不隨文案潤飾漂移),兩者全站各僅本頁 1 次。
+          # ⚠️ 防呆 17:2027 年度換版改寫這兩處時必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
+          fv=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '115 年度公費流感疫苗接種計畫：開打時程與階段對象' || true)
+          if [ "$fv" -ge 1 ]; then echo "OK    flu-vaccine 公費開打隱藏區已上線"; else echo "FAIL  flu-vaccine 公費開打隱藏區未見"; fail=1; fi
+          fq=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '流感疫苗可以和新冠疫苗同一天接種嗎？什麼是「左流右新」？' || true)
+          if [ "$fq" -ge 1 ]; then echo "OK    flu-vaccine 左流右新 FAQ 已上線"; else echo "FAIL  flu-vaccine 左流右新 FAQ 未見"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
@@ -292,4 +322,56 @@ jobs:
           # 若日後真的做了站內搜尋,必須連同 SearchAction 一起補回,並改寫本檢查。
           s=$(curl -s --max-time 20 "$BASE/" | grep -c 'SearchAction' || true)
           if [ "$s" -eq 0 ]; then echo "OK    首頁無 SearchAction(不存在的搜尋端點未復活)"; else echo "FAIL  首頁出現 SearchAction × $s——schema 宣告了本站沒有的搜尋功能"; fail=1; fi
+          # 過敏進行曲頁抽驗(2026-08-30 新增,同批新頁):上面的 200 檢查盯「頁還在」,
+          # 這條盯「本頁的核心機轉段還在」。挑「雙重過敏原暴露假說」的理由:它是本頁
+          # 解釋「過敏為什麼會換器官」的核心,**正是本頁與站內其他過敏頁的差別所在**
+          # ——allergy.html 只說表現會隨年齡從一個器官轉到另一個器官,沒有講機轉。
+          # 全站 HTML 僅本頁含此詞(2026-08-30 程式化確認),不會誤配;學術名詞、
+          # 不隨文案潤飾漂移,維護成本低。
+          # ⚠️ 若日後刻意改寫本頁機轉段或此措辭,請連同本檢查一起改,不要直接刪掉
+          #    (防呆 17:改了檢查沒改頁面會誤報 FAIL,改了頁面沒改檢查則哨兵靜默失效)。
+          am=$(curl -s --max-time 20 "$BASE/health/atopic-march.html" | grep -c '雙重過敏原暴露假說' || true)
+          if [ "$am" -ge 1 ]; then echo "OK    過敏進行曲頁機轉段已上線"; else echo "FAIL  過敏進行曲頁『雙重過敏原暴露假說』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+          # 快篩頁抽驗(2026-08-30 續 c 新增,同批新頁):上面的 200 檢查盯「頁還在」,
+          # 這條盯「本頁最核心、也最容易在改寫中被稀釋的一句」——「快篩陰性不能完全排除感染」。
+          # 挑它的理由:它同時是醫療正確性與合規的支點(擋掉「驗過就沒事」的誤讀),
+          # 且是本頁在四層佈局裡真正要立的判準。全站另有數頁含近似句(covid/influenza 用
+          # 「快篩陰性也不能完全排除」「家用快篩陰性仍不能完全排除感染」),但**本檢查只打
+          # 本頁的 URL**,不會誤配到別頁。
+          # ⚠️ 若日後刻意改寫這句(例如改成「無法排除」),請連同本檢查一起改,不要直接刪掉
+          #    (防呆 17:改了檢查沒改頁面會誤報 FAIL,改了頁面沒改檢查則哨兵靜默失效)。
+          rt=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '快篩陰性不能完全排除感染' || true)
+          if [ "$rt" -ge 1 ]; then echo "OK    快篩頁判讀限制段已上線"; else echo "FAIL  快篩頁『快篩陰性不能完全排除感染』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+
+          # 2026-08-30 續 e：開學季三病毒頁。哨兵挑「單看症狀無法確診」——本頁把三種病毒
+          # 的症狀並排比較，最大的誤讀風險就是家長照表自我診斷；這句是擋掉該誤讀的支點，
+          # 同時是醫療正確性與合規（不宣稱可憑症狀判定）的落點。全站僅本頁含此句。
+          # ⚠️ 若日後刻意改寫這句，請連同本檢查一起改，不要直接刪掉（防呆 17）。
+          bts=$(curl -s --max-time 20 "$BASE/news/back-to-school-infections.html" | grep -c '單看症狀無法確診' || true)
+          if [ "$bts" -ge 1 ]; then echo "OK    開學季三病毒頁不可自我診斷的判準已上線"; else echo "FAIL  開學季頁『單看症狀無法確診』未見——本頁疑遭舊版覆蓋"; fail=1; fi
+
+          # 2026-08-31b：9/1 新門診時間表（醫師排班切換）。這是全站唯一「寫錯會讓家長
+          # 白跑一趟」的內容，而四格全在同一個 commit 改掉 → 只要 index.html 被舊版
+          # 覆蓋，門診表會整張靜默退回舊排班，可見層看起來仍然「有一張正常的時間表」，
+          # 沒有人會發現。挑「08:00–11:00」當哨兵的理由：**全站僅此一處**
+          # （2026-08-31 程式化確認，計數 0→1），且它只存在於切換後的表（週日早診
+          # 蔡醫師收診時間）；任何退回 9/1 之前版本的情況都會踩到。
+          # ⚠️ 若日後蔡醫師週日早診時間再變，請連同本檢查一起改，不要直接刪掉
+          #    （防呆 17：改了檢查沒改頁面會誤報 FAIL，改了頁面沒改檢查則哨兵靜默失效）。
+          sch=$(curl -s --max-time 20 "$BASE/" | grep -c '08:00–11:00' || true)
+          if [ "$sch" -ge 1 ]; then echo "OK    首頁門診時間表已為 9/1 新排班"; else echo "FAIL  首頁『08:00–11:00』未見——門診時間表疑遭 9/1 前舊版覆蓋"; fail=1; fi
+
+          # 2026-09-01b：過敏叢集互連。本批把 pillar 與 8 篇過敏文章補上指向
+          # 「兒童過敏氣喘門診」服務頁的可見卡（可見入連 3→11），這是本叢集的轉換落點。
+          # 挑它當哨兵的理由：連結被舊版覆蓋時，頁面仍然是一篇完整正常的衛教文，
+          # 可見層看不出少了什麼，**沒有人會發現**（防呆 17 反向）。取 pillar
+          # health/allergy.html 是因為它是叢集入口，且本批新增的 4 張卡都掛在它身上。
+          # ⚠️ 若日後刻意重整該頁延伸閱讀卡，請連同本檢查一起改，不要直接刪掉
+          #    （防呆 17：改了檢查沒改頁面會誤報 FAIL，改了頁面沒改檢查則哨兵靜默失效）。
+          # ⛔ 不可改用 grep '/services/pediatric-allergy-asthma.html'：該路徑在本批之前
+          #    就已存在於本頁的 ld+json 與隱藏區（舊版計數 2），哨兵會永遠通過而靜默失效
+          #    （防呆 14：注入式負向測試就是為了抓這種「檢查根本沒生效」）。取卡面文字，
+          #    舊版計數 0、新版 1。
+          alg=$(curl -s --max-time 20 "$BASE/health/allergy.html" | grep -c '台南兒童過敏氣喘門診（北區・院內肺功能檢測）' || true)
+          if [ "$alg" -ge 1 ]; then echo "OK    過敏 pillar 已連向過敏氣喘門診服務頁"; else echo "FAIL  allergy.html 未見過敏氣喘門診卡——本頁疑遭 9/1 前舊版覆蓋"; fail=1; fi
           exit $fail
