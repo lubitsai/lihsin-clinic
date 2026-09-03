@@ -167,6 +167,16 @@ jobs:
           # ⚠️ 防呆 17:日後改寫該段標題必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
           vf=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '台南流感疫苗（公費與自費）實體關係與相關頁面' || true)
           if [ "$vf" -ge 1 ]; then echo "OK    vaccination hub 流感季隱藏區已上線"; else echo "FAIL  vaccination hub 流感季隱藏區未見"; fail=1; fi
+          # 流感疫苗頁 10 月公費開打四層抽驗(2026-09-03g 新增,「公費流感疫苗開打／左流右新」模式 A 補強):
+          # 兩條分別盯住 health/flu-vaccine.html 的隱藏 #ai-knowledge-block 與 FAQPage schema。
+          # 本批全屬技術層、可見層一字未動 → 被舊版覆蓋時頁面照樣 200、validator 不會亮,
+          # 沒有任何自動化會發現(同上一段 vaccination hub 的理由)。刻意盯區塊標題與 FAQ
+          # question name(結構字串,不隨文案潤飾漂移),兩者全站各僅本頁 1 次。
+          # ⚠️ 防呆 17:2027 年度換版改寫這兩處時必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
+          fv=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '115 年度公費流感疫苗接種計畫：開打時程與階段對象' || true)
+          if [ "$fv" -ge 1 ]; then echo "OK    flu-vaccine 公費開打隱藏區已上線"; else echo "FAIL  flu-vaccine 公費開打隱藏區未見"; fail=1; fi
+          fq=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '流感疫苗可以和新冠疫苗同一天接種嗎？什麼是「左流右新」？' || true)
+          if [ "$fq" -ge 1 ]; then echo "OK    flu-vaccine 左流右新 FAQ 已上線"; else echo "FAIL  flu-vaccine 左流右新 FAQ 未見"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
