@@ -32,4 +32,4 @@ cp internal/pending-images/flu-vaccine-2026-* images/
 **一律不用動**；要改的只有 `alt` 與 `figcaption` 的文字（去時效字樣）。
 
 **換完請刪除本目錄整個資料夾**，避免留下第 2 份會漂移的副本。
-排程 `trig_015Bpq82orfoskWcddv3NQX9` 的 prompt 已載明以上全部。
+排程 `trig_01KKq8UB7r3r93vBPzK1HA77` 的 prompt 已載明以上全部。
