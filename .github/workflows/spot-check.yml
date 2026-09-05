@@ -145,6 +145,16 @@ jobs:
           # 這行是這張圖唯一每次部署都會重跑的回歸保護。
           # ⚠️ 連動維護義務(防呆 17):日後換圖或改檔名要同批改這一行,不可直接刪。
           check /images/weight-management-infographic.jpg 200
+          # 2026-09-05 新增（09-04c 批補漏）：115 年度公費流感疫苗資訊圖與其承載頁。
+          # 依 08-14b 通則成對——頁哨兵盯「頁還在不在」，圖哨兵盯「圖還在不在」；
+          # 只有圖哨兵時，FAIL 分不出是圖掉了還是整頁不見。
+          # 這張圖是 health/flu-vaccine.html 公費對象段末的內文圖，同時是 sitemap
+          # image:image 標的，也是首頁最新消息卡縮圖的同一組圖（thumb 為 480² 衍生檔）。
+          # ⚠️ 連動維護義務（防呆 17）：116 年度換版要換圖或改檔名時，這兩行要同批改，
+          #    不可直接刪——刪掉等於把這張圖唯一的線上回歸保護拿掉。
+          #    換版清單見 00 §6 標 🗓 那條與 health/flu-vaccine.html 的現場註解第 ④ 項。
+          check /health/flu-vaccine.html 200
+          check /images/flu-vaccine-public-2026-infographic.jpg 200
           # 2026-08-31d 續:上方已補 check /services/weight-management.html 200,
           # 該不對稱已解除——本行 FAIL 而頁哨兵 OK ＝ 只有圖掉了;兩行同時 FAIL ＝ 整頁不見。
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
