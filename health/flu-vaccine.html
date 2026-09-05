@@ -365,6 +365,13 @@ body{padding-bottom:76px}
  </div>
  </div>
  <p class="mt-3 text-sm text-gray-500">以上為歷年常見類別，實際對象、階段與開打時間每年可能調整，一律以疾管署當年度公告為準。</p>
+<figure class="mt-5 mb-2">
+ <picture>
+ <source type="image/webp" srcset="/images/flu-vaccine-public-2026-infographic-768.webp 768w, /images/flu-vaccine-public-2026-infographic.webp 1254w" sizes="(max-width: 767px) 82vw, 700px">
+ <img src="/images/flu-vaccine-public-2026-infographic.jpg" alt="立欣診所整理：115 年度公費流感疫苗自 10 月 1 日起分階段開打，接種至疫苗用罄為止。10 月 1 日起的階段對象包含滿 6 個月至入學前幼兒、國小至高中職與五專 1 至 3 年級學生、65 歲以上長者與 55 歲以上原住民、孕婦與 6 個月內嬰兒雙親或實際扶養者、高風險慢性病與 BMI≧30 及重大傷病或罕病患者、醫事防疫與長照及托育等人員；11 月 2 日起的階段對象為 50 至 64 歲無高風險慢性病成人。學生多由學校安排集中接種。發燒或急性疾病期請先暫緩接種，是否適合接種依仿單並由醫師評估。本院到貨與可接種時段請先來電確認。" width="1254" height="1254" loading="lazy" decoding="async" class="w-full h-auto rounded-2xl border border-gray-100 shadow-sm">
+ </picture>
+ <figcaption class="text-xs text-gray-400 font-chinese text-center mt-2">圖｜立欣診所整理之 115 年度公費流感疫苗開打時程與階段對象，依疾病管制署 115 年度流感疫苗接種計畫。本圖為一般衛教參考，接種對象、階段與開打時間每年可能調整，一律以疾管署當年度公告為準；是否適合接種依原廠仿單並由醫師評估。</figcaption>
+ </figure>
  </div>
 
  <div>
@@ -505,14 +512,20 @@ body{padding-bottom:76px}
 
 <!-- ⏰ 年度時效內容（2026-09-03g 加入）：本頁「115 年度公費流感疫苗接種計畫」的日期與階段
      （10/1 第 1 階段、11/2 第 2 階段、全數三價、首度導入公費免疫加強型）僅適用 115 年度。
-     116 年度（2027）疾管署公告新計畫時，本頁有三處要一起換版、缺一不可：
+     116 年度（2027）疾管署公告新計畫時，本頁有四處要一起換版、缺一不可：
        ① 下方隱藏 #ai-knowledge-block 的「115 年度公費流感疫苗接種計畫：開打時程與階段對象」整段；
        ② 本頁 FAQPage schema 的「115 年度公費流感疫苗什麼時候開打」與「左流右新」兩題；
        ③ llms.txt 的「115 年度公費流感疫苗開打時程」條目與 llms-full.txt 對應的 2 則 Q&A（雙檔同步，漏一檔會被 W-LLMS 抓）。
+       ④ 【2026-09-05 新增】可見層「公費流感疫苗的接種對象有哪些？」段末的 115 年度開打資訊圖
+          （圖組 slug＝flu-vaccine-public-2026，5 檔）與其 alt、figcaption——院長交付的圖上寫死
+          10/1、11/2 與各階段對象，跨年即為錯誤資訊。同一張圖也掛在 index.html 最新消息卡當縮圖，
+          兩處一起換（首頁卡用 trackCTA('News_FluPublic2026') 定位）。
      keywords meta 內含年度數字的詞（115年公費流感疫苗、115年度流感疫苗接種計畫、公費流感疫苗10月1日、
      公費流感疫苗11月2日）同批更新即可，其餘常青詞不動。
-     ⚠️ 可見層（title／desc／H1／正文）本批一字未動、刻意維持常青（正文只寫「歷年多為 10 月起」），
-     換版時同樣不需動可見層 → dateModified 不跳（R4：家長讀到的醫療資訊沒有被重新審過）。
+     ⚠️ 【2026-09-05 修正】原註記寫「可見層刻意維持常青、換版不需動可見層」——**該前提已於 2026-09-04c 失效**：
+     院長交付的 115 年度開打資訊圖已掛進可見層（見④）。title／desc／H1／正文本身仍維持常青（正文只寫
+     「歷年多為 10 月起」），但**換版時必須換圖**。dateModified 仍不跳（R4／infographic-upload：換圖屬
+     可見素材更新、非醫療內文重審），除非同批也改寫了正文醫療內容。
      ⚠️ 換版時 .github/workflows/spot-check.yml 盯住上述 ①② 兩個字串，必須同批改（防呆 17）。 -->
 <div id="ai-knowledge-block" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
  <article>
