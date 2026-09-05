@@ -155,6 +155,23 @@ jobs:
           #    換版清單見 00 §6 標 🗓 那條與 health/flu-vaccine.html 的現場註解第 ④ 項。
           check /health/flu-vaccine.html 200
           check /images/flu-vaccine-public-2026-infographic.jpg 200
+          # 2026-09-05c（院長裁示「5 張縮圖哨兵一起補」）：首頁「最新消息」5 張卡的 480² 縮圖。
+          # 為什麼值得補：這 5 張是**首頁**唯一的內容圖，圖掉了首頁最新消息區會整排開天窗，
+          # 而頁面照樣 200、既有的 08:00–11:00 門診表哨兵也照樣 OK——沒有任何機制會發現。
+          # 09-05b 只補了自己那一張，反而製造新的不對稱，本批依院長裁示一次補齊 5 張。
+          # ⚠️ 為什麼只盯 .jpg、不盯 .webp（刻意，不是漏）：卡片是 <picture>，
+          #    webp 掉了會靜默 fallback 回 jpg、使用者看不出差別；jpg 是 <img src>，
+          #    掉了才是真正的破圖。且 5 檔由 make_infographic.py 同批產出，
+          #    實務上不會只掉其中一格式——一張卡一條哨兵即可涵蓋真實的失效模式。
+          # ⚠️ 成對通則（08-14b）已滿足：承載頁＝index.html，其 08:00–11:00 門診表哨兵
+          #    已在盯「首頁還在不在」，不需要再補 5 條頁哨兵。
+          # ⚠️ 連動維護義務（防呆 17）：最新消息卡換圖、換檔名或整張退場時，
+          #    對應這一行要同批改或刪，不可放著讓它誤報。
+          check /images/flu-vaccine-2026-thumb.jpg 200
+          check /images/flu-vaccine-public-2026-thumb.jpg 200
+          check /images/back-to-school-infections-thumb.jpg 200
+          check /images/flu-vaccine-doses-2026-thumb.jpg 200
+          check /images/covid-19-2026-thumb.jpg 200
           # 2026-08-31d 續:上方已補 check /services/weight-management.html 200,
           # 該不對稱已解除——本行 FAIL 而頁哨兵 OK ＝ 只有圖掉了;兩行同時 FAIL ＝ 整頁不見。
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
