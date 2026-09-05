@@ -72,6 +72,14 @@ jobs:
           check /llms.txt 200
           check /sitemap.xml 200
           check /robots.txt 200
+          # 2026-09-05e（院長裁示補）:/cta-track.js 承載全站 75 頁的所有 GA4
+          # 轉換事件(call/line/queue/booking/directions/growth/ai_referral)。
+          # 它 404 的話,每一個轉換事件會同時靜默停止,而每一頁仍然 200、版面
+          # 不破、validate_site.py 全綠——沒有任何既有機制會叫。這正是防呆 17
+          # 反向(「新增純技術層時先問:被覆蓋了誰會叫」)指向的情境。
+          # ⚠️ 連動維護義務:這支腳本改檔名或退場時,本行要同批改或刪。
+          # 成對通則(08-14b)已滿足:承載頁哨兵＝下方的 / 與 /index.html 系列。
+          check /cta-track.js 200
           check /app.html 200
           check /visit-guide.html 200
           check /services/vaccination.html 200
