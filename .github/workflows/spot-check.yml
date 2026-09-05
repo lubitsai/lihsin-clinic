@@ -80,6 +80,24 @@ jobs:
           # ⚠️ 連動維護義務:這支腳本改檔名或退場時,本行要同批改或刪。
           # 成對通則(08-14b)已滿足:承載頁哨兵＝下方的 / 與 /index.html 系列。
           check /cta-track.js 200
+          # 2026-09-05f（院長裁示「補①靜默型的另外 3 條」）:同一類「掉了沒有
+          # 任何機制會叫」的根目錄共用資產。三者的共通點是**失效不可見**——
+          # 頁面照常 200、版面不破、validate_site.py 全綠,壞掉的是量測與離線能力。
+          # ⚠️ 連動維護義務(防呆 17):任一支改檔名或退場時,對應那一行要同批改或刪。
+          #
+          # /clarity.js  75 頁引用。掉了 Microsoft Clarity 的熱圖與工作階段重播
+          #              靜默停止,privacy.html 卻仍揭露有在蒐集。
+          # /pwa-register.js  75 頁引用。它負責註冊 /sw.js;掉了 PWA 安裝提示與
+          #              離線頁靜默失效,而首頁與各頁完全看不出差別。
+          # /sw.js       ⚠️ **不是由 HTML 直接引用**,是 pwa-register.js 在執行期
+          #              register('/sw.js') 註冊的,所以 grep HTML 幾乎搜不到它——
+          #              不要因為引用數低就以為沒人用。
+          #              ⚠️ 日後若執行 SW kill switch,先確認做法:**換內容**
+          #              (檔仍在、仍 200,本行不用動)還是**刪檔**(本行要同批刪,
+          #              否則會天天誤報 FAIL)。
+          check /clarity.js 200
+          check /pwa-register.js 200
+          check /sw.js 200
           check /app.html 200
           check /visit-guide.html 200
           check /services/vaccination.html 200
