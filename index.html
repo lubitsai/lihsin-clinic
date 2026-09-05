@@ -2398,31 +2398,12 @@
  <h2 id="clinic-notice-heading" class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-3 font-chinese">最新門診異動</h2>
  </div>
 
- <!-- 公告①：2026-08-28（五）李醫師開會進修 午診由蔡醫師代診 -->
- <div class="notice-item max-w-3xl mx-auto fade-in-up mb-14" data-expires="2026-08-28">
- <p class="text-gray-600 font-chinese text-center mb-4">適用日期：<time datetime="2026-08-28">2026 年 8 月 28 日（五）當日</time></p>
- <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視 8 月 28 日門診異動公告圖（李醫師開會進修，午診由蔡醫師代診）" style="padding:0;cursor:zoom-in;">
- <picture>
- <source type="image/webp" srcset="/images/notice/clinic-notice-20260828.webp">
- <img src="/images/notice/clinic-notice-20260828.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="立欣診所本週門診異動公告：2026 年 8 月 28 日（星期五）李醫師開會進修，午診由蔡醫師代診。造成不便，敬請見諒。近日豪雨不斷，出入請注意安全。立欣診所小鹿醫師團隊關心您的健康。" class="w-full h-auto">
- </picture>
- </button>
- <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
- <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">8 月 28 日（五）李醫師開會進修，<strong>當日午診（14:30–18:00）由蔡醫師代診</strong>；<strong>門診時段不變</strong>（早診 08:00–12:00、午診 14:30–18:00、晚診 18:30–21:30 均照常看診）。已預約當日午診的家長不需改約，如需洽詢請透過 LINE 與我們聯繫。近日豪雨不斷，出入請注意安全。造成不便，敬請見諒。</p>
- </div>
-
- <!-- 公告②：2026-09-01 起 新門診時間表 -->
- <div class="notice-item max-w-3xl mx-auto fade-in-up" data-expires="2026-08-31">
- <p class="text-gray-600 font-chinese text-center mb-4">實施日期：<time datetime="2026-09-01">2026 年 9 月 1 日（二）起</time></p>
- <button type="button" id="clinic-notice-zoom" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視 9 月 1 日起新門診時間表公告圖" style="padding:0;cursor:zoom-in;">
- <picture>
- <source type="image/webp" srcset="/images/notice/clinic-notice-20260901.webp">
- <img src="/images/notice/clinic-notice-20260901.jpg" width="1492" height="1054" loading="lazy" decoding="async" alt="立欣診所新門診時間表，自民國115年9月1日起實施。上午08:00~12:00：星期一、二、三蔡醫師，星期四李醫師，星期五蔡醫師，星期六蔡醫師08:00~11:30，星期日蔡醫師08:00~11:00與李醫師08:00~11:30。下午14:30~18:00：星期一、二、三蔡醫師，星期四李醫師，星期五蔡醫師，星期六李醫師，星期日休診。晚上18:30~21:30：星期一蔡醫師18:30~21:00與李醫師18:30~21:30，星期二蔡醫師，星期三李醫師，星期四蔡醫師，星期五蔡醫師，星期六休診，星期日蔡醫師18:30~21:00。" class="w-full h-auto">
- </picture>
- </button>
- <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
- <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">新門診時間表自 2026 年 9 月 1 日（民國 115 年 9 月 1 日）起實施，<strong>8 月 31 日前仍依現行門診時間表看診</strong>。各診次的開診時段不變（上午 08:00–12:00、下午 14:30–18:00、晚上 18:30–21:30；週六上午至 11:30、週六無夜診；週日上午至 11:30、週日無午診、夜診至 21:00），異動的是醫師排班：<strong>週四下午改由李醫師看診、週五下午改由蔡醫師看診</strong>；週一晚診蔡醫師看診至 21:00、李醫師看診至 21:30；週日上午蔡醫師看診至 11:00、李醫師看診至 11:30。</p>
- </div>
+ <!-- 目前無門診異動公告。
+     新增一則＝在此插入一則公告註解，加上
+     div.notice-item.max-w-3xl.mx-auto.fade-in-up 並帶 data-expires="YYYY-MM-DD"；
+     作法與五處必改見 internal/SOP_門診異動與時間更新.md §一.3（並走 clinic-schedule skill）。
+     ⚠️ 本區塊刻意保留外殼（heading／lightbox／JS）：SOP 以 #clinic-notice 存在為前提定位，
+     整區刪掉會讓下一棒無處可插。零公告時由下方 JS 的 alive===0 判斷整區隱藏。 -->
 
  <div class="text-center mt-8">
  <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" onclick="trackCTA('Notice_LINE')" class="btn-primary inline-block px-8 py-3 rounded-full font-chinese font-semibold">💬 有疑問？LINE 諮詢立欣診所</a>
@@ -2445,7 +2426,7 @@
  var sec = document.getElementById('clinic-notice');
  if (!sec) return;
  // 過期自動隱藏：data-expires 當日（含）仍顯示，翌日起隱藏；以 UTC+8 判斷。
- // 區塊本身與其中每則公告（.notice-item）各自判斷，公告全部過期時整區隱藏。
+ // 區塊本身與其中每則公告（.notice-item）各自判斷；零公告或公告全部過期時整區隱藏。
  var tw = new Date(Date.now() + 8*60*60000);
  var pad = function (n) { return (n<10?'0':'')+n; };
  var today = tw.getUTCFullYear()+'-'+pad(tw.getUTCMonth()+1)+'-'+pad(tw.getUTCDate());
@@ -2457,7 +2438,9 @@
  var iexp = items[i].getAttribute('data-expires');
  if (iexp && today > iexp) { items[i].style.display = 'none'; } else { alive++; }
  }
- if (items.length && alive === 0) { sec.style.display = 'none'; return; }
+ if (alive === 0) { sec.style.display = 'none'; return; }
+   // ⚠️ 2026-09-05m：原條件為 (items.length && alive === 0)，零公告時不成立 →
+   //    會渲染出只有標題的空區塊。改為 alive===0 後，零公告與全部過期都整區隱藏。
  var lb = document.getElementById('notice-lightbox');
  var lbPic = document.getElementById('notice-lightbox-pic');
  var openBtns = sec.querySelectorAll('.notice-zoom');
