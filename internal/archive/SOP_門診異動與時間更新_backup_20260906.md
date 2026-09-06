@@ -81,9 +81,6 @@
 ### 步驟
 
 1. **公告圖**（正方形）放入 `images/notice/`，**檔名帶日期**（如 `clinic-notice-20260819.webp`＋`.jpg`），避免同名檔被 CDN 快取舊圖。
-   - ⚠️ **`images/notice/` 目前可能不存在**（2026-09-06：最後一批孤兒圖清空後，git 不追蹤空目錄 → 該資料夾已從 repo 消失）。
-     這是 §一.6「只留當期那一組」的必然結果、**不是有人誤刪**；放圖前先 `mkdir -p images/notice`，或直接用
-     `internal/tools/make_infographic.py`（會自行建目錄）。同理 `internal/print/` 也可能是空的。
    - **同一天的第二版海報要再加版次**（`clinic-notice-20260823b.*`）。CDN 以檔名為快取鍵，內容換了但檔名沒換＝家長重整仍看到舊圖（2026-08-23 教訓）。
    - **院長在對話貼圖時，原始檔就在 `/root/.claude/uploads/<session-id>/`——先 `ls` 那裡，不要急著重畫。**
      取得原檔後只做**轉檔**（Pillow：webp q84 ＋ jpg q88 後備，維持原生尺寸不放大），細節見 `infographic-upload` skill。
