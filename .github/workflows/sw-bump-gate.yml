@@ -1,0 +1,63 @@
+# 防呆 18 閘門(2026-09-07 院長裁示新增)
+# 用途:改動「同網域共用靜態資源」時,強制同批 bump sw.js 的 VERSION。
+#       sw.js 對這類資源走 stale-while-revalidate(`return cached || network`
+#       ＝快取優先),不 bump 的話回訪者第一次載入拿到的仍是舊版。
+#       這是「三重靜默」失效——頁面照開、版面不破、validate_site.py 全綠,
+#       只有數據會少,而數據少最容易被誤讀成「沒人點」。
+# 為什麼不寫進 validate_site.py:那支是**單檔內容檢查**,看不到「這批改了什麼」,
+#       結構上擋不住 commit 層級的規則,只能在 CI 用 git diff 把關。
+# 邏輯與受管清單:internal/tools/check_sw_bump.py(可本機執行,便於重現)
+# 規則全文:internal/01_新對話接續提示詞.md 防呆 18
+# 逃生門:commit 訊息或 PR 標題/內文寫 [no-sw-bump],並在交付說明講明理由。
+name: SW bump gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  sw-bump-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 需要完整歷史才比得到 base
+
+      - name: Resolve compare range
+        id: range
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            echo "base=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
+            echo "head=$PR_HEAD_SHA" >> "$GITHUB_OUTPUT"
+          else
+            # push:before 在分支首推或 force-push 後可能是全 0,或 commit 已不存在
+            if [ "$PUSH_BEFORE" = "0000000000000000000000000000000000000000" ] \
+               || ! git cat-file -e "$PUSH_BEFORE^{commit}" 2>/dev/null; then
+              echo "skip=1" >> "$GITHUB_OUTPUT"
+            else
+              echo "base=$PUSH_BEFORE" >> "$GITHUB_OUTPUT"
+              echo "head=$PUSH_AFTER" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: Check sw.js VERSION bump
+        if: steps.range.outputs.skip != '1'
+        env:
+          MARKER: ${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}
+        run: |
+          python3 internal/tools/check_sw_bump.py \
+            --base "${{ steps.range.outputs.base }}" \
+            --head "${{ steps.range.outputs.head }}" \
+            --allow-marker "$MARKER"
+
+      - name: Skipped (no usable base)
+        if: steps.range.outputs.skip == '1'
+        run: echo "首推或 force-push 後 before 不可用 → 略過本次比對。"

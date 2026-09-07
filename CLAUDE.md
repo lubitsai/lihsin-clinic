@@ -27,6 +27,7 @@
 
 - **外科式最小替換**，不整檔重寫、不用舊檔覆蓋優化版。HTML 實體（如 `Q&amp;A`）會讓字串搜尋失配 → 用平衡錨點，改完驗 DOM。
 - **Tailwind purge 防線**：新增或改動帶新 class 的頁面，必須納入 content glob 或 append 進 `tailwind.css`，否則靜默 purge 破版。
+- **共用根資產同步 bump**：改動 `/cta-track.js`、`/clarity.js`、`/pwa-register.js`、`/tailwind.css` 等**同網域共用靜態資源**，必須同批把 `sw.js` 的 `VERSION` 尾碼 +1——`sw.js` 對這類資源走 stale-while-revalidate（快取優先），不 bump 的話回訪者第一次載入拿到的仍是舊版。**HTML 頁面不需要**（走 network-first）。CI `sw-bump-gate` 會擋，規則全文見 `01` 防呆 18。
 - **版面有動**：Playwright 實測 390／1280px 零橫向溢出。
 
 ## 架構約束
