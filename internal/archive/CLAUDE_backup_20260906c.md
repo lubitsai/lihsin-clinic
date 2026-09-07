@@ -14,7 +14,6 @@
 - dateModified 判準（`02` R4）：家長讀到的醫療資訊有沒有被醫師重新審過？沒有就不跳。
 - 改 `00`／`01` 前先備份至 **`internal/archive/`**（院長 2026-09-01 裁示的唯一備份目錄；repo 根 `archive/` 只讀不寫），合規規則與待決狀態需院長核可（`00` §8）。
 - 任何批次交付前跑 `python3 internal/tools/validate_site.py --root . --stage deploy`，**ERROR 清零才 push**，WARN 逐條判讀寫進交付說明。
-- **不是每批都該開 PR**（院長 2026-09-06 裁示）：**三條判準有任一成立才開 PR**——①影響患者體驗（可見文字／版面／CTA／公告／圖片）②影響搜尋收錄（schema／meta／`sitemap.xml`／`llms` 雙檔／`_redirects`／canonical）③影響轉換率（預約入口／GA4 事件／追蹤腳本）。**三條都不成立就直接 commit 進 `main`、不開 PR**（PR 會產生 Netlify Deploy Preview，對正式站零影響的變更不值得那次 build）。典型不開 PR：`internal/**`、`.claude/skills/**`、`internal/tools/*.py`、`.github/workflows/*.yml`。⚠️ **不開 PR ≠ 不進 main**——`00`／`01` 是跨 session 的單一事實來源，延後進 main 的代價是下一棒讀到過期文件。詳見 `00` §8-7。
 
 ## 這個 repo 的兩個陷阱
 
