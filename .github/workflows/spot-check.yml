@@ -133,6 +133,10 @@ jobs:
           # 被舊版覆蓋回退時整頁會 404。下方「內容抽驗」兩條分別盯可見層與隱藏層,
           # 這行盯「頁還在不在」,依 2026-08-14b 通則「兩者缺一不可」成對存在。
           check /health/flu-antivirals.html 200
+          # 2026-09-08m 新增（本批新頁〈鼻噴式流感疫苗：適用年齡、和針劑的差別〉）：整頁都是新檔，
+          # 被舊版覆蓋回退時整頁會 404。下方「內容抽驗」一條盯可見層的仿單適用年齡句，
+          # 這行盯「頁還在不在」，依 2026-08-14b 通則「兩者缺一不可」成對存在。
+          check /health/nasal-flu-vaccine.html 200
           # 2026-08-25d 新增(院長裁示「補 spot-check 各 2 條,共 8 條」):08-24 批對這四頁
           # 補的是**純隱藏 #ai-knowledge-block 的 GEO 穩定實體關係段**,可見層一字未改。
           # 這是本 repo 最難自行發現的失效模式——被舊版覆蓋時頁面照樣 200、家長看到的
@@ -235,6 +239,11 @@ jobs:
           if [ "$fv" -ge 1 ]; then echo "OK    flu-vaccine 公費開打隱藏區已上線"; else echo "FAIL  flu-vaccine 公費開打隱藏區未見"; fail=1; fi
           fq=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '流感疫苗可以和新冠疫苗同一天接種嗎？什麼是「左流右新」？' || true)
           if [ "$fq" -ge 1 ]; then echo "OK    flu-vaccine 左流右新 FAQ 已上線"; else echo "FAIL  flu-vaccine 左流右新 FAQ 未見"; fail=1; fi
+          # 2026-09-08m 新增：盯 health/nasal-flu-vaccine.html 可見層的仿單適用年齡句。
+          # 這是本頁最關鍵的醫療事實（鼻噴劑型只適用 2 歲到未滿 18 歲），被舊版覆蓋或
+          # 誤刪時頁面仍會 200，只有這條抓得到。仿單改版而要改寫此句時，須同批改本檢查（防呆 17）。
+          nf=$(curl -s --max-time 20 "$BASE/health/nasal-flu-vaccine.html" | grep -c '仿單適用<strong>2 歲到未滿 18 歲</strong>' || true)
+          if [ "$nf" -ge 1 ]; then echo "OK    nasal-flu-vaccine 仿單適用年齡句已上線"; else echo "FAIL  nasal-flu-vaccine 仿單適用年齡句未見"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
