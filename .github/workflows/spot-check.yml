@@ -150,6 +150,11 @@ jobs:
           # 依 2026-08-14b 通則兩者缺一不可——只有圖哨兵時,FAIL 分不出是圖掉了
           # 還是整頁不見。
           check /services/weight-management.html 200
+          # 2026-09-08f 新增：services/family-medicine.html 先前**全無任何哨兵**
+          # （既無 200、也無內容抽驗）。本批要在下方替該頁補網路預約入口的內容哨兵，
+          # 依 2026-08-14b 通則「兩者缺一不可」必須同批補上這行——否則整頁 404 時，
+          # 下方那條會回報「預約入口未見」，把「頁不見了」誤診成「按鈕被拿掉了」。
+          check /services/family-medicine.html 200
           check /images/enterovirus71-vaccine-infographic.jpg 200
           check /images/rsv-immunization-infographic.jpg 200
           # 2026-08-25b 新增(院長指示):child-uti 的懶人包圖。它同時是該頁的 og:image
@@ -442,4 +447,17 @@ jobs:
           #    （防呆 17：改了檢查沒改頁面會誤報 FAIL，改了頁面沒改檢查則哨兵靜默失效）。
           glp=$(curl -s --max-time 20 "$BASE/" | grep -c '肥胖或過重之體重控制' || true)
           if [ "$glp" -ge 1 ]; then echo "OK    首頁 GLP-1 適應症已為 9/8 更正版"; else echo "FAIL  首頁『肥胖或過重之體重控制』未見——GLP-1 適應症敘述疑遭 9/8 前舊版覆蓋（醫療正確性回退）"; fail=1; fi
+          # 2026-09-08f：services/ 三頁補上的網路預約入口（PR #182，BookNow 覆蓋 9/12 → 12/12）。
+          # ⚠️ 這條防的失效模式，上面的 200 檢查抓不到：那顆鈕被舊版覆蓋掉時，
+          # 頁面照樣 200、版面不破（CTA 盒本來就有電話與 LINE 兩顆，少第三顆看不出來）、
+          # validate_site.py 全綠——**沒有任何既有機制會叫**，而掉的是轉換入口本身，
+          # 且 cta-track.js 的 booking_click 會一起靜默歸零（GA4 只會看到數字變少，不會報錯）。
+          # 挑 `booknow.com.tw` 而非可見文字「📅 前往網路預約」的理由：盯的是**轉換機制**，
+          # 日後若只潤飾鈕的文案、連結還在，哨兵不該誤報 FAIL。
+          # 舊版計數 0、新版各 1（2026-09-08 程式化確認）＝乾淨的注入式負向測試（防呆 14）。
+          # ⚠️ 若日後刻意移除或改寫這三頁的預約入口，請連同本檢查一起改，不要直接刪掉（防呆 17）。
+          for pg in allergy-testing family-medicine weight-management; do
+            bn=$(curl -s --max-time 20 "$BASE/services/$pg.html" | grep -c 'booknow.com.tw' || true)
+            if [ "$bn" -ge 1 ]; then echo "OK    services/$pg 網路預約入口已上線"; else echo "FAIL  services/$pg 未見 booknow.com.tw——網路預約入口疑遭 9/8 前舊版覆蓋（轉換入口與 booking_click 一併靜默失效）"; fail=1; fi
+          done
           exit $fail
