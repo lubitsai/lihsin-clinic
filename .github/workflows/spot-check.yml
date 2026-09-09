@@ -115,6 +115,13 @@ jobs:
           check /health/atopic-dermatitis.html 200
           check /health/atopic-march.html 200
           check /health/rapid-tests.html 200
+          # 2026-09-09l（院長指令「把新冠這篇從最新消息轉到蔡宗儒醫師衛教文章區」）：
+          # 本頁由 /news/ 搬到 /health/。搬遷唯一會整條斷掉的兩件事就是這兩行——
+          # 新路徑掛掉、或舊路徑的 301 沒生效（站外 GBP／LINE 既有連結會直接撞 404）。
+          # 原本這頁只有縮圖哨兵、沒有頁哨兵（卡在首頁、頁自己沒人盯）；卡退場後
+          # 縮圖哨兵一併移除，故此處補上頁哨兵，否則本頁變成零哨兵。
+          check /health/covid-19-2026.html 200
+          check /news/covid-19-2026.html 301
           check /news/back-to-school-infections.html 200
           # 2026-08-15 批(PR #94)的兩個過敏原檢測承載頁。下方「內容抽驗」已各盯一層
           # (實體層 schema／keywords),這兩行盯的是另一件事:頁還在不在。
@@ -202,7 +209,10 @@ jobs:
           # 2026-09-05c（院長裁示「5 張縮圖哨兵一起補」）：首頁「最新消息」5 張卡的 480² 縮圖。
           # 為什麼值得補：這 5 張是**首頁**唯一的內容圖，圖掉了首頁最新消息區會整排開天窗，
           # 而頁面照樣 200、既有的 08:00–11:00 門診表哨兵也照樣 OK——沒有任何機制會發現。
-          # 09-05b 只補了自己那一張，反而製造新的不對稱，本批依院長裁示一次補齊 5 張。
+          # 09-05b 只補了自己那一張，反而製造新的不對稱，2026-09-05c 依院長裁示一次補齊 5 張。
+          # ⚠️ 2026-09-09l：新冠卡依院長指令轉為衛教文章、卡片退場，該批 5 條在此剩 4 條
+          #    （covid-19-2026-thumb 一行同批移除＝防呆 17；縮圖檔本身留在 images/ 未刪，
+          #     與 09-04c C 肝卡退場同型處置）。連同下方第 6 張，現為 5 卡對 5 條哨兵。
           # ⚠️ 為什麼只盯 .jpg、不盯 .webp（刻意，不是漏）：卡片是 <picture>，
           #    webp 掉了會靜默 fallback 回 jpg、使用者看不出差別；jpg 是 <img src>，
           #    掉了才是真正的破圖。且 5 檔由 make_infographic.py 同批產出，
@@ -215,7 +225,6 @@ jobs:
           check /images/flu-vaccine-public-2026-thumb.jpg 200
           check /images/back-to-school-infections-thumb.jpg 200
           check /images/flu-vaccine-doses-2026-thumb.jpg 200
-          check /images/covid-19-2026-thumb.jpg 200
           # 2026-09-09j 新增（院長指令「因應流感季，加入最新消息第二篇」）：第 6 張卡的縮圖。
           # 理由同上——圖掉了首頁最新消息區會開天窗，而頁面照樣 200、既有哨兵都不會亮。
           # ⚠️ 這張卡是流感季的時效曝光位；卡片整塊刪除時本行要同批移除（防呆 17），
