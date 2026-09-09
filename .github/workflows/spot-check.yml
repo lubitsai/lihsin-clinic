@@ -216,6 +216,11 @@ jobs:
           check /images/back-to-school-infections-thumb.jpg 200
           check /images/flu-vaccine-doses-2026-thumb.jpg 200
           check /images/covid-19-2026-thumb.jpg 200
+          # 2026-09-09j 新增（院長指令「因應流感季，加入最新消息第二篇」）：第 6 張卡的縮圖。
+          # 理由同上——圖掉了首頁最新消息區會開天窗，而頁面照樣 200、既有哨兵都不會亮。
+          # ⚠️ 這張卡是流感季的時效曝光位；卡片整塊刪除時本行要同批移除（防呆 17），
+          #    刪卡不影響 health/nasal-flu-vaccine.html 本身的 3 條哨兵（頁 200／仿單年齡句／內文主圖 200）。
+          check /images/nasal-flu-vaccine-thumb.jpg 200
           # 2026-08-31d 續:上方已補 check /services/weight-management.html 200,
           # 該不對稱已解除——本行 FAIL 而頁哨兵 OK ＝ 只有圖掉了;兩行同時 FAIL ＝ 整頁不見。
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
