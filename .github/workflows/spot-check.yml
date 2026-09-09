@@ -137,6 +137,15 @@ jobs:
           # 被舊版覆蓋回退時整頁會 404。下方「內容抽驗」一條盯可見層的仿單適用年齡句，
           # 這行盯「頁還在不在」，依 2026-08-14b 通則「兩者缺一不可」成對存在。
           check /health/nasal-flu-vaccine.html 200
+          # 2026-09-09c 新增（院長對話交付衛教圖，走 infographic-upload）：
+          # 這張是 health/nasal-flu-vaccine.html 的內文主圖，同時是該頁 og:image、
+          # MedicalWebPage.image 與 sitemap image:image 的標的——圖掉了，
+          # 頁面照樣 200、上面那條頁哨兵與可見層仿單年齡句哨兵都照樣 OK，
+          # 沒有任何機制會發現。依 08-14b 成對通則與 09-05 先例補這一行。
+          # ⚠️ 只盯 .jpg 不盯 .webp（刻意）：<picture> 的 webp 掉了會靜默 fallback 回
+          #    jpg、使用者看不出差別；jpg 是 <img src>，掉了才是真正的破圖。
+          # ⚠️ 換圖或改檔名時本行要同批改，不可直接刪（防呆 17）。
+          check /images/nasal-flu-vaccine-infographic.jpg 200
           # 2026-08-25d 新增(院長裁示「補 spot-check 各 2 條,共 8 條」):08-24 批對這四頁
           # 補的是**純隱藏 #ai-knowledge-block 的 GEO 穩定實體關係段**,可見層一字未改。
           # 這是本 repo 最難自行發現的失效模式——被舊版覆蓋時頁面照樣 200、家長看到的
