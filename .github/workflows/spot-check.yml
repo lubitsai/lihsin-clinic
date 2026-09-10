@@ -428,6 +428,22 @@ jobs:
           if [ "$vm" -ge 1 ]; then echo "OK    MMR 疫苗頁隱藏區 GEO 實體關係段已上線"; else echo "FAIL  MMR 疫苗頁『MMR 疫苗實體資訊』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
           vp=$(curl -s --max-time 20 "$BASE/health/pneumococcal-vaccine.html" | grep -c '肺炎鏈球菌疫苗實體資訊' || true)
           if [ "$vp" -ge 1 ]; then echo "OK    肺炎鏈球菌疫苗頁隱藏區 GEO 實體關係段已上線"; else echo "FAIL  肺炎鏈球菌疫苗頁『肺炎鏈球菌疫苗實體資訊』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          # 2026-09-10j 新增（2 條）：成人公費肺炎鏈球菌疫苗新制（115/8/10 起 20 價／21 價 1 劑）。
+          # ⚠️ 若日後刻意改寫這兩處措辭，請連同本檢查一起改，不要直接刪掉
+          #    （防呆 17：改了檢查沒改頁面會誤報 FAIL，改了頁面沒改檢查則哨兵靜默失效）。
+          # 第 1 條盯承載頁的新制可見區塊。這是院長交付的**時效性公費資格**內容，被舊版覆蓋時
+          # 整個區塊會整段消失，而頁面照樣 200、上方的隱藏區哨兵也照樣 OK——沒有任何機制會發現，
+          # 家長讀到的會是「近年有調整、請以疾管署公告為準」那句舊的空話。
+          pn=$(curl -s --max-time 20 "$BASE/health/pneumococcal-vaccine.html" | grep -c '115 年 8 月 10 日起：成人公費改用 20 價或 21 價、接種 1 劑' || true)
+          if [ "$pn" -ge 1 ]; then echo "OK    肺炎鏈球菌疫苗頁成人公費新制區塊已上線"; else echo "FAIL  肺炎鏈球菌疫苗頁未見成人公費新制區塊——疑遭 9/10 前舊版覆蓋"; fail=1; fi
+          # 第 2 條是本批教訓的哨兵化，盯的是**首頁的公費／自費分類口徑**，不是有沒有這個詞。
+          # 新制前 index.html 的 `20價肺炎鏈球菌` 全部掛在「自費疫苗」清單下；新制後 65 歲以上長者、
+          # 55–64 歲原住民與 19–64 歲 IPD 高風險者是**公費**對象。這個註記若被舊版覆蓋，首頁會再度
+          # 把公費項目寫成純自費，**而頁面照樣 200、可見層讀起來也完全通順、validate_site.py 不會亮**，
+          # 且承載頁與 services/vaccination.html 仍寫公費 → 三頁口徑互相矛盾而無人察覺。
+          # 分類錯的比沒寫的更傷：沒寫只是缺，寫錯是把最該來打的人推離門診。
+          ix=$(curl -s --max-time 20 "$BASE/" | grep -c '20價肺炎鏈球菌（不符合公費資格者自費）' || true)
+          if [ "$ix" -ge 1 ]; then echo "OK    首頁 20 價肺鏈的公費／自費分類註記已上線"; else echo "FAIL  首頁未見『20價肺炎鏈球菌（不符合公費資格者自費）』——公費項目恐被寫回純自費"; fail=1; fi
           vr=$(curl -s --max-time 20 "$BASE/health/rotavirus-vaccine.html" | grep -c '輪狀病毒疫苗實體資訊' || true)
           if [ "$vr" -ge 1 ]; then echo "OK    輪狀病毒疫苗頁隱藏區 GEO 實體關係段已上線"; else echo "FAIL  輪狀病毒疫苗頁『輪狀病毒疫苗實體資訊』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
           vv=$(curl -s --max-time 20 "$BASE/health/varicella-vaccine.html" | grep -c '水痘疫苗實體資訊' || true)
