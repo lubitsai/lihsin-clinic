@@ -162,6 +162,16 @@ jobs:
           # 被舊版覆蓋回退時整頁會 404。下方「內容抽驗」兩條分別盯可見層的轉介界線句與
           # 服務頁的入連卡，這行盯「頁還在不在」，依 2026-08-14b 通則「兩者缺一不可」成對存在。
           check /health/child-language-development.html 200
+          # 2026-09-10h 新增（院長對話交付 2 張衛教圖，走 infographic-upload）：
+          # 這兩張是 health/child-language-development.html 的內文主圖與警訊圖，
+          # 其中前者同時是該頁 og:image、MedicalWebPage.image 與 sitemap image:image 的標的。
+          # 圖掉了，頁面照樣 200、上面那條頁哨兵與兩條可見層哨兵都照樣 OK，
+          # 沒有任何機制會發現。依 08-14b 成對通則與 09-05／09-09c 先例補這兩行。
+          # ⚠️ 只盯 .jpg 不盯 .webp（刻意，同 nasal-flu-vaccine 那條）：<picture> 的 webp
+          #    掉了會靜默 fallback 回 jpg、使用者看不出差別；jpg 是 <img src>，掉了才是真正的破圖。
+          # ⚠️ 換圖或改檔名時本兩行要同批改，不可直接刪（防呆 17）。
+          check /images/child-language-development-infographic.jpg 200
+          check /images/child-language-development-warning-infographic.jpg 200
           # 2026-09-09c 新增（院長對話交付衛教圖，走 infographic-upload）：
           # 這張是 health/nasal-flu-vaccine.html 的內文主圖，同時是該頁 og:image、
           # MedicalWebPage.image 與 sitemap image:image 的標的——圖掉了，
