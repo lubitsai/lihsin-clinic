@@ -138,6 +138,9 @@ jobs:
           # (實體層 schema／keywords),這兩行盯的是另一件事:頁還在不在。
           # 依 2026-08-14b 通則「兩者缺一不可」,與上面四個承載頁同樣的配置。
           check /services/allergy-testing.html 200
+          # 2026-09-10g 新增：本頁從未進過 200 清單（歷來只被當成「有內容抽驗就好」），
+          # 而 09-10g 的入連哨兵 FAIL 時無從分辨「頁不可達」還是「內容不符」。補這一行當第一刀。
+          check /services/child-development-screening.html 200
           check /health/allergy-test-results.html 200
           # 2026-08-23f 新增(08-23d 新頁〈兒童泌尿道感染〉):整頁都是新檔,被舊版覆蓋
           # 回退時整頁會 404。下方「內容抽驗」盯本頁核心內容,這行盯「頁還在不在」,
@@ -293,8 +296,19 @@ jobs:
           # 2026-09-10g 新增（2/2）：盯 services/child-development-screening.html 對新文章的**入連卡**。
           # 通則 23：新頁最缺的是入連，而入連掉了→新頁自己照樣 200、上面那條頁哨兵照樣 OK，
           # 沒有任何機制會發現「服務頁不再把家長送過去」。故入連要有自己的哨兵。
-          cs=$(curl -s --max-time 20 "$BASE/services/child-development-screening.html" | grep -c '/health/child-language-development.html' || true)
-          if [ "$cs" -ge 1 ]; then echo "OK    兒童發展篩檢服務頁 → 語言發展文的入連卡已上線"; else echo "FAIL  兒童發展篩檢服務頁 → 語言發展文的入連卡未見"; fail=1; fi
+          csbody=$(curl -s --max-time 20 "$BASE/services/child-development-screening.html")
+          cs=$(printf '%s' "$csbody" | grep -c '/health/child-language-development.html' || true)
+          if [ "$cs" -ge 1 ]; then
+            echo "OK    兒童發展篩檢服務頁 → 語言發展文的入連卡已上線"
+          else
+            echo "FAIL  兒童發展篩檢服務頁 → 語言發展文的入連卡未見"
+            # 診斷三欄，用來分辨三種死因（下一棒不必重猜）：
+            #   bytes 很小        → 頁不可達／被轉址（curl 未跟隨）
+            #   growth-curve 有   → 頁是舊版部署（同一張卡片網格裡的鄰居還在）
+            #   兩者皆正常        → 才是真的「這張卡被移除」
+            echo "      診斷: bytes=$(printf '%s' "$csbody" | wc -c) growth-curve卡=$(printf '%s' "$csbody" | grep -c '/health/growth-curve.html' || true) 語言字串=$(printf '%s' "$csbody" | grep -c 'child-language' || true)"
+            fail=1
+          fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
