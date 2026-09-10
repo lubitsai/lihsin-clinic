@@ -155,6 +155,10 @@ jobs:
           # 被舊版覆蓋回退時整頁會 404。下方「內容抽驗」一條盯可見層的仿單適用年齡句，
           # 這行盯「頁還在不在」，依 2026-08-14b 通則「兩者缺一不可」成對存在。
           check /health/nasal-flu-vaccine.html 200
+          # 2026-09-10g 新增（本批新頁〈孩子兩歲還不太會說話——語言發展與評估時機〉）：整頁都是新檔，
+          # 被舊版覆蓋回退時整頁會 404。下方「內容抽驗」兩條分別盯可見層的轉介界線句與
+          # 服務頁的入連卡，這行盯「頁還在不在」，依 2026-08-14b 通則「兩者缺一不可」成對存在。
+          check /health/child-language-development.html 200
           # 2026-09-09c 新增（院長對話交付衛教圖，走 infographic-upload）：
           # 這張是 health/nasal-flu-vaccine.html 的內文主圖，同時是該頁 og:image、
           # MedicalWebPage.image 與 sitemap image:image 的標的——圖掉了，
@@ -280,6 +284,17 @@ jobs:
           # 誤刪時頁面仍會 200，只有這條抓得到。仿單改版而要改寫此句時，須同批改本檢查（防呆 17）。
           nf=$(curl -s --max-time 20 "$BASE/health/nasal-flu-vaccine.html" | grep -c '仿單適用<strong>2 歲到未滿 18 歲</strong>' || true)
           if [ "$nf" -ge 1 ]; then echo "OK    nasal-flu-vaccine 仿單適用年齡句已上線"; else echo "FAIL  nasal-flu-vaccine 仿單適用年齡句未見"; fail=1; fi
+          # 2026-09-10g 新增（1/2）：盯 health/child-language-development.html 可見層的**服務界線句**。
+          # 這是本頁最重要的合規句（00 §4-5 不宣稱未具專科）——本院提供的是門診評估、公費發展篩檢
+          # 與轉介協助，語言治療與療育課程不在本院進行。被舊版覆蓋或誤刪時頁面仍會 200，只有這條抓得到。
+          # 若院長日後核可改寫此句，須同批改本檢查，不可直接刪（防呆 17）。
+          cl=$(curl -s --max-time 20 "$BASE/health/child-language-development.html" | grep -c '<strong>立欣診所提供的是門診評估、公費發展篩檢與轉介協助</strong>' || true)
+          if [ "$cl" -ge 1 ]; then echo "OK    兒童語言發展頁服務界線句已上線"; else echo "FAIL  兒童語言發展頁服務界線句未見"; fail=1; fi
+          # 2026-09-10g 新增（2/2）：盯 services/child-development-screening.html 對新文章的**入連卡**。
+          # 通則 23：新頁最缺的是入連，而入連掉了→新頁自己照樣 200、上面那條頁哨兵照樣 OK，
+          # 沒有任何機制會發現「服務頁不再把家長送過去」。故入連要有自己的哨兵。
+          cs=$(curl -s --max-time 20 "$BASE/services/child-development-screening.html" | grep -c '/health/child-language-development.html' || true)
+          if [ "$cs" -ge 1 ]; then echo "OK    兒童發展篩檢服務頁 → 語言發展文的入連卡已上線"; else echo "FAIL  兒童發展篩檢服務頁 → 語言發展文的入連卡未見"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
