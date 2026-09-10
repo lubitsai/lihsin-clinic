@@ -89,7 +89,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
-    <lastmod>2026-09-08</lastmod>
+    <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -522,6 +522,12 @@
   <url>
     <loc>https://lhpedclinic.com.tw/health/heat-illness.html</loc>
     <lastmod>2026-08-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/child-language-development.html</loc>
+    <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
