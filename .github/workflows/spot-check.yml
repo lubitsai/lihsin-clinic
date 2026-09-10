@@ -319,6 +319,15 @@ jobs:
           # 取卡面文字的第二個好處：日後若只改連結樣式、卡片還在，哨兵不會誤報。
           cscard=$(curl -s --max-time 20 "$BASE/services/child-development-screening.html" | grep -c '孩子兩歲還不太會說話，要再等等嗎？語言發展與評估時機' || true)
           if [ "$cscard" -ge 1 ]; then echo "OK    兒童發展篩檢服務頁 → 語言發展文的入連卡已上線"; else echo "FAIL  兒童發展篩檢服務頁未見語言發展文的入連卡——服務頁疑遭 9/10 前舊版覆蓋"; fail=1; fi
+          # 2026-09-10i 新增：盯 services/child-development-screening.html 隱藏區的**服務界線句**。
+          # ⚠️ 這條不只是 SEO 哨兵，是**合規哨兵**：該批把「兒童發展評估」整條詞路收進 keywords，
+          #    成立的前提就是同頁寫明「本院不提供兒童發展聯合評估／語言治療／職能治療與療育課程」。
+          #    界線句若被舊版覆蓋而 keywords 還在 → 站上等於宣稱本院提供聯合評估（通則 8 不實服務），
+          #    而**頁面照樣 200、可見層一字不差、validate_site.py 也不會亮**，沒有任何人會發現。
+          #    這正是 08-25d 那批補隱藏區哨兵的同一種失效模式。
+          # ⚠️ 日後若要改寫此句，須同批改本檢查，不可直接刪（防呆 17）。
+          cb=$(curl -s --max-time 20 "$BASE/services/child-development-screening.html" | grep -c '本院不提供：兒童發展聯合評估' || true)
+          if [ "$cb" -ge 1 ]; then echo "OK    兒童發展篩檢頁隱藏區服務界線句已上線（「評估」詞路的合規基礎）"; else echo "FAIL  兒童發展篩檢頁未見服務界線句——「兒童發展評估」keywords 若仍在，將構成不實服務宣稱"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
