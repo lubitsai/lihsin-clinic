@@ -53,6 +53,7 @@ validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝202
   W-TWIND     Tailwind purge 偵測：頁面用到但 /tailwind.css 與
               頁內 <style> 皆未定義的 class                     ｜07-02 教訓（append 防線）
   W-SITEMAP   sitemap 反向覆蓋：可索引頁未列入（app.html 型回退）｜07-06 回退攔截
+  W-ROBOTS    可索引頁應有 robots meta 且含 max-snippet:-1      ｜09-11a 教訓
   W-LLMS      llms 雙檔關鍵條目在場（app/visit-guide/growth）    ｜07-06 回退攔截
   W-ROBOTS    robots.txt AI 爬蟲放行組在場                      ｜07-06 批③
   W-FAVICON   根目錄 favicon.ico 在場                          ｜07-06 批④
@@ -478,6 +479,18 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
     else:
         if "www.lhpedclinic" in canon or not canon.startswith(SITE_ORIGIN):
             rep.err(rel, "E-CANON", f"canonical 非 https 非-www 標準：{canon}")
+
+    # W-ROBOTS（2026-09-11a：AI 總覽受 nosnippet／max-snippet 管轄）
+    # 病徵：新增公開頁時漏寫 robots meta，或只寫 index, follow 而未放行摘要長度。
+    # 當時的實況＝71／77 可索引頁只有 index, follow，且 game/index.html 完全沒有 meta，
+    # 而既有檢查全數不涉及 robots → 漏了不會亮燈。WARN 級（不擋 push），
+    # 若日後要升為 ERROR 需院長裁示（00 §8）。noindex 頁本就不適用，跳過。
+    if not noindex:
+        robots = meta_content(raw, "robots")
+        if robots is None:
+            rep.warn(rel, "W-ROBOTS", "可索引頁缺 robots meta（預設 index, follow，但未放行摘要長度）")
+        elif "max-snippet:-1" not in robots.replace(" ", ""):
+            rep.warn(rel, "W-ROBOTS", f"robots meta 未含 max-snippet:-1：{robots}")
 
     # E-JSONLD
     for i, m in enumerate(re.finditer(
