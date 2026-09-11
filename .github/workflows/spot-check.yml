@@ -172,6 +172,17 @@ jobs:
           # ⚠️ 換圖或改檔名時本兩行要同批改，不可直接刪（防呆 17）。
           check /images/child-language-development-infographic.jpg 200
           check /images/child-language-development-warning-infographic.jpg 200
+          # 2026-09-11b 新增（本批新頁〈感冒時營養補充怎麼選？維生素C、維生素D 與鋅〉，李佳玲醫師）：
+          # 整頁都是新檔，被舊版覆蓋回退時整頁會 404。下方「內容抽驗」兩條分別盯可見層的
+          # 合規界線句與 influenza 的入連卡，這行盯「頁還在不在」，依 2026-08-14b 通則
+          # 「兩者缺一不可」成對存在。
+          check /health/cold-nutrition.html 200
+          # 本頁唯一的內文主圖，同時是 og:image、MedicalWebPage.image 與 sitemap image:image
+          # 的標的。圖掉了，頁面照樣 200、兩條可見層哨兵也照樣 OK，沒有任何機制會發現。
+          # ⚠️ 只盯 .jpg 不盯 .webp（刻意，同上面兩行）：<picture> 的 webp 掉了會靜默
+          #    fallback 回 jpg；jpg 是 <img src>，掉了才是真正的破圖。
+          # ⚠️ 換圖或改檔名時本行要同批改，不可直接刪（防呆 17）。
+          check /images/cold-nutrition-infographic.jpg 200
           # 2026-09-09c 新增（院長對話交付衛教圖，走 infographic-upload）：
           # 這張是 health/nasal-flu-vaccine.html 的內文主圖，同時是該頁 og:image、
           # MedicalWebPage.image 與 sitemap image:image 的標的——圖掉了，
@@ -328,6 +339,20 @@ jobs:
           # ⚠️ 日後若要改寫此句，須同批改本檢查，不可直接刪（防呆 17）。
           cb=$(curl -s --max-time 20 "$BASE/services/child-development-screening.html" | grep -c '本院不提供：兒童發展聯合評估' || true)
           if [ "$cb" -ge 1 ]; then echo "OK    兒童發展篩檢頁隱藏區服務界線句已上線（「評估」詞路的合規基礎）"; else echo "FAIL  兒童發展篩檢頁未見服務界線句——「兒童發展評估」keywords 若仍在，將構成不實服務宣稱"; fail=1; fi
+          # 2026-09-11b 新增（1/2）：盯 health/cold-nutrition.html 可見層的**合規界線句**。
+          # 這是本頁最重要的一句（00 §4：禁療效宣稱、不得以食品取代醫療）——營養補充品在
+          # 法規上屬食品，不能取代醫師的診斷與治療。本頁整篇在談維生素C／維生素D／鋅，
+          # 這句若被舊版覆蓋或誤刪，剩下的內容讀起來就會像在替補充品背書，而**頁面仍 200、
+          # 版面不破、validate_site.py 全綠**，沒有任何機制會亮。
+          # ⚠️ 若院長日後核可改寫此句，須同批改本檢查，不可直接刪（防呆 17）。
+          cn=$(curl -s --max-time 20 "$BASE/health/cold-nutrition.html" | grep -c '<strong>補充品在法規上是食品，不能取代醫師的診斷與治療</strong>' || true)
+          if [ "$cn" -ge 1 ]; then echo "OK    感冒營養補充頁合規界線句已上線"; else echo "FAIL  感冒營養補充頁未見「補充品在法規上是食品，不能取代醫師的診斷與治療」——疑遭舊版覆蓋"; fail=1; fi
+          # 2026-09-11b 新增（2/2）：盯 health/influenza.html 對本批新文章的**入連卡**。
+          # 通則 23：新頁最缺的是入連；入連掉了→新頁自己照樣 200、上面那條頁哨兵照樣 OK。
+          # ⚠️ 依通則 24 取**卡面文字**而非 href——Netlify 的 Pretty URLs 會把站內連結的
+          #    `.html` 去掉，用 repo 原字串 grep 永遠 0（09-10g 用兩次 CI FAIL 換來的）。
+          cncard=$(curl -s --max-time 20 "$BASE/health/influenza.html" | grep -c '感冒時營養補充怎麼選？維生素C、維生素D 與鋅' || true)
+          if [ "$cncard" -ge 1 ]; then echo "OK    流感頁 → 感冒營養補充文的入連卡已上線"; else echo "FAIL  流感頁未見感冒營養補充文的入連卡——流感頁疑遭 9/11 前舊版覆蓋"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
