@@ -183,6 +183,17 @@ jobs:
           #    fallback 回 jpg；jpg 是 <img src>，掉了才是真正的破圖。
           # ⚠️ 換圖或改檔名時本行要同批改，不可直接刪（防呆 17）。
           check /images/cold-nutrition-infographic.jpg 200
+          # 2026-09-12 新增（院長對話交付衛教圖，走 infographic-upload）：
+          # 這張是 health/postnasal-drip.html 的內文主圖，同時是該頁 og:image、
+          # MedicalWebPage.image 與 sitemap image:image 的標的。該頁在本批之前沒有任何圖。
+          # ⚠️ 本頁在 spot-check 原本一條哨兵都沒有，這是第一條——因此它同時在盯「圖還在不在」
+          #    與「這一頁還活著沒有」。08-14b 的成對通則要的頁哨兵與可見層哨兵本頁皆缺，
+          #    補齊需要挑一句穩定的可見層字串，屬可見文字判斷、留待下批處理（已登錄 00 §6）。
+          # 依 09-09c／09-10h／09-11b 先例補這一行。
+          # ⚠️ 只盯 .jpg 不盯 .webp（刻意，同上面數行）：<picture> 的 webp 掉了會靜默
+          #    fallback 回 jpg；jpg 是 <img src>，掉了才是真正的破圖。
+          # ⚠️ 換圖或改檔名時本行要同批改，不可直接刪（防呆 17）。
+          check /images/postnasal-drip-infographic.jpg 200
           # 2026-09-09c 新增（院長對話交付衛教圖，走 infographic-upload）：
           # 這張是 health/nasal-flu-vaccine.html 的內文主圖，同時是該頁 og:image、
           # MedicalWebPage.image 與 sitemap image:image 的標的——圖掉了，
