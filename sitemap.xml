@@ -266,6 +266,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/pediatric-allergy-asthma.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/pediatric-allergy-asthma-infographic.jpg</image:loc></image:image>
     <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
