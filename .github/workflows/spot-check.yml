@@ -115,6 +115,7 @@ jobs:
           check /health/atopic-dermatitis.html 200
           check /health/atopic-march.html 200
           check /health/rapid-tests.html 200
+          check /images/rapid-tests-infographic.jpg 200
           # 2026-09-09l（院長指令「把新冠這篇從最新消息轉到蔡宗儒醫師衛教文章區」）：
           # 本頁由 /news/ 搬到 /health/。搬遷唯一會整條斷掉的兩件事就是這兩行——
           # 新路徑掛掉、或舊路徑的 301 沒生效（站外 GBP／LINE 既有連結會直接撞 404）。
