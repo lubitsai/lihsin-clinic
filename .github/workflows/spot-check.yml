@@ -604,6 +604,21 @@ jobs:
           alg=$(curl -s --max-time 20 "$BASE/health/allergy.html" | grep -c '台南兒童過敏氣喘門診（北區・院內肺功能檢測）' || true)
           if [ "$alg" -ge 1 ]; then echo "OK    過敏 pillar 已連向過敏氣喘門診服務頁"; else echo "FAIL  allergy.html 未見過敏氣喘門診卡——本頁疑遭 9/1 前舊版覆蓋"; fail=1; fi
 
+          # 2026-09-12k：過敏原檢測內頁互連（承 09-01b 的第二層缺口）。09-01b 補的是叢集
+          # →「過敏氣喘門診」的回程；本批補的是叢集 →「過敏原檢測」這一組兩頁
+          # （服務頁 services/allergy-testing.html 與報告判讀文 health/allergy-test-results.html）。
+          # 挑這兩條的理由與上面那條同型：連結被舊版覆蓋時，兩頁自己照樣 200、
+          # 承載頁的哨兵（141／145 行）照樣 OK，**斷掉的是家長走過去的那條路，沒有人會發現**。
+          # ⛔ 兩條都取**卡面文字**、不可改用 href（09-10g：Netlify Pretty URLs 會把站內
+          #    連結的 .html 去掉，用 repo 原字串 grep 永遠 0；且 URL 在 ld+json 與隱藏區
+          #    另有載體，會讓哨兵靜默通過——09-01b 的教訓）。
+          # 負向測試（2026-09-12k 實跑）：兩條字串在本批之前於各自頁面的計數皆為 0、本批後為 1。
+          # ⚠️ 日後若刻意重整這兩頁的延伸閱讀卡，請連同本檢查一起改，不要直接刪（防呆 17）。
+          dmt=$(curl -s --max-time 20 "$BASE/health/dust-mite.html" | grep -c '台南過敏原檢測（急性 IgE／慢性 IgG，醫師評估）' || true)
+          if [ "$dmt" -ge 1 ]; then echo "OK    塵蟎頁已連向過敏原檢測服務頁"; else echo "FAIL  dust-mite.html 未見過敏原檢測卡——本頁疑遭 9/12 前舊版覆蓋"; fail=1; fi
+          atr2=$(curl -s --max-time 20 "$BASE/health/allergy.html" | grep -c '過敏原檢測報告怎麼看？IgE／IgG 數值判讀' || true)
+          if [ "$atr2" -ge 1 ]; then echo "OK    過敏 pillar 已連向過敏原報告判讀文"; else echo "FAIL  allergy.html 未見過敏原報告判讀卡——本頁疑遭 9/12 前舊版覆蓋"; fail=1; fi
+
           # 2026-09-08b：GLP-1 適應症事實更正（院長裁示①②）。首頁 10 處原寫
           # 「核准適應症為第 2 型糖尿病、用於體重管理屬仿單外使用」，與 weight-management.html
           # 及 llms 雙檔的分品項說法不一致，且落後於猛健樂／週纖達的實際核准狀態。
