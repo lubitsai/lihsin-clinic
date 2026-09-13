@@ -66,7 +66,11 @@ description: 立欣診所官網 SEO／AEO／GEO 關鍵字研究與內容生成�
 4. 版面有動時 Playwright 實測 390／1280px 零橫向溢出。
 5. **交付說明**必含：改了什麼與為什麼／dateModified 政策（跳或不跳＋R4 理由）／
    可見文字變更清單（待院長逐字核可；merge＝核可）／merge 後 IndexNow 提交清單
-   （`internal/tools/submit_indexnow.py`；僅新 URL 或可見內容實質變更需要）。
+   （`internal/tools/submit_indexnow.py --only <URL...>`，先 `--dry` 核對 payload）。
+   **➕ 2026-09-13 院長裁示：模式 A 四層補強（零可見文字變更）批次 merge 後一律直接送
+   本批動到的承載頁，不必每次再問**；新頁與可見內容實質變更本來就要送。
+   **只改送不送，不改 R4**——`dateModified` 仍依 R4 判（模式 A 仍不跳）、`sitemap lastmod` 不動；
+   **範圍限本批動到的承載頁**，不送全站（不加 `--only` 會送全站）。
 6. 依 00 §8-3 更新文件：備份 00/01 至 `internal/archive/` → 00 檔頭版本行＋文末
    本批附錄（append-only）→ 01 狀態段同步。
 

@@ -66,7 +66,10 @@
 
 ## 步驟 7｜本模式的交付要點
 
-- 零可見文字變更（title/desc/H1/正文逐字不動）→ **dateModified 不跳（R4）**、
-  sitemap lastmod 不動、無新 URL 時 IndexNow 非必要（單頁實質補強可提交該頁）。
+- 零可見文字變更（title/desc/H1/正文逐字不動）→ **dateModified 不跳（R4）**、sitemap lastmod 不動。
+- **IndexNow：merge 後一律直接送本批動到的承載頁**（院長 2026-09-13 裁示，`02` R4 下方修訂）——
+  `python3 internal/tools/submit_indexnow.py --root . --only <URL...>`，先 `--dry` 核對 payload，
+  交付說明寫出送了哪幾條與 HTTP 狀態。**不必每次再問**；**只改送不送、不改 R4**（日期仍不跳）；
+  **不送全站**（不加 `--only` 會送全站），也不送只被順手加卡的頁（09-01b 判例）。
 - 交付說明寫明各層前後數字（如「keywords 37→81 詞、FAQ 7→9 題」）。
 - 回 SKILL.md 第 4 步收尾。
