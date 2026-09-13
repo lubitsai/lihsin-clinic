@@ -660,4 +660,20 @@ jobs:
           # 這條同時是 09-13b 那個「並列姊妹實體只有 A 型有口語別名」不對稱的回歸防線。
           bf=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '"B流快篩", "influenza B rapid test"' || true)
           if [ "$bf" -ge 1 ]; then echo "OK    快篩頁 B型流感快篩的口語別名實體已上線(與 A 型對稱)"; else echo "FAIL  快篩頁 MedicalTest B 型未見 alternateName『B流快篩』——實體層不對稱回歸"; fail=1; fi
+          # 2026-09-13f：黴漿菌在地詞與「怎麼驗」橋接線（PR #208）。
+          # ⚠️ 三條防的都是「頁面照開、版面不破、validate_site.py 全綠」的靜默回退：
+          # 本批動的全是中繼層與 schema（keywords／FAQPage／隱藏區／relatedLink／MedicalTest.alternateName），
+          # 可見層一字未動，既有哨兵一條都不會叫。
+          # 第 1 條盯疾病頁新增的檢驗 FAQ（JSON-LD 內的題目，舊版 0／新版 1）。
+          mq=$(curl -s --max-time 20 "$BASE/health/mycoplasma-pneumonia.html" | grep -c '懷疑孩子是黴漿菌，要怎麼驗' || true)
+          if [ "$mq" -ge 1 ]; then echo "OK    黴漿菌頁的檢驗 FAQ 已上線"; else echo "FAIL  黴漿菌頁未見『懷疑孩子是黴漿菌，要怎麼驗』——疾病頁↔快篩的橋接 FAQ 疑遭 9/13 前舊版覆蓋"; fail=1; fi
+          # 第 2 條盯疾病頁的 relatedLink 欄位本身（本批之前該頁根本沒有這個欄位，舊版 0／新版 1）。
+          # **刻意取 JSON key 而非站內 URL**：09-10g 的教訓是 Netlify 送出時會改寫站內連結，
+          # 取 URL 當錨點會在改寫時誤報 FAIL；JSON key 不受任何連結改寫影響。
+          mr=$(curl -s --max-time 20 "$BASE/health/mycoplasma-pneumonia.html" | grep -c '"relatedLink"' || true)
+          if [ "$mr" -ge 1 ]; then echo "OK    黴漿菌頁 relatedLink 欄位已上線(單向互連已修)"; else echo "FAIL  黴漿菌頁未見 relatedLink——本批修掉的單向互連疑已回退"; fail=1; fi
+          # 第 3 條盯 MedicalTest 黴漿菌快篩的口語別名（沿 09-13b：取整個鍵值對，不取裸字串）。
+          # 「驗黴漿菌」本批同時進了 keywords 與隱藏區，裸 grep 即使 alternateName 掉了也會 ≥1＝假通過。
+          mt=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '"黴漿菌抗原快篩", "驗黴漿菌"' || true)
+          if [ "$mt" -ge 1 ]; then echo "OK    快篩頁黴漿菌快篩的口語別名實體已上線"; else echo "FAIL  快篩頁 MedicalTest 黴漿菌未見 alternateName『黴漿菌抗原快篩／驗黴漿菌』——實體層回退"; fail=1; fi
           exit $fail
