@@ -706,4 +706,35 @@ jobs:
           # 取 FAQ 版的逗號寫法（隱藏區版用頓號），確保掉的是 FAQ 節點時會叫。
           f8=$(curl -s --max-time 20 "$BASE/services/family-medicine.html" | grep -c '超過 8 週才稱為慢性咳嗽' || true)
           if [ "$f8" -ge 1 ]; then echo "OK    家醫科頁成人咳嗽 8 週分界已上線(與兒童 4 週並列)"; else echo "FAIL  家醫科頁未見成人『超過 8 週』分界——成人與兒童標準的並列敘述疑已回退(事實層)"; fail=1; fi
+          # ── 2026-09-13q：腸病毒叢集（09-13o／p 兩批）5 條 ────────────────────
+          # 為什麼要補：09-13o／p 動的是互連（V／R／H 三層）與「腸病毒台南」四層，
+          # spot-check #505 雖然零 FAIL，但那是**既有 59 條哨兵**沒叫——本批新增的內容
+          # 當時一條哨兵都沒有。「零回歸」是必要條件不是充分條件（同 09-13n 的判讀）。
+          # 取字策略沿 09-13b／09-13f／09-13n：字串一律從檔案裡取、不從記憶裡打，
+          # 且每條都做過注入式負向測試（舊版 7edd1bf 計數 0／新版 ≥1）。
+          #
+          # 第 1 條盯 enterovirus 預防段的**臨床接點句**。這條盯的是合規不是 SEO：
+          # 該句同時承載疫苗四但書（仿單／醫師評估／現貨來電確認／禁忌）與「EV71 疫苗
+          # 不保護克沙奇」的誠實框架。只掉這一句，家長會以為打了疫苗就不會得腸病毒。
+          ev1=$(curl -s --max-time 20 "$BASE/health/enterovirus.html" | grep -c '克沙奇等其他型別造成的手足口病仍可能感染，接種後洗手一樣要做' || true)
+          if [ "$ev1" -ge 1 ]; then echo "OK    腸病毒頁 EV71 疫苗保護範圍的誠實框架已上線"; else echo "FAIL  腸病毒頁未見『克沙奇等其他型別仍可能感染』——疫苗四但書與保護範圍界線疑已回退(合規)"; fail=1; fi
+          # 第 2 條盯 enterovirus → enterovirus71-vaccine 的**入連卡面文字**，不取 href
+          # （通則 24／25：Netlify Pretty URLs 會把站內連結的 .html 去掉，取 href 會假 FAIL）。
+          # 這是 09-13o 的核心缺口：疾病頁是症狀搜尋的入口，卻沒有路把家長交棒到疫苗頁。
+          ev2=$(curl -s --max-time 20 "$BASE/health/enterovirus.html" | grep -c '腸病毒71型疫苗要打嗎？接種對象、劑數與保護重點一次看' || true)
+          if [ "$ev2" -ge 1 ]; then echo "OK    腸病毒頁 → 腸病毒71型疫苗頁的入連已上線"; else echo "FAIL  腸病毒頁未見疫苗頁入連——09-13o 補的單向呼應疑已回退"; fail=1; fi
+          # 第 3 條盯 enterovirus71-vaccine → back-to-school-infections 的入連卡面文字。
+          # 這一對在 09-13p 之前是**整格空的**（.R.），是該批最大的缺口。
+          ev3=$(curl -s --max-time 20 "$BASE/health/enterovirus71-vaccine.html" | grep -c '開學季流感、腸病毒、新冠怎麼分？症狀辨識與就醫時機' || true)
+          if [ "$ev3" -ge 1 ]; then echo "OK    腸病毒71型疫苗頁 → 開學季三病毒頁的入連已上線"; else echo "FAIL  疫苗頁未見開學季頁入連——09-13p 補滿的 6/6 VRH 疑已缺一角"; fail=1; fi
+          # 第 4 條盯「腸病毒台南」整批的 GEO 支點——語序對照句。
+          # 本批的缺口不是「有沒有寫到台南」，是倒裝語序整條不存在（腸病毒台南 全站 0）。
+          # 這句是告訴檢索端「兩種語序是同一個需求」的那一句，掉了等於整層倒裝語序白補。
+          ev4=$(curl -s --max-time 20 "$BASE/health/enterovirus.html" | grep -c '「台南腸病毒」與「腸病毒台南」' || true)
+          if [ "$ev4" -ge 1 ]; then echo "OK    腸病毒頁隱藏區語序對照句已上線(腸病毒台南 詞路的 GEO 支點)"; else echo "FAIL  腸病毒頁未見語序對照句——倒裝語序詞路疑已回退"; fail=1; fi
+          # 第 5 條盯本批新增的 FAQ 節點（只存在於 JSON-LD 的 name，不取裸詞避免假通過）。
+          # ⚠️ enterovirus 是 FAQ 雙載頁，Google 要求 FAQPage 內容必須可見；本題的答案
+          # 在可見層「什麼是腸病毒」段已有支撐，schema 與可見層任一邊掉了都要看得出來。
+          ev5=$(curl -s --max-time 20 "$BASE/health/enterovirus.html" | grep -c '腸病毒流行期是幾月？台南什麼時候要特別注意？' || true)
+          if [ "$ev5" -ge 1 ]; then echo "OK    腸病毒頁流行期 FAQ 已上線"; else echo "FAIL  腸病毒頁未見流行期 FAQ——本批新增的 AEO 節點疑已回退"; fail=1; fi
           exit $fail
