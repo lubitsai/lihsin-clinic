@@ -686,4 +686,24 @@ jobs:
           # 「驗黴漿菌」本批同時進了 keywords 與隱藏區，裸 grep 即使 alternateName 掉了也會 ≥1＝假通過。
           mt=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '"黴漿菌抗原快篩", "驗黴漿菌"' || true)
           if [ "$mt" -ge 1 ]; then echo "OK    快篩頁黴漿菌快篩的口語別名實體已上線"; else echo "FAIL  快篩頁 MedicalTest 黴漿菌未見 alternateName『黴漿菌抗原快篩／驗黴漿菌』——實體層回退"; fail=1; fi
+          # 2026-09-13l＋m：台南「診所推薦」四詞＋成人急性一般診療六症狀（PR #210）。
+          # ⚠️ 四條防的都是「頁面照開、版面不破、validate_site.py 全綠」的靜默回退：
+          # 兩批動的全是中繼層（keywords／FAQPage／隱藏 #ai-knowledge-block／llms），
+          # **可見層已程式化證明 byte-identical**，所以既有哨兵一條都不會叫。
+          # 取字策略沿 09-13b／09-13f：不取會在多層重複出現的裸詞。
+          # 「台南發燒診所推薦」本批同時進了 keywords 與隱藏區，裸 grep 即使 FAQ 節點整個掉了也會 ≥1＝假通過，
+          # 故第 1、2 條一律取**完整的 FAQ 題目**（只存在於 JSON-LD 的 name，舊版 0／新版 1）。
+          fv=$(curl -s --max-time 20 "$BASE/health/child-fever.html" | grep -c '台南發燒診所推薦怎麼選？台南看發燒門診可以參考哪些條件？' || true)
+          if [ "$fv" -ge 1 ]; then echo "OK    兒童發燒頁『發燒診所推薦怎麼選』FAQ 已上線"; else echo "FAIL  兒童發燒頁未見該 FAQ——三大急性主訴的推薦型問句框架疑遭 9/13 前舊版覆蓋"; fail=1; fi
+          gi=$(curl -s --max-time 20 "$BASE/health/infant-gastroenteritis.html" | grep -c '「腸胃型感冒」和腸胃炎是同一件事嗎？台南腸胃型感冒看哪科？' || true)
+          if [ "$gi" -ge 1 ]; then echo "OK    腸胃炎頁『腸胃型感冒』釐清 FAQ 已上線"; else echo "FAIL  腸胃炎頁未見該 FAQ——收了『腸胃型感冒』一詞卻掉了『非流感』的釐清＝合規回退，不只是 SEO 回退"; fail=1; fi
+          # 第 3 條盯 family-medicine 隱藏區的成人咳嗽段**標題**（H2 只在隱藏區出現一次）。
+          # 這段是 09-13m 的核心缺口修補：咳嗽全站 369 處但成人那一欄整欄是 0。
+          fc=$(curl -s --max-time 20 "$BASE/services/family-medicine.html" | grep -c '台南成人咳嗽門診資訊（台南大人咳嗽看哪科、成人咳嗽多久要檢查）' || true)
+          if [ "$fc" -ge 1 ]; then echo "OK    家醫科頁隱藏區成人咳嗽段已上線"; else echo "FAIL  家醫科頁未見成人咳嗽隱藏區段——成人欄的咳嗽詞路疑已回退"; fail=1; fi
+          # 第 4 條盯「成人 8 週 vs 兒童 4 週」這個**醫學分界**本身，不盯 SEO 詞。
+          # 站上兒童頁寫「超過 4 週」，本批新增成人標準；若只掉這一句，家長會把兒童標準套到自己身上＝事實層錯誤。
+          # 取 FAQ 版的逗號寫法（隱藏區版用頓號），確保掉的是 FAQ 節點時會叫。
+          f8=$(curl -s --max-time 20 "$BASE/services/family-medicine.html" | grep -c '超過 8 週才稱為慢性咳嗽' || true)
+          if [ "$f8" -ge 1 ]; then echo "OK    家醫科頁成人咳嗽 8 週分界已上線(與兒童 4 週並列)"; else echo "FAIL  家醫科頁未見成人『超過 8 週』分界——成人與兒童標準的並列敘述疑已回退(事實層)"; fail=1; fi
           exit $fail
