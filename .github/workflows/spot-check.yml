@@ -646,4 +646,18 @@ jobs:
             bn=$(curl -s --max-time 20 "$BASE/services/$pg.html" | grep -c 'booknow.com.tw' || true)
             if [ "$bn" -ge 1 ]; then echo "OK    services/$pg 網路預約入口已上線"; else echo "FAIL  services/$pg 未見 booknow.com.tw——網路預約入口疑遭 9/8 前舊版覆蓋（轉換入口與 booking_click 一併靜默失效）"; fail=1; fi
           done
+          # 2026-09-13：流感／快篩的 A流B流 口語詞路四層補強（PR #207）。
+          # ⚠️ 這兩條防的失效模式，上面的 200 檢查與既有 3 條 rapid-tests 可見層哨兵都抓不到：
+          # 本批動的全是**中繼層與 schema**（keywords／FAQPage／隱藏區／MedicalTest.alternateName），
+          # 可見層一字未改——頁面被舊版覆蓋時照樣 200、版面不破、validate_site.py 全綠，
+          # 而掉的是整條「A流／B流」口語詞路的索引基礎，**沒有任何既有機制會叫**。
+          # 第 1 條取 influenza 新增 FAQ 的題目（JSON-LD 內，不受 Netlify 送出時的路徑改寫影響，
+          # 避開 09-10g Pretty URLs 教訓）；舊版 0、新版 1＝乾淨的注入式負向測試（防呆 14）。
+          ab=$(curl -s --max-time 20 "$BASE/health/influenza.html" | grep -c 'A 流和 B 流差在哪裡' || true)
+          if [ "$ab" -ge 1 ]; then echo "OK    流感頁 A流/B流 分型 FAQ 已上線"; else echo "FAIL  流感頁未見『A 流和 B 流差在哪裡』——A流/B流 口語詞路的 FAQ 層疑遭 9/13 前舊版覆蓋"; fail=1; fi
+          # 第 2 條盯 MedicalTest 的 B 型口語別名。**取整個鍵值對而非裸字串**：
+          # 「B流快篩」本批同時進了 keywords 與隱藏區，裸 grep 即使 alternateName 掉了也會 ≥1（假通過）。
+          # 這條同時是 09-13b 那個「並列姊妹實體只有 A 型有口語別名」不對稱的回歸防線。
+          bf=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '"B流快篩", "influenza B rapid test"' || true)
+          if [ "$bf" -ge 1 ]; then echo "OK    快篩頁 B型流感快篩的口語別名實體已上線(與 A 型對稱)"; else echo "FAIL  快篩頁 MedicalTest B 型未見 alternateName『B流快篩』——實體層不對稱回歸"; fail=1; fi
           exit $fail
