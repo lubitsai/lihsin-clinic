@@ -1,0 +1,112 @@
+name: Social story (停止掛號公告)
+
+# 「停止掛號」公告的 FB／IG 限動發布與撤除。
+#
+# ⚠️ 這個 workflow 只涵蓋六載體裡的 FB／IG 兩個。
+#    LINE 自動回應訊息沒有公開管理 API，仍要院長到後台手動開關——
+#    而那是觸及 6,653 位好友、且唯一不會自己消失的載體。
+#    詳見 internal/社群_停止掛號公告_素材與自動化規劃_20260914.md
+#
+# 手動發布：Actions → 本 workflow → Run workflow → 選 action=publish 與診次。
+# 撤除：排程會自動掃；要立刻撤就手動跑 action=teardown（force 打勾可無視時刻）。
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "要做什麼"
+        type: choice
+        required: true
+        default: publish
+        options: [publish, teardown, status]
+      session:
+        description: "公告種類（只有 publish 會用到）"
+        type: choice
+        required: false
+        default: morning
+        options: [morning, afternoon, evening, dr-tsai]
+      dry_run:
+        description: "只演練、不真的發（強烈建議第一次先勾）"
+        type: boolean
+        required: false
+        default: false
+      force:
+        description: "強制（publish：蓋掉在線上的；teardown：無視撤除時刻）"
+        type: boolean
+        required: false
+        default: false
+  schedule:
+    # 撤除掃描。時刻表（台灣時間）：早診 11:30／12:00、午診 17:55／18:00、晚診 21:00／21:30
+    # → UTC 03:30／04:00、09:55／10:00、13:00／13:30。
+    # 在那三段前後各留一小時緩衝、每 10 分鐘掃一次；判斷式是 now >= 撤除時刻，
+    # 所以提早開始掃不會提早刪。GitHub 排程是 best-effort（常延遲 5～20 分鐘、
+    # 偶爾整個跳過），靠掃描密度與「漏跑下一輪會自己補」吃掉誤差。
+    - cron: "*/10 3,4,9,10,13,14 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: social-story
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: 決定要跑哪個指令
+        id: pick
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "cmd=teardown" >> "$GITHUB_OUTPUT"
+            echo "args=" >> "$GITHUB_OUTPUT"
+          else
+            act="${{ inputs.action }}"
+            args=""
+            [ "$act" = "publish" ] && args="--session ${{ inputs.session }}"
+            [ "${{ inputs.dry_run }}" = "true" ] && args="$args --dry-run"
+            [ "${{ inputs.force }}" = "true" ] && args="$args --force"
+            echo "cmd=$act" >> "$GITHUB_OUTPUT"
+            echo "args=$args" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 執行
+        env:
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
+          META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
+        run: |
+          set -o pipefail
+          python3 internal/tools/publish_story.py \
+            ${{ steps.pick.outputs.cmd }} ${{ steps.pick.outputs.args }} 2>&1 | tee run.log
+          {
+            echo "### ${{ steps.pick.outputs.cmd }} ${{ steps.pick.outputs.args }}"
+            echo '```'
+            cat run.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 回寫狀態檔
+        run: |
+          # --porcelain 同時涵蓋「已追蹤但有改動」與「全新未追蹤」兩種情況，
+          # 只用 git diff 會漏掉後者
+          if [ -z "$(git status --porcelain -- internal/social-state.json)" ]; then
+            echo "狀態檔沒有變化，不 commit。"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add internal/social-state.json
+          # [skip ci]：狀態檔是機器寫的、不影響站台，不值得再觸發一輪 spot-check
+          git commit -m "停止掛號公告：回寫限動狀態（${{ steps.pick.outputs.cmd }}）[skip ci]"
+          for i in 1 2 3 4; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "push 失敗（平行 session 可能同時在推），第 $i 次重試"
+            sleep $((2 ** i))
+          done
+          echo "::error::狀態檔回寫失敗——下一輪撤除掃描會找不到這則限動的 ID"
+          exit 1
