@@ -737,4 +737,22 @@ jobs:
           # 在可見層「什麼是腸病毒」段已有支撐，schema 與可見層任一邊掉了都要看得出來。
           ev5=$(curl -s --max-time 20 "$BASE/health/enterovirus.html" | grep -c '腸病毒流行期是幾月？台南什麼時候要特別注意？' || true)
           if [ "$ev5" -ge 1 ]; then echo "OK    腸病毒頁流行期 FAQ 已上線"; else echo "FAIL  腸病毒頁未見流行期 FAQ——本批新增的 AEO 節點疑已回退"; fail=1; fi
+          # 2026-09-14m（09-14l hero 可見軌上線後補；01 通則「常青內容補哨兵」）：
+          # 兩條都盯首頁 hero，承載頁哨兵＝上方的 check / 200，成對通則(08-14b)已滿足。
+          #
+          # 第 1 條盯**結構**而非可見文案（比照 08-25f 的判準：標題／識別碼是結構，
+          # 不隨文案潤飾漂移）。trackCTA('Booking_Hero') 全站唯一 1 次——注意裸詞
+          # Booking_Hero 是 2 次（LINE_Booking_Hero 含它），必須連 trackCTA( 一起抓。
+          # ⚠️ 這條盯的是**靜默失效**：這個 event_label 是 hero 預約入口與 FAQ 預約
+          # 入口(index:4289 FAQ_Booking)在 GA4 唯一分得開的依據——兩者的 link_url 與
+          # from_path 完全相同。label 掉了或被改，按鈕照樣在、booking_click 照樣送、
+          # 頁面 200、validate_site.py 全綠，但 hero 入口的成效從此併進 FAQ 那一桶，
+          # 沒有任何既有機制會叫（同 09-05e /cta-track.js 那條的思路）。
+          bh=$(curl -s --max-time 20 "$BASE/" | grep -c "trackCTA('Booking_Hero')" || true)
+          if [ "$bh" -ge 1 ]; then echo "OK    首頁 hero 網路預約入口與其 GA4 label 已上線"; else echo "FAIL  首頁未見 trackCTA('Booking_Hero')——hero 預約入口或其 GA4 label 疑已回退(轉換率量測)"; fail=1; fi
+          # 第 2 條盯等候期待管理那一句的**逐字文案**（這條刻意不盯結構）：它是裸 <p>、
+          # 沒有結構把手，而且是院長逐字核可的合規敏感句——措辭只陳述「人潮較多」與
+          # 可做的事，不承諾等候時間。被改寫成承諾型或被整句刪掉都要看得出來。
+          hw=$(curl -s --max-time 20 "$BASE/" | grep -c '夜間與假日門診人潮較多' || true)
+          if [ "$hw" -ge 1 ]; then echo "OK    首頁 hero 等候期待管理文案已上線"; else echo "FAIL  首頁未見等候期待管理文案——09-14l 院長核可的可見文字疑已回退"; fail=1; fi
           exit $fail
