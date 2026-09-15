@@ -2017,7 +2017,7 @@
  "url": "https://lhpedclinic.com.tw/#health-tips",
  "name": "立欣診所家長衛教知識庫",
  "description": "由立欣診所院長蔡宗儒醫師審閱的兒童健康衛教知識，涵蓋發燒判斷、氣喘照護、疫苗接種、新生兒護理及科學減重。",
- "dateModified": "2026-09-13T12:00:00+08:00", "lastReviewed": "2026-09-10T09:00:00+08:00",
+ "dateModified": "2026-09-15T12:00:00+08:00", "lastReviewed": "2026-09-10T09:00:00+08:00",
  "reviewedBy": {
  "@type": "Person",
  "@id": "https://lhpedclinic.com.tw/#physician-tsai",
@@ -2079,7 +2079,7 @@
  "inLanguage": {"@type": "Language", "name": "Chinese", "alternateName": "zh-TW"},
  "isPartOf": {"@type": "WebSite", "@id": "https://lhpedclinic.com.tw/#website", "url": "https://lhpedclinic.com.tw/", "name": "立欣診所 LiHsin Clinic"},
  "datePublished": "2024-07-01",
- "dateModified": "2026-09-13T12:00:00+08:00",
+ "dateModified": "2026-09-15T12:00:00+08:00",
  "lastReviewed": "2026-09-10T09:00:00+08:00",
  "reviewedBy": {
   "@type": "Person",
@@ -2427,6 +2427,40 @@
  </div>
  </section>
 
+ <!-- 最新流感疫苗資訊 Section（院長 2026-09-15 指令「流感疫苗施打季期間加一個最新流感疫苗資訊，也方便未來公告其他相關資訊」）
+      版型與機制**刻意沿用 #clinic-notice**：data-expires 過期自動隱藏（以 UTC+8 判斷）＋點圖放大 lightbox，
+      兩區共用下方同一個 #notice-lightbox 與同一支 JS（該 JS 已改為走 id 陣列，新增第三個公告區只要加一個 id）。
+      ⏳ 區塊層 data-expires＝流感季末日；季末整區自動消失，明年開季把日期往後推即可重新啟用，不必重寫版型。
+      新增一則公告＝在下方插入一個 div.notice-item.max-w-3xl.mx-auto.fade-in-up 並帶自己的 data-expires；
+      多則並列時依公告日期由近到遠排，卡與卡之間加 mb-14、最後一則不加（同 #clinic-notice 慣例）。
+      公告圖走 images/notice/ 慣例（原生 1254²、webp q84／jpg q88、只轉檔不重繪），**不產 -thumb**（本版型不用縮圖）。
+      ⚠️ 本區為時效物，**刻意不加 spot-check 哨兵**（同 09-04c／09-13r 裁量：時效內容加永久哨兵＝預埋必定 FAIL 的炸彈）。 -->
+ <section id="flu-vaccine-notice" aria-labelledby="flu-vaccine-notice-heading" data-expires="2027-03-31" data-zoom-event="FluNotice_Enlarge" class="py-12 bg-white">
+ <div class="container mx-auto px-4">
+ <div class="text-center mb-8 fade-in-up">
+ <h2 id="flu-vaccine-notice-heading" class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-3 font-chinese">最新流感疫苗資訊</h2>
+ </div>
+
+ <!-- 公告①：2026-09-15 東洋輔流禦（Fluad，含佐劑熟齡型）到貨 -->
+ <div class="notice-item max-w-3xl mx-auto fade-in-up" data-expires="2027-03-31">
+ <p class="text-gray-600 font-chinese text-center mb-4">公告日期：<time datetime="2026-09-15">2026 年 9 月 15 日</time></p>
+ <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視自費流感疫苗東洋輔流禦到貨公告圖（含佐劑熟齡型，仿單適用 50 歲以上成人）" style="padding:0;cursor:zoom-in;">
+ <picture>
+ <source type="image/webp" srcset="/images/notice/flu-vaccine-fluad-20260915.webp">
+ <img src="/images/notice/flu-vaccine-fluad-20260915.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="立欣診所公告：自費流感疫苗東洋輔流禦到貨。熟齡佐劑流感疫苗，仿單適用 50 歲以上成人。含 MF59 佐劑，幫助增強免疫反應；流感疫苗每年接種一次，守護自己與家人。接種前由醫師評估；接種後可能有局部疼痛、疲倦等反應。歡迎洽詢立欣診所小鹿醫師團隊，電話 06-2516086，LINE @lhpedclinic。" class="w-full h-auto">
+ </picture>
+ </button>
+ <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
+ <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">東洋<strong>輔流禦（Fluad）</strong>為含佐劑的自費流感疫苗，仿單適用 <strong>50 歲以上</strong>成人，本院已到貨。佐劑成分為 MF59，用於幫助增強免疫反應。流感病毒每年變異、保護力也會隨時間下降，故建議每年接種一次；接種後可能出現注射部位疼痛、疲倦等反應，多為短暫。是否適合接種依原廠仿單記載並由醫師評估，發燒或患有急性中重度疾病時建議待病情穩定後再接種，曾對疫苗成分或前一劑發生嚴重過敏反應者不宜接種。自費品項現貨會變動，接種前請先來電 <strong>06-2516086</strong> 或洽官方 LINE <strong>@lhpedclinic</strong> 確認當日品項與可接種時段。</p>
+ <p class="text-center mt-3"><a href="/news/flu-vaccine-2026.html" onclick="trackCTA('FluNotice_Compare2026')" class="inline-flex items-center gap-1 text-sm font-chinese font-semibold text-[#7C9A6E]">查看本年度自費流感疫苗品項比較 →</a></p>
+ </div>
+
+ <div class="text-center mt-8">
+ <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopener" onclick="trackCTA('FluNotice_LINE')" class="btn-primary inline-block px-8 py-3 rounded-full font-chinese font-semibold">💬 想問哪一款適合？LINE 諮詢立欣診所</a>
+ </div>
+ </div>
+ </section>
+
  <!-- 門診異動公告：放大檢視 Lightbox -->
  <div id="notice-lightbox" role="dialog" aria-modal="true" aria-label="門診異動公告放大檢視" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.78);align-items:center;justify-content:center;padding:20px;">
  <div style="position:relative;max-width:min(92vw,86vh);width:100%;">
@@ -2439,13 +2473,46 @@
  </div>
  <script>
  (function () {
- var sec = document.getElementById('clinic-notice');
- if (!sec) return;
+ // ⚠️ 2026-09-15：本 JS 原本只服務 #clinic-notice，新增 #flu-vaccine-notice 後改為走 id 陣列，
+ //    **刻意不複製第二份**——兩區的過期判斷與放大機制完全相同，複製等於日後要改兩個地方。
+ //    新增第四個公告區時，只要把 id 加進 SECTION_IDS；共用的 lightbox 只有一個、在迴圈外綁一次。
+ var SECTION_IDS = ['clinic-notice', 'flu-vaccine-notice'];
+ var lb = document.getElementById('notice-lightbox');
+ var lbPic = document.getElementById('notice-lightbox-pic');
+ var closeBtn = document.getElementById('notice-lightbox-close');
+ if (!lb || !lbPic || !closeBtn) return;
  // 過期自動隱藏：data-expires 當日（含）仍顯示，翌日起隱藏；以 UTC+8 判斷。
  // 區塊本身與其中每則公告（.notice-item）各自判斷；零公告或公告全部過期時整區隱藏。
  var tw = new Date(Date.now() + 8*60*60000);
  var pad = function (n) { return (n<10?'0':'')+n; };
  var today = tw.getUTCFullYear()+'-'+pad(tw.getUTCMonth()+1)+'-'+pad(tw.getUTCDate());
+ function openLb(btn, zoomEvent) {
+ var pic = btn.querySelector('picture');
+ if (pic) {
+ lbPic.innerHTML = pic.innerHTML;
+ var im = lbPic.querySelector('img');
+ if (im) {
+ im.className = '';
+ im.setAttribute('loading', 'eager');
+ im.setAttribute('style', 'width:100%;height:auto;border-radius:16px;display:block;');
+ }
+ }
+ lb.style.display = 'flex';
+ document.body.style.overflow = 'hidden';
+ if (typeof trackCTA === 'function') trackCTA(zoomEvent);
+ }
+ function closeLb() {
+ lb.style.display = 'none';
+ document.body.style.overflow = '';
+ }
+ closeBtn.addEventListener('click', closeLb);
+ lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+ document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && lb.style.display === 'flex') closeLb(); });
+ SECTION_IDS.forEach(function (secId) {
+ var sec = document.getElementById(secId);
+ if (!sec) return;
+ // 放大事件名逐區可分（GA4 要分得出家長放大的是門診異動還是流感公告）；未標則沿用既有事件名。
+ var zoomEvent = sec.getAttribute('data-zoom-event') || 'Notice_Enlarge';
  var exp = sec.getAttribute('data-expires');
  if (exp && today > exp) { sec.style.display = 'none'; return; }
  var items = sec.querySelectorAll('.notice-item');
@@ -2457,37 +2524,13 @@
  if (alive === 0) { sec.style.display = 'none'; return; }
    // ⚠️ 2026-09-05m：原條件為 (items.length && alive === 0)，零公告時不成立 →
    //    會渲染出只有標題的空區塊。改為 alive===0 後，零公告與全部過期都整區隱藏。
- var lb = document.getElementById('notice-lightbox');
- var lbPic = document.getElementById('notice-lightbox-pic');
  var openBtns = sec.querySelectorAll('.notice-zoom');
- var closeBtn = document.getElementById('notice-lightbox-close');
- function openLb(btn) {
- var pic = btn.querySelector('picture');
- if (pic && lbPic) {
- lbPic.innerHTML = pic.innerHTML;
- var im = lbPic.querySelector('img');
- if (im) {
- im.className = '';
- im.setAttribute('loading', 'eager');
- im.setAttribute('style', 'width:100%;height:auto;border-radius:16px;display:block;');
- }
- }
- lb.style.display = 'flex';
- document.body.style.overflow = 'hidden';
- if (typeof trackCTA === 'function') trackCTA('Notice_Enlarge');
- }
- function closeLb() {
- lb.style.display = 'none';
- document.body.style.overflow = '';
- }
  for (var b = 0; b < openBtns.length; b++) {
  openBtns[b].addEventListener('click', (function (btn) {
- return function () { openLb(btn); };
+ return function () { openLb(btn, zoomEvent); };
  })(openBtns[b]));
  }
- closeBtn.addEventListener('click', closeLb);
- lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
- document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && lb.style.display === 'flex') closeLb(); });
+ });
  })();
  </script>
 
