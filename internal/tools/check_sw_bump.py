@@ -24,6 +24,7 @@ validate_site.py 是**單檔內容檢查**，看不到「這批改了什麼」�
 """
 
 import argparse
+import pathlib
 import re
 import subprocess
 import sys
@@ -78,6 +79,31 @@ def main():
         print('::error::無法取得 diff：%s' % e)
         print('提示：checkout 需 fetch-depth: 0，且 base ref 要抓得到。')
         return 2
+
+    # ── 防線 0（2026-09-16 新增）：sw.js 必須是合法 JavaScript ────────────
+    # 起因：2026-09-10 有人在檔頭註解寫「css/**圖片**/js」，其中的 `**/` 構成
+    # `*/` → 區塊註解在第 27 行就提前關閉，其後 18 行說明文字被當成程式碼，
+    # sw.js 自此**整支無法註冊**（ServiceWorker script evaluation failed）。
+    # 失效模式極隱蔽：頁面一切正常、CI 全綠、驗證器也過（它不解析 JS），
+    # 但**已安裝舊版 SW 的裝置會永遠卡在舊快取**——更新永遠裝不上去。
+    # 2026-09-16 院長回報「首頁預覽圖沒改到」才查出來，距離引入已 6 天。
+    # ⭐ 教訓：bump VERSION 只有在檔案「裝得起來」時才有意義，故本檢查排在最前面。
+    sw = pathlib.Path('sw.js')
+    if sw.exists():
+        src = sw.read_text(encoding='utf-8')
+        head = src.split("'use strict'")[0]
+        if head.count('*/') > 1:
+            print('::error::sw.js 檔頭區塊註解被提前關閉（出現多於一個 `*/`）。')
+            print('')
+            print('常見肇因：註解裡寫了含 `**/` 的字串，例如「css/**圖片**/js」——')
+            print('          其中的 `*/` 會直接結束區塊註解，其後文字變成程式碼。')
+            print('')
+            print('後果：sw.js 無法通過 JS 解析 → Service Worker 註冊失敗 →')
+            print('      **已安裝舊版 SW 的裝置永遠卡在舊快取、更新裝不上去**。')
+            print('      頁面外觀完全正常，只有回訪者會看到舊圖／舊資產。')
+            print('')
+            print('怎麼修：把註解裡的 `/**…**/` 改成全形斜線（css／圖片／js）或去掉星號。')
+            return 1
 
     touched = [p for p in SHARED_ASSETS if p in changed]
     print('=== 防呆 18 閘門（01：改共用根資產要同批 bump sw.js VERSION）===')
