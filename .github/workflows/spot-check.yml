@@ -142,6 +142,11 @@ jobs:
           # 2026-09-10g 新增：本頁從未進過 200 清單（歷來只被當成「有內容抽驗就好」），
           # 而 09-10g 的入連哨兵 FAIL 時無從分辨「頁不可達」還是「內容不符」。補這一行當第一刀。
           check /services/child-development-screening.html 200
+          # 2026-09-16f 新增：本頁在 spot-check **原本一條哨兵都沒有**（既無 200、也無內容抽驗），
+          # 而本批剛在它可見層新增了「看診後回診抽吸鼻涕」服務區塊——被舊版覆蓋回退時，
+          # 家長會讀到一個「診所沒有這項服務」的頁面，而 validate_site.py 全綠、版面不破。
+          # 這行盯「頁還在不在」，下方兩條內容抽驗盯可見層與隱藏層，依 08-14b 通則成對存在。
+          check /services/ent-care.html 200
           check /health/allergy-test-results.html 200
           # 2026-08-23f 新增(08-23d 新頁〈兒童泌尿道感染〉):整頁都是新檔,被舊版覆蓋
           # 回退時整頁會 404。下方「內容抽驗」盯本頁核心內容,這行盯「頁還在不在」,
@@ -386,6 +391,19 @@ jobs:
           #    `.html` 去掉，用 repo 原字串 grep 永遠 0（09-10g 用兩次 CI FAIL 換來的）。
           cncard=$(curl -s --max-time 20 "$BASE/health/influenza.html" | grep -c '感冒時營養補充怎麼選？維生素C、維生素D 與鋅' || true)
           if [ "$cncard" -ge 1 ]; then echo "OK    流感頁 → 感冒營養補充文的入連卡已上線"; else echo "FAIL  流感頁未見感冒營養補充文的入連卡——流感頁疑遭 9/11 前舊版覆蓋"; fail=1; fi
+          # 2026-09-16f 新增（1/2）：盯 services/ent-care.html 可見層的**回診抽吸服務區塊**。
+          # 這是院長 2026-09-16 交付的事實（看診隔日起算三天內、免掛號、不另收費），
+          # 也是本站對「台南吸鼻涕」整條詞路唯一的服務層入口。被舊版覆蓋或誤刪時
+          # **頁面照樣 200、版面不破、validate_site.py 全綠**，只有這條抓得到。
+          # 刻意盯 H2 標題（結構字串，不隨內文潤飾漂移），該字串全站僅本頁 1 次。
+          # ⚠️ 防呆 17：日後院長核可改寫此標題時須同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          ec=$(curl -s --max-time 20 "$BASE/services/ent-care.html" | grep -c '看診後想再吸一次鼻涕：隔天起三天內到櫃檯就好' || true)
+          if [ "$ec" -ge 1 ]; then echo "OK    耳鼻喉頁『看診後回診抽吸鼻涕』可見區塊已上線"; else echo "FAIL  耳鼻喉頁回診抽吸服務區塊未見"; fail=1; fi
+          # 2026-09-16f 新增（2/2）：盯同頁隱藏 #ai-knowledge-block 本批新增的第 5 段。
+          # 純隱藏層——被舊版覆蓋時可見層一字不差、上面那條哨兵照樣 OK，沒有任何機制會發現
+          # 「AI 與搜尋引擎讀得到的那一層回退了」（同 08-25d／09-10i 的失效模式）。
+          ek=$(curl -s --max-time 20 "$BASE/services/ent-care.html" | grep -c '看診後回診抽吸鼻涕：家長的口語問法與實際做法' || true)
+          if [ "$ek" -ge 1 ]; then echo "OK    耳鼻喉頁回診抽吸隱藏區段已上線"; else echo "FAIL  耳鼻喉頁回診抽吸隱藏區段未見"; fail=1; fi
           # 首頁四層抽驗(2026-08-09 新增,PR #80「台南小兒科推薦／台南兒科推薦」四層補強):
           # 兩條分別盯住首頁的 keywords 層與隱藏 #ai-knowledge-block 層。這兩層是
           # 純技術層、可見層看不出來,而 Claude Code session 的 egress 不含本站網域
