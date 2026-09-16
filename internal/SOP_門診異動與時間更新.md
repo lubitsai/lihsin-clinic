@@ -227,7 +227,7 @@ grep -rn '平日夜診至21:30\|夜診至 21:30\|週六週日皆有門診' --inc
 
 ## 三、共同尾段（兩情境都要做）
 
-1. **dateModified／sitemap（R4）**：門診時間屬「家長讀到的營運資訊」→ 變更頁 `dateModified` 跳（完整 ISO 8601＋08:00）、`sitemap.xml` 對應 `lastmod` 同步。`lastReviewed` 不動（非醫師重審醫療內容）。判準見 `02` R4。
+1. **dateModified／sitemap（R4）**：門診時間屬「家長讀到的營運資訊」→ 變更頁 `dateModified` 跳（完整 ISO 8601＋08:00）、`sitemap.xml` 對應 `lastmod` 同步。`lastReviewed` **不動**（非醫師重審醫療內容）。⚠️ **2026-09-16g 起 `lastReviewed` 的預設已改為「隨 `dateModified` 一起跳」——而門診異動正是該預設的唯一例外，本行不受影響、刻意維持不跳**：門診時間是營運資訊，頁面確實更新了，但沒有任何醫師重審醫療內容。判準見 `02` R4 的 09-16g 修訂框。
 2. **合規**：時間敘述不得夾帶自稱超級詞、療效宣稱；紅線見 `00 §4`。
 3. **驗證器**：`python3 internal/tools/validate_site.py --stage deploy` → **ERROR 清零才 push**。
 4. **實機驗證**：改動 HERO 徽章（`SCHEDULE`/`EXCEPTIONS`）時，用 Chromium 模擬時間實測（腳本範例：`Date.now` 覆寫成目標時刻，讀 `#clinic-status-text`），確認「開診中/即將/休診/下個時段」四態正確、跨日正確、特例生效。

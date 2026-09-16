@@ -74,8 +74,12 @@ description: 立欣診所官網 SEO／AEO／GEO 關鍵字研究與內容生成�
 6. 依 00 §8-3 更新文件：備份 00/01 至 `internal/archive/` → 00 檔頭版本行＋文末
    本批附錄（append-only）→ 01 狀態段同步。
 
-## dateModified 判準（R4，一句話版）
+## dateModified／lastReviewed 判準（R4，一句話版）
 
 家長讀到的醫療資訊有沒有被醫師重新審過？**沒有就不跳**。
 keywords／FAQ schema／隱藏區／llms／desc／og／schema 技術修復 → 不跳。
 新增可見區塊或卡片、醫療內文實質改寫（經核可）→ 跳，且 sitemap lastmod 同步。
+
+**`lastReviewed` 預設與 `dateModified` 同步跳（同一時間戳）**——院長 2026-09-16g 裁示，理由是 `dateModified` 會跳的條件本來就含「經醫師核可」，那次逐字核可就是一次實際審閱。
+⚠️ **唯一例外**：`dateModified` 因**非醫療內容**而跳時（門診時間異動等營運資訊）→ `lastReviewed` **不跳**。
+⚠️ **不回溯**：既有頁面的 `lastReviewed` 不因此批次改寫。**`datePublished` 一律不動。**
