@@ -7,6 +7,7 @@ import { createAppointment } from "@/lib/booking";
 import { getDaySlotAvailability } from "@/lib/availability";
 import {
   createScheduleException,
+  deleteScheduleException,
   setSlotCapacity,
   setSlotBlocked,
   applyTemplateChange,
@@ -215,5 +216,101 @@ describe("單日停診與週班表的作用範圍不同", () => {
     // 兩天的早診都沒了——只是想停一天的人會在這裡踩雷
     expect(await morningOf(date, general.id)).toEqual([]);
     expect(await morningOf(nextWeekSameWeekday, general.id)).toEqual([]);
+  });
+});
+
+/**
+ * 單日加開雙診（院長 2026-09-17 指示：雙診要在後台「排班管理」另外建）。
+ *
+ * 官網的單日公告只寫得出「哪一診次、幾點到幾點」，寫不出「這天多一位醫師」——
+ * 2026-09-25 中秋連假那則就是實例：公告寫「早診加開雙診」，但同步到
+ * schedule.json 的只有 {"session":"MORNING","start":"08:00","end":"12:00"}。
+ * 所以雙診只能在後台另外建，這裡把「建了之後真的多一位醫師、而且只有那一天」釘住。
+ */
+describe("單日加開雙診", () => {
+  beforeEach(resetDb);
+
+  const morningDoctors = async (date: string, clinicTypeId: string) => {
+    const slots = await getDaySlotAvailability(date, clinicTypeId);
+    const ids = new Set<string>();
+    for (const s of slots.filter((x) => x.session === "MORNING")) {
+      for (const d of s.doctors) ids.add(d.doctorId);
+    }
+    return ids;
+  };
+
+  it("加開第二位醫師後當天早診變雙診，下週同一個星期幾仍是單診", async () => {
+    // 單診起家：只有蔡醫師有班
+    const { general, drTsai, drLee } = await seedBase({ doubleShift: false });
+    const date = futureDate(3);
+    const nextWeekSameWeekday = addDays(date, 7);
+
+    expect(await morningDoctors(date, general.id)).toEqual(new Set([drTsai.id]));
+
+    await createScheduleException(
+      {
+        date,
+        type: "EXTRA_SESSION",
+        session: "MORNING",
+        doctorId: drLee.id,
+        startTime: "08:00",
+        endTime: "12:00",
+        reason: "中秋連假早診加開雙診",
+      },
+      STAFF_ACTOR,
+    );
+
+    // 當天兩位都看得到
+    expect(await morningDoctors(date, general.id)).toEqual(new Set([drTsai.id, drLee.id]));
+    // 下週同一個星期幾仍是單診——加開只作用在那一天
+    expect(await morningDoctors(nextWeekSameWeekday, general.id)).toEqual(new Set([drTsai.id]));
+  });
+
+  it("加開的醫師當天真的約得到，且名額與原醫師各自獨立", async () => {
+    const { general, drTsai, drLee } = await seedBase({ doubleShift: false });
+    const date = futureDate(3);
+    await createScheduleException(
+      {
+        date, type: "EXTRA_SESSION", session: "MORNING", doctorId: drLee.id,
+        startTime: "08:00", endTime: "12:00", reason: "加開雙診",
+      },
+      STAFF_ACTOR,
+    );
+
+    // 同一個 09:00 兩位醫師各收一位（每位醫師每時段名額 1）
+    const a = await createAppointment({
+      clinicTypeId: general.id, doctorId: drTsai.id, date, startTime: "09:00",
+      patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
+    });
+    const b = await createAppointment({
+      clinicTypeId: general.id, doctorId: drLee.id, date, startTime: "09:00",
+      patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
+    });
+    expect(a.appointment.doctorId).toBe(drTsai.id);
+    expect(b.appointment.doctorId).toBe(drLee.id);
+
+    // 第三位就滿了
+    await expect(
+      createAppointment({
+        clinicTypeId: general.id, doctorId: drLee.id, date, startTime: "09:00",
+        patientInput: makePatient(), source: "LINE", actor: PATIENT_ACTOR,
+      }),
+    ).rejects.toMatchObject({ code: "SLOT_FULL" });
+  });
+
+  it("取消加開後恢復單診", async () => {
+    const { general, drTsai, drLee } = await seedBase({ doubleShift: false });
+    const date = futureDate(3);
+    const created = await createScheduleException(
+      {
+        date, type: "EXTRA_SESSION", session: "MORNING", doctorId: drLee.id,
+        startTime: "08:00", endTime: "12:00", reason: "加開雙診",
+      },
+      STAFF_ACTOR,
+    );
+    expect(await morningDoctors(date, general.id)).toEqual(new Set([drTsai.id, drLee.id]));
+
+    await deleteScheduleException(created.created!.id, STAFF_ACTOR);
+    expect(await morningDoctors(date, general.id)).toEqual(new Set([drTsai.id]));
   });
 });

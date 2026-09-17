@@ -673,7 +673,14 @@ export interface DaySessionDto {
   session: "MORNING" | "AFTERNOON" | "EVENING";
   startTime: string;
   endTime: string;
-  doctors: { id: string; name: string }[];
+  /**
+   * 這個診次當天實際看診的醫師。
+   * extraExceptionId 有值＝這一位是「單日加開」來的（雙診），可以單獨取消；
+   * null＝來自固定週班表，要改得動週班表。
+   */
+  doctors: { id: string; name: string; extraExceptionId: string | null }[];
+  /** 還可以加開的醫師（當天這個診次還沒排到的在職醫師） */
+  addableDoctors: { id: string; name: string }[];
   /** 停掉這個診次會影響幾筆有效預約（與實際建立例外時的判斷同一套邏輯） */
   affectedCount: number;
   /** 已停診時帶出例外 id，供「恢復看診」用 */
@@ -688,11 +695,15 @@ export interface DayScheduleDto {
   otherExceptions: { id: string; label: string; reason: string }[];
 }
 
+/**
+ * 會列在「這一天另有的排班調整」裡的例外。
+ * EXTRA_SESSION 不列——它已經以「加開」的形式顯示在該診次的醫師名單上，
+ * 再列一次只會讓櫃檯以為有兩筆設定。
+ */
 const OTHER_EXCEPTION_LABEL: Record<string, string> = {
   DOCTOR_OFF: "醫師休診",
   DOCTOR_SUBSTITUTE: "醫師代診",
   SPECIAL_HOURS: "特殊營業時間",
-  EXTRA_SESSION: "臨時加診",
   SLOT_BLOCKED: "封鎖單一時段",
   CLINIC_TYPE_SUSPENDED: "暫停門診類型",
 };
@@ -712,14 +723,16 @@ export async function adminFetchDaySchedule(
     const day = dateStrSchema.parse(date);
     const weekday = dateToDb(day).getUTCDay();
 
-    const [templates, exceptions] = await Promise.all([
+    const [templates, exceptions, activeDoctors] = await Promise.all([
       prisma.weeklyScheduleTemplate.findMany({
         where: { weekday, isActive: true, doctor: { isActive: true } },
         include: { doctor: true },
         orderBy: { startTime: "asc" },
       }),
       prisma.scheduleException.findMany({ where: { date: dateToDb(day) } }),
+      prisma.doctor.findMany({ where: { isActive: true }, orderBy: { displayOrder: "asc" } }),
     ]);
+    const doctorNameOf = (id: string) => activeDoctors.find((d) => d.id === id)?.name ?? "（已停用醫師）";
 
     const bySession = new Map<string, typeof templates>();
     for (const t of templates) {
@@ -739,13 +752,25 @@ export async function adminFetchDaySchedule(
         ? []
         : await findAffectedAppointments({ date: day, type: "SESSION_CLOSED", session, reason: "" });
       const doctorSeen = new Set<string>();
+      const doctors = rows
+        .filter((r) => !doctorSeen.has(r.doctorId) && doctorSeen.add(r.doctorId))
+        .map((r) => ({ id: r.doctorId, name: r.doctor.name, extraExceptionId: null as string | null }));
+      // 單日加開的醫師（雙診）：官網的單日公告只有時間、沒有醫師，同步不到，
+      // 一律是櫃檯在後台另外建的，所以只在這裡才看得到。
+      for (const e of exceptions) {
+        if (e.type !== "EXTRA_SESSION" || e.session !== session || !e.doctorId) continue;
+        if (doctorSeen.has(e.doctorId)) continue;
+        doctorSeen.add(e.doctorId);
+        doctors.push({ id: e.doctorId, name: doctorNameOf(e.doctorId), extraExceptionId: e.id });
+      }
       sessions.push({
         session,
         startTime: rows.reduce((min, r) => (r.startTime < min ? r.startTime : min), rows[0].startTime),
         endTime: rows.reduce((max, r) => (r.endTime > max ? r.endTime : max), rows[0].endTime),
-        doctors: rows
-          .filter((r) => !doctorSeen.has(r.doctorId) && doctorSeen.add(r.doctorId))
-          .map((r) => ({ id: r.doctorId, name: r.doctor.name })),
+        doctors,
+        addableDoctors: activeDoctors
+          .filter((d) => !doctorSeen.has(d.id))
+          .map((d) => ({ id: d.id, name: d.name })),
         affectedCount: affected.length,
         closedExceptionId: closed?.id ?? null,
       });

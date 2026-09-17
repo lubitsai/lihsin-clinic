@@ -8,8 +8,13 @@
  * 的操作習慣，會把往後每一個同一星期幾的診次一起關掉，而且不會有人立刻發現。
  * 所以把「只停這一天」做成預設入口，週班表退到最後一個分頁並加警語。
  *
- * 這一頁做的事等同建立一筆 SESSION_CLOSED 日期例外，只是不必先知道
- * 「例外」「診別」這些詞彙——選日期、看到當天的診次、按停診，如此而已。
+ * 這一頁做的事等同建立 SESSION_CLOSED／EXTRA_SESSION 日期例外，只是不必先知道
+ * 「例外」「診別」這些詞彙——選日期、看到當天的診次、按停診或加開，如此而已。
+ *
+ * **單日加開醫師（雙診）也在這裡建**（院長 2026-09-17 指示）。
+ * 官網的單日公告只寫得出「哪一診次、幾點到幾點」，寫不出「這天多一位醫師」，
+ * sync_schedule.py 因此同步不到雙診——不在後台另外建，預約系統那天就只會開單診的名額。
+ * 反過來，常態雙診（例如週日早診固定兩位）在官網門診時間表裡就有，會自動同步，不要手建。
  */
 import { useCallback, useEffect, useState, useTransition } from "react";
 import Link from "next/link";
@@ -51,6 +56,8 @@ export function DayOffBoard({ onError }: { onError: (message: string) => void })
   const [pendingClose, setPendingClose] = useState<PendingClose | null>(null);
   const [message, setMessage] = useState("");
   const [reason, setReason] = useState("臨時停診");
+  /** 正在挑加開醫師的診次（一次只開一個，避免畫面上同時有兩個下拉選單） */
+  const [addingTo, setAddingTo] = useState<DaySessionDto["session"] | null>(null);
   const [pending, startTransition] = useTransition();
 
   const load = useCallback(
@@ -112,6 +119,45 @@ export function DayOffBoard({ onError }: { onError: (message: string) => void })
     });
   };
 
+  /**
+   * 單日加開一位醫師（雙診）。時間沿用該診次現有的起訖，
+   * 讓櫃檯不必再輸入一次——加開的本意就是「這一診次多一位醫師」。
+   */
+  const addDoctor = (s: DaySessionDto, doctorId: string) => {
+    const doctor = s.addableDoctors.find((d) => d.id === doctorId);
+    if (!doctor) return;
+    startTransition(async () => {
+      const r = await adminCreateException({
+        date,
+        type: "EXTRA_SESSION",
+        session: s.session,
+        doctorId,
+        startTime: s.startTime,
+        endTime: s.endTime,
+        reason: reason.trim() || "臨時加開雙診",
+      });
+      if (!r.ok) return onError(r.message);
+      onError("");
+      setAddingTo(null);
+      setMessage(
+        `${formatDateTw(date)} ${SESSION_META[s.session].label}已加開 ${doctor.name}醫師（只影響這一天）`,
+      );
+      load(date);
+    });
+  };
+
+  const removeDoctor = (exceptionId: string, sessionLabel: string, doctorName: string) => {
+    if (!window.confirm(`取消 ${formatDateTw(date)} ${sessionLabel}加開的 ${doctorName}醫師？已約在該醫師名下的預約不會自動處理。`))
+      return;
+    startTransition(async () => {
+      const r = await adminDeleteException(exceptionId);
+      if (!r.ok) return onError(r.message);
+      onError("");
+      setMessage(`${formatDateTw(date)} ${sessionLabel}已取消加開 ${doctorName}醫師`);
+      load(date);
+    });
+  };
+
   const reopen = (exceptionId: string, label: string) => {
     if (!window.confirm(`恢復 ${formatDateTw(date)} ${label}？已取消的預約不會自動回來。`)) return;
     startTransition(async () => {
@@ -130,9 +176,13 @@ export function DayOffBoard({ onError }: { onError: (message: string) => void })
       <Alert tone="info">
         <p className="font-bold mb-1">這一頁只改「這一天」</p>
         <p>
-          停診、恢復都只作用在所選日期，
+          停診、加開、恢復都只作用在所選日期，
           <strong>不會影響往後其他同一個星期幾</strong>。
           要改的是每週固定的門診時間（例如以後週三都不看晚診），才用「固定週班表」。
+        </p>
+        <p className="mt-1">
+          <strong>單日加開雙診也在這裡建</strong>——官網的單日公告只寫得出時間、寫不出醫師，
+          同步不到；不在這裡加開，預約系統那天就只會開單診的名額。
         </p>
       </Alert>
 
@@ -204,7 +254,35 @@ export function DayOffBoard({ onError }: { onError: (message: string) => void })
                   {s.startTime}–{s.endTime}
                 </p>
                 <p className="text-sm text-ink-700">
-                  {s.doctors.map((d) => `${d.name}醫師`).join("、")}
+                  {s.doctors.map((d, i) => (
+                    <span key={d.id}>
+                      {i > 0 && "、"}
+                      {d.name}醫師
+                      {d.extraExceptionId && (
+                        <>
+                          <span className="text-wood-700">（本日加開）</span>
+                          <button
+                            onClick={() =>
+                              removeDoctor(
+                                d.extraExceptionId!,
+                                SESSION_META[s.session].label,
+                                d.name,
+                              )
+                            }
+                            disabled={pending}
+                            className="text-ink-500 underline underline-offset-2 ml-1"
+                          >
+                            取消加開
+                          </button>
+                        </>
+                      )}
+                    </span>
+                  ))}
+                  {s.doctors.length > 1 && (
+                    <span className="ml-1 rounded-full bg-sage-500/10 text-sage-700 px-2 py-0.5 text-xs font-bold">
+                      雙診
+                    </span>
+                  )}
                 </p>
               </div>
               <div className="ml-auto flex items-center gap-3">
@@ -212,6 +290,32 @@ export function DayOffBoard({ onError }: { onError: (message: string) => void })
                   <span className="text-sm text-ink-500">
                     {s.affectedCount > 0 ? `目前有 ${s.affectedCount} 筆預約` : "目前無預約"}
                   </span>
+                )}
+                {!s.closedExceptionId && s.addableDoctors.length > 0 && (
+                  addingTo === s.session ? (
+                    <select
+                      className="input !w-auto"
+                      autoFocus
+                      defaultValue=""
+                      onChange={(e) => e.target.value && addDoctor(s, e.target.value)}
+                      disabled={pending}
+                    >
+                      <option value="">選擇要加開的醫師…</option>
+                      {s.addableDoctors.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name}醫師
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <button
+                      onClick={() => setAddingTo(s.session)}
+                      disabled={pending}
+                      className="btn-secondary !py-2"
+                    >
+                      ＋ 加開醫師（雙診）
+                    </button>
+                  )
                 )}
                 {s.closedExceptionId ? (
                   <button

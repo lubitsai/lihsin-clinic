@@ -93,6 +93,21 @@ test.describe("後台：櫃檯日常", () => {
     });
   });
 
+  test("臨時異動可單日加開醫師（雙診）——官網同步不到，只能在這裡建", async ({ page }) => {
+    await login(page, ADMIN);
+    await page.goto("/admin/schedule");
+    await expect(page.getByText(/單日加開雙診也在這裡建/)).toBeVisible({ timeout: 15_000 });
+
+    // 按下加開會換成醫師下拉，示範資料兩位醫師，至少挑得到一位
+    const addButton = page.getByRole("button", { name: /加開醫師（雙診）/ }).first();
+    await clickUntil(addButton, async () => {
+      await expect(page.getByRole("combobox").last()).toBeVisible({ timeout: 8_000 });
+    });
+    const picker = page.getByRole("combobox").last();
+    const options = await picker.locator("option").allTextContents();
+    expect(options.some((o) => o.includes("醫師"))).toBe(true);
+  });
+
   test("固定週班表分頁會先警告「往後每個同一星期幾都會改」", async ({ page }) => {
     await login(page, ADMIN);
     await page.goto("/admin/schedule");
