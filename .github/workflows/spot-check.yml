@@ -849,4 +849,33 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這一段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           mc=$(curl -s --max-time 20 "$BASE/health/mycoplasma-pneumonia.html" | grep -c '黴漿菌會有併發症嗎？需要住院嗎？得過還會再得嗎？' || true)
           if [ "$mc" -ge 1 ]; then echo "OK    黴漿菌頁併發症／住院／再次感染區塊已上線"; else echo "FAIL  黴漿菌頁未見 H2『黴漿菌會有併發症嗎？需要住院嗎？得過還會再得嗎？』——09-19i 新增的可見區塊疑已回退"; fail=1; fi
+          # 2026-09-20b：「在地語序 × 意圖」盤法跨頁推廣（11 頁）。
+          # ⚠️ 本批動的全是中繼層（keywords／隱藏 #ai-knowledge-block／llms 雙檔），
+          # **11 頁可見層已程式化證明 byte-identical**，既有哨兵一條都不會叫。
+          # 取字策略沿 09-19i 的教訓：每條取該頁新增段落的 **H2 全文**——
+          # 已程式化驗證 11 條字串**全站各僅 1 處且都在自己那一頁**，不會互相假通過；
+          # H2 只存在於隱藏區，與各頁既有的可見層哨兵互補。
+          # ⚠️ 防呆 17：日後改寫這些段落要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          lo1=$(curl -s --max-time 20 "$BASE/health/adenovirus.html" | grep -c '台南腺病毒的在地問法對照與科別分流' || true)
+          if [ "$lo1" -ge 1 ]; then echo "OK    腺病毒頁在地語序段已上線"; else echo "FAIL  腺病毒頁未見 H2『台南腺病毒的在地問法對照與科別分流』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo2=$(curl -s --max-time 20 "$BASE/health/hmpv.html" | grep -c '台南 hMPV 的在地問法對照與科別分流' || true)
+          if [ "$lo2" -ge 1 ]; then echo "OK    hMPV 頁在地語序段已上線"; else echo "FAIL  hMPV 頁未見 H2『台南 hMPV 的在地問法對照與科別分流』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo3=$(curl -s --max-time 20 "$BASE/health/covid-19-2026.html" | grep -c '台南新冠的在地問法對照與科別分流' || true)
+          if [ "$lo3" -ge 1 ]; then echo "OK    新冠頁在地語序段已上線"; else echo "FAIL  新冠頁未見 H2『台南新冠的在地問法對照與科別分流』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo4=$(curl -s --max-time 20 "$BASE/health/otitis-media.html" | grep -c '台南中耳炎的在地問法對照與科別分流' || true)
+          if [ "$lo4" -ge 1 ]; then echo "OK    中耳炎頁在地語序段已上線"; else echo "FAIL  中耳炎頁未見 H2『台南中耳炎的在地問法對照與科別分流』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo5=$(curl -s --max-time 20 "$BASE/health/child-urticaria.html" | grep -c '台南蕁麻疹的在地問法對照與科別分流' || true)
+          if [ "$lo5" -ge 1 ]; then echo "OK    蕁麻疹頁在地語序段已上線"; else echo "FAIL  蕁麻疹頁未見 H2『台南蕁麻疹的在地問法對照與科別分流』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo6=$(curl -s --max-time 20 "$BASE/health/erythema-infectiosum.html" | grep -c '台南傳染性紅斑（蘋果病）的在地問法對照與科別分流' || true)
+          if [ "$lo6" -ge 1 ]; then echo "OK    傳染性紅斑頁在地語序段已上線"; else echo "FAIL  傳染性紅斑頁未見 H2『台南傳染性紅斑（蘋果病）的在地問法對照與科別分流』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo7=$(curl -s --max-time 20 "$BASE/health/heat-illness.html" | grep -c '台南中暑與熱傷害的在地問法對照與科別分流' || true)
+          if [ "$lo7" -ge 1 ]; then echo "OK    中暑頁在地語序段已上線"; else echo "FAIL  中暑頁未見 H2『台南中暑與熱傷害的在地問法對照與科別分流』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo8=$(curl -s --max-time 20 "$BASE/health/measles.html" | grep -c '台南麻疹疫苗（MMR）的在地問法對照與服務界線' || true)
+          if [ "$lo8" -ge 1 ]; then echo "OK    麻疹頁在地語序段已上線"; else echo "FAIL  麻疹頁未見 H2『台南麻疹疫苗（MMR）的在地問法對照與服務界線』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo9=$(curl -s --max-time 20 "$BASE/health/atopic-dermatitis.html" | grep -c '台南異位性皮膚炎的在地問法對照（反向語序）' || true)
+          if [ "$lo9" -ge 1 ]; then echo "OK    異膚頁在地語序段已上線"; else echo "FAIL  異膚頁未見 H2『台南異位性皮膚炎的在地問法對照（反向語序）』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo10=$(curl -s --max-time 20 "$BASE/health/child-fever.html" | grep -c '台南兒童發燒的在地問法對照（反向語序）' || true)
+          if [ "$lo10" -ge 1 ]; then echo "OK    兒童發燒頁在地語序段已上線"; else echo "FAIL  兒童發燒頁未見 H2『台南兒童發燒的在地問法對照（反向語序）』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          lo11=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '台南快篩的在地問法對照（反向語序補齊）' || true)
+          if [ "$lo11" -ge 1 ]; then echo "OK    快篩頁在地語序段已上線"; else echo "FAIL  快篩頁未見 H2『台南快篩的在地問法對照（反向語序補齊）』——09-20b 的在地語序補強疑已回退"; fail=1; fi
           exit $fail
