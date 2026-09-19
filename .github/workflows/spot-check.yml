@@ -848,5 +848,5 @@ jobs:
           #    已用移除該區塊的負向測試證明哨兵會由 1 變 0。
           # ⚠️ 防呆 17：日後院長核可改寫這一段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           mc=$(curl -s --max-time 20 "$BASE/health/mycoplasma-pneumonia.html" | grep -c '黴漿菌會有併發症嗎？需要住院嗎？得過還會再得嗎？' || true)
-          if [ "$mc" -ge 1 ]; then echo "OK    黴漿菌頁再次感染段已上線"; else echo "FAIL  黴漿菌頁未見『得過一次不等於終身免疫』——09-19i 新增的可見區塊疑已回退"; fail=1; fi
+          if [ "$mc" -ge 1 ]; then echo "OK    黴漿菌頁併發症／住院／再次感染區塊已上線"; else echo "FAIL  黴漿菌頁未見 H2『黴漿菌會有併發症嗎？需要住院嗎？得過還會再得嗎？』——09-19i 新增的可見區塊疑已回退"; fail=1; fi
           exit $fail
