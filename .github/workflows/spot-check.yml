@@ -435,6 +435,16 @@ jobs:
           if [ "$cc" -ge 1 ]; then echo "OK    久咳承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  久咳頁『台南久咳推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
           ad=$(curl -s --max-time 20 "$BASE/health/atopic-dermatitis.html" | grep -c '台南異膚推薦' || true)
           if [ "$ad" -ge 1 ]; then echo "OK    異膚承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  異膚頁『台南異膚推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # 「久咳 台南」語序補強抽驗(2026-09-19 新增):該批補的是反向語序(久咳台南)與
+          # 口語時長詞,全部落在 keywords／FAQ schema／隱藏區／llms 四個看不見的層——
+          # 被舊版覆蓋時頁面照樣 200、可見層一字不差,跟上面 08-14 那批同一個失效型態。
+          # 第 1 條盯隱藏區新段的「標題」(結構,不隨文案潤飾漂移);
+          # 第 2 條盯服務頁 keywords 補回的核心術語(該頁原本整組沒有咳嗽變異型氣喘)。
+          # ⚠️ 防呆 17:日後改寫這兩處措辭必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
+          cw=$(curl -s --max-time 20 "$BASE/health/child-chronic-cough.html" | grep -c '台南在地問法對照' || true)
+          if [ "$cw" -ge 1 ]; then echo "OK    久咳頁隱藏區在地問法對照段已上線"; else echo "FAIL  久咳頁『台南在地問法對照』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
+          pc=$(curl -s --max-time 20 "$BASE/services/pediatric-allergy-asthma.html" | grep -c '咳嗽變異型氣喘檢查' || true)
+          if [ "$pc" -ge 1 ]; then echo "OK    過敏氣喘頁 keywords 咳嗽變異型氣喘詞群已上線"; else echo "FAIL  過敏氣喘頁『咳嗽變異型氣喘檢查』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
           # 流感抗病毒藥物承載頁抽驗(2026-08-28 新增,本批新頁):兩條分別盯可見層與隱藏層。
           # 第 1 條盯可見的三藥對照 H2——那張表是本頁與 influenza 只列公費藥名的差別所在;
           # 第 2 條盯隱藏 #ai-knowledge-block 的 GEO 穩定實體關係段標題(結構,不隨文案潤飾漂移)。
