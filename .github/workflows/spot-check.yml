@@ -328,6 +328,7 @@ jobs:
           # sitemap、官網沒有任何頁面連過去——**沒有任何其他機制會發現它不見了**,
           # 家長點連結撞 404 才會知道。這兩條就是唯一的哨兵。
           # ⚠️ /game/ 是公開的,不要誤以為它跟 internal/ 一樣該回 404。
+          check /health/roseola.html 200
           check /game/ 200
           check /game/game.html 200
           echo "=== 內容抽驗 ==="
@@ -878,4 +879,12 @@ jobs:
           if [ "$lo10" -ge 1 ]; then echo "OK    兒童發燒頁在地語序段已上線"; else echo "FAIL  兒童發燒頁未見 H2『台南兒童發燒的在地問法對照（反向語序）』——09-20b 的在地語序補強疑已回退"; fail=1; fi
           lo11=$(curl -s --max-time 20 "$BASE/health/rapid-tests.html" | grep -c '台南快篩的在地問法對照（反向語序補齊）' || true)
           if [ "$lo11" -ge 1 ]; then echo "OK    快篩頁在地語序段已上線"; else echo "FAIL  快篩頁未見 H2『台南快篩的在地問法對照（反向語序補齊）』——09-20b 的在地語序補強疑已回退"; fail=1; fi
+          # 2026-09-20c：新增衛教頁〈玫瑰疹（第六病）〉的可見層哨兵。
+          # 取字策略沿 09-19i／09-20b：先驗「只存在可見層」且「全站唯一」。
+          # ⛔ 刻意不用「比對著手機照片猜安心」——實測全站 2 檔命中（本頁＋erythema-infectiosum），
+          #    新頁整個回退時它仍會命中另一頁而假通過，正是 09-01b／09-19i 說的假哨兵。
+          # ✅ 改取本頁正文獨有的一句：實測本頁 1 處、全站 1 檔，且**不在隱藏區**（已程式化確認）。
+          # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          ro=$(curl -s --max-time 20 "$BASE/health/roseola.html" | grep -c '很多家長看到孩子燒退之後反而長疹子會更緊張' || true)
+          if [ "$ro" -ge 1 ]; then echo "OK    玫瑰疹頁正文已上線"; else echo "FAIL  玫瑰疹頁未見『很多家長看到孩子燒退之後反而長疹子會更緊張』——09-20c 新頁疑已回退"; fail=1; fi
           exit $fail
