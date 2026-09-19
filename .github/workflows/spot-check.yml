@@ -826,4 +826,27 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這一段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           ei=$(curl -s --max-time 20 "$BASE/health/erythema-infectiosum.html" | grep -c '嘴巴周圍那一圈反而是白的' || true)
           if [ "$ei" -ge 1 ]; then echo "OK    傳染性紅斑頁蘋果臉描述句已上線"; else echo "FAIL  傳染性紅斑頁未見蘋果臉描述句——本批新頁疑已回退"; fail=1; fi
+          # 2026-09-19h：「黴漿菌 台南」第 2 輪四層補強（在地語序 × 意圖／肺外表現／氣喘互動）。
+          # ⚠️ 兩條防的都是「頁面照開、版面不破、validate_site.py 全綠」的靜默回退：
+          # 本批動的全是中繼層（keywords／FAQPage／隱藏 #ai-knowledge-block／llms 雙檔），
+          # **可見層已程式化證明 byte-identical**（2,556→2,556 字元），既有哨兵一條都不會叫。
+          # 取字策略沿 09-13f：不取會在多層重複出現的裸詞——
+          # ⛔ 刻意不用「台南黴漿菌診所」「黴漿菌看哪一科台南」當哨兵，它們同時進了
+          #    keywords、隱藏區與 llms 雙檔，任一層掉了裸 grep 仍會命中＝假通過。
+          # 第 1 條盯新增的氣喘互動 FAQ（JSON-LD 內的完整題目，實測全站僅此頁 1 處）。
+          ma=$(curl -s --max-time 20 "$BASE/health/mycoplasma-pneumonia.html" | grep -c '孩子本來就有氣喘，得到黴漿菌會讓氣喘變嚴重嗎？' || true)
+          if [ "$ma" -ge 1 ]; then echo "OK    黴漿菌頁氣喘互動 FAQ 已上線"; else echo "FAIL  黴漿菌頁未見氣喘互動 FAQ——本批新增的 FAQPage 題目疑已回退"; fail=1; fi
+          # 第 2 條盯隱藏區新增的在地問法段（取 H2 標題全文，實測全站僅此頁 1 處）。
+          ml=$(curl -s --max-time 20 "$BASE/health/mycoplasma-pneumonia.html" | grep -c '台南黴漿菌的在地問法對照與科別分流' || true)
+          if [ "$ml" -ge 1 ]; then echo "OK    黴漿菌頁在地問法對照段已上線"; else echo "FAIL  黴漿菌頁隱藏區未見在地問法對照段——本批的在地語序補強疑已回退"; fail=1; fi
+          # 2026-09-19i：黴漿菌頁新增可見區塊（併發症／住院判準／再次感染；院長「直接幫我補」核可）。
+          # 這條盯的是**可見層**，與 09-19h 的中繼層哨兵互補：本批是本頁少數動到可見文字的批次。
+          # ⛔ 起草時原本取「得過一次不等於終身免疫」，逐詞驗證時發現它在本頁命中 **3 次**
+          #    （可見段＋FAQ 答案＋隱藏區）——可見區塊整個被移除時，裸 grep 仍會命中 FAQ 與隱藏區而
+          #    **假通過**，正是 09-13b／09-13f 說的「不取多層重複的裸詞」。
+          # ✅ 改取新增區塊的 H2 全文：實測本頁 1 處、全站 1 檔，**只存在於可見層**，
+          #    已用移除該區塊的負向測試證明哨兵會由 1 變 0。
+          # ⚠️ 防呆 17：日後院長核可改寫這一段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          mc=$(curl -s --max-time 20 "$BASE/health/mycoplasma-pneumonia.html" | grep -c '黴漿菌會有併發症嗎？需要住院嗎？得過還會再得嗎？' || true)
+          if [ "$mc" -ge 1 ]; then echo "OK    黴漿菌頁再次感染段已上線"; else echo "FAIL  黴漿菌頁未見『得過一次不等於終身免疫』——09-19i 新增的可見區塊疑已回退"; fail=1; fi
           exit $fail
