@@ -329,6 +329,7 @@ jobs:
           # 家長點連結撞 404 才會知道。這兩條就是唯一的哨兵。
           # ⚠️ /game/ 是公開的,不要誤以為它跟 internal/ 一樣該回 404。
           check /health/roseola.html 200
+          check /images/roseola-infographic.jpg 200
           check /game/ 200
           check /game/game.html 200
           echo "=== 內容抽驗 ==="
