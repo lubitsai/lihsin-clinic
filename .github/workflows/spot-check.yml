@@ -887,4 +887,27 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           ro=$(curl -s --max-time 20 "$BASE/health/roseola.html" | grep -c '很多家長看到孩子燒退之後反而長疹子會更緊張' || true)
           if [ "$ro" -ge 1 ]; then echo "OK    玫瑰疹頁正文已上線"; else echo "FAIL  玫瑰疹頁未見『很多家長看到孩子燒退之後反而長疹子會更緊張』——09-20c 新頁疑已回退"; fail=1; fi
+          # 2026-09-20d：在地詞「從未佈局」的 9 頁補齊（與 09-20b 的語序缺口是不同類）。
+          # ⚠️ 本批動的全是中繼層（keywords／隱藏 #ai-knowledge-block／llms 雙檔），
+          # **9 頁可見層已程式化證明 byte-identical**，既有哨兵一條都不會叫。
+          # 取字沿 09-19i／09-20b：各取該頁新增段落 H2 全文，**已程式化驗證全站各僅 1 處且都在自己那一頁**。
+          # ⚠️ 防呆 17：日後改寫這些段落要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          nb1=$(curl -s --max-time 20 "$BASE/health/newborn-jaundice.html" | grep -c '台南新生兒黃疸的在地問法對照與科別分流' || true)
+          if [ "$nb1" -ge 1 ]; then echo "OK    新生兒黃疸頁在地問法段已上線"; else echo "FAIL  新生兒黃疸頁未見 H2『台南新生兒黃疸的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb2=$(curl -s --max-time 20 "$BASE/health/baby-colic.html" | grep -c '台南嬰兒腸絞痛的在地問法對照與科別分流' || true)
+          if [ "$nb2" -ge 1 ]; then echo "OK    腸絞痛頁在地問法段已上線"; else echo "FAIL  腸絞痛頁未見 H2『台南嬰兒腸絞痛的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb3=$(curl -s --max-time 20 "$BASE/health/child-constipation.html" | grep -c '台南兒童便秘的在地問法對照與科別分流' || true)
+          if [ "$nb3" -ge 1 ]; then echo "OK    兒童便秘頁在地問法段已上線"; else echo "FAIL  兒童便秘頁未見 H2『台南兒童便秘的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb4=$(curl -s --max-time 20 "$BASE/health/growth-curve.html" | grep -c '台南兒童生長曲線與生長評估的在地問法對照與科別分流' || true)
+          if [ "$nb4" -ge 1 ]; then echo "OK    生長曲線頁在地問法段已上線"; else echo "FAIL  生長曲線頁未見 H2『台南兒童生長曲線與生長評估的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb5=$(curl -s --max-time 20 "$BASE/health/postnasal-drip.html" | grep -c '台南鼻涕倒流（後鼻滴）的在地問法對照與科別分流' || true)
+          if [ "$nb5" -ge 1 ]; then echo "OK    鼻涕倒流頁在地問法段已上線"; else echo "FAIL  鼻涕倒流頁未見 H2『台南鼻涕倒流（後鼻滴）的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb6=$(curl -s --max-time 20 "$BASE/health/child-uti.html" | grep -c '台南兒童泌尿道感染的在地問法對照與科別分流' || true)
+          if [ "$nb6" -ge 1 ]; then echo "OK    泌尿道感染頁在地問法段已上線"; else echo "FAIL  泌尿道感染頁未見 H2『台南兒童泌尿道感染的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb7=$(curl -s --max-time 20 "$BASE/health/child-bedwetting.html" | grep -c '台南兒童尿床的在地問法對照與科別分流' || true)
+          if [ "$nb7" -ge 1 ]; then echo "OK    尿床頁在地問法段已上線"; else echo "FAIL  尿床頁未見 H2『台南兒童尿床的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb8=$(curl -s --max-time 20 "$BASE/health/oral-thrush.html" | grep -c '台南嬰兒鵝口瘡的在地問法對照與科別分流' || true)
+          if [ "$nb8" -ge 1 ]; then echo "OK    鵝口瘡頁在地問法段已上線"; else echo "FAIL  鵝口瘡頁未見 H2『台南嬰兒鵝口瘡的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          nb9=$(curl -s --max-time 20 "$BASE/health/baby-spitting-up.html" | grep -c '台南寶寶吐奶溢奶的在地問法對照與科別分流' || true)
+          if [ "$nb9" -ge 1 ]; then echo "OK    吐奶溢奶頁在地問法段已上線"; else echo "FAIL  吐奶溢奶頁未見 H2『台南寶寶吐奶溢奶的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
           exit $fail
