@@ -331,6 +331,7 @@ jobs:
           check /health/roseola.html 200
           check /images/roseola-infographic.jpg 200
           check /health/croup.html 200
+          check /images/croup-infographic.jpg 200
           check /game/ 200
           check /game/game.html 200
           echo "=== 內容抽驗 ==="
