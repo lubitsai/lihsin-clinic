@@ -67,25 +67,38 @@ jobs:
           check /app 200
           check /privacy 200
           check /growth 200
-          # 2026-09-21 新增(_redirects §7):四個內容目錄網址原本硬 404
-          # ——GSC「找不到網頁(404)」來信的實證主因。301 收斂到首頁對應錨點。
-          # 成對原則(防呆 17):只驗最終 200 會在「規則沒了、Netlify 改回隱含
-          # 解析」時假性通過,故同時驗「直接回應必須是 301」。
-          echo "=== 內容目錄網址收斂(應 301 → 最終 200)==="
-          check /health/    301
+          # 2026-09-21q(_redirects §7 改寫):四個目錄已改為實體列表頁(CollectionPage)。
+          # 沿革:本區原本驗「301 → 首頁錨點」(2026-09-21 GSC 404 批的次佳解);
+          # 院長裁示改做實體列表頁後,判準跟著改,**不是把哨兵刪掉**。
+          # 成對原則(防呆 17)三件一起驗,少任何一件都會有假性通過的路徑:
+          #   ① 帶斜線 = 200(實體檔在;檔案被刪或改名 → 掉回 404/301 會抓到)
+          #   ② 無斜線 = 301(§7 四行還在;規則被刪 → 變 200 或 404 會抓到)
+          #   ③ 兩種形式跟隨轉址後都 = 200(真的自我循環的話 curl 失敗 → FAIL)
+          echo "=== 內容目錄列表頁(帶斜線應 200、無斜線應 301)==="
+          check /health/    200
+          check /news/      200
+          check /services/  200
+          check /team/      200
           check /health     301
-          check /news/      301
           check /news       301
-          check /services/  301
           check /services   301
-          check /team/      301
           check /team       301
-          check_final_200() {  # $1=path 跟隨轉址後須為 200
+          check_final_200() {  # $1=path 跟隨轉址後須為 200(兼作迴圈偵測)
             code=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 20 "$BASE$1")
             if [ "$code" = "200" ]; then mark="OK  "; else mark="FAIL"; fail=1; fi
             printf "%s  %-3s (expect 200 final)  %s\n" "$mark" "$code" "$1"
           }
-          for d in /health/ /news/ /services/ /team/; do check_final_200 "$d"; done
+          for d in /health/ /news/ /services/ /team/ /health /news /services /team; do check_final_200 "$d"; done
+          # 列表頁內容哨兵:頁在但內容被換掉(例如被舊版覆蓋)時,只驗 200 抓不到。
+          for d in health news services team; do
+            n=$(curl -s --max-time 20 "$BASE/$d/" | grep -c 'CollectionPage' || true)
+            if [ "$n" -ge 1 ]; then echo "OK    /$d/ CollectionPage schema 已上線"; else echo "FAIL  /$d/ 未見 CollectionPage schema——列表頁疑被覆蓋"; fail=1; fi
+          done
+          # 衛教列表頁篇數:只增不減,故驗「>= 基準」而非等於定值(同 dr-tsai 文章數哨兵)。
+          # 新增文章不會讓這條過期,但列表被截斷或回退(數字變小)仍抓得到。
+          # ⚠️ 防呆 17:新增衛教文時 /health/index.html 與首頁「共 N 篇」要同批更新。
+          hn=$(curl -s --max-time 20 "$BASE/health/" | grep -o 'href="/health/[a-z0-9-]*\.html"' | sort -u | wc -l)
+          if [ "$hn" -ge 58 ]; then echo "OK    /health/ 列出 ${hn} 篇(基準 >=58)"; else echo "FAIL  /health/ 只列出 ${hn} 篇,低於基準 58——列表頁疑遭截斷"; fail=1; fi
           echo "=== 站點資產(應 200)==="
           check / 200
           check /llms.txt 200
