@@ -949,4 +949,19 @@ jobs:
           #    不可為了讓 CI 過而直接刪掉；換版清單見 health/flu-vaccine.html 現場註解第 ⑤ 項。
           en=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '公費的「加強型」流感疫苗，誰打得到？' || true)
           if [ "$en" -ge 1 ]; then echo "OK    公費加強型資格界線區塊已上線"; else echo "FAIL  2026 流感疫苗頁未見 H2『公費的「加強型」流感疫苗，誰打得到？』——09-21g 的資格界線可見區塊疑已回退"; fail=1; fi
+
+          # 2026-09-21h＋i：新增「品牌實體節點」哨兵 2 條（本批全部是機器層，沒有可見層可盯）。
+          # ⭐ 為什麼非盯不可：09-21h／i 兩批補的是 schema 的 mentions 品牌節點、keywords、
+          #    隱藏區與 llms——**頁面照開、版面不破、validate_site.py 全綠**，正是防呆 18
+          #    說的「三重靜默」失效；schema 區塊整個掉了，既有哨兵一條都不會叫。
+          # 取字原則（沿 09-21g 判準）：兩條都程式化驗過**全站 1 檔 1 處、且不在隱藏
+          #    #ai-knowledge-block**（隱藏區命中 0），schema 節點回退時由 1 變 0。
+          # ⛔ 刻意不取「能伏鼻」「輔流禦」「阿斯特捷利康」等裸詞：keywords／隱藏區／
+          #    llms 雙檔多層都有，schema 掉了它們仍會命中而假通過（09-13b／09-19i 假哨兵型態）。
+          # ⚠️ 防呆 17：116 年度換版（news 頁品項改版）或改寫 nasal 頁 Substance 節點
+          #    description 時，要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          sa=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c 'Sanofi 菲流達' || true)
+          if [ "$sa" -ge 1 ]; then echo "OK    2026 流感疫苗頁 5 款品牌 Substance 節點已上線"; else echo "FAIL  2026 流感疫苗頁未見 alternateName『Sanofi 菲流達』——09-21h 的 5 個品牌實體節點疑已回退"; fail=1; fi
+          az=$(curl -s --max-time 20 "$BASE/health/nasal-flu-vaccine.html" | grep -c '鼻噴式流感疫苗是哪一牌' || true)
+          if [ "$az" -ge 1 ]; then echo "OK    鼻噴頁能伏鼻 Substance 節點的 AZ 廠商欄已上線"; else echo "FAIL  鼻噴頁 Substance 節點未見『鼻噴式流感疫苗是哪一牌』——09-21i 的 AZ 廠商維度疑已回退"; fail=1; fi
           exit $fail
