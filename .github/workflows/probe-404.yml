@@ -2,10 +2,13 @@
 # 用途:GSC 只在介面裡給網址清單,session 讀不到;本 workflow 對正式站
 #       逐一探測「Google 可能自行嘗試或從站外撿到」的網址形狀,
 #       把「哪些形狀真的回 404」變成可讀的實證,供判斷是否需要 301。
-# 觸發:僅手動(workflow_dispatch)。診斷完即可刪除。
+# 觸發:push 到本診斷分支即自動跑(workflow_dispatch 需檔案先在預設分支上,
+#       本批不動 main,故改用 push 觸發)。診斷完連同分支一起刪除。
 name: Probe 404 shapes (diagnostic)
 
 on:
+  push:
+    branches: [claude/new-session-gvvz0o]
   workflow_dispatch:
 
 jobs:
