@@ -940,4 +940,13 @@ jobs:
           if [ "$nb8" -ge 1 ]; then echo "OK    鵝口瘡頁在地問法段已上線"; else echo "FAIL  鵝口瘡頁未見 H2『台南嬰兒鵝口瘡的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
           nb9=$(curl -s --max-time 20 "$BASE/health/baby-spitting-up.html" | grep -c '台南寶寶吐奶溢奶的在地問法對照與科別分流' || true)
           if [ "$nb9" -ge 1 ]; then echo "OK    吐奶溢奶頁在地問法段已上線"; else echo "FAIL  吐奶溢奶頁未見 H2『台南寶寶吐奶溢奶的在地問法對照與科別分流』——09-20d 的在地詞補齊疑已回退"; fail=1; fi
+          # 2026-09-21g：公費免疫加強型流感疫苗的資格界線（含佐劑／高劑量＝只有機構內 65 歲以上）。
+          # 取字策略沿 09-19i／09-20c：取新增區塊的 H2 全文——已程式化驗證全站 1 檔 1 處、
+          # 且**不在隱藏 #ai-knowledge-block**（隱藏區命中 0），新區塊整個回退時它會由 1 變 0。
+          # ⛔ 刻意不取「加強型」「佐劑」等裸詞：keywords／隱藏區／llms 雙檔多層都有，
+          #    可見區塊回退時它們仍會命中而假通過（09-13b／09-19i 說的假哨兵）。
+          # ⚠️ 防呆 17：日後院長核可改寫這段內文、或 116 年度換版時要同批改本檢查，
+          #    不可為了讓 CI 過而直接刪掉；換版清單見 health/flu-vaccine.html 現場註解第 ⑤ 項。
+          en=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '公費的「加強型」流感疫苗，誰打得到？' || true)
+          if [ "$en" -ge 1 ]; then echo "OK    公費加強型資格界線區塊已上線"; else echo "FAIL  2026 流感疫苗頁未見 H2『公費的「加強型」流感疫苗，誰打得到？』——09-21g 的資格界線可見區塊疑已回退"; fail=1; fi
           exit $fail
