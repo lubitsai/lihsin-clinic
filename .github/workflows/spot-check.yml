@@ -964,4 +964,30 @@ jobs:
           if [ "$sa" -ge 1 ]; then echo "OK    2026 流感疫苗頁 5 款品牌 Substance 節點已上線"; else echo "FAIL  2026 流感疫苗頁未見 alternateName『Sanofi 菲流達』——09-21h 的 5 個品牌實體節點疑已回退"; fail=1; fi
           az=$(curl -s --max-time 20 "$BASE/health/nasal-flu-vaccine.html" | grep -c '鼻噴式流感疫苗是哪一牌' || true)
           if [ "$az" -ge 1 ]; then echo "OK    鼻噴頁能伏鼻 Substance 節點的 AZ 廠商欄已上線"; else echo "FAIL  鼻噴頁 Substance 節點未見『鼻噴式流感疫苗是哪一牌』——09-21i 的 AZ 廠商維度疑已回退"; fail=1; fi
+
+          # 2026-09-21m：新增「院所實體節點（MedicalClinic）」哨兵 2 條——本批同樣整批機器層。
+          # ⭐ 為什麼非盯不可：本批補的是 schema 的 MedicalClinic／availableService 節點（帶
+          #    address／areaServed，回答「台南哪間診所有自費流感疫苗」這類院所型查詢）、
+          #    keywords、隱藏區與 llms——**頁面照開、版面不破、validate_site.py 全綠**，
+          #    節點整塊掉了既有哨兵一條都不會叫（防呆 18 的三重靜默）。
+          # 取字原則（沿 09-21g／h 判準）：兩條都程式化驗過**全站 1 檔 1 處、只存在於
+          #    ld+json、且隱藏 #ai-knowledge-block 命中 0**，節點回退時由 1 變 0。
+          # ⛔ 刻意不取「台南市北區」「育德路467號」「自費流感疫苗接種」等裸詞：可見層、
+          #    keywords、隱藏區與 llms 多層都有，schema 掉了仍會命中而假通過（假哨兵型態）。
+          # ⚠️ 防呆 17：116 年度換版（news 頁 alternateName 的年度字串）或改寫常青頁
+          #    availableService 名稱時，要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          mc1=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '115 年度自費流感疫苗接種' || true)
+          if [ "$mc1" -ge 1 ]; then echo "OK    2026 流感疫苗頁 MedicalClinic 院所節點已上線"; else echo "FAIL  2026 流感疫苗頁未見 availableService alternateName『115 年度自費流感疫苗接種』——09-21m 的院所實體節點疑已回退"; fail=1; fi
+          mc2=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '流感疫苗接種（公費與自費）' || true)
+          if [ "$mc2" -ge 1 ]; then echo "OK    流感疫苗常青頁 MedicalClinic 院所節點已上線"; else echo "FAIL  流感疫苗常青頁未見 availableService『流感疫苗接種（公費與自費）』——09-21m 的院所實體節點疑已回退"; fail=1; fi
+
+          # 2026-09-21n：「台南 自費流感疫苗 推薦」批的隱藏區客觀條件段（同樣整批機器層）。
+          # 取字原則：下行比對字串已程式化驗過**全站 1 檔 1 處、只在隱藏
+          #    #ai-knowledge-block 內、keywords 與 llms 雙檔命中 0**，該段回退時由 1 變 0。
+          # ⛔ 刻意不取「推薦」「怎麼選」「懶人包」等裸詞：keywords 與 llms 多層都有，
+          #    隱藏區掉了仍會命中而假通過；也不取「一體適用」「不做品牌優劣排名」等句
+          #    （llms 雙檔同步寫了，同樣會假通過）。
+          # ⚠️ 防呆 17：日後改寫這段客觀條件清單或 116 年度換版時要同批改本檢查。
+          rc=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '門診時間是否配合得上' || true)
+          if [ "$rc" -ge 1 ]; then echo "OK    2026 流感疫苗頁『自費怎麼選』客觀條件段已上線"; else echo "FAIL  2026 流感疫苗頁隱藏區未見『門診時間是否配合得上』——09-21n 的自費推薦／怎麼選客觀條件段疑已回退"; fail=1; fi
           exit $fail
