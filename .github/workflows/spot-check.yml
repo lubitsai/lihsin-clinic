@@ -980,4 +980,14 @@ jobs:
           if [ "$mc1" -ge 1 ]; then echo "OK    2026 流感疫苗頁 MedicalClinic 院所節點已上線"; else echo "FAIL  2026 流感疫苗頁未見 availableService alternateName『115 年度自費流感疫苗接種』——09-21m 的院所實體節點疑已回退"; fail=1; fi
           mc2=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '流感疫苗接種（公費與自費）' || true)
           if [ "$mc2" -ge 1 ]; then echo "OK    流感疫苗常青頁 MedicalClinic 院所節點已上線"; else echo "FAIL  流感疫苗常青頁未見 availableService『流感疫苗接種（公費與自費）』——09-21m 的院所實體節點疑已回退"; fail=1; fi
+
+          # 2026-09-21n：「台南 自費流感疫苗 推薦」批的隱藏區客觀條件段（同樣整批機器層）。
+          # 取字原則：下行比對字串已程式化驗過**全站 1 檔 1 處、只在隱藏
+          #    #ai-knowledge-block 內、keywords 與 llms 雙檔命中 0**，該段回退時由 1 變 0。
+          # ⛔ 刻意不取「推薦」「怎麼選」「懶人包」等裸詞：keywords 與 llms 多層都有，
+          #    隱藏區掉了仍會命中而假通過；也不取「一體適用」「不做品牌優劣排名」等句
+          #    （llms 雙檔同步寫了，同樣會假通過）。
+          # ⚠️ 防呆 17：日後改寫這段客觀條件清單或 116 年度換版時要同批改本檢查。
+          rc=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '門診時間是否配合得上' || true)
+          if [ "$rc" -ge 1 ]; then echo "OK    2026 流感疫苗頁『自費怎麼選』客觀條件段已上線"; else echo "FAIL  2026 流感疫苗頁隱藏區未見『門診時間是否配合得上』——09-21n 的自費推薦／怎麼選客觀條件段疑已回退"; fail=1; fi
           exit $fail
