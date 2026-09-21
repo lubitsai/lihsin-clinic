@@ -67,6 +67,25 @@ jobs:
           check /app 200
           check /privacy 200
           check /growth 200
+          # 2026-09-21 新增(_redirects §7):四個內容目錄網址原本硬 404
+          # ——GSC「找不到網頁(404)」來信的實證主因。301 收斂到首頁對應錨點。
+          # 成對原則(防呆 17):只驗最終 200 會在「規則沒了、Netlify 改回隱含
+          # 解析」時假性通過,故同時驗「直接回應必須是 301」。
+          echo "=== 內容目錄網址收斂(應 301 → 最終 200)==="
+          check /health/    301
+          check /health     301
+          check /news/      301
+          check /news       301
+          check /services/  301
+          check /services   301
+          check /team/      301
+          check /team       301
+          check_final_200() {  # $1=path 跟隨轉址後須為 200
+            code=$(curl -sL -o /dev/null -w "%{http_code}" --max-time 20 "$BASE$1")
+            if [ "$code" = "200" ]; then mark="OK  "; else mark="FAIL"; fail=1; fi
+            printf "%s  %-3s (expect 200 final)  %s\n" "$mark" "$code" "$1"
+          }
+          for d in /health/ /news/ /services/ /team/; do check_final_200 "$d"; done
           echo "=== 站點資產(應 200)==="
           check / 200
           check /llms.txt 200
