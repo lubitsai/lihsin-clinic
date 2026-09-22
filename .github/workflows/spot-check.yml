@@ -1010,4 +1010,22 @@ jobs:
           # ⚠️ 防呆 17：日後改寫這段客觀條件清單或 116 年度換版時要同批改本檢查。
           rc=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '門診時間是否配合得上' || true)
           if [ "$rc" -ge 1 ]; then echo "OK    2026 流感疫苗頁『自費怎麼選』客觀條件段已上線"; else echo "FAIL  2026 流感疫苗頁隱藏區未見『門診時間是否配合得上』——09-21n 的自費推薦／怎麼選客觀條件段疑已回退"; fail=1; fi
+
+          # 2026-09-22：「帶狀皰疹（帶狀疱疹）／疫苗／欣剋疹／台南／推薦」批的兩個落點。
+          # ⭐ 為什麼非盯不可：本批 100% 機器層（keywords／FAQPage／隱藏區／llms 雙檔），
+          #    零可見文字變更——整塊掉了頁面照開、版面不破、validate_site.py 全綠，
+          #    既有哨兵一條都不會叫。
+          # 取字原則（沿 09-21m／n 判準）：兩條都程式化驗過**全站 1 檔 1 處**——
+          #    sg1 只在隱藏 #ai-knowledge-block 內、sg2 只在 ld+json 的 FAQPage 內，
+          #    且 keywords 與 llms 雙檔命中皆為 0，該層回退時由 1 變 0。
+          # ⛔ 刻意不取「推薦」「怎麼選」「懶人包」「客觀條件」等裸詞：keywords 與 llms
+          #    多層都有，該層掉了仍會命中而假通過（09-21n 已記過的假哨兵型態）；
+          #    也不取「哪一家最好」「僅供參考」等句（llms 雙檔同步寫了，同樣假通過）。
+          # ⚠️ 防呆 25：不取任何含 href／屬性引號／.html 的樣式（Netlify Pretty URLs
+          #    與 HTML minify 會改寫，線上會永遠回 0）；上面兩條都是純中文內文。
+          # ⚠️ 防呆 17：日後改寫這段客觀條件清單或該則 FAQ 時，要同批改本檢查。
+          sg1=$(curl -s --max-time 20 "$BASE/health/shingles-vaccine.html" | grep -c '挑接種院所時可以參考的客觀條件有幾項' || true)
+          if [ "$sg1" -ge 1 ]; then echo "OK    帶狀皰疹疫苗頁『怎麼選』客觀條件段已上線"; else echo "FAIL  帶狀皰疹疫苗頁隱藏區未見『挑接種院所時可以參考的客觀條件有幾項』——09-22 的推薦／怎麼選客觀條件段疑已回退"; fail=1; fi
+          sg2=$(curl -s --max-time 20 "$BASE/health/shingles-vaccine.html" | grep -c '不是由網路排名決定' || true)
+          if [ "$sg2" -ge 1 ]; then echo "OK    帶狀皰疹疫苗頁『推薦怎麼選』FAQ 已上線"; else echo "FAIL  帶狀皰疹疫苗頁 FAQPage 未見『不是由網路排名決定』——09-22 新增的推薦怎麼選 FAQ 疑已回退"; fail=1; fi
           exit $fail
