@@ -386,6 +386,17 @@ jobs:
           # ⚠️ 防呆 17:日後改寫該段標題必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
           vf=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '台南流感疫苗（公費與自費）實體關係與相關頁面' || true)
           if [ "$vf" -ge 1 ]; then echo "OK    vaccination hub 流感季隱藏區已上線"; else echo "FAIL  vaccination hub 流感季隱藏區未見"; fail=1; fi
+          # 疫苗冷鏈三條（2026-09-22f 新增，「24 小時溫度監控恆溫疫苗專用冰箱」信任資產落地）：
+          # 這批同時動了可見層（Hub 新增一段、首頁設備卡 5→6）與隱藏層，三條各盯一個落點，
+          # 任一層被舊版覆蓋時三者不會一起消失 → 可分辨是哪一層回退。刻意盯區塊標題與設備
+          # 名稱（結構性字串，不隨文案潤飾漂移），三個字串在 keywords 與 llms 雙檔皆為 0。
+          # ⚠️ 防呆 17：日後改寫這兩個標題或設備清單時要同批改本檢查，不可為了讓 CI 過而刪掉。
+          vc1=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '疫苗怎麼保存？院內冷藏與溫度監控' || true)
+          if [ "$vc1" -ge 1 ]; then echo "OK    vaccination hub 疫苗保存可見區塊已上線"; else echo "FAIL  vaccination hub 未見『疫苗怎麼保存？院內冷藏與溫度監控』——09-22f 冷鏈可見段疑已回退"; fail=1; fi
+          vc2=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '台南疫苗冰箱、冷鏈與溫度監控的問法對照' || true)
+          if [ "$vc2" -ge 1 ]; then echo "OK    vaccination hub 疫苗冷鏈隱藏區已上線"; else echo "FAIL  vaccination hub 冷鏈隱藏區未見——09-22f 隱藏段疑已回退"; fail=1; fi
+          vc3=$(curl -s --max-time 20 "$BASE/" | grep -c '24 小時溫度監控恆溫疫苗專用冰箱' || true)
+          if [ "$vc3" -ge 1 ]; then echo "OK    首頁院內設備卡含疫苗專用冰箱"; else echo "FAIL  首頁未見『24 小時溫度監控恆溫疫苗專用冰箱』——09-22f 設備卡疑遭舊版 index.html 覆蓋"; fail=1; fi
           # 流感疫苗頁 10 月公費開打四層抽驗(2026-09-03g 新增,「公費流感疫苗開打／左流右新」模式 A 補強):
           # 兩條分別盯住 health/flu-vaccine.html 的隱藏 #ai-knowledge-block 與 FAQPage schema。
           # 本批全屬技術層、可見層一字未動 → 被舊版覆蓋時頁面照樣 200、validator 不會亮,
