@@ -95,9 +95,16 @@ jobs:
             if [ "$n" -ge 1 ]; then echo "OK    /$d/ CollectionPage schema 已上線"; else echo "FAIL  /$d/ 未見 CollectionPage schema——列表頁疑被覆蓋"; fail=1; fi
           done
           # 衛教列表頁篇數:只增不減,故驗「>= 基準」而非等於定值(同 dr-tsai 文章數哨兵)。
-          # 新增文章不會讓這條過期,但列表被截斷或回退(數字變小)仍抓得到。
-          # ⚠️ 防呆 17:新增衛教文時 /health/index.html 與首頁「共 N 篇」要同批更新。
-          hn=$(curl -s --max-time 20 "$BASE/health/" | grep -o 'href="/health/[a-z0-9-]*\.html"' | sort -u | wc -l)
+          # ⚠️ 計數錨點刻意用卡片 CTA 文字,**不可**用 href —— 2026-09-21r 實測(spot-check
+          #    #592 紅燈後連跑 5 輪診斷)確認 Netlify 對 HTML 做了兩層後處理:
+          #      ① Pretty URLs:href 裡的 .html 被拿掉(線上是 /health/adenovirus)
+          #      ② HTML minify:屬性引號被拿掉(線上是 href=/health/...),
+          #         100112 bytes → 78556 bytes
+          #    於是 grep 'href="/health/[a-z0-9-]*\.html"' 在線上**永遠回 0**,
+          #    而 repo 裡的原始碼看起來完全正常 —— 這正是會寫出假哨兵的形狀。
+          #    JSON-LD 的 "url" 欄位不受影響(仍是完整 .html),那是另一個可用錨點。
+          # ⚠️ 防呆 17:新增衛教文時 /health/index.html 與首頁「共 N 篇」要同批更新(防呆 24)。
+          hn=$(curl -s --max-time 20 "$BASE/health/" | grep -o '閱讀完整文章' | wc -l)
           if [ "$hn" -ge 58 ]; then echo "OK    /health/ 列出 ${hn} 篇(基準 >=58)"; else echo "FAIL  /health/ 只列出 ${hn} 篇,低於基準 58——列表頁疑遭截斷"; fail=1; fi
           echo "=== 站點資產(應 200)==="
           check / 200
