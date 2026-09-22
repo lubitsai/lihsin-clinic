@@ -135,28 +135,24 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 /news/covid-19-2026.html   /health/covid-19-2026.html   301
 
 # ------------------------------------------------------------
-# 7. 內容目錄網址收斂 301（2026-09-21 新增）
-#    起因：GSC 來信「有新的原因導致網頁無法建立索引：找不到網頁 (404)」。
-#    線上實證（health-check-live run #12、probe-404 run #1）：
-#      • 81 條 sitemap 網址全數 200、fail=0 → 404 不是站上發佈的網址
-#      • /health/ /news/ /services/ /team/（含無斜線版）全部 404
-#    Google 會由 /health/croup.html 自行上溯嘗試父層 /health/；本站
-#    這四個目錄底下共 70 餘頁、且近期密集新增（roseola 09-19、croup 09-20）
-#    造成爬取活躍，時間點與來信吻合。四個目錄都沒有 index.html → 硬 404。
-#    處置：301 收斂到首頁對應區塊錨點（四個 id 皆已存在於 index.html）。
-#    ⚠️ 與 §4 移除的佔位符規則不同：本節是**完整路徑**、無 splat 無 :param，
-#    目標 / 是實體檔案，不會自我循環（2026-07-10 錯誤 47 的教訓）。
-#    ⚠️ 已知取捨：Google 可能把「轉址到首頁」判為軟性 404。但軟性 404 與
-#    硬 404 在索引上同樣不收錄，而 301 至少把權重與使用者導到對的區塊；
-#    真正的解法是幫這四個目錄做實體列表頁（需院長核可可見文字），列待辦。
-#    ⚠️ /images/ 與 /docs/ 刻意不收：資產目錄，404 是誠實且正確的回應。
-#    ⚠️ 連動維護義務：首頁若改掉這四個 id，這四行要同批改。
+# 7. 內容目錄網址（2026-09-21 建立；2026-09-21q 改寫）
+#    沿革：本節原為八條 301，把 /health/ /news/ /services/ /team/（含無斜線版）
+#    收斂到首頁對應錨點，起因是 GSC「找不到網頁 (404)」——這四個目錄沒有
+#    index.html、Google 會由 /health/croup.html 自行上溯嘗試父層而吃到硬 404。
+#    ⚠️ 當時已在註解裡寫明那是次佳解（轉址到首頁可能被判軟性 404），
+#    真正的解法是做實體列表頁。院長裁示「四個目錄做實體列表頁」後本節改寫。
+#
+#    現況：四個目錄都有實體 index.html（CollectionPage，已入 sitemap 與 llms 雙檔）。
+#    • /health/ /news/ /services/ /team/ → 實體檔案，直接 200，**不需要也不該有轉址規則**
+#      （非強制規則遇到實體檔案本來就不攔截 → 留著只會是死規則，
+#       同 §5 對 /internal/game/* 的判斷、同 §4 於 2026-07-10 移除三條佔位符的教訓）。
+#    • 無斜線版 /health 等沒有實體檔案 → 保留 301 明確指向帶斜線的正規網址，
+#      不依賴 Netlify 的隱含目錄處理，行為可預期且被哨兵盯住。
+#    ⚠️ 不會自我循環：/health/ 有實體檔案 → 非強制規則不攔截 → 不會再回到 /health。
+#      spot-check 以「跟隨轉址後必須 200」驗這件事（真的循環的話 curl 會失敗 → FAIL）。
+#    ⚠️ 連動維護義務：這四個 index.html 若退場，本節四行要同批改或刪。
 # ------------------------------------------------------------
-/health/     /#health-tips   301
-/health      /#health-tips   301
-/news/       /#news          301
-/news        /#news          301
-/services/   /#services      301
-/services    /#services      301
-/team/       /#team          301
-/team        /#team          301
+/health      /health/      301
+/news        /news/        301
+/services    /services/    301
+/team        /team/        301
