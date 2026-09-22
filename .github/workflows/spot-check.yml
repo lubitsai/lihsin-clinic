@@ -396,6 +396,15 @@ jobs:
           if [ "$fv" -ge 1 ]; then echo "OK    flu-vaccine 公費開打隱藏區已上線"; else echo "FAIL  flu-vaccine 公費開打隱藏區未見"; fail=1; fi
           fq=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '流感疫苗可以和新冠疫苗同一天接種嗎？什麼是「左流右新」？' || true)
           if [ "$fq" -ge 1 ]; then echo "OK    flu-vaccine 左流右新 FAQ 已上線"; else echo "FAIL  flu-vaccine 左流右新 FAQ 未見"; fail=1; fi
+          # 流感疫苗頁「推薦／怎麼選」四層補強抽驗(2026-09-22c 新增,「台南 流感疫苗 推薦」模式 A):
+          # 兩條分別盯住 health/flu-vaccine.html 的隱藏 #ai-knowledge-block 新增段與 FAQPage 新增題。
+          # 本批零可見文字變更 → 被舊版覆蓋時頁面照樣 200、validator 不會亮,沒有任何自動化會發現。
+          # 刻意取「全站 1 檔 1 處」且 keywords／llms 雙檔命中 0 的純中文內文(防呆 25:不 grep href 與 .html)。
+          # ⚠️ 防呆 17:日後改寫這兩處時必須同批改本檢查,不可為了讓 CI 過而直接刪掉。
+          fr=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '挑接種門診時可以參考的客觀條件有六項' || true)
+          if [ "$fr" -ge 1 ]; then echo "OK    flu-vaccine『怎麼選』客觀條件段已上線"; else echo "FAIL  flu-vaccine『怎麼選』客觀條件段未見"; fail=1; fi
+          fp=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '符合公費資格的人還需要考慮自費嗎' || true)
+          if [ "$fp" -ge 1 ]; then echo "OK    flu-vaccine 公費自費怎麼選 FAQ 已上線"; else echo "FAIL  flu-vaccine 公費自費怎麼選 FAQ 未見"; fail=1; fi
           # 2026-09-08m 新增：盯 health/nasal-flu-vaccine.html 可見層的仿單適用年齡句。
           # 這是本頁最關鍵的醫療事實（鼻噴劑型只適用 2 歲到未滿 18 歲），被舊版覆蓋或
           # 誤刪時頁面仍會 200，只有這條抓得到。仿單改版而要改寫此句時，須同批改本檢查（防呆 17）。
