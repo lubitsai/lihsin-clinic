@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><title>流感疫苗 櫃檯小卡</title>
+<style>
+@page{size:A4;margin:10mm}
+*{box-sizing:border-box}
+body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:10.5pt;line-height:1.45;color:#222;margin:0}
+h1{font-size:17pt;margin:0 0 2mm;border-bottom:3px solid #A0662F;padding-bottom:1.5mm}
+h2{font-size:12pt;margin:3.5mm 0 1.5mm;color:#7a4a1f}
+.rule{background:#fbf3ea;border:2px solid #A0662F;padding:2.5mm 3mm;font-size:12pt;font-weight:bold;margin:2mm 0}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid #999;padding:1.2mm 2mm;vertical-align:top}
+th{background:#eee;text-align:left}
+.cb{width:15mm;white-space:nowrap;text-align:center}
+.say{background:#eef6ee;border-left:4px solid #3a7a3a;padding:2mm 3mm;margin:1.5mm 0;font-weight:bold}
+.no{background:#fbeaea;border-left:4px solid #b33;padding:2mm 3mm;margin:1.5mm 0}
+.foot{font-size:8.5pt;color:#555;margin-top:2.5mm}
+</style></head><body>
+<h1>流感疫苗｜櫃檯作業小卡（2026 流感季）</h1>
+<div class="rule">櫃檯負責「問」和「記」，醫師負責「判斷」。答「是」或「不確定」→ 勾起來交醫師，櫃檯不下結論。</div>
+
+<h2>① 櫃檯可以做／一律轉醫師</h2>
+<table>
+<tr><th style="width:20%">事項</th><th style="width:40%">櫃檯可以做</th><th>一律轉醫師</th></tr>
+<tr><td>年齡</td><td>核對證件（滿 6 個月／2 歲–未滿 18 歲／50 歲以上）</td><td>邊界年齡、證件未帶</td></tr>
+<tr><td>公費身分</td><td>依證件與手冊確認類別</td><td><b>具潛在疾病者</b>是否符合、文件不齊</td></tr>
+<tr><td>劑次</td><td>翻黃卡、數出過去紀錄給醫師</td><td><b>本季 1 劑或 2 劑的結論</b></td></tr>
+<tr><td>品項</td><td>告知今日現貨</td><td><b>選哪一款、能不能打鼻噴</b></td></tr>
+<tr><td>當日狀況</td><td>量體溫、問下方 6 題</td><td>發燒、急性病、任何「是／不確定」</td></tr>
+<tr><td>過敏</td><td>記下家長說的內容</td><td>蛋過敏、前一劑嚴重過敏</td></tr>
+</table>
+<p style="margin:1.5mm 0 0">公費＝針劑、廠牌由政府配發不可指定；<b>鼻噴只有自費</b>。鼻噴接種由醫師親自執行。</p>
+
+<h2>② 鼻噴（能伏鼻）6 題——照唸、勾選、交醫師</h2>
+<p style="margin:0 0 1.5mm">先確認：年齡 2 歲–未滿 18 歲 ☐　今日有現貨 ☐</p>
+<table>
+<tr><th>#</th><th>問句</th><th class="cb">是</th><th class="cb">否</th><th class="cb">不確定</th></tr>
+<tr><td>1</td><td>有沒有免疫功能低下的疾病，或正在接受會影響免疫的治療？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>2</td><td>有沒有氣喘、最近常喘或咻咻聲、這陣子因呼吸道在調藥？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>3</td><td>現在有吃什麼藥？特別是長期用藥、阿斯匹靈或含水楊酸的藥？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>4</td><td>最近有沒有吃過流感藥（例如克流感）？哪一天？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>5</td><td>家裡有沒有免疫功能嚴重不好的家人？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>6</td><td>以前打疫苗有沒有嚴重過敏？今天有沒有發燒或不舒服？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+</table>
+
+<h2>③ 聽到「是」只說這一句</h2>
+<div class="say">「謝謝您告訴我們，這個部分需要醫師看過才能決定，我先幫您記下來，醫師會跟您說明。」</div>
+<div class="no">不能說：✗ 氣喘沒發作就可以　✗ 吸入劑沒關係　✗ 那就改打針的　✗ 克流感吃完就可以打　✗ 去年打鼻噴沒事今年也可以</div>
+
+<h2>④ 接種後 3 件事</h2>
+<p style="margin:0">☐ 黃卡登錄日期／品項／<b>劑型</b>／第幾劑　☐ 公費登錄 NIIS　☐ 需 2 劑者：<b>當場約好第 2 劑</b>（間隔至少 4 週）並列入追蹤表</p>
+
+<p class="foot">依據：官網〈鼻噴式流感疫苗〉〈今年流感疫苗要打幾劑〉（蔡宗儒院長審閱）；公費自 10/1 起分階段開打，以疾管署公告為準。每日最後一診前 1 小時停止疫苗施打。院內文件，勿張貼於候診區。｜2026-09-23 版</p>
+</body></html>
