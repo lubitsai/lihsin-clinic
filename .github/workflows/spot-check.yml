@@ -826,6 +826,15 @@ jobs:
           # 取 FAQ 版的逗號寫法（隱藏區版用頓號），確保掉的是 FAQ 節點時會叫。
           f8=$(curl -s --max-time 20 "$BASE/services/family-medicine.html" | grep -c '超過 8 週才稱為慢性咳嗽' || true)
           if [ "$f8" -ge 1 ]; then echo "OK    家醫科頁成人咳嗽 8 週分界已上線(與兒童 4 週並列)"; else echo "FAIL  家醫科頁未見成人『超過 8 週』分界——成人與兒童標準的並列敘述疑已回退(事實層)"; fail=1; fi
+          # 2026-09-23b：成人內容導回家醫 hub（V／R／H 三層互連）。一去一回各盯一條：
+          # 去程＝hub 服務範圍條列的「帶狀皰疹」錨點；回程＝流感疫苗頁在地段的「家庭醫學」錨點。
+          # 取「錨點文字＋</a>」而非 href（09-10g：Pretty URLs 會去掉 .html）；可見文字本批零變更，
+          # 只多了 <a>，故 grep 純文字會永遠通過——必須連 </a> 一起盯。
+          # 負向測試（2026-09-23b 實跑）：兩條字串在本批之前計數皆為 0、本批後為 1。
+          fmsh=$(curl -s --max-time 20 "$BASE/services/family-medicine.html" | grep -c '>帶狀皰疹</a>' || true)
+          if [ "$fmsh" -ge 1 ]; then echo "OK    家醫科頁已連向帶狀皰疹疫苗衛教"; else echo "FAIL  家醫科頁成人疫苗條列未見帶狀皰疹連結——hub→spoke 疑已回退"; fail=1; fi
+          fvfm=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '>家庭醫學</a>' || true)
+          if [ "$fvfm" -ge 1 ]; then echo "OK    流感疫苗頁已連回家醫科頁"; else echo "FAIL  flu-vaccine.html 在地段未見家庭醫學連結——spoke→hub 疑已回退"; fail=1; fi
           # ── 2026-09-13q：腸病毒叢集（09-13o／p 兩批）5 條 ────────────────────
           # 為什麼要補：09-13o／p 動的是互連（V／R／H 三層）與「腸病毒台南」四層，
           # spot-check #505 雖然零 FAIL，但那是**既有 59 條哨兵**沒叫——本批新增的內容
