@@ -3,6 +3,8 @@
 """
 validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝2026-07-07）
     v1.0.1（07-10）：W-SITEMAP 首頁 loc「/」對映修正（院長核可待決⑨），無其他變更。
+    v1.2（09-25j）：新增 W-LDREF（懸空 @id 引用）與 W-LASTMOD（sitemap lastmod 落後
+      dateModified）兩項一致性 WARN，站內現況皆 0 命中；不動 FORBIDDEN_TERMS。
     v1.1（08-02b，院長核可 P5）：新增 **W-HSELF／W-HFORBID＝隱藏 #ai-knowledge-block
       禁語掃描**＋`HIDDEN_EXTRA_ALLOWLIST`／`HIDDEN_SELF_PROMO_PATTERNS` 兩張表。
       補的是 v1.0 起就存在的治理死角：可見禁語掃描依歷批協議**刻意排除**該區
@@ -63,6 +65,10 @@ validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝202
               且非機構首頁），不得退化回「機構名＋首頁」        ｜08-03 回退攔截
   W-BCRUMB    可見麵包屑末項必須是該頁自己講過的詞（出現在 title／
               H1／BreadcrumbList 任一）                          ｜08-24b scaffold 抽段回退攔截
+  W-LDREF     ld+json 以 {"@id": X} 引用的節點，全站須有一處以 @type
+              定義 X（懸空引用＝author／reviewedBy 解析不到人）   ｜09-25j visit-guide 回退攔截
+  W-LASTMOD   sitemap lastmod 不得早於該頁 dateModified（R4：跳了
+              dateModified 就要同步 lastmod）                     ｜09-25j 稽核查獲 2 頁
 
 已知設計取捨（弱模型請勿「修正」這些行為）
 ------------------------------------------
@@ -722,6 +728,63 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
                              f"可索引頁未列入 sitemap（app.html 型回退？）：{rel}")
         except ET.ParseError as e:
             rep.err("sitemap.xml", "E-SITEMAP", f"XML 解析失敗：{e}")
+
+    # W-LDREF／W-LASTMOD（2026-09-25j：結構化資料一致性稽核）
+    # 病徵①：visit-guide 的 author／reviewedBy 指向 team/dr-tsai.html#physician-tsai，
+    #   但全站定義的醫師節點是 /#physician-tsai → 引用懸空，搜尋引擎解析不到審閱者。
+    # 病徵②：dateModified 已依 R4 跳過，sitemap lastmod 卻沒跟（weight-management、
+    #   covid-19-2026）。反方向（lastmod 較新）不報：歷史上有合理成因（如 growth）。
+    ld_re = re.compile(r'<script[^>]*type\s*=\s*["\']application/ld\+json["\'][^>]*>(.*?)</script\s*>',
+                       re.S | re.I)
+    defined, refs, page_dm = set(), [], {}
+
+    def _walk(o, rel):
+        if isinstance(o, dict):
+            if "@id" in o:
+                if "@type" in o:
+                    defined.add(o["@id"])
+                elif set(o) == {"@id"}:
+                    refs.append((rel, o["@id"]))
+            for v_ in o.values():
+                _walk(v_, rel)
+        elif isinstance(o, list):
+            for v_ in o:
+                _walk(v_, rel)
+
+    for rel in html_files:
+        raw_ = (root / rel).read_text(encoding="utf-8", errors="replace")
+        for m in ld_re.finditer(raw_):
+            try:
+                d = json.loads(m.group(1))
+            except Exception:
+                continue
+            _walk(d, rel)
+            for node in (d if isinstance(d, list) else d.get("@graph", [d]) if isinstance(d, dict) else []):
+                if isinstance(node, dict) and isinstance(node.get("dateModified"), str):
+                    dm = node["dateModified"][:10]
+                    page_dm[rel] = max(page_dm.get(rel, ""), dm)
+    for rel, rid in sorted(set(refs)):
+        if rid.startswith(SITE_ORIGIN) and rid not in defined:
+            rep.warn(rel, "W-LDREF", f"懸空 @id 引用（全站無此節點定義）：{rid}")
+    if sm_path.exists() and not partial:
+        try:
+            for u in ET.parse(sm_path).getroot():
+                loc = lm = None
+                for e in u:
+                    if e.tag.endswith("}loc"):
+                        loc = (e.text or "").strip()
+                    elif e.tag.endswith("}lastmod"):
+                        lm = (e.text or "").strip()[:10]
+                if not loc or not lm or not loc.startswith(SITE_ORIGIN):
+                    continue
+                rel_ = loc[len(SITE_ORIGIN):].lstrip("/")
+                if rel_ == "" or rel_.endswith("/"):
+                    rel_ += "index.html"
+                if page_dm.get(rel_, "") > lm:
+                    rep.warn("sitemap.xml", "W-LASTMOD",
+                             f"{rel_} lastmod {lm} 早於 dateModified {page_dm[rel_]}（R4 同步）")
+        except ET.ParseError:
+            pass
 
     # llms 雙檔
     for fn in ("llms.txt", "llms-full.txt"):
