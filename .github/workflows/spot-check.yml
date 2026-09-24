@@ -849,6 +849,11 @@ jobs:
           if [ "$nbsp" -ge 1 ]; then echo "OK    新生兒照護頁已連向吐奶溢奶衛教"; else echo "FAIL  newborn-care.html 首段未見吐奶溢奶連結——hub→spoke 疑已回退"; fail=1; fi
           flvx=$(curl -s --max-time 20 "$BASE/health/influenza.html" | grep -c '>每年接種流感疫苗</a>' || true)
           if [ "$flvx" -ge 1 ]; then echo "OK    兒童流感頁已連回疫苗服務頁"; else echo "FAIL  influenza.html 預防段未見疫苗服務頁連結——spoke→hub 疑已回退"; fail=1; fi
+          # 2026-09-24e：假日兒科頁延伸閱讀卡 +5 篇 9 月新文（院長核可）。盯哮吼卡的卡面全文——
+          # 實測本頁僅卡片 1 處、隱藏區 0 處（隱藏區寫的是「哮吼見 URL」），卡片回退時由 1 變 0。
+          # 取純中文、不含 href（防呆 25）。⚠️ 防呆 17：日後改卡面要同批改本檢查。
+          wkcr=$(curl -s --max-time 20 "$BASE/services/weekend-pediatrics.html" | grep -c '哮吼症狀是什麼？孩子半夜咳得像狗叫、吸氣有喘鳴' || true)
+          if [ "$wkcr" -ge 1 ]; then echo "OK    假日兒科頁 9 月新文延伸閱讀卡已上線"; else echo "FAIL  weekend-pediatrics.html 未見哮吼延伸閱讀卡——hub→spoke 可見卡片疑已回退"; fail=1; fi
           # ── 2026-09-13q：腸病毒叢集（09-13o／p 兩批）5 條 ────────────────────
           # 為什麼要補：09-13o／p 動的是互連（V／R／H 三層）與「腸病毒台南」四層，
           # spot-check #505 雖然零 FAIL，但那是**既有 59 條哨兵**沒叫——本批新增的內容
