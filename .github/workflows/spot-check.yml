@@ -397,6 +397,14 @@ jobs:
           if [ "$vc2" -ge 1 ]; then echo "OK    vaccination hub 疫苗冷鏈隱藏區已上線"; else echo "FAIL  vaccination hub 冷鏈隱藏區未見——09-22f 隱藏段疑已回退"; fail=1; fi
           vc3=$(curl -s --max-time 20 "$BASE/" | grep -c '24 小時溫度監控恆溫疫苗專用冰箱' || true)
           if [ "$vc3" -ge 1 ]; then echo "OK    首頁院內設備卡含疫苗專用冰箱"; else echo "FAIL  首頁未見『24 小時溫度監控恆溫疫苗專用冰箱』——09-22f 設備卡疑遭舊版 index.html 覆蓋"; fail=1; fi
+          # 流感疫苗「選診所」兩條（2026-09-24g 新增，「台南 流感疫苗 推薦 診所」模式 A 補強）：
+          # 一條盯 FAQPage 新題（只在 ld+json）、一條盯隱藏區標題（只在隱藏區），本頁 keywords
+          # 皆不含這兩個字串 → 任一層被舊版覆蓋都分得出來。
+          # ⚠️ 防呆 17：日後改寫這兩處要同批改本檢查，不可為了讓 CI 過而刪掉。
+          vd1=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '公費流感疫苗合約院所怎麼查' || true)
+          if [ "$vd1" -ge 1 ]; then echo "OK    vaccination hub 流感選診所 FAQ 已上線"; else echo "FAIL  vaccination hub 未見『公費流感疫苗合約院所怎麼查』——09-24g FAQPage 新題疑已回退"; fail=1; fi
+          vd2=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '合約院所查詢與診所端條件的問法對照' || true)
+          if [ "$vd2" -ge 1 ]; then echo "OK    vaccination hub 流感選診所隱藏區已上線"; else echo "FAIL  vaccination hub 未見流感選診所隱藏段——09-24g 隱藏段疑已回退"; fail=1; fi
           # 流感疫苗頁 10 月公費開打四層抽驗(2026-09-03g 新增,「公費流感疫苗開打／左流右新」模式 A 補強):
           # 兩條分別盯住 health/flu-vaccine.html 的隱藏 #ai-knowledge-block 與 FAQPage schema。
           # 本批全屬技術層、可見層一字未動 → 被舊版覆蓋時頁面照樣 200、validator 不會亮,
