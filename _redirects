@@ -135,6 +135,14 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 /news/covid-19-2026.html   /health/covid-19-2026.html   301
 # 2026-09-24l：院長指令「開學季這篇撤到一般衛教文章，不用在最新消息」，同上判準（已收錄、站外有連結）。
 /news/back-to-school-infections.html   /health/back-to-school-infections.html   301
+# 2026-09-25r：上面兩條只接住 .html 形。但 Netlify Pretty URLs 會把「送出的」站內連結去掉
+# .html，所以舊頁在 /news/ 期間 Google 爬到、GSC 也列得出的是無副檔名形
+# （量測紀錄_202609 A-5：GSC 把無副檔名與 .html 當兩筆）。舊檔已不存在 → 隱含 .html
+# 解析找不到檔案 → 落到規則；規則只比對字面路徑，不保證會替無副檔名形套用上面那條。
+# 補兩條明寫，直接指向新 .html 正規網址（一跳，不經 .html 舊網址再轉一次）。
+# 非強制：兩個路徑都沒有實體檔案，不會攔截任何既存頁、也不會自我循環（目標是實體檔）。
+/news/covid-19-2026   /health/covid-19-2026.html   301
+/news/back-to-school-infections   /health/back-to-school-infections.html   301
 
 # ------------------------------------------------------------
 # 7. 內容目錄網址（2026-09-21 建立；2026-09-21q 改寫）
