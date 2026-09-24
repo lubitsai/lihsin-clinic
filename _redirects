@@ -133,6 +133,8 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #    ⚠️ 連動維護義務：本頁若再次搬遷或退場，這一行要同批改或刪。
 # ------------------------------------------------------------
 /news/covid-19-2026.html   /health/covid-19-2026.html   301
+# 2026-09-24l：院長指令「開學季這篇撤到一般衛教文章，不用在最新消息」，同上判準（已收錄、站外有連結）。
+/news/back-to-school-infections.html   /health/back-to-school-infections.html   301
 
 # ------------------------------------------------------------
 # 7. 內容目錄網址（2026-09-21 建立；2026-09-21q 改寫）
