@@ -60,7 +60,7 @@ SITE = "https://lhpedclinic.com.tw"
 
 # 現場掛號受理時間。⚠️ 這**不在** SCHEDULE 裡——SCHEDULE 存的是「看診」時間
 # （晚診 18:30 起），掛號受理是另一組數字（晚診 18:00 起）。
-# 口徑來源：internal/AI客服知識庫_現場掛號時間問答稿_20260809.md（院長 2026-08-09 給定）。
+# 口徑來源：internal/archive/AI客服知識庫_現場掛號時間問答稿_20260809.md（院長 2026-08-09 給定）。
 REGISTRATION_OPEN = {"MORNING": "08:00", "AFTERNOON": "14:30", "EVENING": "18:00"}
 LEAD_MINUTES = 5  # 與下一診次掛號時間撞在一起時，提早幾分鐘撤
 
