@@ -54,6 +54,9 @@ const URGENT = /呼吸困難|呼吸急促|呼吸很喘|很喘|喘不過氣|嘴�
 const SOON = /高燒持續|高燒不退|燒不退|退燒後.{0,6}(?:活力|精神)|活力.{0,4}變差|精神.{0,4}變差|吃喝.{0,6}減少|喝.{0,4}(?:很少|變少)|尿量.{0,6}減少|尿.{0,2}變少|嗜睡|肌躍|心跳加快/;
 const PRICE = /費用|價格|多少錢|價錢|折扣|收費|價位|要錢嗎|免費嗎|自費多少|掛號費|部分負擔|費多少/;
 const PRICE_G = new RegExp(PRICE.source, 'g');
+// 門診收費（系統指示第 5 條唯一例外，院長 2026-09-24 核可）：掛號費／部分負擔／押單費／診斷書可給金額
+const FEE = /掛號費|部分負擔|收費標準|收費表|看診.{0,4}(?:多少錢|費用|要錢|收多少)|看(?:一次|病|醫師|醫生).{0,4}(?:多少錢|費用|收多少)|押單|(?:沒帶|忘記帶|忘了帶|未帶).{0,3}健保卡|健保卡.{0,4}(?:沒帶|忘記|忘了)|診斷書|慢性處方|慢箋|福保|自費看診|自費掛號/;
+const OTHER_FEES = '疫苗、檢查、治療等其他自費項目的費用，' + CONTACT;
 const DOSE = /吃什麼藥|要吃藥嗎|吃多少|劑量|幾cc|幾毫升|幾ml|幫.{0,4}(?:看|判讀)報告|我的報告|報告.{0,6}正常嗎|數值.{0,4}正常嗎/;
 const SUITABLE = /(?:我|孩子|我家|兒子|女兒|寶寶|老大|老二|他|她).{0,10}(?:氣喘|過敏|免疫|吃藥|用藥|吃過|感冒|發燒|咳嗽|生病|早產|蠶豆|癲癇|心臟|懷孕|抗生素|克流感|流感藥|剛打|打過).{0,12}(?:可以|能不能|可不可以|能|適合).{0,6}(?:打|接種)/;
 const ACTION = /(?:幫我|替我|幫忙|可以幫).{0,6}(?:預約|掛號|取消|改期|改時間|查)|我的.{0,4}(?:預約|號碼|號次|未到)|排第幾|還要等多久|還要等幾|還有名額|還有位子|有沒有名額|可以插號|提前看/;
@@ -162,6 +165,7 @@ export function createAssistant(kb) {
 
   // 顯示前的附註：不改答案原文，只在後面接系統指示要求的提醒
   function present(row) {
+    if (row.fee) return row.answer + '\n\n' + OTHER_FEES;
     if (PRICE.test(normalize(row.title))) return '費用依項目與當日狀況不同，' + CONTACT;
     let text = row.answer;
     const all = row.title + row.answer;
@@ -278,7 +282,11 @@ export function createAssistant(kb) {
     if (ACTION.test(q)) {
       return reply('action', '線上小幫手無法代為預約、改期、取消，也查不到個人的預約、號次或候診時間。', [factsBlock(['booking', 'queue', 'phone'])]);
     }
-    // 6. 費用（第 5 條）：一律轉人工，仍附上相關題目（題目答案本身無金額）
+    // 6-0. 門診收費標準（第 5 條例外）
+    if (FEE.test(q) && kb.fees) {
+      return reply('fee', '', [{ type: 'fees', title: '門診收費標準', ...kb.fees }, { type: 'text', text: OTHER_FEES }]);
+    }
+    // 6. 費用（第 5 條）：其餘一律轉人工，仍附上相關題目（題目答案本身無金額）
     if (PRICE.test(q)) {
       const hits = search(raw.replace(PRICE_G, ''), today, 3);
       return reply('price', '費用依項目與當日狀況不同，' + CONTACT, hits.length ? [faqBlock(hits)] : []);

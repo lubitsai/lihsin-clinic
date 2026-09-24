@@ -137,6 +137,20 @@ def build(root: Path, kb_path: Path) -> dict:
         guides.append({'id': f'G{len(guides) + 1}', 'title': '現場掛號' + (f'：{head.group(1)}' if i and head else ''),
                        'answer': plain(item if not i else (head.group(2) if head else item)),
                        'path': '/visit-guide.html'})
+    # 門診收費標準：系統指示第 5 條的唯一例外（院長 2026-09-24 核可），整張表逐字輸出
+    fee_sec = re.search(r'### 門診收費標準[^\n]*\n(.*?)(?=^### )', ops, re.S | re.M)
+    if not fee_sec:
+        raise KbError('第四節缺「門診收費標準」')
+    fee_rows = [[c.strip() for c in ln.strip().strip('|').split('|')]
+                for ln in fee_sec.group(1).splitlines() if ln.startswith('|')]
+    fee_rows = [r for r in fee_rows if not set(''.join(r)) <= set('-')]
+    fees = {'header': fee_rows[0], 'rows': fee_rows[1:],
+            'notes': [plain(x) for x in re.findall(r'^- (.*)$', fee_sec.group(1), re.M)]}
+    if len(fees['header']) != 3 or not fees['rows'] or any(len(r) != 3 for r in fees['rows']):
+        raise KbError('門診收費標準表格格式不符（應為 身分｜掛號費｜部分負擔 三欄）')
+    guides.append({'id': f'G{len(guides) + 1}', 'title': '門診收費標準：掛號費與健保部分負擔', 'fee': True,
+                   'answer': '\n'.join([f'{r[0]}：掛號費 {r[1]}、健保部分負擔 {r[2]}' for r in fees['rows']] + fees['notes']),
+                   'path': '/visit-guide.html'})
     quota = re.search(r'### 預約名額[^\n]*\n(.*?)(?=^### )', ops, re.S | re.M)
     for item in re.findall(r'^- (.*(?:\n  .*)*)', quota.group(1) if quota else '', re.M):
         head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item.replace('\n  ', ''))
@@ -216,6 +230,7 @@ def build(root: Path, kb_path: Path) -> dict:
         'urgent_reply': urgent_blocks[0],
         'soon_reply': urgent_blocks[1],
         'facts': facts,
+        'fees': fees,
         'schedule': {'weekly': sched['weekly'], 'exceptions': sched['exceptions']},
         'notices': notices,
         'faqs': faqs + supp + guides,
