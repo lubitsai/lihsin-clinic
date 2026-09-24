@@ -100,7 +100,8 @@ kind('自費流感疫苗多少錢', 'price');
 for (const q of ['自費流感疫苗多少錢', '打自費疫苗要掛號費嗎']) {
   const r = ask(q);
   n++; assert(/不另外收掛號費/.test(r.text) && /來電/.test(r.text) && /仿單/.test(texts(r)), `「${q}」要說明不另收掛號費、疫苗費用轉人工、附四但書`);
-  n++; assert(!/\d{3,}\s*元/.test(texts(r)), `「${q}」不得出現金額`);
+  n++; assert(/掛號費 0 元/.test(r.text), `「${q}」掛號費要寫出金額`);
+  n++; assert(!/[1-9]\d{2,}\s*元/.test(texts(r)), `「${q}」不得出現自費疫苗本身的金額`);
 }
 n++; assert(/只酌收掛號費/.test(ask('公費和自費流感疫苗要多少錢').text) && /不另外收掛號費/.test(ask('公費和自費流感疫苗要多少錢').text), '同時問公費與自費要兩條都給');
 n++; assert.notEqual(ask('公費流感疫苗什麼時候開打').kind, 'fee');
