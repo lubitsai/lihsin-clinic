@@ -130,17 +130,21 @@ def build(root: Path, kb_path: Path) -> dict:
     walkin = re.search(r'### 現場掛號\n(.*?)(?=^### )', ops, re.S | re.M)
     if not walkin:
         raise KbError('第四節缺「現場掛號」')
-    guides.append({'id': 'G1', 'title': '現場掛號',
-                   'answer': plain(re.sub(r'^- ', '', walkin.group(1).strip(), flags=re.M).replace('\n  ', '')),
-                   'path': '/visit-guide.html'})
+    # 每個條目一則；第一則固定 G1＝掛號時間（search.js 以 G1 回答「幾點開始掛號」），其餘以粗體小標當標題
+    for i, item in enumerate(re.findall(r'^- (.*(?:\n  .*)*)', walkin.group(1), re.M)):
+        item = re.sub(r'（來源：[^）]*）', '', item.replace('\n  ', ''))
+        head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item)
+        guides.append({'id': f'G{len(guides) + 1}', 'title': '現場掛號' + (f'：{head.group(1)}' if i and head else ''),
+                       'answer': plain(item if not i else (head.group(2) if head else item)),
+                       'path': '/visit-guide.html'})
     rules = re.search(r'### 網路預約規則[^\n]*\n(.*?)(?=^> |^### )', ops, re.S | re.M)
     if not rules:
         raise KbError('第四節缺「網路預約規則」')
-    for i, item in enumerate(re.findall(r'^- (.*)$', rules.group(1), re.M), 2):
+    for item in re.findall(r'^- (.*)$', rules.group(1), re.M):
         head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item)
         # 無粗體小標的條目以第一個子句當標題（逐字，不自編）
         title = head.group(1) if head else re.split(r'[，；。]', item, 1)[0]
-        guides.append({'id': f'G{i}', 'title': '網路預約規則：' + title,
+        guides.append({'id': f'G{len(guides) + 1}', 'title': '網路預約規則：' + title,
                        'answer': plain(head.group(2) if head else item),
                        'path': '/visit-guide.html'})
     late = re.search(r'^> \*\*預約遲到 vs 現場號過號[^*]*\*\*[：:](.*?)(?=^### )', ops, re.S | re.M)
@@ -180,6 +184,9 @@ def build(root: Path, kb_path: Path) -> dict:
         r['path'] = '/'
         r['valid_until'] = supp_until
 
+    ids_all = [r['id'] for r in faqs + supp + guides + notices]
+    if len(ids_all) != len(set(ids_all)):
+        raise KbError('產出的題目 ID 重複')
     for r in faqs + supp + guides + notices:
         if not r['answer']:
             raise KbError(f'{r["id"]} 答案為空')
