@@ -5,7 +5,7 @@
    - knowledge.json 在第一次打開（或手指／滑鼠移到按鈕上）才下載，不拖慢首頁。
    - 家長輸入的文字只在本分頁記憶體比對，不送出、不儲存；GA4 只記事件類型，不記原句。
    - Clarity：宿主元素帶 data-clarity-mask，整個對話框在錄影中遮蔽。
-   - 行動版位置沿用 Chatbase 泡泡的層疊：底部 CTA Bar(0~70px) → 小幫手(104px) → FAB(11rem)。
+   - 按鈕與首頁 FAB（看診進度／LINE）同規格同欄位：底部 CTA Bar(0~70px) → 小幫手(110px) → FAB(11rem)。
    回覆邏輯在 ./search.js；資料由 internal/tools/build_assistant_kb.py 產生。
    ============================================================ */
 import { createAssistant, looksPersonal } from './search.js';
@@ -21,10 +21,13 @@ const CSS = `
 button,input,a{font:inherit}
 button{cursor:pointer}
 :focus-visible{outline:3px solid #D4B896;outline-offset:2px}
-.launch{position:fixed;right:24px;bottom:24px;z-index:60;display:flex;align-items:center;gap:6px;min-height:52px;padding:0 18px 0 14px;border:0;border-radius:999px;
-  background:var(--green);color:#fff;font-weight:700;box-shadow:0 6px 20px rgba(63,81,54,.3)}
-.launch:hover{background:var(--green-d)}
-.launch .emoji{font-size:22px;line-height:1}
+/* 與首頁 FAB（看診進度／LINE）同規格：圓形、桌機 64px、行動 56px，圖示在上、小字在下 */
+.launch{position:fixed;right:24px;bottom:20px;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  width:64px;height:64px;padding:0;border:0;border-radius:9999px;background:linear-gradient(135deg,#7C9A6E,#5a7a50);color:#fff;
+  box-shadow:0 6px 18px rgba(124,154,110,.45);transition:transform .2s,box-shadow .2s}
+.launch:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(124,154,110,.55)}
+.launch .emoji{font-size:26px;line-height:1}
+.launch .label{font-size:10px;font-weight:700;line-height:1.1;letter-spacing:0}
 .panel{position:fixed;right:24px;bottom:88px;z-index:61;width:390px;height:min(640px,calc(100dvh - 112px));display:flex;flex-direction:column;
   background:var(--cream);border:1px solid var(--line);border-radius:20px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden}
 .panel[hidden]{display:none}
@@ -66,9 +69,14 @@ input{flex:1;min-width:0;font-size:16px;padding:10px 12px;border:1px solid #b9c9
 .links{display:flex;justify-content:space-around;gap:8px;padding:6px 12px 10px;background:#fff;font-size:13px}
 .links a{padding:6px 4px}
 .hint{font-size:12px;color:#6b7a63;margin:0 0 12px}
+/* 行動版：FAB 群組底緣＝11rem（首頁覆寫），間距比照 FAB 自身 gap（行動 .6rem／≥768px .75rem） */
 @media (max-width:768px){
-  .launch{right:16px;bottom:calc(104px + env(safe-area-inset-bottom,0px));min-height:48px;padding:0 14px 0 12px;font-size:14px}
+  .launch{bottom:calc(100px + env(safe-area-inset-bottom,0px))}
   .panel{left:8px;right:8px;width:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));height:calc(100dvh - 72px);z-index:70}
+}
+@media (max-width:767px){
+  .launch{right:16px;width:56px;height:56px;bottom:calc(110px + env(safe-area-inset-bottom,0px))}
+  .launch .emoji{font-size:24px}
 }
 @media (prefers-reduced-motion:no-preference){.panel{animation:rise .18s ease-out}@keyframes rise{from{opacity:0;transform:translateY(8px)}}}
 `;
@@ -113,8 +121,8 @@ if (!document.querySelector('lh-assistant')) {
   const root = host.attachShadow({ mode: 'open' });
   root.append(el('style', {}, CSS));
 
-  const launch = el('button', { class: 'launch', type: 'button', 'aria-expanded': 'false', 'aria-controls': 'lh-panel' },
-    el('span', { class: 'emoji', 'aria-hidden': 'true' }, '🦌'), '線上小幫手');
+  const launch = el('button', { class: 'launch', type: 'button', 'aria-label': '開啟線上小幫手', 'aria-expanded': 'false', 'aria-controls': 'lh-panel' },
+    el('span', { class: 'emoji', 'aria-hidden': 'true' }, '🦌'), el('span', { class: 'label' }, '小幫手'));
   const log = el('div', { class: 'log', role: 'log', 'aria-live': 'polite' });
   const input = el('input', { type: 'text', name: 'q', maxlength: '300', autocomplete: 'off', enterkeyhint: 'send',
     'aria-label': '輸入您的問題', placeholder: '輸入問題，例如：初診要帶什麼？' });
