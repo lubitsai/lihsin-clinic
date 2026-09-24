@@ -137,6 +137,11 @@ def build(root: Path, kb_path: Path) -> dict:
         guides.append({'id': f'G{len(guides) + 1}', 'title': '現場掛號' + (f'：{head.group(1)}' if i and head else ''),
                        'answer': plain(item if not i else (head.group(2) if head else item)),
                        'path': '/visit-guide.html'})
+    quota = re.search(r'### 預約名額[^\n]*\n(.*?)(?=^### )', ops, re.S | re.M)
+    for item in re.findall(r'^- (.*(?:\n  .*)*)', quota.group(1) if quota else '', re.M):
+        head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item.replace('\n  ', ''))
+        guides.append({'id': f'G{len(guides) + 1}', 'title': '預約名額' + (f'：{head.group(1)}' if head else ''),
+                       'answer': plain(head.group(2) if head else item), 'path': '/visit-guide.html'})
     rules = re.search(r'### 網路預約規則[^\n]*\n(.*?)(?=^> |^### )', ops, re.S | re.M)
     if not rules:
         raise KbError('第四節缺「網路預約規則」')

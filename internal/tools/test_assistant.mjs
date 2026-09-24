@@ -75,6 +75,11 @@ n++; assert(ask('現在看到幾號').blocks.some((b) => b.type === 'facts' && b
 for (const q of ['早上可以先掛下午的號嗎', '可以先掛晚診嗎', '現場可以預掛號嗎', '明天早上的號今天可以掛嗎']) {
   n++; assert(/跨診次/.test(titles(ask(q))[0] || ''), `「${q}」應先回不能跨診次`);
 }
+// 預約額滿不加號、電話預約＝同一系統（院長 2026-09-24）
+for (const q of ['額滿了可以加號嗎', '可以打電話預約嗎', '還有名額嗎', '約不到怎麼辦']) {
+  n++; assert(/^預約名額/.test(titles(ask(q))[0] || ''), `「${q}」應先回預約名額規則`);
+}
+kind('幫我取消預約', 'action');
 kind('掛號費多少', 'price');
 n++; assert.equal(ask('掛號費多少').blocks.length, 0, '費用題不附不相干題目');
 kind('可以帶寵物嗎', 'unknown');
