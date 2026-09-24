@@ -751,6 +751,22 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
     if not partial and not (root / "favicon.ico").exists():
         rep.warn("favicon.ico", "W-FAVICON", "根目錄缺 favicon.ico（07-06 批④資產）")
 
+    # 線上小幫手資料檔（2026-09-24 起取代 Chatbase）：與知識庫正本＋首頁門診時間表不同步＝ERROR。
+    # 為何是 ERROR：它會直接對家長說「9/26 全日休診」或「今天有看診」，改了 EXCEPTIONS 或公告卻沒重產，
+    # 小幫手就會答出和首頁徽章相反的話。修法一律是重跑 build_assistant_kb.py，不手改 JSON。
+    kb_json = root / "clinic-assistant" / "knowledge.json"
+    if kb_json.exists() and not partial:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import build_assistant_kb as bak
+        try:
+            data = bak.build(root, bak.latest_kb(root))
+            rendered = json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n"
+            if kb_json.read_text(encoding="utf-8") != rendered:
+                rep.err("clinic-assistant/knowledge.json", "E-ASSISTANT",
+                        "與知識庫正本／首頁門診時間不同步 → python3 internal/tools/build_assistant_kb.py")
+        except bak.KbError as e:
+            rep.err("clinic-assistant/knowledge.json", "E-ASSISTANT", f"無法重產：{e}")
+
 
 def main():
     ap = argparse.ArgumentParser()

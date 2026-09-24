@@ -745,11 +745,8 @@
  }
  </style>
 <style>
-/* 行動版層疊：底部CTA Bar(0~70px) → Chatbase泡泡(84px) → FAB(160px)；桌機不變 */
+/* 行動版層疊：底部CTA Bar(0~70px) → FAB(11rem)；桌機不變（2026-09-24 移除 Chatbase 覆寫；本頁未掛線上小幫手，FAB 高度照舊） */
 @media (max-width: 768px) {
-  #chatbase-bubble-button { bottom: 104px !important; }
-  #chatbase-message-bubbles { bottom: 172px !important; }
-  #chatbase-bubble-window { bottom: 178px !important; max-height: calc(100dvh - 198px) !important; }
   #fab-group { bottom: 11rem !important; }
 }
 </style>

@@ -52,6 +52,12 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
 
 1. dateModified 跳 + `sitemap.xml` lastmod 同步（R4：門診時間屬營運資訊）。
 2. `python3 internal/tools/validate_site.py --stage deploy` → ERROR 清零才 push。
+2-1. **同步官網線上小幫手**（2026-09-24n 起）：小幫手直接讀 `SCHEDULE`／`EXCEPTIONS` 回答「某天有沒有看診」，
+   改完門診表或公告後重產並跑測試（漏跑時第 2 點會報 `E-ASSISTANT`）；首頁公告有上架／下架時，
+   先更新知識庫正本第四節 ⏰ 公告表再重產：
+   ```
+   python3 internal/tools/build_assistant_kb.py && node internal/tools/test_assistant.mjs
+   ```
 3. **同步預約系統班表**（官網為主）：
    ```
    python3 internal/tools/sync_schedule.py          # 重產 booking-system/prisma/schedule.json

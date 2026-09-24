@@ -5905,17 +5905,12 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  })();
  </script>
 <style>
-/* 行動版層疊：底部CTA Bar(0~70px) → Chatbase泡泡(84px) → FAB(160px)；桌機不變 */
+/* 行動版層疊：底部CTA Bar(0~70px) → 線上小幫手(104px，/clinic-assistant/widget.js) → FAB(11rem)；桌機不變 */
 @media (max-width: 768px) {
-  #chatbase-bubble-button { bottom: 104px !important; }
-  #chatbase-message-bubbles { bottom: 172px !important; }
-  #chatbase-bubble-window { bottom: 178px !important; max-height: calc(100dvh - 198px) !important; }
   #fab-group { bottom: 11rem !important; }
 }
 .lh-faq details{background:#fff;border:1px solid #e3ecdd;border-radius:14px;margin-bottom:12px;overflow:hidden}.lh-faq details[open]{border-color:#c5d8ba;box-shadow:0 2px 10px rgba(124,154,110,.08)}.lh-faq summary{cursor:pointer;list-style:none;padding:16px 20px;font-weight:600;color:#3f5136;font-size:1.02rem;display:flex;justify-content:space-between;align-items:center;gap:12px}.lh-faq summary::-webkit-details-marker{display:none}.lh-faq summary::after{content:"＋";color:#7C9A6E;font-size:1.3rem;flex:none}.lh-faq details[open] summary::after{content:"－"}.lh-faq .lh-faq-a{padding:0 20px 18px;color:#444;font-size:.98rem;line-height:1.7}
 </style>
-<!-- Chatbase AI 客服 widget -->
-<script>
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="oqLg1aJcXiJvnM6A1YZNB";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-</script>
+<!-- 線上小幫手（2026-09-24 取代 Chatbase；資料＝/clinic-assistant/knowledge.json，由 internal/tools/build_assistant_kb.py 產生） -->
+<script type="module" src="/clinic-assistant/widget.js"></script>
 </body></html>
