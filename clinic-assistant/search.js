@@ -59,6 +59,8 @@ const FEE = /掛號費|部分負擔|收費標準|收費表|看診.{0,4}(?:多少
 const OTHER_FEES = '自費疫苗、檢查、治療等其他自費項目的費用，' + CONTACT;
 // 單純接種公費疫苗只收掛號費（院長 2026-09-24）
 const PUBLIC_VAX = /公費.{0,10}(?:疫苗|流感|接種|打針)|(?:疫苗|流感).{0,10}公費/;
+// 單純接種自費疫苗不另收掛號費（院長 2026-09-24）；疫苗本身金額仍轉人工
+const SELF_VAX = /自費.{0,10}(?:疫苗|流感|接種|打針)|(?:疫苗|流感).{0,10}自費/;
 const MONEY = /多少|錢|費|免費|收費|付/;
 const DOSE = /吃什麼藥|要吃藥嗎|吃多少|劑量|幾cc|幾毫升|幾ml|幫.{0,4}(?:看|判讀)報告|我的報告|報告.{0,6}正常嗎|數值.{0,4}正常嗎/;
 const SUITABLE = /(?:我|孩子|我家|兒子|女兒|寶寶|老大|老二|他|她).{0,10}(?:氣喘|過敏|免疫|吃藥|用藥|吃過|感冒|發燒|咳嗽|生病|早產|蠶豆|癲癇|心臟|懷孕|抗生素|克流感|流感藥|剛打|打過).{0,12}(?:可以|能不能|可不可以|能|適合).{0,6}(?:打|接種)/;
@@ -182,6 +184,7 @@ export function createAssistant(kb) {
     return text;
   }
   const publicVaxNote = () => kb.fees?.notes.find((t) => t.startsWith('單純接種公費疫苗'));
+  const selfVaxNote = () => kb.fees?.notes.find((t) => t.startsWith('單純接種自費疫苗'));
   const faqBlock = (hits) => ({
     type: 'faq',
     items: hits.map((h, i) => ({
@@ -290,7 +293,13 @@ export function createAssistant(kb) {
       return reply('action', '線上小幫手無法代為預約、改期、取消，也查不到個人的預約、號次或候診時間。', [factsBlock(['booking', 'queue', 'phone'])]);
     }
     // 6-0a. 單純接種公費疫苗的費用：只收掛號費（先於收費表與一般費用）
-    if (PUBLIC_VAX.test(q) && (MONEY.test(q.replace(/[公自]費/g, '')) || FEE.test(q)) && publicVaxNote()) {
+    const asksMoney = MONEY.test(q.replace(/[公自]費/g, '')) || FEE.test(q);
+    // 自費疫苗：只說明不另收掛號費，疫苗金額仍轉人工；同時問公費與自費就兩條都給
+    if (SELF_VAX.test(q) && asksMoney && selfVaxNote()) {
+      const lines = [PUBLIC_VAX.test(q) ? publicVaxNote() : null, selfVaxNote(), '自費疫苗本身的費用，' + CONTACT].filter(Boolean);
+      return reply('price', lines.join('\n\n'), [{ type: 'text', text: VACCINE_NOTE }]);
+    }
+    if (PUBLIC_VAX.test(q) && asksMoney && publicVaxNote()) {
       return reply('fee', publicVaxNote(), [{ type: 'text', text: VACCINE_NOTE }, { type: 'fees', title: '門診收費標準', ...kb.fees }, { type: 'text', text: OTHER_FEES }]);
     }
     // 6-0. 門診收費標準（第 5 條例外）

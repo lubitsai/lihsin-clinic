@@ -96,6 +96,13 @@ for (const q of ['打公費流感疫苗要錢嗎', '公費疫苗要付掛號費�
   n++; assert(/例行性檢查/.test(ask(q).text) && /150/.test(ask(q).text) && /仿單/.test(texts(ask(q))), `「${q}」要有掛號費說明與四但書`);
 }
 kind('自費流感疫苗多少錢', 'price');
+// 單純接種自費疫苗不另收掛號費，疫苗本身金額仍不給（院長 2026-09-24）
+for (const q of ['自費流感疫苗多少錢', '打自費疫苗要掛號費嗎']) {
+  const r = ask(q);
+  n++; assert(/不另外收掛號費/.test(r.text) && /來電/.test(r.text) && /仿單/.test(texts(r)), `「${q}」要說明不另收掛號費、疫苗費用轉人工、附四但書`);
+  n++; assert(!/\d{3,}\s*元/.test(texts(r)), `「${q}」不得出現金額`);
+}
+n++; assert(/只酌收掛號費/.test(ask('公費和自費流感疫苗要多少錢').text) && /不另外收掛號費/.test(ask('公費和自費流感疫苗要多少錢').text), '同時問公費與自費要兩條都給');
 n++; assert.notEqual(ask('公費流感疫苗什麼時候開打').kind, 'fee');
 n++; assert(A.present(live.faqs.find((r) => /公費和自費流感疫苗有什麼不同/.test(r.title))).includes('只酌收掛號費'), '寫「免費接種」的題要補掛號費說明');
 kind('可以帶寵物嗎', 'unknown');
