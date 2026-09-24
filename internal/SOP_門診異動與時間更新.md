@@ -108,6 +108,12 @@
    - `data-expires="YYYY-MM-DD"`（該則適用末日，翌日起 UTC+8 自動隱藏**這一則**）
    並確認 `<section id="clinic-notice">` 自己的 `data-expires` ＝**所有公告中最晚的那個**（backstop：
    全部過期才整區隱藏）；卡與卡之間用 `mb-14` 留白，最後一則不加。
+3-1. **同步 `notices/notices.json`（2026-09-25g 起，院長裁示「共用公告檔＋共用小程式」）**：服務頁（`services/*.html` 13 頁）與 `visit-guide.html` 頂部的門診異動橫幅、首頁門診時間表上方的提示行，都讀這一份。
+   **每一則首頁公告對應一則 JSON**：`id`（`clinic-notice-YYYYMMDD`）、`start`／`end`（`end`＝該則 `data-expires`）、`dates`（「9 月 25 日（五）至 9 月 28 日（一）」）、`summary`（一句話摘要）。
+   - `summary` 是**可見文字**，取圖下說明段的濃縮句，與公告文案一起核可（即刻公告常設指示同樣適用）。
+   - 下架：過期條目自動不顯示；清首頁卡時順手刪掉對應那則。
+   - `python3 internal/tools/check_visit_facts.py` 會比對兩邊的到期日，**只改一邊會 exit 1**。
+   - `/notices/` 不經 service worker 快取（`sw.js` 檔頭第 5 條），改這個檔**不必 bump `sw.js`**。
 4. **若異動影響「當日開診時段」**（提早截止、當日某段停診、整日休診）→ 同步改 HERO 徽章的 `EXCEPTIONS` 表（`index.html` 內嵌 script，搜 `var EXCEPTIONS`）：
    - 鍵＝UTC+8 日期 `YYYY-MM-DD`，值＝**當日完整時段表**（整筆取代該日 `SCHEDULE`）
    - 格式：`[[開始分鐘,結束分鐘,'名稱'], …]`；分鐘＝時×60＋分（08:00=480、11:00=660、11:30=690、12:00=720、14:30=870、18:00=1080、18:30=1110、21:00=1260、21:30=1290）
@@ -230,6 +236,7 @@ grep -rn '平日夜診至21:30\|夜診至 21:30\|週六週日皆有門診' --inc
 1. **dateModified／sitemap（R4）**：門診時間屬「家長讀到的營運資訊」→ 變更頁 `dateModified` 跳（完整 ISO 8601＋08:00）、`sitemap.xml` 對應 `lastmod` 同步。`lastReviewed` **不動**（非醫師重審醫療內容）。⚠️ **2026-09-16g 起 `lastReviewed` 的預設已改為「隨 `dateModified` 一起跳」——而門診異動正是該預設的唯一例外，本行不受影響、刻意維持不跳**：門診時間是營運資訊，頁面確實更新了，但沒有任何醫師重審醫療內容。判準見 `02` R4 的 09-16g 修訂框。
 2. **合規**：時間敘述不得夾帶自稱超級詞、療效宣稱；紅線見 `00 §4`。
 3. **驗證器**：`python3 internal/tools/validate_site.py --stage deploy` → **ERROR 清零才 push**。
+3-1. **營運事實一致性**：`python3 internal/tools/check_visit_facts.py` → exit 0 才 push。它以首頁門診時間表推導「每日最後一診結束前 1 小時」疫苗停打時間（全站約 124 處逐日時間）與 `openingHoursSpecification`，並比對 `notices.json`↔`#clinic-notice`。**情境 B 改了最後一診的結束時間，停打時間會跟著變**，工具會把每一處沒跟上的位置列出來。
 4. **實機驗證**：改動 HERO 徽章（`SCHEDULE`/`EXCEPTIONS`）時，用 Chromium 模擬時間實測（腳本範例：`Date.now` 覆寫成目標時刻，讀 `#clinic-status-text`），確認「開診中/即將/休診/下個時段」四態正確、跨日正確、特例生效。
 5. **院長核可**：可見文字（公告文案、表格時間、FAQ 敘述、徽章訊息）逐字經院長核可才 push（`00` 鐵律）。
 6. **文件維護（§8）**：改 `00`/`01` 前先 `cp` 備份至 `internal/archive/`（§8-4 唯一備份目錄，repo 根 `archive/` 只讀不寫）；本批於 `00` 文末 append 附錄、檔頭更新版本行、`01` 同步。

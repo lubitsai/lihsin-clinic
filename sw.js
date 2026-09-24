@@ -1,6 +1,6 @@
 /* ============================================================
    立欣診所 PWA Service Worker
-   版本：lhpc-pwa-v5（2026-09-24；v4＝2026-09-16、v3＝2026-09-10、v2＝2026-09-07、v1＝2026-07-04）
+   版本：lhpc-pwa-v6（2026-09-25；v5＝2026-09-24、v4＝2026-09-16、v3＝2026-09-10、v2＝2026-09-07、v1＝2026-07-04）
    ------------------------------------------------------------
    快取策略（保守設計，內容更新永遠優先）：
    1. HTML 導航請求 → network-first：
@@ -14,6 +14,9 @@
       knowledge.json 內含門診異動與有期限公告，走第 2 條快取優先的話，
       回訪者會先看到上一版（例如已過期的連假公告）；交給瀏覽器依
       Netlify 預設 must-revalidate 處理，每次開啟都是最新版。v5 即為此 bump。
+   5. /notices/（門診異動橫幅，2026-09-25 起）→ 完全不攔截：
+      notices.json 是有期限的公告，理由同第 4 條；notice-banner.js 同目錄一併放行，
+      日後改這兩個檔都不必 bump。v6 即為此 bump。
    ------------------------------------------------------------
    更新方式：改動本檔任一位元組（例如把 VERSION 尾碼 +1）即觸發
    瀏覽器重新安裝並清除舊版快取。
@@ -49,7 +52,7 @@
    ============================================================ */
 'use strict';
 
-const VERSION = 'lhpc-pwa-v5';
+const VERSION = 'lhpc-pwa-v6';
 const PRECACHE = [
   '/offline.html',
   '/tailwind.css',
@@ -87,6 +90,8 @@ self.addEventListener('fetch', (event) => {
 
   // 線上小幫手的資料與程式一律走網路（見檔頭第 4 條）
   if (url.pathname.startsWith('/clinic-assistant/')) return;
+  // 門診異動公告資料與橫幅腳本一律走網路（見檔頭第 5 條）
+  if (url.pathname.startsWith('/notices/')) return;
 
   // ── 1) HTML 導航：network-first ──
   if (req.mode === 'navigate') {

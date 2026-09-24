@@ -38,6 +38,7 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
   → 首頁 `#clinic-notice` 加／換公告圖 + 視情況加 HERO 徽章 `EXCEPTIONS` 單日特例 + `data-expires` 自動過期。**臨時公告不進 llms。**
   → **公告區塊可並列多則**（08-22c 起）：每則一個 `.notice-item` 各自帶 `data-expires`。**動手前先看現有公告在不在效期內——仍在效期就並列，不要覆蓋。**
   → **並列時依「適用日期」由近到遠排，不是依加入順序**（08-23c 定案；今天生效的排最前，未來日期的往後）。
+  → **同步 `notices/notices.json`**（2026-09-25g 起）：每則首頁公告對應一則（`end`＝`data-expires`，`summary`＝說明段濃縮句、屬可見文字），服務頁與就診指南的橫幅、首頁時間表上方提示行都讀它。詳見 SOP §一步驟 3-1。
   → **「視情況滾動式調整、稍後公布」的時段，`EXCEPTIONS` 先留空**，等院長公布再補；同時把公布時間寫進 `00` 第六節待辦。
   → **院長常設指示：對話貼圖公告走「即刻公告 + 立即部署」**（不設起始日、通過驗證即快進合併 `main` 部署，不再逐次徵詢文案核可／部署確認；紅線與驗證關卡照舊）。詳見 SOP §一「預設交付模式」。
 - **B. 常態門診時間變更**（改固定週班表：新增/取消時段、改起訖、改休診日）
@@ -52,6 +53,7 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
 
 1. dateModified 跳 + `sitemap.xml` lastmod 同步（R4：門診時間屬營運資訊）。
 2. `python3 internal/tools/validate_site.py --stage deploy` → ERROR 清零才 push。
+2-0. **營運事實一致性**：`python3 internal/tools/check_visit_facts.py` → exit 0 才 push（疫苗停打逐日時間、`openingHoursSpecification`、`notices.json`↔`#clinic-notice` 到期日；情境 B 改了最後一診結束時間時，它會列出所有沒跟上的停打時間）。
 2-1. **同步官網線上小幫手**（2026-09-24n 起）：小幫手直接讀 `SCHEDULE`／`EXCEPTIONS` 回答「某天有沒有看診」，
    改完門診表或公告後重產並跑測試（漏跑時第 2 點會報 `E-ASSISTANT`）；首頁公告有上架／下架時，
    先更新知識庫正本第四節 ⏰ 公告表再重產：

@@ -1,0 +1,12 @@
+{
+  "_comment": "門診異動公告的共用資料（2026-09-25g 起）。服務頁與就診指南的頂部橫幅、首頁門診時間表上方的提示行都讀這一份；由 /notices/notice-banner.js 顯示，end 當日（含）仍顯示、翌日起自動隱藏（以 UTC+8 判斷）。每一則必須對應首頁 #clinic-notice 一則 .notice-item，end＝該則 data-expires（internal/tools/check_visit_facts.py 會比對）。summary 是可見文字，上架前要院長核可，原則上取首頁公告說明段的濃縮句。",
+  "notices": [
+    {
+      "id": "clinic-notice-20260925",
+      "start": "2026-09-25",
+      "end": "2026-09-28",
+      "dates": "9 月 25 日（五）至 9 月 28 日（一）",
+      "summary": "中秋連假門診異動：9 月 25 日（五）早診加開雙診，下午、晚上休診；9 月 26 日（六）、9 月 27 日（日）全日休診；9 月 28 日（一）全日正常門診。"
+    }
+  ]
+}
