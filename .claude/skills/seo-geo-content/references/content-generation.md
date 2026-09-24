@@ -20,7 +20,7 @@
       og/twitter 全欄同步（twitter:card=summary_large_image）、keywords meta 分層
 - [ ] **3 Schema**：BreadcrumbList＋MedicalWebPage（含 speakable→`.speakable-summary`
       實掛 DOM、author/reviewedBy/lastReviewed、about MedicalCondition sameAs、
-      citation 指向可見權威外連同一機構）＋FAQPage ≥6 題
+      citation 指向可見權威外連同一機構）＋FAQPage ≥6 題（**每題答案都要在可見層講得出來**，2026-09-25l 裁示）
 - [ ] ⚡快速重點速覽定義句（`speakable-summary` class 實際掛在該段上——寫了 ≠ 生效，
       schema 指向的 selector 必對 DOM 實測）
 - [ ] 危險徵象紅框（沿用站內既有紅框樣式 `bg-[#fdeeee]`/`border-[#f5c6c6]`/
