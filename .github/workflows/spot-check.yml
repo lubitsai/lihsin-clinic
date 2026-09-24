@@ -67,6 +67,13 @@ jobs:
           check /app 200
           check /privacy 200
           check /growth 200
+          check /services/vaccination 200
+          # 2026-09-25r:無副檔名形 200 之所以無害,全靠它送出的 canonical 仍指向 .html
+          # (量測紀錄_202609 A-5:GSC 24 組配對 22 組已被 .html 吸收)。這條盯的是那個前提:
+          # 若 Pretty URLs 或 minify 哪天連 canonical 一起改寫成無副檔名,200 仍是 200,
+          # 只有這條會叫。寬鬆樣式不要求引號(minify 會拿掉屬性引號,防呆 25)。
+          cn=$(curl -s --max-time 20 "$BASE/services/vaccination" | grep -cE 'rel=.?canonical[^>]*services/vaccination\.html' || true)
+          if [ "$cn" -ge 1 ]; then echo "OK    無副檔名 /services/vaccination 的 canonical 仍指向 .html"; else echo "FAIL  無副檔名 /services/vaccination 未見指向 .html 的 canonical——雙版本收斂前提失效"; fail=1; fi
           # 2026-09-21q(_redirects §7 改寫):四個目錄已改為實體列表頁(CollectionPage)。
           # 沿革:本區原本驗「301 → 首頁錨點」(2026-09-21 GSC 404 批的次佳解);
           # 院長裁示改做實體列表頁後,判準跟著改,**不是把哨兵刪掉**。
@@ -162,6 +169,9 @@ jobs:
           # 縮圖哨兵一併移除，故此處補上頁哨兵，否則本頁變成零哨兵。
           check /health/covid-19-2026.html 200
           check /news/covid-19-2026.html 301
+          # 2026-09-25r：無副檔名舊網址（Pretty URLs 送出的連結形、Google 實際爬到的形）也要 301。
+          check /news/covid-19-2026 301
+          check /news/back-to-school-infections 301
           # 2026-09-09m（院長指令「改寫成常青敘述」）：本頁的時效敘述已改為常青框架
           # ——標題層去掉「疫情升溫進入流行期」，疫情數字降為明確標註時點的歷史參考。
           # ⚠️ 這條防的失效模式，上面那條 200 抓不到：頁面被 9/9 之前的時效版覆蓋時，
