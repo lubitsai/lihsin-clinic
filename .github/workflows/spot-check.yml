@@ -843,6 +843,12 @@ jobs:
           if [ "$vxad" -ge 1 ]; then echo "OK    疫苗服務頁已連向熟齡佐劑段落"; else echo "FAIL  vaccination.html 長輩卡未見熟齡佐劑連結——hub→spoke 疑已回退"; fail=1; fi
           dsvx=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-doses-2026.html" | grep -c '>公費與自費流感疫苗接種</a>' || true)
           if [ "$dsvx" -ge 1 ]; then echo "OK    流感劑次頁已連回疫苗服務頁"; else echo "FAIL  flu-vaccine-doses-2026.html 在地段未見疫苗服務頁連結——spoke→hub 疑已回退"; fail=1; fi
+          # 2026-09-24c：內鏈盤點——9 月文章導回各自的承接門診頁。沿 09-23b 連 </a> 一起 grep（可見文字零變更）。
+          # 去程＝新生兒照護門診首段「吐奶溢奶」→ 吐奶頁；回程＝兒童流感頁「每年接種流感疫苗」→ 疫苗服務頁（改前 V／R 皆缺）。
+          nbsp=$(curl -s --max-time 20 "$BASE/services/newborn-care.html" | grep -c '>吐奶溢奶</a>' || true)
+          if [ "$nbsp" -ge 1 ]; then echo "OK    新生兒照護頁已連向吐奶溢奶衛教"; else echo "FAIL  newborn-care.html 首段未見吐奶溢奶連結——hub→spoke 疑已回退"; fail=1; fi
+          flvx=$(curl -s --max-time 20 "$BASE/health/influenza.html" | grep -c '>每年接種流感疫苗</a>' || true)
+          if [ "$flvx" -ge 1 ]; then echo "OK    兒童流感頁已連回疫苗服務頁"; else echo "FAIL  influenza.html 預防段未見疫苗服務頁連結——spoke→hub 疑已回退"; fail=1; fi
           # ── 2026-09-13q：腸病毒叢集（09-13o／p 兩批）5 條 ────────────────────
           # 為什麼要補：09-13o／p 動的是互連（V／R／H 三層）與「腸病毒台南」四層，
           # spot-check #505 雖然零 FAIL，但那是**既有 59 條哨兵**沒叫——本批新增的內容
