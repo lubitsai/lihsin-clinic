@@ -835,6 +835,14 @@ jobs:
           if [ "$fmsh" -ge 1 ]; then echo "OK    家醫科頁已連向帶狀皰疹疫苗衛教"; else echo "FAIL  家醫科頁成人疫苗條列未見帶狀皰疹連結——hub→spoke 疑已回退"; fail=1; fi
           fvfm=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '>家庭醫學</a>' || true)
           if [ "$fvfm" -ge 1 ]; then echo "OK    流感疫苗頁已連回家醫科頁"; else echo "FAIL  flu-vaccine.html 在地段未見家庭醫學連結——spoke→hub 疑已回退"; fail=1; fi
+          # 2026-09-24：台南疫苗／台南流感疫苗 Campaign——五子題（公費資格／兒童劑次／鼻噴／五款比較／熟齡佐劑）
+          # 與疫苗服務頁 hub 段落級互連。一去一回各盯一條，沿 09-23b 連 </a> 一起 grep（可見文字零變更）。
+          # 去程＝hub 分齡速查「長輩」卡的熟齡佐劑錨點；回程＝劑次頁在地段連回 hub 的錨點（改前唯一缺 V 層的 spoke）。
+          # 負向測試（2026-09-24 實跑）：兩條字串在本批之前計數皆為 0、本批後為 1。
+          vxad=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '>含佐劑熟齡型輔流禦</a>' || true)
+          if [ "$vxad" -ge 1 ]; then echo "OK    疫苗服務頁已連向熟齡佐劑段落"; else echo "FAIL  vaccination.html 長輩卡未見熟齡佐劑連結——hub→spoke 疑已回退"; fail=1; fi
+          dsvx=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-doses-2026.html" | grep -c '>公費與自費流感疫苗接種</a>' || true)
+          if [ "$dsvx" -ge 1 ]; then echo "OK    流感劑次頁已連回疫苗服務頁"; else echo "FAIL  flu-vaccine-doses-2026.html 在地段未見疫苗服務頁連結——spoke→hub 疑已回退"; fail=1; fi
           # ── 2026-09-13q：腸病毒叢集（09-13o／p 兩批）5 條 ────────────────────
           # 為什麼要補：09-13o／p 動的是互連（V／R／H 三層）與「腸病毒台南」四層，
           # spot-check #505 雖然零 FAIL，但那是**既有 59 條哨兵**沒叫——本批新增的內容
