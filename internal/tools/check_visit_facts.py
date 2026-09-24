@@ -18,6 +18,11 @@
         └─→ 各日各診次的最早開始／最晚結束
                 └─ 比對：各頁 JSON-LD openingHoursSpecification
 
+    index.html #clinic-notice 各則 data-expires（未過期者）
+        └─ 比對：/notices/notices.json 各則 end（服務頁橫幅的資料，2026-09-25g 起）
+           兩邊要一一對應——首頁上架了公告卻忘了寫 notices.json，服務頁就看不到；
+           反過來 notices.json 多一則，服務頁會顯示首頁沒有的公告。
+
 另有 `--inventory`：盤點「最後一診前 1 小時」措辭在各檔、各層（可見／JSON-LD／隱藏區／純文字）
 的分布，供可見文字提案列「現行值逐欄位對照表」用（00 §附 C-6）。
 
@@ -31,12 +36,14 @@
 - 只比對「寫成逐日時間」的停打時間；只寫「最後一診前 1 小時」而不列時間的句子，
   本工具只能盤點、不能判對錯（那句話本身沒有數字）。
 - 單日公告（EXCEPTIONS／公告圖）改變的是當天，不影響常態停打時間，本工具不處理。
+- notices.json 的 summary 文字是否與首頁公告說明段相符，本工具不判斷（只比日期）。
 - 不檢查站外載體（Google 商家、BookNow、MainPi、門口公告）。
 """
 
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import re
 import sys
@@ -62,12 +69,15 @@ SKIP_DIRS = {"internal", "archive", "booking-system", ".git", ".claude", ".codex
 EXTRA_FILES = ["internal/AI客服知識庫_立欣診所_正本_20260924.md"]
 
 CUTOFF_ANCHOR_RE = re.compile(r"停止(?:施打)?疫苗(?:施打)?|停止施打")
+# 兩種寫法都要抓：「週六：<strong>17:00</strong> 前」與 2026-09-25g 起的「週一至週五 20:30、週六 17:00」。
+# 時間後面不得緊接「–」或數字，排除「週六 08:00–11:30」這種門診時段。
 DAY_TIME_RE = re.compile(
-    r"週([一二三四五六日])(?:\s*[至到～~\-–]\s*週([一二三四五六日]))?"
-    r"\s*[：:]?\s*(?:<[^>]+>\s*)*(\d{1,2}:\d{2})\s*(?:<[^>]+>\s*)*前"
+    r"(?:週([一二三四五六日])(?:\s*[至到～~\-–]\s*週([一二三四五六日]))?|(平日))"
+    r"\s*[：:]?\s*(?:請於\s*)?(?:<[^>]+>\s*)*(\d{1,2}:\d{2})(?![–\-~～:\d])"
 )
+WINDOW = 160  # 停打句之後掃描逐日時間的字數
 LDJSON_RE = re.compile(r'<script[^>]*type="application/ld\+json"[^>]*>(.*?)</script>', re.S)
-PHRASE = "最後一診前"
+PHRASE = "最後一診前"  # 舊寫法（2026-09-25g 全站改為「最後一診結束前」）
 
 
 def to_min(t: str) -> int:
@@ -131,11 +141,15 @@ def check_cutoffs(root: Path, files: list[Path], expected: dict[int, str]) -> tu
         text = p.read_text(encoding="utf-8", errors="replace")
         rel = p.relative_to(root)
         for anchor in CUTOFF_ANCHOR_RE.finditer(text):
-            window = text[anchor.end() : anchor.end() + 400]
+            window = text[anchor.end() : anchor.end() + WINDOW]
+            nxt = CUTOFF_ANCHOR_RE.search(window)
+            if nxt:
+                window = window[: nxt.start()]
             for m in DAY_TIME_RE.finditer(window):
-                for d in expand_days(m.group(1), m.group(2)):
+                days = [1, 2, 3, 4, 5] if m.group(3) else expand_days(m.group(1), m.group(2))
+                for d in days:
                     checked += 1
-                    got = m.group(3).zfill(5)
+                    got = m.group(4).zfill(5)
                     want = expected.get(d)
                     if want is None:
                         problems.append(f"{rel}：{day_label(d)} 寫停打 {got}，但門診表當天休診")
@@ -180,6 +194,37 @@ def check_opening_hours(root: Path, files: list[Path], expected: set) -> tuple[l
                 for d, o, c in sorted(expected - got):
                     problems.append(f"{rel}：門診表有 {day_label(d)} {o}–{c}，schema 缺這個診次")
     return problems, pages
+
+
+def check_notices(root: Path) -> tuple[list[str], int]:
+    """首頁 #clinic-notice 未過期的各則 ↔ /notices/notices.json 未過期的各則，以適用末日比對。"""
+    problems: list[str] = []
+    today = (dt.datetime.utcnow() + dt.timedelta(hours=8)).date().isoformat()
+    html = (root / "index.html").read_text(encoding="utf-8")
+    m = re.search(r'<section id="clinic-notice".*?</section>', html, re.S)
+    page = set()
+    if m:
+        page = {e for e in re.findall(r'class="notice-item[^"]*"[^>]*data-expires="([\d-]+)"', m.group(0)) if e >= today}
+    path = root / "notices" / "notices.json"
+    if not path.exists():
+        return ([f"缺 notices/notices.json，但首頁有進行中的公告（到期日 {sorted(page)}）"] if page else []), 0
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as e:
+        return [f"notices/notices.json 解析失敗（{e}）"], 0
+    items = data.get("notices", [])
+    for n in items:
+        for k in ("id", "start", "end", "dates", "summary"):
+            if not n.get(k):
+                problems.append(f"notices.json「{n.get('id', '?')}」缺欄位 {k}")
+        if n.get("start", "") > n.get("end", ""):
+            problems.append(f"notices.json「{n.get('id')}」start 晚於 end")
+    feed = {n.get("end") for n in items if n.get("end", "") >= today}
+    for e in sorted(page - feed):
+        problems.append(f"首頁 #clinic-notice 有一則到期日 {e} 的公告，notices.json 沒有對應的一則（服務頁看不到）")
+    for e in sorted(feed - page):
+        problems.append(f"notices.json 有一則 end={e} 的公告，首頁 #clinic-notice 沒有對應的一則")
+    return problems, len(feed)
 
 
 def find_key(obj, key):
@@ -243,7 +288,9 @@ def main() -> int:
     oh_problems, oh_pages = check_opening_hours(root, files, hours)
 
     print(f"\n〔比對〕疫苗停打逐日時間：{cut_checked} 筆｜openingHoursSpecification：{oh_pages} 組")
-    problems = cut_problems + oh_problems
+    nt_problems, nt_active = check_notices(root)
+    print(f"〔比對〕進行中公告 ↔ notices.json：{nt_active} 則")
+    problems = cut_problems + oh_problems + nt_problems
     for msg in problems:
         print(f"  ❌ {msg}")
     if not problems:
