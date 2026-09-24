@@ -27,7 +27,8 @@
 # 註：Content-Security-Policy(CSP) 尚未上線。外部相依現況（2026-07-28）：
 # CDN Tailwind 已於 2026-06-20 遷移為自載 /tailwind.css、cdnjs(Font Awesome)
 # 已於 2026-07-04 移除；現存外部來源為 Google Fonts、Google Analytics(gtag)、
-# Chatbase widget、Microsoft Clarity(www.clarity.ms，2026-07-28 新增)。
+# Microsoft Clarity(www.clarity.ms，2026-07-28 新增)；Chatbase widget 已於
+# 2026-09-24 移除（改自建 /clinic-assistant/，同網域、不需放行）。
 # CSP 草案自 2026-07-28 起入版控：見 repo 根目錄 /_headers_proposed.txt
 #（已由 _redirects 第 5 節攔成 404、不對外）。該檔含 Report-Only 與正式
 # 兩版、來源盤點依據與驗收抽測點，Clarity 放行已含在內。

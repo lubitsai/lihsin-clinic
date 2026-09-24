@@ -1,6 +1,6 @@
 /* ============================================================
    立欣診所 PWA Service Worker
-   版本：lhpc-pwa-v3（2026-09-10；v2＝2026-09-07、v1＝2026-07-04）
+   版本：lhpc-pwa-v5（2026-09-24；v4＝2026-09-16、v3＝2026-09-10、v2＝2026-09-07、v1＝2026-07-04）
    ------------------------------------------------------------
    快取策略（保守設計，內容更新永遠優先）：
    1. HTML 導航請求 → network-first：
@@ -8,8 +8,12 @@
       斷線時才退回快取，再退回 /offline.html。
    2. 同網域靜態資源（css/圖片/js）→ stale-while-revalidate：
       先給快取秒開，背景更新下次生效。
-   3. 跨網域（MainPI、GA4、Chatbase、LINE、Google Fonts）→ 完全不攔截，
+   3. 跨網域（MainPI、GA4、LINE、Google Fonts）→ 完全不攔截，
       交由瀏覽器原生處理，看診進度絕不吃到快取。
+   4. /clinic-assistant/（線上小幫手，2026-09-24 起）→ 完全不攔截：
+      knowledge.json 內含門診異動與有期限公告，走第 2 條快取優先的話，
+      回訪者會先看到上一版（例如已過期的連假公告）；交給瀏覽器依
+      Netlify 預設 must-revalidate 處理，每次開啟都是最新版。v5 即為此 bump。
    ------------------------------------------------------------
    更新方式：改動本檔任一位元組（例如把 VERSION 尾碼 +1）即觸發
    瀏覽器重新安裝並清除舊版快取。
@@ -45,7 +49,7 @@
    ============================================================ */
 'use strict';
 
-const VERSION = 'lhpc-pwa-v4';
+const VERSION = 'lhpc-pwa-v5';
 const PRECACHE = [
   '/offline.html',
   '/tailwind.css',
@@ -77,9 +81,12 @@ self.addEventListener('fetch', (event) => {
   // 只處理 GET；POST 等一律放行
   if (req.method !== 'GET') return;
 
-  // 跨網域一律不攔截（MainPI 即時叫號、GA、Chatbase、字型…）
+  // 跨網域一律不攔截（MainPI 即時叫號、GA、字型…）
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+
+  // 線上小幫手的資料與程式一律走網路（見檔頭第 4 條）
+  if (url.pathname.startsWith('/clinic-assistant/')) return;
 
   // ── 1) HTML 導航：network-first ──
   if (req.mode === 'navigate') {
