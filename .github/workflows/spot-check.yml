@@ -390,6 +390,12 @@ jobs:
           if [ "$n" -ge 1 ]; then echo "OK    visit-guide og:locale 已上線"; else echo "FAIL  visit-guide og:locale 未見"; fail=1; fi
           v=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '分齡族群速查' || true)
           if [ "$v" -ge 1 ]; then echo "OK    vaccination hub『分齡族群速查』已上線"; else echo "FAIL  vaccination hub 內容未見"; fail=1; fi
+          # 2026-09-25v 新生兒叢集回程卡（7 篇新生兒衛教 → 新生兒照護門診，原本 0/7 可見回程）：
+          # 盯卡面字串「生長與餵食追蹤」——舊版 newborn-jaundice 全檔 0 次、新版 1 次（負向測試乾淨）；
+          # 不盯 URL，因 relatedLink schema 早就寫了該服務頁 URL，拿 URL 當哨兵會永遠通過（09-01b 教訓）。
+          # ⚠️ 防呆 17：日後改寫這張卡的卡面文字要同批改本行，不可直接刪。
+          nb=$(curl -s --max-time 20 "$BASE/health/newborn-jaundice.html" | grep -c '生長與餵食追蹤' || true)
+          if [ "$nb" -ge 1 ]; then echo "OK    新生兒叢集回程卡已上線"; else echo "FAIL  newborn-jaundice 未見『生長與餵食追蹤』回程卡——09-25v 串聯疑已回退"; fail=1; fi
           # 疫苗 Hub 流感季隱藏區(2026-08-25f 新增,「台南疫苗／2026 流感季」四層補強):
           # 盯住 Hub 隱藏 #ai-knowledge-block 新增的流感季實體關係段。該段是純隱藏層——
           # 被舊版覆蓋時頁面照樣 200、可見層一字不差、validator 不會亮,沒有人會發現;
