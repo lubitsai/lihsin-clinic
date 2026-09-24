@@ -68,6 +68,10 @@ input{flex:1;min-width:0;font-size:16px;padding:10px 12px;border:1px solid #b9c9
 .send{border:0;border-radius:12px;background:var(--green);color:#fff;padding:0 16px;font-weight:700;min-height:44px}
 .links{display:flex;justify-content:space-around;gap:8px;padding:6px 12px 10px;background:#fff;font-size:13px}
 .links a{padding:6px 4px}
+.notes{margin:8px 0 0;padding-left:1.2em;font-size:13px;color:#4d5c46}
+thead th{font-size:13px;border-bottom:1px solid var(--line)}
+.fee th{white-space:normal}
+.fee td{white-space:nowrap}
 .hint{font-size:12px;color:#6b7a63;margin:0 0 12px}
 /* 行動版：FAB 群組底緣＝11rem（首頁覆寫），間距比照 FAB 自身 gap（行動 .6rem／≥768px .75rem） */
 @media (max-width:768px){
@@ -164,6 +168,12 @@ if (!document.querySelector('lh-assistant')) {
     if (b.type === 'facts') {
       return el('div', { class: 'card' }, el('table', {}, el('tbody', {}, b.rows.map(([k, v, href]) =>
         el('tr', {}, el('th', { scope: 'row' }, k), el('td', {}, link(href, v)))))));
+    }
+    if (b.type === 'fees') {
+      return el('div', { class: 'card' }, el('h4', {}, b.title + '（單位：元）'),
+        el('table', { class: 'fee' }, el('thead', {}, el('tr', {}, b.header.map((h) => el('th', { scope: 'col' }, h)))),
+          el('tbody', {}, b.rows.map(([who, reg, copay]) => el('tr', {}, el('th', { scope: 'row' }, who), el('td', {}, reg), el('td', {}, copay))))),
+        el('ul', { class: 'notes' }, b.notes.map((t) => el('li', {}, t))));
     }
     if (b.type === 'schedule') {
       return el('div', { class: 'card' }, el('h4', {}, b.title),

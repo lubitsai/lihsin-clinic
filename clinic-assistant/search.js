@@ -33,7 +33,7 @@ export function normalize(s) {
   return t.replace(/[^\p{L}\p{N}]/gu, '');
 }
 // 檢索專用：拿掉問句虛詞，避免「可以帶寵物嗎」靠「可以帶」配到不相干的題目
-const FILLER = /請問|可以|可不可以|能不能|什麼|怎麼|要不要|需要|是不是|會不會|有沒有|一定|還是|如果|你們|立欣診所|[嗎呢啊吧喔嗯的了]/g;
+const FILLER = /請問|多少|可以|可不可以|能不能|什麼|怎麼|要不要|需要|是不是|會不會|有沒有|一定|還是|如果|你們|立欣診所|[嗎呢啊吧喔嗯的了]/g;
 const TOPIC = [
   [/長不高|太矮|矮小|身高不夠/g, '身高'], [/什麼時候|什麼情況|哪些情況|哪種情況|何時/g, '何時'],
   [/看醫師|給醫師看|就診/g, '就醫'],
@@ -52,11 +52,19 @@ const grams = (s) => {
 // ── 規則分流用的字詞（對 normalize 後的字串比對）──
 const URGENT = /呼吸困難|呼吸急促|呼吸很喘|很喘|喘不過氣|嘴唇發紫|嘴唇發黑|臉色發白|臉色發青|發紺|叫不醒|意識不清|意識改變|昏迷|昏倒|抽搐|痙攣|抽筋不停|發燒.{0,8}抽筋|抽筋.{0,8}發燒|眼睛上吊|持續嘔吐|一直吐|脫水|尿不出來|大量出血|血流不止|(?:3個月以下|三個月以下|未滿3個月|未滿三個月|[123一二三兩]個月大|新生兒|出生.{0,3}[天週]).{0,12}發燒/;
 const SOON = /高燒持續|高燒不退|燒不退|退燒後.{0,6}(?:活力|精神)|活力.{0,4}變差|精神.{0,4}變差|吃喝.{0,6}減少|喝.{0,4}(?:很少|變少)|尿量.{0,6}減少|尿.{0,2}變少|嗜睡|肌躍|心跳加快/;
-const PRICE = /費用|價格|多少錢|價錢|折扣|收費|價位|要錢嗎|免費嗎|自費多少/;
+const PRICE = /費用|價格|多少錢|價錢|折扣|收費|價位|要錢嗎|免費嗎|自費多少|掛號費|部分負擔|費多少/;
+const PRICE_G = new RegExp(PRICE.source, 'g');
+// 門診收費（系統指示第 5 條唯一例外，院長 2026-09-24 核可）：掛號費／部分負擔／押單費／診斷書可給金額
+const FEE = /掛號費|部分負擔|收費標準|收費表|看診.{0,4}(?:多少錢|費用|要錢|收多少)|看(?:一次|病|醫師|醫生).{0,4}(?:多少錢|費用|收多少)|押單|(?:沒帶|忘記帶|忘了帶|未帶).{0,3}健保卡|健保卡.{0,4}(?:沒帶|忘記|忘了)|診斷書|慢性處方|慢箋|福保|自費看診|自費掛號/;
+const OTHER_FEES = '疫苗、檢查、治療等其他自費項目的費用，' + CONTACT;
 const DOSE = /吃什麼藥|要吃藥嗎|吃多少|劑量|幾cc|幾毫升|幾ml|幫.{0,4}(?:看|判讀)報告|我的報告|報告.{0,6}正常嗎|數值.{0,4}正常嗎/;
 const SUITABLE = /(?:我|孩子|我家|兒子|女兒|寶寶|老大|老二|他|她).{0,10}(?:氣喘|過敏|免疫|吃藥|用藥|吃過|感冒|發燒|咳嗽|生病|早產|蠶豆|癲癇|心臟|懷孕|抗生素|克流感|流感藥|剛打|打過).{0,12}(?:可以|能不能|可不可以|能|適合).{0,6}(?:打|接種)/;
 const ACTION = /(?:幫我|替我|幫忙|可以幫).{0,6}(?:預約|掛號|取消|改期|改時間|查)|我的.{0,4}(?:預約|號碼|號次|未到)|排第幾|還要等多久|還要等幾|還有名額|還有位子|有沒有名額|可以插號|提前看/;
 const LATE = /遲到|沒趕上|來不及|趕不上/;
+// 預約額滿、電話預約（院長 2026-09-24）：只有網路系統一個管道，額滿不加號
+const QUOTA = /額滿|滿了|約滿|約不到|沒名額|沒有名額|加號|加掛|還有名額|有沒有名額|還有位子|電話.{0,4}(?:預約|掛號|約)|打電話.{0,6}(?:約|掛)/;
+// 現場掛號不能跨診次（院長 2026-09-24）：「早上先掛下午的號」「可以預掛晚診嗎」
+const CROSS = /預掛|掛.{0,4}(?:下午|晚上|晚診|午診|早診|明天|明早|下一診)|(?:早上|下午|晚上|晚診|午診|早診|明天|明早)的號|跨診|當診次/;
 const STOCK = /現貨|庫存|有貨|剩幾|到貨了嗎|打得到嗎|還有疫苗嗎/;
 const HOLIDAY = /颱風|連假|國定假日|過年|春節|除夕|清明|端午|中秋|元旦|跨年/;
 const SCHED_WORDS = /看診|門診|有診|開診|休診|休息|有開|開嗎|有沒有開|營業|上班|幾點|醫師在|看嗎|有看|掛號|時間|放假|休假/;
@@ -157,6 +165,7 @@ export function createAssistant(kb) {
 
   // 顯示前的附註：不改答案原文，只在後面接系統指示要求的提醒
   function present(row) {
+    if (row.fee) return row.answer + '\n\n' + OTHER_FEES;
     if (PRICE.test(normalize(row.title))) return '費用依項目與當日狀況不同，' + CONTACT;
     let text = row.answer;
     const all = row.title + row.answer;
@@ -260,14 +269,33 @@ export function createAssistant(kb) {
     if (DOSE.test(q) || SUITABLE.test(q)) {
       return reply('clinical', '這需要醫師當面評估才能決定，請攜帶健保卡、兒童健康手冊與目前用藥來院；疫苗現貨請先來電 06-2516086 確認。');
     }
+    // 5-0. 額滿／電話預約：先回規則卡（網路預約系統唯一管道、額滿不加號）＋預約連結
+    if (QUOTA.test(q)) {
+      const rows = kb.faqs.filter((r) => /^預約名額/.test(r.title) || /^網路預約規則：預約請至/.test(r.title));
+      if (rows.length) {
+        const fb = faqBlock(rows.map((row) => ({ row, score: 1 })));
+        fb.items = fb.items.map((it, i) => ({ ...it, open: i === 0 }));
+        return reply('results', '', [fb, factsBlock(['booking', 'phone'])]);
+      }
+    }
     // 5. 代訂／查號次／承諾名額（第 17 條）
     if (ACTION.test(q)) {
       return reply('action', '線上小幫手無法代為預約、改期、取消，也查不到個人的預約、號次或候診時間。', [factsBlock(['booking', 'queue', 'phone'])]);
     }
-    // 6. 費用（第 5 條）：一律轉人工，仍附上相關題目（題目答案本身無金額）
+    // 6-0. 門診收費標準（第 5 條例外）
+    if (FEE.test(q) && kb.fees) {
+      return reply('fee', '', [{ type: 'fees', title: '門診收費標準', ...kb.fees }, { type: 'text', text: OTHER_FEES }]);
+    }
+    // 6. 費用（第 5 條）：其餘一律轉人工，仍附上相關題目（題目答案本身無金額）
     if (PRICE.test(q)) {
-      const hits = search(raw.replace(/費用|價格|多少錢|價錢|折扣|收費|價位|要錢嗎|免費嗎|自費多少/g, ''), today, 3);
+      const hits = search(raw.replace(PRICE_G, ''), today, 3);
       return reply('price', '費用依項目與當日狀況不同，' + CONTACT, hits.length ? [faqBlock(hits)] : []);
+    }
+    // 7. 現場掛號跨診次（先於「掛號」消歧義，否則會被反問網路或現場）
+    if (CROSS.test(q) && !/預約系統|網路|線上/.test(q)) {
+      const rows = kb.faqs.filter((r) => r.id === 'G1' || /跨診次/.test(r.title));
+      const hits = [...rows.filter((r) => r.id !== 'G1'), ...rows.filter((r) => r.id === 'G1')].map((row) => ({ row, score: 1 }));
+      if (hits.length) return reply('results', '', [{ ...faqBlock(hits), items: faqBlock(hits).items.map((it, i) => ({ ...it, open: i === 0 })) }]);
     }
     // 7. 消歧義（第 18、19 條）
     if (LATE.test(q) && !/預約|現場|過號|報到/.test(q)) {

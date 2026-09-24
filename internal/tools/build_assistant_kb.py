@@ -130,17 +130,40 @@ def build(root: Path, kb_path: Path) -> dict:
     walkin = re.search(r'### 現場掛號\n(.*?)(?=^### )', ops, re.S | re.M)
     if not walkin:
         raise KbError('第四節缺「現場掛號」')
-    guides.append({'id': 'G1', 'title': '現場掛號',
-                   'answer': plain(re.sub(r'^- ', '', walkin.group(1).strip(), flags=re.M).replace('\n  ', '')),
+    # 每個條目一則；第一則固定 G1＝掛號時間（search.js 以 G1 回答「幾點開始掛號」），其餘以粗體小標當標題
+    for i, item in enumerate(re.findall(r'^- (.*(?:\n  .*)*)', walkin.group(1), re.M)):
+        item = re.sub(r'（來源：[^）]*）', '', item.replace('\n  ', ''))
+        head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item)
+        guides.append({'id': f'G{len(guides) + 1}', 'title': '現場掛號' + (f'：{head.group(1)}' if i and head else ''),
+                       'answer': plain(item if not i else (head.group(2) if head else item)),
+                       'path': '/visit-guide.html'})
+    # 門診收費標準：系統指示第 5 條的唯一例外（院長 2026-09-24 核可），整張表逐字輸出
+    fee_sec = re.search(r'### 門診收費標準[^\n]*\n(.*?)(?=^### )', ops, re.S | re.M)
+    if not fee_sec:
+        raise KbError('第四節缺「門診收費標準」')
+    fee_rows = [[c.strip() for c in ln.strip().strip('|').split('|')]
+                for ln in fee_sec.group(1).splitlines() if ln.startswith('|')]
+    fee_rows = [r for r in fee_rows if not set(''.join(r)) <= set('-')]
+    fees = {'header': fee_rows[0], 'rows': fee_rows[1:],
+            'notes': [plain(x) for x in re.findall(r'^- (.*)$', fee_sec.group(1), re.M)]}
+    if len(fees['header']) != 3 or not fees['rows'] or any(len(r) != 3 for r in fees['rows']):
+        raise KbError('門診收費標準表格格式不符（應為 身分｜掛號費｜部分負擔 三欄）')
+    guides.append({'id': f'G{len(guides) + 1}', 'title': '門診收費標準：掛號費與健保部分負擔', 'fee': True,
+                   'answer': '\n'.join([f'{r[0]}：掛號費 {r[1]}、健保部分負擔 {r[2]}' for r in fees['rows']] + fees['notes']),
                    'path': '/visit-guide.html'})
+    quota = re.search(r'### 預約名額[^\n]*\n(.*?)(?=^### )', ops, re.S | re.M)
+    for item in re.findall(r'^- (.*(?:\n  .*)*)', quota.group(1) if quota else '', re.M):
+        head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item.replace('\n  ', ''))
+        guides.append({'id': f'G{len(guides) + 1}', 'title': '預約名額' + (f'：{head.group(1)}' if head else ''),
+                       'answer': plain(head.group(2) if head else item), 'path': '/visit-guide.html'})
     rules = re.search(r'### 網路預約規則[^\n]*\n(.*?)(?=^> |^### )', ops, re.S | re.M)
     if not rules:
         raise KbError('第四節缺「網路預約規則」')
-    for i, item in enumerate(re.findall(r'^- (.*)$', rules.group(1), re.M), 2):
+    for item in re.findall(r'^- (.*)$', rules.group(1), re.M):
         head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item)
         # 無粗體小標的條目以第一個子句當標題（逐字，不自編）
         title = head.group(1) if head else re.split(r'[，；。]', item, 1)[0]
-        guides.append({'id': f'G{i}', 'title': '網路預約規則：' + title,
+        guides.append({'id': f'G{len(guides) + 1}', 'title': '網路預約規則：' + title,
                        'answer': plain(head.group(2) if head else item),
                        'path': '/visit-guide.html'})
     late = re.search(r'^> \*\*預約遲到 vs 現場號過號[^*]*\*\*[：:](.*?)(?=^### )', ops, re.S | re.M)
@@ -180,6 +203,9 @@ def build(root: Path, kb_path: Path) -> dict:
         r['path'] = '/'
         r['valid_until'] = supp_until
 
+    ids_all = [r['id'] for r in faqs + supp + guides + notices]
+    if len(ids_all) != len(set(ids_all)):
+        raise KbError('產出的題目 ID 重複')
     for r in faqs + supp + guides + notices:
         if not r['answer']:
             raise KbError(f'{r["id"]} 答案為空')
@@ -204,6 +230,7 @@ def build(root: Path, kb_path: Path) -> dict:
         'urgent_reply': urgent_blocks[0],
         'soon_reply': urgent_blocks[1],
         'facts': facts,
+        'fees': fees,
         'schedule': {'weekly': sched['weekly'], 'exceptions': sched['exceptions']},
         'notices': notices,
         'faqs': faqs + supp + guides,
