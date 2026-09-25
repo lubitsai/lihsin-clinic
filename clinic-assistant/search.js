@@ -309,6 +309,14 @@ export function createAssistant(kb) {
     if (CHECKUP.test(q) && !CHILD.test(q) && asksMoney && checkupNote()) {
       return reply('fee', checkupNote(), [{ type: 'text', text: OTHER_FEES }]);
     }
+    // 過敏用藥問慢箋：本院最多開 28 天、不開慢性病連續處方箋（院長 2026-09-26），不是收費問題
+    if (/慢性處方|慢箋|連續處方/.test(q) && /氣喘|過敏|噴劑|鼻炎|鼻子/.test(q)) {
+      const rows = kb.faqs.filter((r) => /本院最多開 28 天/.test(r.answer)).slice(0, 3);
+      if (rows.length) {
+        const fb = faqBlock(rows.map((row) => ({ row, score: 1 })));
+        return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
+      }
+    }
     // 6-0. 門診收費標準（第 5 條例外）
     if (FEE.test(q) && kb.fees) {
       return reply('fee', '', [{ type: 'fees', title: '門診收費標準', ...kb.fees }, { type: 'text', text: OTHER_FEES }]);
