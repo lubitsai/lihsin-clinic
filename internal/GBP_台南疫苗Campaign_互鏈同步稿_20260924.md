@@ -158,7 +158,7 @@
 
 ## 核對清單（院長貼完打勾）
 
-- [ ] A1：09-05 B1 劑次句已改（編輯或刪除重發）
+- [x] A1：09-05 B1 劑次句已改（院長 2026-09-25 回報「已修改」）
 - [ ] B 主貼文已發（按鈕連 `services/vaccination.html`）
 - [ ] C1 已發（鼻噴，按鈕連 `health/nasal-flu-vaccine.html`）
 - [ ] C2 已發（熟齡佐劑，按鈕連 `news/flu-vaccine-2026.html#enhanced-adjuvant`）
