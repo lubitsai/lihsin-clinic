@@ -44,7 +44,7 @@
 **常態變更（情境 B）加做**：
 - **Google 商家檔案「一般營業時間」**（不是特殊營業時間）
 - **MainPi 佈告欄／AI 提示詞**（稿在 `internal/mainpi/`）
-- **Chatbase 知識庫**（正本由院長維護；Claude 只出更新註記檔）
+- ~~Chatbase 知識庫~~（2026-09-25ai 全面停用）→ **線上小幫手**：`python3 internal/tools/build_assistant_kb.py && node internal/tools/test_assistant.mjs`，與官網同批（情境 A 的公告上下架同樣要跑；漏跑 `validate_site.py` 報 `E-ASSISTANT`）
 
 **恢復日 Claude 什麼都不必提醒**（院長 2026-08-23 定案）：
 - ①公告卡 `data-expires` 自動下架、④ 特殊營業時間自動過期 → 機制自理。
