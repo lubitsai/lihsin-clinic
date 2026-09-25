@@ -57,6 +57,7 @@ validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝202
   W-SITEMAP   sitemap 反向覆蓋：可索引頁未列入（app.html 型回退）｜07-06 回退攔截
   W-ROBOTS    可索引頁應有 robots meta 且含 max-snippet:-1      ｜09-11a 教訓
   W-LLMS      llms 雙檔關鍵條目在場（app/visit-guide/growth）    ｜07-06 回退攔截
+  E-LLMSURL   llms 雙檔內的自家網址必須對得到實體檔（--partial 跳過）｜09-25ah GSC 404 稽核查獲 1 條
   W-ROBOTS    robots.txt AI 爬蟲放行組在場                      ｜07-06 批③
   W-FAVICON   根目錄 favicon.ico 在場                          ｜07-06 批④
   W-HSELF     隱藏區出現自稱式促銷句型（不受任何 allowlist 豁免）｜08-02b 裁示 P4-b
@@ -797,6 +798,16 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
         for tok in LLMS_REQUIRED_TOKENS:
             if tok not in t:
                 rep.warn(fn, "W-LLMS", f"缺關鍵條目 {tok}（回退攔截）")
+        # E-LLMSURL：llms 內的自家網址必須對得到實體檔（2026-09-25ah：09-21i 把下一段黏在網址尾，
+        # 成了 /health/nasal-flu-vaccine.htmlAZ——E-LINK 只掃 HTML 的 href/src，純文字檔裡的網址沒人查）
+        if not partial:
+            for m in re.finditer(re.escape(SITE_ORIGIN) + r"(/[A-Za-z0-9_\-./%]*)", t):
+                p = m.group(1).rstrip(".")
+                rel_ = p.lstrip("/")
+                if rel_ == "" or rel_.endswith("/"):
+                    rel_ += "index.html"
+                if not (root / rel_).is_file():
+                    rep.err(fn, "E-LLMSURL", f"網址對不到實體檔：{SITE_ORIGIN}{p}")
 
     # robots
     rp = root / "robots.txt"
