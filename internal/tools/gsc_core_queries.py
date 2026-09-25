@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-gsc_core_queries.py — 五個核心 Query 雙窗口比較表（03 §九，2026-09-25ao 院長裁示新增）
+gsc_core_queries.py — 六個核心 Query 雙窗口比較表（03 §九；2026-09-25ao 新增、09-25ap 改六詞）
 
-院長裁示：GSC 升為專案第一量測優先；五個核心 Query 固定比較
+院長裁示：GSC 升為專案第一量測優先；六個核心 Query 固定比較
 「最近 7 天 vs 前 7 天」與「最近 28 天 vs 前 28 天」的
 曝光／點擊／CTR／平均排名／Landing Page。
 
@@ -18,7 +18,7 @@ gsc_core_queries.py — 五個核心 Query 雙窗口比較表（03 §九，2026-
       可加前綴標註（自動判斷失敗時才需要）：
         7=檔案        指定窗口為 7 天
         28=檔案       指定窗口為 28 天
-        t3:28=檔案    指定這份是「#3 台南疫苗」篩選後的 28 天匯出（用於 Landing Page）
+        t3:28=檔案    指定這份是「#3 台南疫苗」篩選後的 28 天匯出（t1–t6）（用於 Landing Page）
       一份 zip 裡的「查詢」表 → 算指標；「網頁」表 → 只有在該匯出**已用 03 §9-3 的
       規則運算式篩到單一主題**時才算 Landing Page（未篩選的網頁表混了全站流量，不可用）。
 
@@ -38,6 +38,8 @@ import zipfile
 # 比對前先正規化：去空白、轉小寫、「臺」→「台」。
 # 依 PRIORITY 順序「先中先得」，每個查詢只歸一個主題，避免重複計算。
 OTHER_CITIES = re.compile(r'台北|新北|台中|新竹|高雄|嘉義|桃園|基隆|彰化|苗栗|雲林|屏東|宜蘭|花蓮|台東')
+ALLERGY = '過敏|氣喘|異位性|鼻炎|蕁麻疹'
+OFFHOURS = '假日|週末|周末|週六|周六|星期六|禮拜六|週日|周日|星期日|禮拜日|禮拜天|夜診|晚診|夜間'
 
 TOPICS = {
     # id: (名稱, 規則, 承載頁, 可接受分流頁規則)
@@ -51,35 +53,51 @@ TOPICS = {
     't4': ('台南家醫科',
            lambda q: re.search(r'(台南|北區).*(家醫|家庭醫學)|(家醫|家庭醫學).*(台南|北區)', q),
            '/services/family-medicine.html', None),
+    't6': ('台南兒童過敏',
+           lambda q: re.search(r'台南|北區', q) and re.search(ALLERGY, q),
+           '/services/pediatric-allergy-asthma.html',
+           re.compile(r'^/services/allergy-testing\.html$')),
+    't5': ('台南假日小兒科',
+           lambda q: re.search(r'台南|北區', q) and re.search(OFFHOURS, q),
+           '/services/weekend-pediatrics.html', None),
     't2': ('北區小兒科',
            lambda q: '北區' in q and re.search(r'兒科|小兒', q),
            '/', None),
-    't1': ('台南兒科',
+    't1': ('台南小兒科',
            lambda q: '台南' in q and re.search(r'兒科|小兒', q),
            '/', None),
-    't5': ('台南北區診所',
+    'C':  ('台南北區診所（觀察列）',
            lambda q: '北區' in q and '診所' in q,
            '/', None),
 }
-PRIORITY = ['B', 't3', 't4', 't2', 't1', 't5']
+PRIORITY = ['B', 't3', 't4', 't6', 't5', 't2', 't1', 'C']
+LOCAL_ONLY = ('t2', 'C')                 # 規則只認「北區」→ 有外縣市字樣一律排除（台中、新竹也有北區）
 
 # 院長在 GSC 篩選器「查詢 → 自訂（規則運算式）」貼上的字串（03 §9-3 逐字同步；GSC 用 RE2，不支援 lookahead，
 # 所以互斥歸類交給上面的 classify，篩選器只負責「把該主題的查詢全部撈進來」）
 TN = '(台|臺)南'
+LOC = f'({TN}|北區)'
+
+
+def _both(loc, kw):
+    return f'{loc}.*({kw})|({kw}).*{loc}'
+
+
 GSC_REGEX = {
-    't1': f'{TN}.*(兒科|小兒)|(兒科|小兒).*{TN}',
-    't2': '北區.*(兒科|小兒)|(兒科|小兒).*北區',
-    't3': f'({TN}|北區).*疫苗|疫苗.*({TN}|北區)',
-    't4': f'({TN}|北區).*(家醫|家庭醫學)|(家醫|家庭醫學).*({TN}|北區)',
-    't5': '北區.*診所|診所.*北區',
+    't1': _both(TN, '兒科|小兒'),
+    't2': _both('北區', '兒科|小兒'),
+    't3': _both(LOC, '疫苗'),
+    't4': _both(LOC, '家醫|家庭醫學'),
+    't5': _both(LOC, OFFHOURS),
+    't6': _both(LOC, ALLERGY),
 }
-# 週快版用的聯集：一份匯出涵蓋五詞＋品牌對照列，列數遠低於 GSC 匯出上限 1,000 列
-GSC_REGEX_ALL = (f'立欣|({TN}|北區).*(兒科|小兒|疫苗|家醫|家庭醫學|診所)'
-                 f'|(兒科|小兒|疫苗|家醫|家庭醫學|診所).*({TN}|北區)')
-CORE = ['t1', 't2', 't3', 't4', 't5']      # 顯示順序＝院長裁示原順序
+# 週快版用的聯集：一份匯出涵蓋六詞＋品牌對照列＋觀察列，列數遠低於 GSC 匯出上限 1,000 列
+GSC_REGEX_ALL = '立欣|' + _both(LOC, f'兒科|小兒|疫苗|家醫|家庭醫學|診所|{ALLERGY}|{OFFHOURS}')
+CORE = ['t1', 't2', 't3', 't4', 't5', 't6']   # 顯示順序＝院長裁示順序
+EXTRA = ['B', 'C']                            # 對照／觀察列，不與核心詞平均
 WINDOWS = ['7', '28']
 
-# 樣本不足門檻（提案值，待院長核可；03 §9-6）：任一期曝光低於此數 → 不解讀百分比
+# 樣本不足門檻（提案值，待院長核可；03 §9-5）：任一期曝光低於此數 → 不解讀百分比
 MIN_IMPR = {'7': 50, '28': 100}
 
 
@@ -90,10 +108,9 @@ def norm_query(q):
 def classify(q):
     n = norm_query(q)
     for tid in PRIORITY:
-        if tid in ('t2', 't5') and OTHER_CITIES.search(n):
-            continue
-        if tid in ('t1', 't3', 't4') and OTHER_CITIES.search(n) and '台南' not in n:
-            continue
+        if OTHER_CITIES.search(n) and (tid in LOCAL_ONLY or '台南' not in n):
+            if tid != 'B':
+                continue
         if TOPICS[tid][1](n):
             return tid
     return None
@@ -183,7 +200,7 @@ def window_hint(text):
 def load_input(spec):
     """spec: [tid:][win=]path → dict(tables, window, topic_hint, src)"""
     topic = win = None
-    m = re.match(r'^(?:(t[1-5]):)?(?:(7|28)=)?(.+)$', spec)
+    m = re.match(r'^(?:(t[1-6]):)?(?:(7|28)=)?(.+)$', spec)
     topic, win, path = m.group(1), m.group(2), pathlib.Path(m.group(3))
     texts = []
     if path.suffix.lower() == '.zip':
@@ -344,7 +361,7 @@ def landing(res, tid):
 
 
 def render(result, notes, detail=False):
-    L = ['# 五個核心 Query｜雙窗口比較（`03` §九）', '',
+    L = ['# 六個核心 Query｜雙窗口比較（`03` §九）', '',
          '> 由 `internal/tools/gsc_core_queries.py` 自院長匯出檔合成；**數字全部來自 GSC 匯出，本工具不推估**。',
          '> 查詢層指標＝該主題所有變體查詢加總（CTR＝點擊÷曝光；平均排名＝以曝光加權）。'
          'GSC 會隱匿低頻查詢，故主題合計**一律是低估**、與後台總表不相等屬正常。', '']
@@ -356,7 +373,7 @@ def render(result, notes, detail=False):
         L += [title, '',
               '| # | 核心 Query | 曝光 前→本 | 點擊 前→本 | CTR 前→本 | 平均排名 前→本 | 本期主要 Landing Page | 判定 |',
               '|---|---|---|---|---|---|---|---|']
-        for n, t in enumerate(CORE + ['B'], start=1):
+        for n, t in enumerate(CORE + EXTRA, start=1):
             r = result[(w, t)]
             cur, prev = r['cur'], r['prev']
             lp, flag = landing(r, t)
@@ -365,15 +382,16 @@ def render(result, notes, detail=False):
                 flag = '查無（匯出中沒有此主題的查詢列＝曝光極低或被 GSC 隱匿）'
             elif small:
                 flag = (flag + '；' if flag else '') + f'樣本少（曝光<{MIN_IMPR[w]}）百分比不解讀'
-            label = 'B' if t == 'B' else str(n)
+            label = t if t in EXTRA else str(n)
             L.append(f'| {label} | {TOPICS[t][0]} | {cell_count(prev, cur, "impr")} | '
                      f'{cell_count(prev, cur, "clicks")} | {cell_ctr(prev, cur)} | '
                      f'{cell_pos(prev, cur)} | {lp} | {flag} |')
-        L += ['', '> B 列＝品牌對照，**不與 1–5 平均**（03 §9-3 ②）。排名 ↑＝名次數字變小＝進步。', '']
+        L += ['', '> B 列＝品牌對照、C 列＝觀察列（台南北區診所，主要走地圖商家、GSC 只看得到一部分），'
+              '**兩列都不與 1–6 平均**（03 §9-1、§9-3 ③）。排名 ↑＝名次數字變小＝進步。', '']
     if detail:
         L += ['## 附：各主題歸入的查詢（依本期曝光，前 10）', '']
         for w in WINDOWS:
-            for t in CORE + ['B']:
+            for t in CORE + EXTRA:
                 qs = result[(w, t)]['queries'][:10]
                 if not qs:
                     continue
@@ -392,7 +410,9 @@ def selftest():
         '北區小兒科': 't2', '台南北區小兒科': 't2', '台中北區小兒科': None,
         '台南疫苗': 't3', '台南流感疫苗': 't3', '台南兒科疫苗': 't3', '北區疫苗': 't3',
         '台南家醫科': 't4', '台南北區家庭醫學科': 't4',
-        '台南北區診所': 't5', '北區 診所': 't5', '新竹北區診所': None,
+        '台南假日小兒科': 't5', '台南週日看診': 't5', '北區夜診': 't5', '台南 禮拜天 小兒科': 't5', '台中夜診': None,
+        '台南兒童過敏': 't6', '台南過敏原檢測': 't6', '臺南兒童氣喘': 't6', '台南小兒科過敏': 't6', '高雄過敏': None,
+        '台南北區診所': 'C', '北區 診所': 'C', '新竹北區診所': None,
         '立欣診所': 'B', '立欣診所 台南北區': 'B', '台南 診所': None, '流感疫苗': None,
     }
     bad = [(q, classify(q), e) for q, e in cases.items() if classify(q) != e]
@@ -403,7 +423,7 @@ def selftest():
         if e in GSC_REGEX:
             assert re.search(GSC_REGEX[e], q) or re.search(GSC_REGEX[e], n), f'GSC_REGEX[{e}] 撈不到 {q}'
         if e:
-            assert re.search(GSC_REGEX_ALL, n), f'GSC_REGEX_ALL 撈不到 {q}'
+            assert re.search(GSC_REGEX_ALL, q) and re.search(GSC_REGEX_ALL, n), f'GSC_REGEX_ALL 撈不到 {q}'
     assert norm_page('https://lhpedclinic.com.tw/services/vaccination') == '/services/vaccination.html'
     assert norm_page('https://lhpedclinic.com.tw/index.html') == '/'
     assert norm_page('https://lhpedclinic.com.tw/team/') == '/team/'
@@ -450,7 +470,7 @@ def selftest():
     assert '/news/flu-vaccine-2026.html' in lp and flag.startswith('🟡'), (lp, flag)
     assert '換頁' in lp                                                   # 前期主要頁是 vaccination.html（兩筆合併 2 點擊）
     out = render(res, [])
-    assert '| 1 | 台南兒科 |' in out and '| B | 立欣診所' in out
+    assert '| 1 | 台南小兒科 |' in out and '| 6 | 台南兒童過敏 |' in out and '| B | 立欣診所' in out and '| C | 台南北區診所' in out
     print('selftest OK')
 
 
