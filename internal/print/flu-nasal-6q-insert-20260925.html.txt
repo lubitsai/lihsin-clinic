@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><title>鼻噴流感疫苗 評估單插頁</title>
+<style>
+@page{size:A4;margin:10mm}
+*{box-sizing:border-box}
+body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:11pt;line-height:1.45;color:#222;margin:0}
+.box{border:2px solid #555;padding:3mm 4mm}
+h1{font-size:14pt;margin:0 0 1mm}
+.sub{font-size:9.5pt;color:#444;margin:0 0 2mm}
+table{border-collapse:collapse;width:100%}
+td,th{border:1px solid #888;padding:1.4mm 2mm;vertical-align:top}
+th{background:#eee;text-align:left}
+.cb{width:15mm;text-align:center;white-space:nowrap}
+.doc{margin-top:2.5mm;border-top:1px dashed #555;padding-top:2mm;font-size:10.5pt}
+.cut{font-size:8pt;color:#888;text-align:center;margin-top:1mm}
+</style></head><body>
+<div class="box">
+<h1>鼻噴式流感疫苗（能伏鼻）接種前問答　<span style="font-size:10pt;font-weight:normal">（選擇鼻噴者請填寫）</span></h1>
+<p class="sub">適用年齡 2 歲到未滿 18 歲。以下任一題勾「是」或「不確定」，並不代表不能接種，醫師會當面評估；不適合鼻噴時仍可討論一般針劑。</p>
+<table>
+<tr><th style="width:8mm">#</th><th>問題</th><th class="cb">是</th><th class="cb">否</th><th class="cb">不確定</th></tr>
+<tr><td>1</td><td>孩子是否有免疫功能低下的疾病，或正在接受會影響免疫功能的治療？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>2</td><td>孩子是否有氣喘、近期反覆喘鳴（咻咻聲），或這陣子因呼吸道症狀在調整用藥？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>3</td><td>孩子目前是否有使用任何藥物（含長期用藥、阿斯匹靈或含水楊酸類成分的藥品）？<br>藥名：＿＿＿＿＿＿＿＿＿＿＿＿＿</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>4</td><td>近期是否使用過抗流感病毒藥物（例如克流感）？最後用藥日期：＿＿月＿＿日</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>5</td><td>家中是否有免疫功能嚴重不全的成員？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+<tr><td>6</td><td>是否曾對疫苗成分或前一劑疫苗發生嚴重過敏反應？今天是否發燒或身體不適？</td><td class="cb">☐</td><td class="cb">☐</td><td class="cb">☐</td></tr>
+</table>
+<div class="doc"><b>醫師評估（醫師填寫）</b>　☐ 可接種鼻噴　☐ 改接種針劑（預購鼻噴者：☐ 已告知退差額）　☐ 暫緩接種<br>
+本季第 ＿ 劑　醫師簽章：＿＿＿＿＿＿＿＿　日期：＿＿＿＿＿</div>
+</div>
+<div class="cut">— — — 沿此線裁切，或併印於現有預防接種評估單 — — —　立欣診所 院內文件 2026-09-25 版</div>
+</body></html>

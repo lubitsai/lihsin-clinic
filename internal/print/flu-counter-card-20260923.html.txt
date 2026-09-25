@@ -3,12 +3,12 @@
 <style>
 @page{size:A4;margin:10mm}
 *{box-sizing:border-box}
-body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:10.5pt;line-height:1.45;color:#222;margin:0}
+body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:10pt;line-height:1.35;color:#222;margin:0}
 h1{font-size:17pt;margin:0 0 2mm;border-bottom:3px solid #A0662F;padding-bottom:1.5mm}
-h2{font-size:12pt;margin:3.5mm 0 1.5mm;color:#7a4a1f}
+h2{font-size:11.5pt;margin:2.5mm 0 1mm;color:#7a4a1f}
 .rule{background:#fbf3ea;border:2px solid #A0662F;padding:2.5mm 3mm;font-size:12pt;font-weight:bold;margin:2mm 0}
 table{border-collapse:collapse;width:100%}
-td,th{border:1px solid #999;padding:1.2mm 2mm;vertical-align:top}
+td,th{border:1px solid #999;padding:0.9mm 2mm;vertical-align:top}
 th{background:#eee;text-align:left}
 .cb{width:15mm;white-space:nowrap;text-align:center}
 .say{background:#eef6ee;border-left:4px solid #3a7a3a;padding:2mm 3mm;margin:1.5mm 0;font-weight:bold}
@@ -27,10 +27,11 @@ th{background:#eee;text-align:left}
 <tr><td>品項</td><td>告知今日現貨</td><td><b>選哪一款、能不能打鼻噴</b></td></tr>
 <tr><td>當日狀況</td><td>量體溫、問下方 6 題</td><td>發燒、急性病、任何「是／不確定」</td></tr>
 <tr><td>過敏</td><td>記下家長說的內容</td><td>蛋過敏、前一劑嚴重過敏</td></tr>
+<tr><td>預購鼻噴</td><td>醫師評估不適合 → <b>改打針劑、辦理退差額</b></td><td>適不適合鼻噴的判斷</td></tr>
 </table>
-<p style="margin:1.5mm 0 0">公費＝針劑、廠牌由政府配發不可指定；<b>鼻噴只有自費</b>。鼻噴接種由醫師親自執行。</p>
+<p style="margin:1.5mm 0 0">公費＝針劑、廠牌由政府配發不可指定、<b>10/1 到貨</b>；<b>鼻噴只有自費</b>。鼻噴接種由醫師親自執行。<b>公費／自費分開冰箱</b>，取用唸出冰箱別。</p>
 
-<h2>② 鼻噴（能伏鼻）6 題——照唸、勾選、交醫師</h2>
+<h2>② 鼻噴（能伏鼻）6 題——已併入預防接種評估單，確認家長有填、交醫師</h2>
 <p style="margin:0 0 1.5mm">先確認：年齡 2 歲–未滿 18 歲 ☐　今日有現貨 ☐</p>
 <table>
 <tr><th>#</th><th>問句</th><th class="cb">是</th><th class="cb">否</th><th class="cb">不確定</th></tr>
@@ -46,8 +47,10 @@ th{background:#eee;text-align:left}
 <div class="say">「謝謝您告訴我們，這個部分需要醫師看過才能決定，我先幫您記下來，醫師會跟您說明。」</div>
 <div class="no">不能說：✗ 氣喘沒發作就可以　✗ 吸入劑沒關係　✗ 那就改打針的　✗ 克流感吃完就可以打　✗ 去年打鼻噴沒事今年也可以</div>
 
-<h2>④ 接種後 3 件事</h2>
-<p style="margin:0">☐ 黃卡登錄日期／品項／<b>劑型</b>／第幾劑　☐ 公費登錄 NIIS　☐ 需 2 劑者：<b>當場約好第 2 劑</b>（間隔至少 4 週）並列入追蹤表</p>
-
-<p class="foot">依據：官網〈鼻噴式流感疫苗〉〈今年流感疫苗要打幾劑〉（蔡宗儒院長審閱）；公費自 10/1 起分階段開打，以疾管署公告為準。每日最後一診前 1 小時停止疫苗施打。院內文件，勿張貼於候診區。｜2026-09-23 版</p>
+<h2>④ 接種後</h2>
+<p style="margin:0">☐ 黃卡登錄日期／品項／<b>劑型</b>／第幾劑　☐ <b>公費、自費都登錄 NIIS</b>　☐ 需 2 劑者：<b>當場約好第 2 劑</b>（間隔至少 4 週）並寫進<b>紙本二劑追蹤表</b><br>
+☐ 第 1 劑鼻噴者：第 2 劑可選鼻噴或針劑；想再打鼻噴 → 建議<b>先預購第 2 劑</b>，追蹤表註記</p>
+<h2>⑤ 冰箱溫度超出 2–8°C</h2>
+<p style="margin:0">該冰箱疫苗<b>先停用</b> → 立即通報 <b>蔡醫師、新光保全、疫苗負責人</b> → 記下發現時間與溫度。可否再使用由蔡醫師決定。</p>
+<p class="foot">依據：官網〈鼻噴式流感疫苗〉〈今年流感疫苗要打幾劑〉（蔡宗儒院長審閱）；公費自 10/1 起分階段開打，以疾管署公告為準。每日最後一診前 1 小時停止疫苗施打。院內文件，勿張貼於候診區。｜2026-09-25 版</p>
 </body></html>
