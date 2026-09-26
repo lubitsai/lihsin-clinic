@@ -20,6 +20,29 @@
 | `netlify.toml`、`package.json`、`netlify/functions/deploy-succeeded-background.mts` | `agent-add-indexnow-to-a-website-6686`（2026-05-25） | 早期 IndexNow 自動化實驗，未採用；靜態站現在不靠這些也正常部署 |
 | `images/covid-19-2026-thumb.jpg/.webp` | 多個舊分支 | main 沒有 covid 文章、全站零引用，孤兒縮圖 |
 
+## ⛔ 2026-09-26 執行受阻：Claude session 的 GitHub 憑證刪不了分支
+
+院長核可「打 tag 後刪除 86 個」後實際執行，卡在權限：
+
+| 動作 | 結果 |
+|---|---|
+| 建立／更新分支 ref | ✅ 可以 |
+| **建立 tag** | ❌ HTTP 403 |
+| **刪除分支** | ❌ HTTP 403 |
+
+代理本身健康（`recentRelayFailures: []`），是 GitHub App 權限／組織政策擋下，
+GitHub MCP 也沒有刪除分支的工具，繞不過去。
+
+**因此本批只產出清單與腳本，未刪除任何分支。** 兩條路擇一：
+
+1. 到 <https://claude.ai/connect-github> 補上 tag 與分支刪除權限後，由我重跑；
+2. 院長在自己的電腦上跑 `internal/reports/branch-cleanup-20260926.sh`
+   （先不帶參數看 dry-run，確認無誤再 `RUN=1`）。腳本會**先確認 tag 已上遠端才刪分支**。
+
+> ⚠️ 執行權限測試時，我在遠端留下一支 `archive/agent-check-sitemap-4509`，
+> 而刪除同樣被 403 擋住、清不掉。請一併刪除：
+> `git push origin --delete archive/agent-check-sitemap-4509`
+
 ## 建議保留（近 7 天仍有動靜，可能是進行中的 session）
 
 - 2026-09-19 ｜ claude/upbeat-galileo-53ltbc
