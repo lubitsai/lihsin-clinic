@@ -7,7 +7,7 @@ import { fetchOpenDates, fetchDaySlots, submitBooking } from "@/app/actions/port
 import { Card, StepProgress, Alert } from "@/components/ui";
 import { formatDateTw } from "@/lib/tw-time";
 import { SESSION_META, ID_TYPE_LABEL } from "@/lib/status-labels";
-import { clinicNoteOf } from "@/lib/clinic-notes";
+import { clinicNoteOf, FIRST_VISIT_ITEMS } from "@/lib/clinic-notes";
 import { CLINIC } from "@/lib/clinic-info";
 
 interface ClinicTypeDto {
@@ -654,10 +654,44 @@ export function BookingWizard({
                   建議提早 5–10 分鐘到院。
                 </li>
                 <li>報到時請主動告知櫃檯您有預約並出示健保卡；系統不會自動跳出通知。</li>
-                <li>逾時該筆預約即取消，需重新抽現場號依序候診。</li>
+                <li>
+                  逾時該筆預約即取消，需重新抽現場號依序候診（
+                  <Link href="/rules" target="_blank" className="underline underline-offset-2">
+                    過號後的候診順位
+                  </Link>
+                  ）。
+                </li>
+                <li>
+                  出發前可先查
+                  <a
+                    href={CLINIC.progressUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-2"
+                  >
+                    即時看診進度
+                  </a>
+                  ，掌握目前叫到幾號。
+                </li>
               </ul>
             </Alert>
           </div>
+          {/*
+            精靈本來就問了初診／複診，但那欄位過去只進後台名單，家長端毫無回饋。
+            勾了初診就把官網的「初診請攜帶」帶出來——問了卻不回應等於白問。
+          */}
+          {patient.visitType === "FIRST_VISIT" && (
+            <div className="px-4 text-left">
+              <Alert tone="info">
+                <p className="font-bold mb-1">🎒 初診請攜帶</p>
+                <ul className="list-disc list-inside space-y-0.5">
+                  {FIRST_VISIT_ITEMS.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </Alert>
+            </div>
+          )}
           {clinicType?.needsQuestionnaire && clinicType.questionnaireUrl && (
             <div className="px-4">
               <Alert tone="warn">

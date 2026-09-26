@@ -58,9 +58,34 @@ async function main() {
   const development = await prisma.clinicType.findUniqueOrThrow({ where: { code: "DEVELOPMENT" } });
   const weight = await prisma.clinicType.findUniqueOrThrow({ where: { code: "WEIGHT" } });
   const allergy = await prisma.clinicType.findUniqueOrThrow({ where: { code: "ALLERGY" } });
-  const blocks = await getDayScheduleBlocks(today);
+  let blocks = await getDayScheduleBlocks(today);
   if (blocks.length === 0) {
-    console.log("⚠️ 今天沒有門診（休診日），只建立未來日期的預約。");
+    /*
+     * 今天沒門診有兩種原因，處理方式不同：
+     *  ① 被單日例外停掉（連假、颱風）——示範環境要把它解除。
+     *     官網的連假公告會同步成 CLINIC_CLOSED_DAY，於是每逢連假，
+     *     示範環境的今日總覽一片空白、端對端測試整批紅掉，而程式其實沒壞。
+     *     示範資料庫本來就是拋棄式的假環境，解除停診才問得出「今天長什麼樣」。
+     *  ② 週班表當天本來就沒排班——那是真的沒門診，不偽造。
+     */
+    const closures = await prisma.scheduleException.findMany({
+      where: {
+        date: dateToDb(today),
+        type: { in: ["CLINIC_CLOSED_DAY", "SESSION_CLOSED"] },
+      },
+    });
+    if (closures.length > 0) {
+      await prisma.scheduleException.deleteMany({
+        where: { id: { in: closures.map((c) => c.id) } },
+      });
+      console.log(
+        `（今天是公告休診日，示範環境已暫時解除 ${closures.length} 筆停診設定，好讓今日總覽有內容）`,
+      );
+      blocks = await getDayScheduleBlocks(today);
+    }
+  }
+  if (blocks.length === 0) {
+    console.log("⚠️ 今天週班表沒有排班，只建立未來日期的預約。");
   }
 
   // 今天各診次的前幾個時段，用來鋪出一個有內容的櫃檯總覽

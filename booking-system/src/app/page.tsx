@@ -153,6 +153,16 @@ export default async function HomePage() {
       */}
       <Alert tone="info">
         線上預約為看診時段登記，<strong>不等於實際看診號碼</strong>，現場依報到順序與醫師看診狀況候診，敬請見諒。
+        出發前可先查
+        <a
+          href={CLINIC.progressUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 font-bold mx-1"
+        >
+          即時看診進度
+        </a>
+        ，掌握目前叫到幾號。
       </Alert>
 
       <Card className="space-y-2">
