@@ -31,6 +31,11 @@ export const CLINIC_TYPE_NOTES: Record<string, ClinicNote> = {
       "早產的孩子請依矯正年齡（不是出生後的實際月齡）挑選對應的時段；不確定可先來電由櫃檯協助。",
     ],
   },
+  // BookNow 減重特別門診預約須知（院長 2026-09-26 提供）；過敏特別門診的須知與一般規則相同，無專屬條目
+  WEIGHT: {
+    title: "看診當天請攜帶",
+    items: ["健保卡與身分證，方便記錄 InBody 測量結果。"],
+  },
 };
 
 export function clinicNoteOf(code: string): ClinicNote | undefined {

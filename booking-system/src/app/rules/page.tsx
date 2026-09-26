@@ -162,6 +162,14 @@ export default async function RulesPage() {
           </ul>
         </Card>
 
+        <Card className="space-y-2">
+          <h2 className="text-lg font-bold text-sage-700">減重特別門診</h2>
+          <p className="text-ink-900 leading-relaxed">
+            看診當天請攜帶<strong>健保卡</strong>與<strong>身分證</strong>，方便記錄 InBody 測量結果。
+            其餘預約規則與一般門診相同（可由家庭代表預約）。
+          </p>
+        </Card>
+
         <Card className="space-y-2 border-rose-500/40">
           <h2 className="text-lg font-bold text-rose-600">提醒</h2>
           <p className="text-ink-900 leading-relaxed">
