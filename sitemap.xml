@@ -89,7 +89,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
-    <lastmod>2026-09-24</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -378,6 +378,13 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lhpedclinic.com.tw/health/child-emergency-signs.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/child-emergency-signs-banner.jpg</image:loc></image:image>
+    <lastmod>2026-09-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://lhpedclinic.com.tw/health/child-urticaria.html</loc>
     <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
@@ -628,7 +635,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/</loc>
-    <lastmod>2026-09-24</lastmod>
+    <lastmod>2026-09-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
