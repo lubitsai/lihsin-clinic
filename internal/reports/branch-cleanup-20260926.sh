@@ -1,16 +1,26 @@
 #!/bin/bash
-# 舊分支清理：先打 archive tag 保存，再刪除遠端分支
-# 清單來源：internal/reports/branch-audit-20260926.md（86 個，最後提交早於 2026-09-19）
 #
-# 為什麼要院長在自己的電腦上跑：Claude session 的 GitHub 憑證可以建立/更新 ref，
-# 但「建立 tag」與「刪除分支」都被回 403（組織政策/App 權限），繞不過去。
+# 舊分支清理：先打 archive tag 保存，確認 tag 真的在遠端，才刪除分支。
 #
-# 用法：在 repo 目錄下執行
-#   bash internal/reports/branch-cleanup-20260926.sh          # 先看會做什麼（預設 dry-run）
-#   RUN=1 bash internal/reports/branch-cleanup-20260926.sh    # 真的執行
-set -euo pipefail
-DRY=${RUN:+}; [ -z "${RUN:-}" ] && echo "=== DRY RUN（加 RUN=1 才會真的執行）===" || true
-git fetch origin --prune
+# 清單來源：internal/reports/branch-audit-20260926.md
+#   86 支，最後提交早於 2026-09-19；盤點結論是沒有任何分支持有 main 缺少的
+#   HTML 頁面，獨有檔案都是刻意刪除的過期公告圖與內部文件舊版。
+#
+# 為什麼要你在自己的電腦上跑：Claude session 的 GitHub 憑證可以建立／更新 ref，
+# 但「建立 tag」與「刪除分支」都被回 HTTP 403（App 權限／組織政策），繞不過去。
+#
+# 用法（在 repo 目錄下）：
+#   bash internal/reports/branch-cleanup-20260926.sh         # dry-run，只印不做
+#   RUN=1 bash internal/reports/branch-cleanup-20260926.sh   # 確認無誤後真的執行
+#
+# 還原任何一支：git branch <名稱> archive/<名稱>
+#
+set -uo pipefail
+
+RUN="${RUN:-}"
+if [ -z "$RUN" ]; then
+  echo "=== DRY RUN：只會印出要做什麼，不會改動任何東西（加 RUN=1 才執行）==="
+fi
 
 BRANCHES=(
   "agent-check-sitemap-4509"
@@ -101,22 +111,84 @@ BRANCHES=(
   "claude/new-session-nvi9i5"
 )
 
-# 1) 先打 tag（保存物件，之後永遠救得回來）
-for b in "${BRANCHES[@]}"; do
-  sha=$(git rev-parse "origin/$b" 2>/dev/null) || { echo "跳過（遠端已無此分支）：$b"; continue; }
-  if [ -n "${RUN:-}" ]; then git tag -f "archive/$b" "$sha"; else echo "tag archive/$b -> ${sha:0:8}"; fi
-done
-[ -n "${RUN:-}" ] && git push origin "refs/tags/archive/*:refs/tags/archive/*"
+# 權限測試時遺留在遠端的分支，一併清掉
+STRAY="archive/agent-check-sitemap-4509"
 
-# 2) 確認 tag 真的在遠端，再刪分支——順序不能顛倒
-if [ -n "${RUN:-}" ]; then
-  n=$(git ls-remote --tags origin 'archive/*' | wc -l)
-  echo "遠端 archive tag 數：$n"
-  [ "$n" -ge "${#BRANCHES[@]}" ] || { echo "⛔ tag 數不足，中止刪除"; exit 1; }
+echo "取得遠端最新狀態…"
+git fetch origin --prune --quiet || { echo "⛔ fetch 失敗，中止"; exit 1; }
+
+# ── 1) 打 tag ────────────────────────────────────────────
+TAGGED=()
+MISSING=()
+for b in "${BRANCHES[@]}"; do
+  if ! sha=$(git rev-parse --verify --quiet "refs/remotes/origin/$b"); then
+    MISSING+=("$b"); continue
+  fi
+  if [ -n "$RUN" ]; then
+    git tag -f "archive/$b" "$sha" >/dev/null
+  else
+    echo "  tag archive/$b -> ${sha:0:8}"
+  fi
+  TAGGED+=("$b")
+done
+echo "可處理 ${#TAGGED[@]} 支；遠端已不存在而略過 ${#MISSING[@]} 支"
+
+# ── 2) 推 tag 上遠端（逐一列出 refspec，不用萬用字元）──────
+if [ -n "$RUN" ]; then
+  echo "推送 tag…"
+  batch=()
+  for b in "${TAGGED[@]}"; do
+    batch+=("refs/tags/archive/$b:refs/tags/archive/$b")
+    if [ "${#batch[@]}" -ge 25 ]; then
+      git push origin "${batch[@]}" || { echo "⛔ tag 推送失敗，中止（尚未刪除任何分支）"; exit 1; }
+      batch=()
+    fi
+  done
+  [ "${#batch[@]}" -gt 0 ] && { git push origin "${batch[@]}" || { echo "⛔ tag 推送失敗，中止"; exit 1; }; }
 fi
 
-# 3) 刪除遠端分支（分批，避免一次太多被斷線）
-for b in "${BRANCHES[@]}"; do
-  if [ -n "${RUN:-}" ]; then git push origin --delete "$b" || echo "刪除失敗：$b"; else echo "delete $b"; fi
+# ── 3) 逐一確認 tag 真的在遠端，只刪確認過的 ─────────────
+CONFIRMED=()
+if [ -n "$RUN" ]; then
+  echo "核對遠端 tag…"
+  remote_tags=$(git ls-remote --tags origin | awk '{print $2}')
+  for b in "${TAGGED[@]}"; do
+    if grep -qxF "refs/tags/archive/$b" <<< "$remote_tags"; then
+      CONFIRMED+=("$b")
+    else
+      echo "  ⚠ 遠端找不到 archive/$b，這支不刪"
+    fi
+  done
+  echo "已確認 ${#CONFIRMED[@]} / ${#TAGGED[@]} 支有 tag 保護"
+  if [ "${#CONFIRMED[@]}" -eq 0 ]; then echo "⛔ 沒有任何 tag 確認成功，中止"; exit 1; fi
+else
+  CONFIRMED=("${TAGGED[@]}")
+fi
+
+# ── 4) 刪除遠端分支 ──────────────────────────────────────
+FAILED=()
+for b in "${CONFIRMED[@]}"; do
+  if [ -n "$RUN" ]; then
+    git push origin --delete "$b" --quiet || FAILED+=("$b")
+  else
+    echo "  delete $b"
+  fi
 done
-echo "完成。要還原任何一支：git branch <名稱> archive/<名稱>"
+
+# 遺留的測試分支
+if git rev-parse --verify --quiet "refs/remotes/origin/$STRAY" >/dev/null; then
+  if [ -n "$RUN" ]; then
+    git push origin --delete "$STRAY" --quiet || FAILED+=("$STRAY")
+  else
+    echo "  delete $STRAY（權限測試遺留）"
+  fi
+fi
+
+echo
+if [ -n "$RUN" ]; then
+  echo "完成：刪除 $(( ${#CONFIRMED[@]} - ${#FAILED[@]} )) 支，失敗 ${#FAILED[@]} 支"
+  [ "${#FAILED[@]}" -gt 0 ] && printf '  失敗：%s\n' "${FAILED[@]}"
+  echo "要還原任何一支：git branch <名稱> archive/<名稱>"
+else
+  echo "以上為 dry-run。確認無誤後執行：RUN=1 bash $0"
+fi

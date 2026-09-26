@@ -37,11 +37,19 @@ GitHub MCP 也沒有刪除分支的工具，繞不過去。
 
 1. 到 <https://claude.ai/connect-github> 補上 tag 與分支刪除權限後，由我重跑；
 2. 院長在自己的電腦上跑 `internal/reports/branch-cleanup-20260926.sh`
-   （先不帶參數看 dry-run，確認無誤再 `RUN=1`）。腳本會**先確認 tag 已上遠端才刪分支**。
+   （先不帶參數看 dry-run，確認無誤再 `RUN=1`）。**院長 2026-09-26 選擇此路。**
+
+   腳本的安全設計：
+   - 86 支分支名稱**逐一寫死在腳本裡**，不靠萬用字元比對，也不重新計算清單
+   - 推 tag 的 refspec 逐一列出（`archive/claude/foo` 的 `*` 會跨斜線，不用萬用字元）
+   - 推完後**逐一比對遠端 ref 名稱**確認 tag 真的在，只刪確認過的那些；
+     一支都沒確認成功就中止，推 tag 失敗也中止且不刪任何分支
+   - 遠端已不存在的分支自動略過，不會讓整批失敗
+   - 順帶刪掉權限測試遺留的 `archive/agent-check-sitemap-4509`
+   - 預設 dry-run；已驗證 `bash -n` 通過、dry-run 列出 87 筆（86＋遺留那支）
 
 > ⚠️ 執行權限測試時，我在遠端留下一支 `archive/agent-check-sitemap-4509`，
-> 而刪除同樣被 403 擋住、清不掉。請一併刪除：
-> `git push origin --delete archive/agent-check-sitemap-4509`
+> 刪除同樣被 403 擋住、我清不掉。**清理腳本已包含這一支**，跑完即一併移除。
 
 ## 建議保留（近 7 天仍有動靜，可能是進行中的 session）
 
