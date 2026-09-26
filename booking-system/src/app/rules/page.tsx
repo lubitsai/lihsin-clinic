@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui";
 import { CLINIC } from "@/lib/clinic-info";
-import { WALK_IN_REGISTRATION } from "@/lib/clinic-notes";
+import { WALK_IN_REGISTRATION, MISSED_NUMBER, FIRST_VISIT_ITEMS } from "@/lib/clinic-notes";
 import { getSetting } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
@@ -82,6 +82,34 @@ export default async function RulesPage() {
           </ul>
         </Card>
 
+        {/*
+          逾時被取消、重新抽號之後要等多久，是這個頁面原本唯一沒回答的問題。
+          官網 visit-guide.html#missed-number 寫得很完整，逐字沿用。
+        */}
+        <Card className="space-y-2">
+          <h2 className="text-lg font-bold text-sage-700">🔔 {MISSED_NUMBER.title}</h2>
+          <p className="text-ink-900 leading-relaxed">{MISSED_NUMBER.lead}</p>
+          <p className="font-bold text-wood-700 pt-1">{MISSED_NUMBER.orderTitle}</p>
+          <ul className="list-disc list-inside space-y-1.5 text-ink-900 leading-relaxed">
+            {MISSED_NUMBER.order.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+          <p className="text-ink-900 leading-relaxed">
+            {MISSED_NUMBER.note}出發前可先查
+            <a
+              href={CLINIC.progressUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sage-600 underline underline-offset-2 mx-1"
+            >
+              即時看診進度
+            </a>
+            掌握目前叫到幾號。
+          </p>
+          <p className="text-ink-900 leading-relaxed">{MISSED_NUMBER.urgent}</p>
+        </Card>
+
         <Card className="space-y-2">
           <h2 className="text-lg font-bold text-sage-700">取消與改期</h2>
           <ul className="list-disc list-inside space-y-1.5 text-ink-900 leading-relaxed">
@@ -115,6 +143,15 @@ export default async function RulesPage() {
             同一家庭、同一診次有 2 位以上要看診時，由 1 位成員代表預約 1 個時段即可，
             到診後一起報到、依序看診，不必每人各佔一個名額。（兒童發展篩檢門診除外，見下。）
           </p>
+        </Card>
+
+        <Card className="space-y-2">
+          <h2 className="text-lg font-bold text-sage-700">🎒 初診請攜帶</h2>
+          <ul className="list-disc list-inside space-y-1 text-ink-900 leading-relaxed">
+            {FIRST_VISIT_ITEMS.map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
         </Card>
 
         <Card className="space-y-2">
@@ -198,6 +235,18 @@ export default async function RulesPage() {
             <p>送出預約即表示您已閱讀並同意上述告知事項。</p>
           </div>
         </Card>
+
+        <p className="text-center text-sm text-ink-500">
+          完整就診指南（交通停車、看診流程、常見問題）見
+          <a
+            href={CLINIC.bookingRulesUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sage-600 underline underline-offset-2 mx-1"
+          >
+            {CLINIC.name}官網
+          </a>
+        </p>
 
         <p className="text-center">
           <Link href="/" className="text-sage-600 underline underline-offset-2">

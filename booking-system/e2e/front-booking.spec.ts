@@ -125,11 +125,28 @@ test.describe("前台：預約流程", () => {
     await expect(page.getByRole("link", { name: "預約規則與個資告知" })).toBeVisible();
   });
 
+  test("規則頁答得出「重新抽號後要等多久」與「初診帶什麼」", async ({ page }) => {
+    await page.goto("/rules");
+    // 系統多處叫家長「重新抽現場號」，過去卻沒有一處說得出接下來怎麼排
+    await expect(page.getByRole("heading", { name: /過號了怎麼辦/ })).toBeVisible();
+    await expect(page.getByText(/至少等候 5 組現場病人/)).toBeVisible();
+    await expect(page.getByText(/每位之間再間隔 3 組現場病人/)).toBeVisible();
+    // 精靈問了初診／複診，這裡要答得出初診要帶什麼
+    await expect(page.getByRole("heading", { name: /初診請攜帶/ })).toBeVisible();
+    await expect(page.getByText("兒童健康手冊（含疫苗黃卡紀錄）")).toBeVisible();
+    // 看診進度連到官網（預約系統沒有自己的進度頁）
+    await expect(page.getByRole("link", { name: "即時看診進度" }).first()).toHaveAttribute(
+      "href",
+      /lhpedclinic\.com\.tw\/#realtime-progress/,
+    );
+  });
+
   test("規則頁的合規段落都在", async ({ page }) => {
     await page.goto("/rules");
     await expect(page.getByRole("heading", { name: "預約規則與個人資料告知" })).toBeVisible();
-    // 合規紅線（internal/00 §4-5 非急診與 119、§4-2 疫苗但書）不能被誤刪
-    await expect(page.getByText("119")).toBeVisible();
+    // 合規紅線（internal/00 §4-5 非急診與 119、§4-2 疫苗但書）不能被誤刪。
+    // exact 是必要的：過號段也提到 119，不指定會撞上嚴格模式。
+    await expect(page.getByText("119", { exact: true })).toBeVisible();
     await expect(page.getByText(/依醫師當日評估與疫苗現貨為準/)).toBeVisible();
     await expect(page.getByText(/兩樣缺一即無法施測/)).toBeVisible();
     await expect(page.getByText(/個人資料蒐集告知/)).toBeVisible();
