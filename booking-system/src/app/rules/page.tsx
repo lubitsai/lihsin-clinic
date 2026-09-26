@@ -157,7 +157,7 @@ export default async function RulesPage() {
         <Card className="space-y-2">
           <h2 className="text-lg font-bold text-sage-700">要打預防針的話</h2>
           <p className="text-ink-900 leading-relaxed">
-            每日最後一診前 1 小時停止施打疫苗（清點申報作業）。不論預約或現場，都請在下列時間前到院：
+            每日最後一診結束前 1 小時停止施打疫苗（清點申報作業）。不論預約或現場，都請在下列時間前到院：
           </p>
           <ul className="list-disc list-inside space-y-1 text-ink-900 leading-relaxed">
             <li>
