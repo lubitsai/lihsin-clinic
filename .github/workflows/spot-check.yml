@@ -1102,6 +1102,18 @@ jobs:
           ty=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '是代理商名稱，不是疫苗種類' || true)
           if [ "$ty" -ge 1 ]; then echo "OK    2026 流感疫苗頁『東洋疫苗』在地問法段已上線"; else echo "FAIL  2026 流感疫苗頁隱藏區未見『是代理商名稱，不是疫苗種類』——09-27 的台南東洋流感疫苗段疑已回退"; fail=1; fi
 
+          # 2026-09-27c：流感 12 組關鍵字模式 A 補強的 4 個隱藏區新段。
+          # 取字皆程式化驗過全站 1 檔 1 處（只在各頁 #ai-knowledge-block 內），keywords 與 llms 雙檔命中 0。
+          # ⛔ 不取關鍵字裸詞（keywords／llms 也有，會假通過）。⚠️ 防呆 17：改寫這些段或 116 年度換版時同批改。
+          n=$(curl -s --max-time 20 "$BASE/services/weekend-pediatrics.html" | grep -c '假日可提供的接種服務與平日相同' || true)
+          if [ "$n" -ge 1 ]; then echo "OK    假日頁『星期日打流感疫苗』段已上線"; else echo "FAIL  /services/weekend-pediatrics.html 隱藏區未見『假日可提供的接種服務與平日相同』——09-27c 段疑已回退"; fail=1; fi
+          n=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-doses-2026.html" | grep -c '家長口語的劑次問法' || true)
+          if [ "$n" -ge 1 ]; then echo "OK    劑次頁『小孩流感疫苗要打幾劑』段已上線"; else echo "FAIL  /news/flu-vaccine-doses-2026.html 隱藏區未見『家長口語的劑次問法』——09-27c 段疑已回退"; fail=1; fi
+          n=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '年度公費資格的語序對照' || true)
+          if [ "$n" -ge 1 ]; then echo "OK    流感常青頁『2026 公費資格』段已上線"; else echo "FAIL  /health/flu-vaccine.html 隱藏區未見『年度公費資格的語序對照』——09-27c 段疑已回退"; fail=1; fi
+          n=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '北區在地與門診時間的問法' || true)
+          if [ "$n" -ge 1 ]; then echo "OK    疫苗頁『北區流感疫苗門診時間』段已上線"; else echo "FAIL  /services/vaccination.html 隱藏區未見『北區在地與門診時間的問法』——09-27c 段疑已回退"; fail=1; fi
+
           # 2026-09-22：「帶狀皰疹（帶狀疱疹）／疫苗／欣剋疹／台南／推薦」批的兩個落點。
           # ⭐ 為什麼非盯不可：本批 100% 機器層（keywords／FAQPage／隱藏區／llms 雙檔），
           #    零可見文字變更——整塊掉了頁面照開、版面不破、validate_site.py 全綠，
