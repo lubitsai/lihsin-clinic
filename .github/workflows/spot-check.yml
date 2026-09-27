@@ -1113,6 +1113,11 @@ jobs:
           if [ "$n" -ge 1 ]; then echo "OK    流感常青頁『2026 公費資格』段已上線"; else echo "FAIL  /health/flu-vaccine.html 隱藏區未見『年度公費資格的語序對照』——09-27c 段疑已回退"; fail=1; fi
           n=$(curl -s --max-time 20 "$BASE/services/vaccination.html" | grep -c '北區在地與門診時間的問法' || true)
           if [ "$n" -ge 1 ]; then echo "OK    疫苗頁『北區流感疫苗門診時間』段已上線"; else echo "FAIL  /services/vaccination.html 隱藏區未見『北區在地與門診時間的問法』——09-27c 段疑已回退"; fail=1; fi
+          # 2026-09-27e：外部流感關鍵字指南批的 2 個隱藏區新段（取字全站 1 檔 1 處、llms 命中 0）。
+          n=$(curl -s --max-time 20 "$BASE/health/flu-vaccine.html" | grep -c '公費對象族群與品牌、證件的問法' || true)
+          if [ "$n" -ge 1 ]; then echo "OK    流感常青頁『公費族群／品牌／證件』段已上線"; else echo "FAIL  /health/flu-vaccine.html 隱藏區未見『公費對象族群與品牌、證件的問法』——09-27e 段疑已回退"; fail=1; fi
+          n=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '供貨、品牌費用與怎麼選的問法' || true)
+          if [ "$n" -ge 1 ]; then echo "OK    2026 流感頁『供貨／品牌費用』段已上線"; else echo "FAIL  /news/flu-vaccine-2026.html 隱藏區未見『供貨、品牌費用與怎麼選的問法』——09-27e 段疑已回退"; fail=1; fi
 
           # 2026-09-22：「帶狀皰疹（帶狀疱疹）／疫苗／欣剋疹／台南／推薦」批的兩個落點。
           # ⭐ 為什麼非盯不可：本批 100% 機器層（keywords／FAQPage／隱藏區／llms 雙檔），
