@@ -166,6 +166,13 @@ def build(root: Path, kb_path: Path) -> dict:
         guides.append({'id': f'G{len(guides) + 1}', 'title': '網路預約規則：' + title,
                        'answer': plain(head.group(2) if head else item),
                        'path': '/visit-guide.html'})
+    # 流感疫苗預購規則（院長 2026-09-27；官網可見層不刊登，只在有人問「預購」時由 search.js 帶出）
+    pre = re.search(r'### 流感疫苗預購規則[^\n]*\n(.*?)(?=^### |^> |^---)', ops, re.S | re.M)
+    for item in re.findall(r'^- (.*(?:\n  .*)*)', pre.group(1) if pre else '', re.M):
+        item = re.sub(r'（院長[^）]*）', '', item.replace('\n  ', ''))
+        head = re.match(r'\*\*(.+?)\*\*[：:]?(.*)', item)
+        guides.append({'id': f'G{len(guides) + 1}', 'title': '流感疫苗預購規則' + (f'：{head.group(1)}' if head else ''),
+                       'answer': plain(head.group(2) if head else item), 'path': '/news/flu-vaccine-2026.html'})
     late = re.search(r'^> \*\*預約遲到 vs 現場號過號[^*]*\*\*[：:](.*?)(?=^### )', ops, re.S | re.M)
     if late:
         guides.append({'id': f'G{len(guides) + 1}', 'title': '預約遲到 vs 現場號過號',
