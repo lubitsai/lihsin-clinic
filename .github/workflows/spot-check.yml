@@ -1093,6 +1093,15 @@ jobs:
           rc=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '門診時間是否配合得上' || true)
           if [ "$rc" -ge 1 ]; then echo "OK    2026 流感疫苗頁『自費怎麼選』客觀條件段已上線"; else echo "FAIL  2026 流感疫苗頁隱藏區未見『門診時間是否配合得上』——09-21n 的自費推薦／怎麼選客觀條件段疑已回退"; fail=1; fi
 
+          # 2026-09-27：「台南東洋疫苗／台南東洋流感疫苗」模式 A 補強的隱藏區段落。
+          # 本批 100% 機器層，整段掉了頁面照開、validate_site.py 全綠，既有哨兵不會叫。
+          # 取字已程式化驗過全站 1 檔 1 處（只在隱藏 #ai-knowledge-block 內），
+          #    keywords 與 llms 雙檔命中 0（llms 刻意改寫成「東洋為代理商」）。
+          # ⛔ 不取「台南東洋疫苗」等裸詞：keywords 與 llms 都有，會假通過。
+          # ⚠️ 防呆 17：日後改寫這段或 116 年度換版時要同批改本檢查。
+          ty=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '是代理商名稱，不是疫苗種類' || true)
+          if [ "$ty" -ge 1 ]; then echo "OK    2026 流感疫苗頁『東洋疫苗』在地問法段已上線"; else echo "FAIL  2026 流感疫苗頁隱藏區未見『是代理商名稱，不是疫苗種類』——09-27 的台南東洋流感疫苗段疑已回退"; fail=1; fi
+
           # 2026-09-22：「帶狀皰疹（帶狀疱疹）／疫苗／欣剋疹／台南／推薦」批的兩個落點。
           # ⭐ 為什麼非盯不可：本批 100% 機器層（keywords／FAQPage／隱藏區／llms 雙檔），
           #    零可見文字變更——整塊掉了頁面照開、版面不破、validate_site.py 全綠，
