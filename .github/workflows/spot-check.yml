@@ -538,6 +538,9 @@ jobs:
           if [ "$cc" -ge 1 ]; then echo "OK    久咳承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  久咳頁『台南久咳推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
           ad=$(curl -s --max-time 20 "$BASE/health/atopic-dermatitis.html" | grep -c '台南異膚推薦' || true)
           if [ "$ad" -ge 1 ]; then echo "OK    異膚承載頁 keywords 在地推薦詞已上線"; else echo "FAIL  異膚頁『台南異膚推薦』未見——keywords 層疑遭舊版覆蓋"; fail=1; fi
+          # 2026-09-28i：「台南兒童過敏門診」主題叢集中心段（隱藏區新增，舊版 0、新版 1）。
+          ph=$(curl -s --max-time 20 "$BASE/services/pediatric-allergy-asthma.html" | grep -c '過敏相關主題的整合入口' || true)
+          if [ "$ph" -ge 1 ]; then echo "OK    過敏氣喘頁「台南兒童過敏門診」叢集中心段已上線"; else echo "FAIL  過敏氣喘頁『過敏相關主題的整合入口』未見——隱藏 #ai-knowledge-block 疑遭舊版覆蓋"; fail=1; fi
           # 「久咳 台南」語序補強抽驗(2026-09-19 新增):該批補的是反向語序(久咳台南)與
           # 口語時長詞,全部落在 keywords／FAQ schema／隱藏區／llms 四個看不見的層——
           # 被舊版覆蓋時頁面照樣 200、可見層一字不差,跟上面 08-14 那批同一個失效型態。
