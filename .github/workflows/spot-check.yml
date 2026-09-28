@@ -385,6 +385,7 @@ jobs:
           check /images/croup-infographic.jpg 200
           check /health/child-emergency-signs.html 200
           check /images/child-emergency-signs-infographic.jpg 200
+          check /health/high-allergen-foods.html 200
           check /game/ 200
           check /game/game.html 200
           echo "=== 內容抽驗 ==="
@@ -1029,6 +1030,12 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           er=$(curl -s --max-time 20 "$BASE/health/child-emergency-signs.html" | grep -c '醫師看過確認沒事，同樣是值得的一趟' || true)
           if [ "$er" -ge 1 ]; then echo "OK    急診時機頁正文已上線"; else echo "FAIL  急診時機頁未見『醫師看過確認沒事，同樣是值得的一趟』——09-26t 新頁疑已回退"; fail=1; fi
+          # 2026-09-28n：新增衛教頁〈高致敏性食物〉的可見層哨兵。
+          # 取字策略沿 09-26t：本句只在本頁可見層，FAQ schema 與隱藏區用的是不同措辭。
+          # ⛔ 刻意不取「不需要刻意延後」「四到六個月」：atopic-march 也有同類句，新頁回退時會假通過。
+          # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          hf=$(curl -s --max-time 20 "$BASE/health/high-allergen-foods.html" | grep -c '試過一次沒事就不再出現在餐桌上' || true)
+          if [ "$hf" -ge 1 ]; then echo "OK    高致敏性食物頁正文已上線"; else echo "FAIL  高致敏性食物頁未見『試過一次沒事就不再出現在餐桌上』——09-28n 新頁疑已回退"; fail=1; fi
           # 2026-09-20d：在地詞「從未佈局」的 9 頁補齊（與 09-20b 的語序缺口是不同類）。
           # ⚠️ 本批動的全是中繼層（keywords／隱藏 #ai-knowledge-block／llms 雙檔），
           # **9 頁可見層已程式化證明 byte-identical**，既有哨兵一條都不會叫。
