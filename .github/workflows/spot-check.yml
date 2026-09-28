@@ -386,6 +386,7 @@ jobs:
           check /health/child-emergency-signs.html 200
           check /images/child-emergency-signs-infographic.jpg 200
           check /health/high-allergen-foods.html 200
+          check /images/high-allergen-foods-infographic.jpg 200
           check /game/ 200
           check /game/game.html 200
           echo "=== 內容抽驗 ==="
