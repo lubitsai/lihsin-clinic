@@ -6,6 +6,12 @@
 
     <!-- KB:STATS:BEGIN --> … <!-- KB:STATS:END -->   規模表
     <!-- KB:QA:BEGIN -->    … <!-- KB:QA:END -->      Q&A 本體
+    <!-- KB:NOTICES:BEGIN --> … <!-- KB:NOTICES:END --> 第四節 ⏰ 目前官網公告表（2026-09-28e 起）
+
+公告表的來源是 index.html 的 #clinic-notice（類別＝門診異動）與 #flu-vaccine-notice（類別＝流感疫苗）
+裡每一則 .notice-item：公告名取自放大鈕 aria-label（「放大檢視」與「圖（…）」之間，或該則的 data-kb-title），
+官網逐字＝該則說明段，下架日＝data-expires。首頁有幾則就列幾則、不看今天日期（輸出才固定）；
+過期的由線上小幫手依下架日自行略過，首頁把那則刪掉後下次重產就消失。
 
 標記區以外（系統指示、開場白、急症腳本、診所基本事實、合規自檢、維護規則）是手寫內容，
 本工具不動。
@@ -21,6 +27,7 @@
 - 唯一刻意偏離官網逐字：Google 評分數字改為「可於 Google 地圖查看」（`00` §4-3 不外溢）。
 """
 import argparse
+import html as htmllib
 import glob
 import json
 import os
@@ -160,6 +167,40 @@ def build(best, n_nodes, n_dup):
     return '\n'.join(stats), '\n'.join(qa_lines).strip('\n')
 
 
+NOTICE_SECTIONS = (('clinic-notice', '門診異動'), ('flu-vaccine-notice', '流感疫苗'))
+
+
+def notices_table():
+    """首頁公告 → 第四節公告表（Markdown）。"""
+    src = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
+    strip = lambda h: re.sub(r'\s+', ' ', htmllib.unescape(re.sub(r'<[^>]+>', '', h))).strip()
+    rows = ['| 公告 | 類別 | 官網逐字 | 首頁下架日 |', '|---|---|---|---|']
+    for sec_id, kind in NOTICE_SECTIONS:
+        m = re.search(rf'<section id="{sec_id}"(.*?)</section>', src, re.S)
+        if not m:
+            continue
+        chunks = re.split(r'<div class="notice-item\b', m.group(1))[1:]
+        for c in chunks:
+            exp = re.search(r'data-expires="(\d{4}-\d{2}-\d{2})"', c)
+            desc = re.findall(r'<p class="[^"]*leading-relaxed[^"]*">(.*?)</p>', c, re.S)
+            if not exp or not desc:
+                sys.exit(f'ERROR: #{sec_id} 有一則公告缺 data-expires 或說明段，無法寫入公告表')
+            title = re.search(r'data-kb-title="([^"]+)"', c)
+            if title:
+                title = htmllib.unescape(title.group(1))
+            else:
+                aria = re.search(r'aria-label="放大檢視(.+?)(?:圖)?（', c)
+                if not aria:
+                    sys.exit(f'ERROR: #{sec_id} 有一則公告無法取得公告名（缺 aria-label「放大檢視…圖（…）」或 data-kb-title）')
+                title = htmllib.unescape(aria.group(1)).strip()
+                when = re.search(r'<time[^>]*>(.*?)</time>', c, re.S)
+                if when:
+                    title += '｜' + strip(when.group(1))
+            text = strip(desc[-1]).replace('|', '｜')
+            rows.append(f'| {title.replace("|", "｜")} | {kind} | {text} | {exp.group(1)} |')
+    return '\n'.join(rows)
+
+
 def replace_region(text, name, body):
     pat = re.compile(rf'(<!-- KB:{name}:BEGIN -->\n).*?(<!-- KB:{name}:END -->)', re.S)
     if not pat.search(text):
@@ -179,13 +220,13 @@ def main():
     stats, qa = build(best, len(extract_cache), n_dup)
 
     text = open(args.kb, encoding='utf-8').read()
-    new = replace_region(replace_region(text, 'STATS', stats), 'QA', qa)
+    new = replace_region(replace_region(replace_region(text, 'STATS', stats), 'QA', qa), 'NOTICES', notices_table())
     print(stats)
     if args.check:
         if new != text:
-            print('✗ 知識庫與官網 FAQ 不一致，請重跑（不加 --check）重產')
+            print('✗ 知識庫與官網 FAQ／首頁公告不一致，請重跑（不加 --check）重產')
             sys.exit(1)
-        print('✓ 知識庫與官網 FAQ 一致')
+        print('✓ 知識庫與官網 FAQ、首頁公告一致')
         return
     if new != text:
         open(args.kb, 'w', encoding='utf-8').write(new)
