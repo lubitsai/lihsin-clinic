@@ -44,7 +44,7 @@
 **常態變更（情境 B）加做**：
 - **Google 商家檔案「一般營業時間」**（不是特殊營業時間）
 - **MainPi 佈告欄／AI 提示詞**（稿在 `internal/mainpi/`）
-- ~~Chatbase 知識庫~~（2026-09-25ai 全面停用）→ **線上小幫手**：`python3 internal/tools/build_assistant_kb.py && node internal/tools/test_assistant.mjs`，與官網同批（情境 A 的公告上下架同樣要跑；漏跑 `validate_site.py` 報 `E-ASSISTANT`）
+- ~~Chatbase 知識庫~~（2026-09-25ai 全面停用）→ **線上小幫手**：`python3 internal/tools/build_chatbot_kb.py --kb <正本> && python3 internal/tools/build_assistant_kb.py && node internal/tools/test_assistant.mjs`，與官網同批（情境 A 的公告上下架同樣要跑；漏跑 `validate_site.py` 報 `E-KBSYNC`／`E-ASSISTANT`）。**2026-09-28e 起正本第四節公告表由第一個指令從首頁公告自動產生，不再手寫**；Claude Code 內三步皆由 hook 自動跑。新公告要照既有版型寫放大鈕 `aria-label`「放大檢視…圖（…）」與說明段，否則工具報錯。
 
 **恢復日 Claude 什麼都不必提醒**（院長 2026-08-23 定案）：
 - ①公告卡 `data-expires` 自動下架、④ 特殊營業時間自動過期 → 機制自理。

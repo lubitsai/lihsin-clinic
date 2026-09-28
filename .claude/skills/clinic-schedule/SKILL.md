@@ -58,10 +58,14 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
 2. `python3 internal/tools/validate_site.py --stage deploy` → ERROR 清零才 push。
 2-0. **營運事實一致性**：`python3 internal/tools/check_visit_facts.py` → exit 0 才 push（疫苗停打逐日時間、`openingHoursSpecification`、`notices.json`↔`#clinic-notice` 到期日；情境 B 改了最後一診結束時間時，它會列出所有沒跟上的停打時間）。
 2-1. **同步官網線上小幫手**（2026-09-24n 起）：小幫手直接讀 `SCHEDULE`／`EXCEPTIONS` 回答「某天有沒有看診」，
-   改完門診表或公告後重產並跑測試（漏跑時第 2 點會報 `E-ASSISTANT`）；首頁公告有上架／下架時，
-   先更新知識庫正本第四節 ⏰ 公告表再重產：
+   改完門診表或公告後重產並跑測試（漏跑時第 2 點會報 `E-KBSYNC`／`E-ASSISTANT`）。
+   **正本第四節 ⏰ 公告表不再手寫（2026-09-28e 起）**：由 `build_chatbot_kb.py` 依首頁 `#clinic-notice`（類別＝門診異動）
+   與 `#flu-vaccine-notice`（類別＝流感疫苗）每一則 `.notice-item` 產生——公告名取放大鈕 `aria-label`「放大檢視…圖（…）」
+   （要自訂就在該則加 `data-kb-title`）、官網逐字取說明段、下架日取 `data-expires`。所以**新公告務必照既有版型寫 aria-label 與說明段**，
+   缺了工具會直接報錯。Claude Code 內由 hook 自動跑；手動時：
    ```
-   python3 internal/tools/build_assistant_kb.py && node internal/tools/test_assistant.mjs
+   python3 internal/tools/build_chatbot_kb.py --kb internal/AI客服知識庫_立欣診所_正本_*.md \
+     && python3 internal/tools/build_assistant_kb.py && node internal/tools/test_assistant.mjs
    ```
 3. **同步預約系統班表**（官網為主）：
    ```
@@ -76,9 +80,9 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
    放在 `/notices/`＝`sw.js` 不攔截，改了不必 bump。
    🤖 **自動重產（2026-09-28c／d 院長裁示「請自動跑」「小幫手也請一起自動跑」）**：`.claude/settings.json` 的 PostToolUse hook
    （`.claude/hooks/auto-sync-derived.py`）在 Claude Code 改到對外 `.html` 或知識庫正本（Edit／Write，或 Bash 指令含 `.html`）後依序檢查：
-   ①`sync_schedule.py` ②`build_chatbot_kb.py`（正本 Q&A 區）③`build_assistant_kb.py`＋`test_assistant.mjs`（小幫手），不同步才重產。
-   **只重產、不 commit**——產生檔要隨本批一起提交。**首頁公告上架／下架時，正本第四節 ⏰ 公告表仍要手寫**（hook 只負責把正本轉成小幫手資料）；
-   預約主機的 `sync-schedule.ts` 不在 hook 內。⚠️ hook 只在 Claude Code 裡生效：Codex、GitHub 網頁直接改檔不會觸發，仍靠 `validate_site.py`（`E-SCHEDULE`／`E-ASSISTANT`）擋。
+   ①`sync_schedule.py` ②`build_chatbot_kb.py`（正本 Q&A 區＋第四節公告表）③`build_assistant_kb.py`＋`test_assistant.mjs`（小幫手），不同步才重產。
+   **只重產、不 commit**——產生檔要隨本批一起提交。正本第四節公告表也由此自動產生（見第 2-1 點）；
+   預約主機的 `sync-schedule.ts` 不在 hook 內。⚠️ hook 只在 Claude Code 裡生效：Codex、GitHub 網頁直接改檔不會觸發，仍靠 `validate_site.py`（`E-SCHEDULE`／`E-KBSYNC`／`E-ASSISTANT`）擋。
    > **同步會被既有預約擋下是正常的**（院長 2026-08-06 裁示）：新班表若讓某些預約失去時段，
    > 整批不寫入、印出名單並以 exit code 2 結束。請櫃檯先逐筆改期後再跑一次，或確認要一併
    > 取消並通知家長時改用 `--cancel-affected`。**不要為了讓指令過就直接加這個旗標。**

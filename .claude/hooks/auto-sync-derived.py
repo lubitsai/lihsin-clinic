@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""PostToolUse hook：改到網站頁面或知識庫正本後，自動重產衍生檔（院長 2026-09-28 裁示「請自動跑」「小幫手也請一起自動跑」）。
+"""PostToolUse hook：改到網站頁面或知識庫正本後，自動重產衍生檔（院長 2026-09-28 裁示「請自動跑」「小幫手也請一起自動跑」「公告表也請自動寫進正本」）。
 
 三段依序檢查，每段先 --check，不同步才重產（全部同步時合計約 0.5 秒、零變更）：
   1. sync_schedule.py       index.html 門診時間表 → notices/schedule.json、booking-system/prisma/schedule.json
-  2. build_chatbot_kb.py    全站 FAQ 結構化資料 → 知識庫正本的 Q&A 標記區（標記區外的手寫內容不動）
+  2. build_chatbot_kb.py    全站 FAQ 結構化資料 → 知識庫正本的 Q&A 標記區；首頁公告 → 第四節 ⏰ 公告表標記區
+                            （2026-09-28e 起；標記區外的手寫內容不動）
   3. build_assistant_kb.py  知識庫正本＋首頁門診時間＋頁面標題 → clinic-assistant/knowledge.json（線上小幫手）
      重產後跑 test_assistant.mjs；測試失敗會回報，不回滾。
 順序有依賴：2 改了正本，3 才會看到新題目。
 
 觸發：Edit／Write／MultiEdit 的目標是對外 .html（排除 booking-system／archive／internal）或知識庫正本；
 或 Bash 指令字串含 .html／知識庫正本檔名（本 repo 常用 python／sed 改檔，只掛 Edit 會漏）。
-不 commit：重產的檔案留在工作區，隨本批一起提交；validate_site.py（E-SCHEDULE／E-ASSISTANT）仍是 push 前的最後防線。
+不 commit：重產的檔案留在工作區，隨本批一起提交；validate_site.py（E-SCHEDULE／E-KBSYNC／E-ASSISTANT）仍是 push 前的最後防線。
 不涵蓋：預約系統主機的 npx tsx scripts/sync-schedule.ts（要登入主機）；Codex／GitHub 網頁改檔不觸發。
 """
 import json
@@ -90,7 +91,7 @@ def main() -> int:
             return report(notes)
     kb = latest_kb()
     if kb and (TOOLS / "build_chatbot_kb.py").exists():
-        step(f"知識庫正本 Q&A 區（{kb.name}）",
+        step(f"知識庫正本 Q&A 區與公告表（{kb.name}）",
              [py, str(TOOLS / "build_chatbot_kb.py"), "--kb", str(kb), "--check"],
              [py, str(TOOLS / "build_chatbot_kb.py"), "--kb", str(kb)], notes)
     if (TOOLS / "build_assistant_kb.py").exists():

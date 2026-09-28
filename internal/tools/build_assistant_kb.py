@@ -26,7 +26,7 @@
 什麼時候要重跑（validate_site.py 會以 ERROR 擋下漏跑）：
 - 重產知識庫正本（build_chatbot_kb.py）之後
 - 改首頁門診時間表或 EXCEPTIONS（門診異動公告）之後——與 sync_schedule.py 同批
-- 首頁公告上架／下架、知識庫第四節 ⏰ 公告表更新之後
+- 首頁公告上架／下架之後（第四節 ⏰ 公告表由 build_chatbot_kb.py 從首頁產生，先跑它再跑本工具）
 """
 from __future__ import annotations
 
@@ -185,13 +185,18 @@ def build(root: Path, kb_path: Path) -> dict:
     table = re.search(r'### ⏰ 目前官網公告[^\n]*\n(.*?)(?=^> |^---|\Z)', ops, re.S | re.M)
     for line in (table.group(1) if table else '').splitlines():
         cells = [c.strip() for c in line.strip().strip('|').split('|')]
-        if len(cells) != 3 or cells[0] in ('公告', '---') or set(cells[0]) <= set('-'):
+        if len(cells) not in (3, 4) or cells[0] in ('公告', '---') or set(cells[0]) <= set('-'):
             continue
-        until = re.search(r'\d{4}-\d{2}-\d{2}', cells[2])
+        # 4 欄（2026-09-28e 起，build_chatbot_kb.py 從首頁公告產生）：公告｜類別｜官網逐字｜下架日；
+        # 類別＝門診異動 即為門診公告（颱風、停診等標題不一定含「門診」）。3 欄為舊手寫格式。
+        kind = cells[1] if len(cells) == 4 else ''
+        text, until_cell = cells[-2], cells[-1]
+        until = re.search(r'\d{4}-\d{2}-\d{2}', until_cell)
         if not until:
-            raise KbError(f'公告「{cells[0]}」缺下架日：{cells[2]}')
-        notices.append({'id': f'N{len(notices) + 1}', 'title': cells[0], 'answer': plain(cells[1]),
-                        'valid_until': until.group(0), 'schedule': '門診' in cells[0]})
+            raise KbError(f'公告「{cells[0]}」缺下架日：{until_cell}')
+        notices.append({'id': f'N{len(notices) + 1}', 'title': cells[0], 'answer': plain(text),
+                        'valid_until': until.group(0),
+                        'schedule': kind == '門診異動' if kind else '門診' in cells[0]})
 
     # ── 五、Q&A 本體 ──
     faqs = extract_qa(section(kb, '<!-- KB:QA:BEGIN -->', '<!-- KB:QA:END -->'), 'Q')

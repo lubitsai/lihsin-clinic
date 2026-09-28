@@ -103,6 +103,7 @@ import argparse
 import json
 import re
 import sys
+import subprocess
 import xml.etree.ElementTree as ET
 from html.parser import HTMLParser
 from pathlib import Path
@@ -841,6 +842,18 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
                         "與知識庫正本／首頁門診時間不同步 → python3 internal/tools/build_assistant_kb.py")
         except bak.KbError as e:
             rep.err("clinic-assistant/knowledge.json", "E-ASSISTANT", f"無法重產：{e}")
+
+    # 知識庫正本 ↔ 官網（2026-09-28e 起）：Q&A 區（全站 FAQ）與第四節 ⏰ 公告表（首頁公告）不同步＝ERROR。
+    # 為何是 ERROR：小幫手讀的是正本，首頁上架了颱風停診公告、正本沒跟上，小幫手就會回答「今天照常看診」。
+    # 修法：python3 internal/tools/build_chatbot_kb.py --kb <正本> → build_assistant_kb.py（Claude Code 內由 hook 自動跑）。
+    kbs = sorted((root / "internal").glob("AI客服知識庫_立欣診所_正本_*.md"))
+    if kbs and not partial:
+        r = subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "build_chatbot_kb.py"),
+                            "--kb", str(kbs[-1]), "--check"], cwd=root, capture_output=True, text=True)
+        if r.returncode != 0:
+            rep.err(kbs[-1].relative_to(root).as_posix(), "E-KBSYNC",
+                    "知識庫正本與官網 FAQ／首頁公告不同步 → python3 internal/tools/build_chatbot_kb.py --kb "
+                    + kbs[-1].relative_to(root).as_posix() + " && python3 internal/tools/build_assistant_kb.py")
 
     # 假日兒科頁的班表（2026-09-28 起）：兩個副本都要跟首頁門診時間表一致＝ERROR。
     # ①notices/schedule.json：「今天與本週末門診」卡讀它，沒重產就會把休診日說成有看診。
