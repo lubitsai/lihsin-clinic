@@ -1037,6 +1037,9 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           hf=$(curl -s --max-time 20 "$BASE/health/high-allergen-foods.html" | grep -c '試過一次沒事就不再出現在餐桌上' || true)
           if [ "$hf" -ge 1 ]; then echo "OK    高致敏性食物頁正文已上線"; else echo "FAIL  高致敏性食物頁未見『試過一次沒事就不再出現在餐桌上』——09-28n 新頁疑已回退"; fail=1; fi
+          # 2026-09-28v：高致敏性食物模式 A 補強（在地語序／科別分流／月齡問法段）的隱藏區哨兵。
+          hv=$(curl -s --max-time 20 "$BASE/health/high-allergen-foods.html" | grep -c '高致敏食物沒有各自的月齡關卡' || true)
+          if [ "$hv" -ge 1 ]; then echo "OK    高致敏性食物頁 09-28v 補強段已上線"; else echo "FAIL  高致敏性食物頁未見 09-28v 隱藏區補強段——疑已回退"; fail=1; fi
           # 2026-09-20d：在地詞「從未佈局」的 9 頁補齊（與 09-20b 的語序缺口是不同類）。
           # ⚠️ 本批動的全是中繼層（keywords／隱藏 #ai-knowledge-block／llms 雙檔），
           # **9 頁可見層已程式化證明 byte-identical**，既有哨兵一條都不會叫。
