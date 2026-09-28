@@ -842,6 +842,38 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
         except bak.KbError as e:
             rep.err("clinic-assistant/knowledge.json", "E-ASSISTANT", f"無法重產：{e}")
 
+    # 假日兒科頁的班表（2026-09-28 起）：兩個副本都要跟首頁門診時間表一致＝ERROR。
+    # ①notices/schedule.json：「今天與本週末門診」卡讀它，沒重產就會把休診日說成有看診。
+    # ②頁面上 data-weekend-schedule 表格的每一格（醫師＋時間）：靜態文字給搜尋引擎與關掉 JS 的人看，
+    #   改首頁班表時最容易漏掉的就是這種「別頁的副本」。修法：①重跑 sync_schedule.py；②照首頁表改該格。
+    if not partial and (root / "index.html").exists():
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import sync_schedule as ss
+        try:
+            sched = ss.build((root / "index.html").read_text(encoding="utf-8"))
+        except ss.ScheduleError as e:
+            rep.err("index.html", "E-SCHEDULE", f"門診時間表解析失敗：{e}")
+            sched = None
+        if sched is not None:
+            pub = root / "notices" / "schedule.json"
+            want = json.dumps(sched, ensure_ascii=False, indent=2) + "\n"
+            if not pub.exists() or pub.read_text(encoding="utf-8") != want:
+                rep.err("notices/schedule.json", "E-SCHEDULE",
+                        "與首頁門診時間表不同步 → python3 internal/tools/sync_schedule.py")
+            wp = root / "services" / "weekend-pediatrics.html"
+            if wp.exists():
+                wh = wp.read_text(encoding="utf-8")
+                cells = re.findall(r'<td[^>]*data-day="(\d)"[^>]*data-session="(\w+)"[^>]*>(.*?)</td>', wh, re.S)
+                if not cells:
+                    rep.err("services/weekend-pediatrics.html", "E-SCHEDULE", "找不到 data-weekend-schedule 表格的 data-day／data-session 格")
+                for day, sess, inner in cells:
+                    slots = [s for s in sched["weekly"].get(day, []) if s["session"] == sess]
+                    expect = " ".join(f"{d}醫師 {s['start']}–{s['end']}" for s in slots for d in s["doctors"]) or "休診"
+                    got = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", inner)).strip()
+                    if got != expect:
+                        rep.err("services/weekend-pediatrics.html", "E-SCHEDULE",
+                                f"週{'日一二三四五六'[int(day)]} {sess} 格寫「{got}」，首頁門診時間表為「{expect}」")
+
 
 def main():
     ap = argparse.ArgumentParser()

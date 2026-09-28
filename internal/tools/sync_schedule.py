@@ -17,13 +17,21 @@
                     ▼  seed.ts / scripts/sync-schedule.ts
               預約系統的 weekly_schedule_templates 與 schedule_exceptions
 
+        notices/schedule.json（公開副本，產生檔，勿手改；2026-09-28 起）
+                    │
+                    ▼  services/weekend-pediatrics.html 的「今天與本週末門診」卡
+              讀它推算今天、本週六、本週日的診次與醫師（含 EXCEPTIONS 休診）
+
+兩份輸出內容相同，只差在一份給預約系統（booking-system/ 對外 404）、
+一份放 /notices/ 給官網頁面讀（sw.js 不攔截該目錄，改了不必 bump）。
+
 順便解掉一個既有風險：官網「可見表」與「SCHEDULE 常數」本來就是兩份副本，
 本工具每次都逐格比對，只要有人只改其中一邊就會報錯。
 
 用法
 ----
-    python3 internal/tools/sync_schedule.py            # 產生／更新 schedule.json
-    python3 internal/tools/sync_schedule.py --check    # 只檢查是否同步（不寫檔，不同步時 exit 1）
+    python3 internal/tools/sync_schedule.py            # 產生／更新兩份 schedule.json
+    python3 internal/tools/sync_schedule.py --check    # 只檢查兩份是否同步（不寫檔，不同步時 exit 1）
 
 輸出的 JSON 用「蔡」「李」這種姓氏標籤而不是資料庫 id，
 對應到實際醫師是在 TypeScript 端做的（比對 doctors.name 開頭），
@@ -43,6 +51,8 @@ SESSION_BY_NAME = {"早診": "MORNING", "午診": "AFTERNOON", "晚診": "EVENIN
 # 表頭的星期 → 0=日…6=六（與 JS Date.getDay()、系統 weekday 欄位一致）
 WEEKDAY_BY_LABEL = {"週日": 0, "週一": 1, "週二": 2, "週三": 3, "週四": 4, "週五": 5, "週六": 6}
 SESSION_ORDER = {"MORNING": 0, "AFTERNOON": 1, "EVENING": 2}
+# 產生檔：預約系統用（對外 404）＋官網頁面用的公開副本（假日兒科頁「今天與本週末門診」卡讀它）
+OUTPUTS = ("booking-system/prisma/schedule.json", "notices/schedule.json")
 
 
 class ScheduleError(RuntimeError):
@@ -404,7 +414,6 @@ def main() -> int:
 
     root = Path(args.root).resolve()
     source = root / "index.html"
-    target = root / "booking-system" / "prisma" / "schedule.json"
     if not source.exists():
         print(f"✗ 找不到 {source}", file=sys.stderr)
         return 2
@@ -416,31 +425,35 @@ def main() -> int:
         return 2
 
     rendered = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+    targets = [root / rel for rel in OUTPUTS]
 
     if args.check:
-        if not target.exists():
-            print(f"✗ 尚未產生 {target.relative_to(root)}，請執行不帶 --check 的同一指令", file=sys.stderr)
-            return 1
-        if target.read_text(encoding="utf-8") != rendered:
+        stale = [t for t in targets if not t.exists() or t.read_text(encoding="utf-8") != rendered]
+        if stale:
             print(
-                "✗ 預約系統班表與官網不同步。\n"
+                "✗ 班表產生檔與官網不同步：" + "、".join(str(t.relative_to(root)) for t in stale) + "\n"
                 "  官網門診時間表已變更，請執行：\n"
                 "    python3 internal/tools/sync_schedule.py\n"
-                "  再將產生的 booking-system/prisma/schedule.json 一併提交；\n"
-                "  已上線的系統另需執行 npx tsx scripts/sync-schedule.ts 套用到資料庫。",
+                "  再將產生的檔案一併提交；\n"
+                "  已上線的預約系統另需執行 npx tsx scripts/sync-schedule.ts 套用到資料庫。",
                 file=sys.stderr,
             )
             return 1
-        print("✅ 預約系統班表與官網一致")
+        print("✅ 預約系統班表、官網公開班表（notices/schedule.json）皆與官網一致")
         return 0
 
-    changed = not target.exists() or target.read_text(encoding="utf-8") != rendered
-    target.write_text(rendered, encoding="utf-8")
+    booking_changed = False
+    for t in targets:
+        changed = not t.exists() or t.read_text(encoding="utf-8") != rendered
+        t.parent.mkdir(parents=True, exist_ok=True)
+        t.write_text(rendered, encoding="utf-8")
+        print(f"{'✅ 已更新' if changed else '✅ 已是最新'} {t.relative_to(root)}")
+        if changed and t.parts[-3:-1] == ("booking-system", "prisma"):
+            booking_changed = True
     counts = {w: len(v) for w, v in data["weekly"].items()}
-    print(f"{'✅ 已更新' if changed else '✅ 已是最新'} {target.relative_to(root)}")
     print(f"   週班表診次數（0=日…6=六）：{counts}")
     print(f"   單日特例：{len(data['exceptions'])} 筆")
-    if changed:
+    if booking_changed:
         print("   ⚠️ 已上線的系統需另外執行：npx tsx scripts/sync-schedule.ts")
     return 0
 
