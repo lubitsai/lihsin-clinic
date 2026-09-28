@@ -11,5 +11,20 @@
       "mcp__bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a__update_trigger",
       "mcp__bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a__delete_trigger"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/auto-sync-schedule.py\"",
+            "timeout": 60,
+            "statusMessage": "檢查門診班表是否需重產…"
+          }
+        ]
+      }
+    ]
   }
 }
