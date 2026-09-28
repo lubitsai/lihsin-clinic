@@ -882,6 +882,13 @@ jobs:
           # 取純中文、不含 href（防呆 25）。⚠️ 防呆 17：日後改卡面要同批改本檢查。
           wkcr=$(curl -s --max-time 20 "$BASE/services/weekend-pediatrics.html" | grep -c '哮吼症狀是什麼？孩子半夜咳得像狗叫、吸氣有喘鳴' || true)
           if [ "$wkcr" -ge 1 ]; then echo "OK    假日兒科頁 9 月新文延伸閱讀卡已上線"; else echo "FAIL  weekend-pediatrics.html 未見哮吼延伸閱讀卡——hub→spoke 可見卡片疑已回退"; fail=1; fi
+          # ── 2026-09-28：假日兒科頁「今天與本週末門診」卡＋週末醫師表 2 條 ──────────
+          # ①卡片標題（純中文、不含 href，防呆 25）②公開班表 JSON：卡片讀它，404 時卡片退回靜態文字、
+          #   頁面照樣 200、validate_site.py 全綠——只有這條抓得到。⚠️ 防呆 17：日後改卡片標題要同批改本檢查。
+          wktd=$(curl -s --max-time 20 "$BASE/services/weekend-pediatrics.html" | grep -c '今天、本週六、本週日有沒有門診？' || true)
+          if [ "$wktd" -ge 1 ]; then echo "OK    假日兒科頁今天與本週末門診卡已上線"; else echo "FAIL  weekend-pediatrics.html 未見「今天、本週六、本週日有沒有門診？」卡"; fail=1; fi
+          wksj=$(curl -s --max-time 20 "$BASE/notices/schedule.json" | grep -c '"exceptions"' || true)
+          if [ "$wksj" -ge 1 ]; then echo "OK    公開班表 notices/schedule.json 可讀"; else echo "FAIL  /notices/schedule.json 讀不到或缺 exceptions——假日兒科頁今天卡會退回靜態文字"; fail=1; fi
           # ── 2026-09-13q：腸病毒叢集（09-13o／p 兩批）5 條 ────────────────────
           # 為什麼要補：09-13o／p 動的是互連（V／R／H 三層）與「腸病毒台南」四層，
           # spot-check #505 雖然零 FAIL，但那是**既有 59 條哨兵**沒叫——本批新增的內容

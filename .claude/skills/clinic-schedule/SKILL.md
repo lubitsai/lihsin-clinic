@@ -43,7 +43,10 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
   → **院長常設指示：對話貼圖公告走「即刻公告 + 立即部署」**（不設起始日、通過驗證即快進合併 `main` 部署，不再逐次徵詢文案核可／部署確認；紅線與驗證關卡照舊）。詳見 SOP §一「預設交付模式」。
 - **B. 常態門診時間變更**（改固定週班表：新增/取消時段、改起訖、改休診日）
   → 改 HERO `SCHEDULE` 表 **＋ 全站散落的門診時間**（JSON-LD `openingHoursSpecification`、首頁時間表、多處 FAQ/正文、`visit-guide.html`、`services/weekend-pediatrics.html`、多頁 meta desc、`llms.txt`/`llms-full.txt`、站外 Google 商家與 MainPi）。
-  ⚠️ `validate_site.py` **不檢查時間一致性**，全靠 SOP 清單防漏。先跑 SOP 的探查 grep、改完回頭複跑確認零殘留。
+  ⚠️ `validate_site.py` **不檢查散落文字的時間一致性**，全靠 SOP 清單防漏。先跑 SOP 的探查 grep、改完回頭複跑確認零殘留。
+  ➕ **例外（2026-09-28 起有機械檢查）**：`services/weekend-pediatrics.html` 的「週六、週日門診時段與看診醫師」表格（`data-weekend-schedule`，每格＝醫師＋時間）
+  由 `validate_site.py` `E-SCHEDULE` 逐格比對首頁門診時間表——**換週末醫師或時段時要照首頁表改這張表**，漏改會擋 push。
+  同頁 FAQ「週六、週日是哪位醫師看診？」與 FAQPage schema 雙載、寫有醫師與時間，**不在機械檢查內**，要一起改。
 
 > **預約系統會跟著官網走（2026-08-05 起）**：`booking-system` 的班表以官網為唯一事實來源。
 > 情境 A、B 只要動到門診時間表或 `SCHEDULE`／`EXCEPTIONS`，都必須跑 `sync_schedule.py`（見〈共同尾段〉第 3 點），
@@ -62,12 +65,15 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
    ```
 3. **同步預約系統班表**（官網為主）：
    ```
-   python3 internal/tools/sync_schedule.py          # 重產 booking-system/prisma/schedule.json
+   python3 internal/tools/sync_schedule.py          # 重產 booking-system/prisma/schedule.json ＋ notices/schedule.json
    python3 internal/tools/sync_schedule.py --check  # push 前確認，非 0 就是還沒同步
    ```
    產生的 JSON 要一併 commit。**已上線的預約系統另需在主機執行** `npx tsx scripts/sync-schedule.ts`
    （可先 `--dry-run` 看會改什麼）。此工具同時逐格比對可見表與 `SCHEDULE` 常數，
    只改一邊會直接報錯——等於順手把官網自己的兩份副本也對過一次。
+   ➕ **`notices/schedule.json`（2026-09-28 起）**：同內容的公開副本，假日兒科頁頂端「今天、本週六、本週日有沒有門診？」卡讀它
+   （含 `EXCEPTIONS` 休診日）。**情境 A 只改 `EXCEPTIONS` 也要重跑**，否則該卡會把休診日說成有看診；漏跑時 `validate_site.py` 報 `E-SCHEDULE`。
+   放在 `/notices/`＝`sw.js` 不攔截，改了不必 bump。
    > **同步會被既有預約擋下是正常的**（院長 2026-08-06 裁示）：新班表若讓某些預約失去時段，
    > 整批不寫入、印出名單並以 exit code 2 結束。請櫃檯先逐筆改期後再跑一次，或確認要一併
    > 取消並通知家長時改用 `--cancel-affected`。**不要為了讓指令過就直接加這個旗標。**
