@@ -74,11 +74,11 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
    ➕ **`notices/schedule.json`（2026-09-28 起）**：同內容的公開副本，假日兒科頁頂端「今天、本週六、本週日有沒有門診？」卡讀它
    （含 `EXCEPTIONS` 休診日）。**情境 A 只改 `EXCEPTIONS` 也要重跑**，否則該卡會把休診日說成有看診；漏跑時 `validate_site.py` 報 `E-SCHEDULE`。
    放在 `/notices/`＝`sw.js` 不攔截，改了不必 bump。
-   🤖 **自動重產（2026-09-28b 院長裁示「請自動跑」）**：`.claude/settings.json` 的 PostToolUse hook
-   （`.claude/hooks/auto-sync-schedule.py`）在 Claude Code 改到根目錄 `index.html`（Edit／Write，或 Bash 指令含 `index.html`）後
-   自動跑 `--check`，不同步就重產兩份 JSON。**只重產、不 commit**——產生檔要隨本批一起提交；
-   小幫手（`build_assistant_kb.py`）與預約主機的 `sync-schedule.ts` **不在 hook 內**，照第 2-1 點與本點手動跑。
-   ⚠️ hook 只在 Claude Code 裡生效：Codex、GitHub 網頁直接改檔不會觸發，仍靠 `validate_site.py` `E-SCHEDULE` 擋。
+   🤖 **自動重產（2026-09-28c／d 院長裁示「請自動跑」「小幫手也請一起自動跑」）**：`.claude/settings.json` 的 PostToolUse hook
+   （`.claude/hooks/auto-sync-derived.py`）在 Claude Code 改到對外 `.html` 或知識庫正本（Edit／Write，或 Bash 指令含 `.html`）後依序檢查：
+   ①`sync_schedule.py` ②`build_chatbot_kb.py`（正本 Q&A 區）③`build_assistant_kb.py`＋`test_assistant.mjs`（小幫手），不同步才重產。
+   **只重產、不 commit**——產生檔要隨本批一起提交。**首頁公告上架／下架時，正本第四節 ⏰ 公告表仍要手寫**（hook 只負責把正本轉成小幫手資料）；
+   預約主機的 `sync-schedule.ts` 不在 hook 內。⚠️ hook 只在 Claude Code 裡生效：Codex、GitHub 網頁直接改檔不會觸發，仍靠 `validate_site.py`（`E-SCHEDULE`／`E-ASSISTANT`）擋。
    > **同步會被既有預約擋下是正常的**（院長 2026-08-06 裁示）：新班表若讓某些預約失去時段，
    > 整批不寫入、印出名單並以 exit code 2 結束。請櫃檯先逐筆改期後再跑一次，或確認要一併
    > 取消並通知家長時改用 `--cancel-affected`。**不要為了讓指令過就直接加這個旗標。**

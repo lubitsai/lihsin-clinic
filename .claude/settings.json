@@ -19,9 +19,9 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/auto-sync-schedule.py\"",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/auto-sync-derived.py\"",
             "timeout": 60,
-            "statusMessage": "檢查門診班表是否需重產…"
+            "statusMessage": "檢查門診班表與小幫手是否需重產…"
           }
         ]
       }
