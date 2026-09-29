@@ -505,6 +505,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/scarlet-fever.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/scarlet-fever-infographic.jpg</image:loc></image:image>
     <lastmod>2026-09-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
