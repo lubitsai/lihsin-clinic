@@ -201,8 +201,8 @@ def notice_box(title, text, bg='#fdeeee', border='#f5c6c6', title_color=RED):
 
 
 # ────────────────────────────── 衛教文章資料 ──────────────────────────────
-ARTICLES_TSAI = [
-    ('黴漿菌肺炎', '「會走路的肺炎」症狀、抗藥性與照護重點', '/health/mycoplasma-pneumonia.html'),
+# 官網 2026-09-29m 起蔡宗儒醫師專欄拆為「兒童過敏氣喘」與「常見疾病照護」兩欄，分法與 /health/ 一致
+ARTICLES_ALLERGY = [
     ('兒童蕁麻疹', '急性與慢性、常見誘因、過敏性休克警訊', '/health/child-urticaria.html'),
     ('認識過敏', '過敏體質、常見症狀、原因與居家保養', '/health/allergy.html'),
     ('孩子半夜咳不停\n是氣喘嗎', '久咳原因、咳嗽變異型氣喘、肺功能檢測', '/health/child-chronic-cough.html'),
@@ -212,6 +212,11 @@ ARTICLES_TSAI = [
     ('認識塵蟎', '防蟎寢具、55°C 熱水清洗、濕度控制', '/health/dust-mite.html'),
     ('過敏原檢測\n報告怎麼看', 'IgE／IgG 數值判讀，結果不單以數值決定忌口', '/health/allergy-test-results.html'),
     ('異位性皮膚炎', '清潔保濕、藥膏使用與居家注意事項', '/health/atopic-dermatitis.html'),
+    ('過敏會引起\n偏頭痛嗎', '過敏與兒童頭痛的關聯、組織胺與危險徵兆', '/health/allergy-headache.html'),
+]
+
+ARTICLES_COMMON = [
+    ('黴漿菌肺炎', '「會走路的肺炎」症狀、抗藥性與照護重點', '/health/mycoplasma-pneumonia.html'),
     ('腸病毒', '症狀、重症四大前兆，酒精無效需用含氯漂白水', '/health/enterovirus.html'),
     ('腸病毒71型疫苗', '接種對象、劑數與保護重點', '/health/enterovirus71-vaccine.html'),
     ('hMPV 人類間質\n肺炎病毒', '症狀、與感冒流感的鑑別、就醫警訊', '/health/hmpv.html'),
@@ -224,7 +229,6 @@ ARTICLES_TSAI = [
     ('兒童發燒', '幾度算發燒、退燒藥怎麼用、何時該就醫', '/health/child-fever.html'),
     ('兒童中暑', '熱傷害三種類型與急救五步驟', '/health/heat-illness.html'),
     ('兒童生長曲線', '百分位判讀與身高、體重追蹤', '/health/growth-curve.html'),
-    ('過敏會引起\n偏頭痛嗎', '過敏與兒童頭痛的關聯、組織胺與危險徵兆', '/health/allergy-headache.html'),
     ('兒童肥胖與\n體重管理', '健康體位三寶，不節食、不羞辱的體重管理', '/health/childhood-obesity.html'),
     ('兒童中耳炎', '耳朵痛、揉耳朵的判斷與就醫時機', '/health/otitis-media.html'),
 ]
@@ -849,23 +853,24 @@ def build_story():
 
     # ========== 八、衛教文章 ==========
     story += section('sec08', '八、衛教文章')
+    n_articles = len(ARTICLES_ALLERGY) + len(ARTICLES_COMMON) + len(ARTICLES_LEE) + len(ARTICLES_ADULT)
     story.append(Paragraph(
-        "立欣診所官網提供由本院醫師（蔡宗儒院長、李佳玲醫師）撰寫或審閱的衛教文章共 43 篇，"
+        ("立欣診所官網提供由本院醫師（蔡宗儒院長、李佳玲醫師）撰寫或審閱的衛教文章共 %d 篇，"
         "涵蓋兒童過敏氣喘、感染症、疫苗資訊、新生兒照護與成人健康。文章皆參考衛生福利部疾管署、"
-        "國民健康署、兒科醫學會等官方來源整理。", body))
+        "國民健康署、兒科醫學會等官方來源整理。"
+        % n_articles), body))
     story.append(Spacer(1, 3))
-    story.append(Paragraph("蔡宗儒院長專欄｜兒童過敏氣喘與常見疾病照護（25 篇）",
-                           S('col1', fontName='TCB', fontSize=10.5, textColor=GREEN,
-                             spaceBefore=4, spaceAfter=4)))
-    story.append(art_table(ARTICLES_TSAI))
-    story.append(Paragraph("李佳玲醫師專欄｜新生兒與嬰幼兒照護（11 篇）",
-                           S('col2', fontName='TCB', fontSize=10.5, textColor=GREEN,
-                             spaceBefore=10, spaceAfter=4)))
-    story.append(art_table(ARTICLES_LEE))
-    story.append(Paragraph("蔡宗儒院長專欄｜家庭醫學・成人健康（7 篇）",
-                           S('col3', fontName='TCB', fontSize=10.5, textColor=GREEN,
-                             spaceBefore=10, spaceAfter=4)))
-    story.append(art_table(ARTICLES_ADULT))
+    columns = [
+        ("蔡宗儒院長專欄｜兒童過敏氣喘", ARTICLES_ALLERGY),
+        ("蔡宗儒院長專欄｜常見疾病照護", ARTICLES_COMMON),
+        ("李佳玲醫師專欄｜新生兒與嬰幼兒照護", ARTICLES_LEE),
+        ("蔡宗儒院長專欄｜家庭醫學・成人健康", ARTICLES_ADULT),
+    ]
+    for n, (title, rows) in enumerate(columns, 1):
+        story.append(Paragraph("%s（%d 篇）" % (title, len(rows)),
+                               S('col%d' % n, fontName='TCB', fontSize=10.5, textColor=GREEN,
+                                 spaceBefore=4 if n == 1 else 10, spaceAfter=4)))
+        story.append(art_table(rows))
     story.append(Spacer(1, 6))
     tool_note = Table([
         [Paragraph("線上工具｜兒童生長曲線評估",
