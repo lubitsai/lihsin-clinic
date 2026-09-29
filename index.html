@@ -2532,6 +2532,49 @@
  });
  })();
  </script>
+ <script>
+ // 流感疫苗公告說明段：電腦／平板（≥768px）收合為 3 行＋「展開說明」鈕（院長 2026-09-29 指令「把說明文字收合成『展開說明』」）。
+ // ⚠️ 只用 JS 動態加 inline style 與按鈕：HTML 原文一字不動（SEO、build_chatbot_kb.py 以 p.leading-relaxed 抽說明段皆不受影響），
+ //    手機（<768px）維持全文、不出現按鈕；視窗跨斷點時即時切換。不另寫 CSS、不動 tailwind.css（不需 bump sw.js）。
+ (function () {
+ var sec = document.getElementById('flu-vaccine-notice');
+ if (!sec || !window.matchMedia) return;
+ var mq = window.matchMedia('(min-width: 768px)');
+ var CLAMP = { display: '-webkit-box', webkitBoxOrient: 'vertical', webkitLineClamp: '3', overflow: 'hidden' };
+ var UNCLAMP = { display: '', webkitBoxOrient: '', webkitLineClamp: '', overflow: '' };
+ var setStyle = function (el, st) { for (var k in st) el.style[k] = st[k]; };
+ var entries = [];
+ var paras = sec.querySelectorAll('.notice-item p.leading-relaxed');
+ for (var i = 0; i < paras.length; i++) {
+ var p = paras[i];
+ if (!p.id) p.id = 'flu-notice-desc-' + (i + 1);
+ var btn = document.createElement('button');
+ btn.type = 'button';
+ btn.className = 'block mx-auto mt-2 text-sm font-chinese font-semibold text-[#7C9A6E]';
+ btn.setAttribute('aria-controls', p.id);
+ p.parentNode.insertBefore(btn, p.nextSibling);
+ var en = { p: p, btn: btn, open: false };
+ btn.addEventListener('click', (function (en) {
+ return function () {
+ en.open = !en.open;
+ render(en);
+ if (en.open && typeof trackCTA === 'function') trackCTA('FluNotice_ExpandDesc');
+ };
+ })(en));
+ entries.push(en);
+ }
+ function render(en) {
+ if (!mq.matches) { setStyle(en.p, UNCLAMP); en.btn.style.display = 'none'; return; }
+ setStyle(en.p, en.open ? UNCLAMP : CLAMP);
+ en.btn.style.display = '';
+ en.btn.textContent = en.open ? '收合說明 ▴' : '展開說明 ▾';
+ en.btn.setAttribute('aria-expanded', en.open ? 'true' : 'false');
+ }
+ function renderAll() { for (var j = 0; j < entries.length; j++) render(entries[j]); }
+ renderAll();
+ if (mq.addEventListener) mq.addEventListener('change', renderAll); else if (mq.addListener) mq.addListener(renderAll);
+ })();
+ </script>
 
  <!-- 最新消息 Section -->
  <section id="news" aria-labelledby="news-heading" class="py-16 bg-gradient-to-b from-white to-[#f8faf7]">
