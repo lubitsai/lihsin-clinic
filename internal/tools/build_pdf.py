@@ -19,6 +19,7 @@
   ⑤ 院內設備 2→5 項（肺量計具名 MIR Minispir、InBody 270、尿液分析儀、
      超音波噴霧治療器、耳鼻喉治療台）
   ⑥ 衛教文章 21→43 篇（三專欄；含成人健康專欄）
+     → 2026-09-29：對齊官網 /health/ 四專欄、43→63 篇（順序與官網一致）
   ⑦ 門診時間頁補 2026-09-01 起醫師排班異動（開診時段未變）
   ⑧ 去除比較級措辭（「少數」等），改為客觀事實陳述
 
@@ -207,6 +208,8 @@ ARTICLES_ALLERGY = [
     ('認識過敏', '過敏體質、常見症狀、原因與居家保養', '/health/allergy.html'),
     ('孩子半夜咳不停\n是氣喘嗎', '久咳原因、咳嗽變異型氣喘、肺功能檢測', '/health/child-chronic-cough.html'),
     ('如何判斷孩子在喘', '聽、數、看三步驟，各年齡呼吸過快門檻與危險徵象', '/health/child-wheezing.html'),
+    ('高致敏性食物', '蛋、花生、海鮮等怎麼加入副食品，過敏反應怎麼看', '/health/high-allergen-foods.html'),
+    ('過敏進行曲', '異膚、食物過敏、鼻炎到氣喘的四個階段', '/health/atopic-march.html'),
     ('後鼻滴流', '一直清喉嚨、鼻涕倒流與夜咳的關聯', '/health/postnasal-drip.html'),
     ('過敏性鼻炎治療', '鼻噴劑與抗組織胺的使用、居家環境控制', '/health/allergic-rhinitis-treatment.html'),
     ('認識塵蟎', '防蟎寢具、55°C 熱水清洗、濕度控制', '/health/dust-mite.html'),
@@ -217,6 +220,8 @@ ARTICLES_ALLERGY = [
 
 ARTICLES_COMMON = [
     ('黴漿菌肺炎', '「會走路的肺炎」症狀、抗藥性與照護重點', '/health/mycoplasma-pneumonia.html'),
+    ('哮吼', '像狗叫的咳嗽、吸氣喘鳴與夜間加重', '/health/croup.html'),
+    ('什麼時候\n該去急診', '需要立即就醫的警訊與抽搐當下怎麼做', '/health/child-emergency-signs.html'),
     ('腸病毒', '症狀、重症四大前兆，酒精無效需用含氯漂白水', '/health/enterovirus.html'),
     ('腸病毒71型疫苗', '接種對象、劑數與保護重點', '/health/enterovirus71-vaccine.html'),
     ('hMPV 人類間質\n肺炎病毒', '症狀、與感冒流感的鑑別、就醫警訊', '/health/hmpv.html'),
@@ -225,12 +230,25 @@ ARTICLES_COMMON = [
     ('肺炎鏈球菌疫苗', '幼兒公費時程、疫苗種類與長者接種', '/health/pneumococcal-vaccine.html'),
     ('水痘疫苗', '公費時程、第二劑與突破性水痘', '/health/varicella-vaccine.html'),
     ('流感疫苗', '公費對象、接種時機與注意事項', '/health/flu-vaccine.html'),
+    ('鼻噴式流感疫苗', '適用年齡、與針劑的差別、不適合的對象', '/health/nasal-flu-vaccine.html'),
     ('兒童流感', '症狀表現，以及流感與一般感冒的差別', '/health/influenza.html'),
+    ('流感抗病毒藥物', '克流感、紓伏效、瑞貝塔的差別，由醫師評估', '/health/flu-antivirals.html'),
+    ('快篩項目', '各項快篩的差別、公費與自費', '/health/rapid-tests.html'),
+    ('新冠 COVID-19', '潛伏期、症狀、快篩判讀與就醫時機', '/health/covid-19-2026.html'),
+    ('腺病毒', '連續高燒、眼睛紅，環境消毒與照護', '/health/adenovirus.html'),
+    ('玫瑰疹', '高燒 3～5 天、退燒後才出疹', '/health/roseola.html'),
+    ('傳染性紅斑\n（蘋果病）', '臉頰紅、蕾絲樣紅疹與需留意的族群', '/health/erythema-infectiosum.html'),
+    ('猩紅熱', '砂紙狀紅疹、草莓舌，抗生素照處方吃完', '/health/scarlet-fever.html'),
+    ('川崎病', '發燒 5 天以上合併眼睛紅、草莓舌、手腳腫要當天就醫', '/health/kawasaki-disease.html'),
+    ('開學季\n三病毒鑑別', '流感、腸病毒、新冠的症狀對照與就醫時機', '/health/back-to-school-infections.html'),
     ('兒童發燒', '幾度算發燒、退燒藥怎麼用、何時該就醫', '/health/child-fever.html'),
     ('兒童中暑', '熱傷害三種類型與急救五步驟', '/health/heat-illness.html'),
+    ('兒童語言發展', '兩歲還不太會說話，評估時機與轉介', '/health/child-language-development.html'),
     ('兒童生長曲線', '百分位判讀與身高、體重追蹤', '/health/growth-curve.html'),
     ('兒童肥胖與\n體重管理', '健康體位三寶，不節食、不羞辱的體重管理', '/health/childhood-obesity.html'),
     ('兒童中耳炎', '耳朵痛、揉耳朵的判斷與就醫時機', '/health/otitis-media.html'),
+    ('兒童泌尿道感染', '發燒沒有感冒症狀、尿液檢查與療程', '/health/child-uti.html'),
+    ('兒童尿床', '5 歲以後尿床的原因與檢查', '/health/child-bedwetting.html'),
 ]
 
 ARTICLES_LEE = [
@@ -242,9 +260,11 @@ ARTICLES_LEE = [
     ('新生兒睡眠安全', '仰睡原則、嬰兒猝死症（SIDS）預防', '/health/newborn-sleep-safety.html'),
     ('寶寶溢奶吐奶', '生理性溢奶、胃食道逆流與危險警訊', '/health/baby-spitting-up.html'),
     ('嬰兒腸絞痛', 'Wessel 333 法則與安撫方法', '/health/baby-colic.html'),
+    ('鵝口瘡', '與奶垢的分辨、抗黴菌藥的使用', '/health/oral-thrush.html'),
     ('RSV 單株抗體', '樂唯初（Beyfortus）保護力、適合對象與注意', '/health/rsv-immunization.html'),
     ('B型腦膜炎\n雙球菌疫苗', '必思諾（Bexsero）劑次、副作用與適用年齡', '/health/meningococcal-b-vaccine.html'),
     ('兒童便秘', '幾天沒大便算便秘、何時要就醫', '/health/child-constipation.html'),
+    ('感冒營養補充', '維生素C、維生素D 與鋅的實證', '/health/cold-nutrition.html'),
 ]
 
 ARTICLES_ADULT = [
@@ -255,6 +275,7 @@ ARTICLES_ADULT = [
     ('高血脂', '膽固醇與三酸甘油酯數值判讀與改善', '/health/hyperlipidemia.html'),
     ('帶狀皰疹疫苗', '保護力、適合對象與接種注意事項', '/health/shingles-vaccine.html'),
     ('9 價 HPV 疫苗', '可預防的疾病、適合對象與公費自費', '/health/hpv-vaccine.html'),
+    ('C 型肝炎', '傳染途徑、篩檢時機與治療', '/health/hepatitis-c.html'),
 ]
 
 _detail_st = S('artd', fontName='TC', fontSize=8.5, textColor=DARK, leading=11.5)
