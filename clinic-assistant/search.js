@@ -135,7 +135,7 @@ export function createAssistant(kb) {
     const t = searchKey(r.title), a = searchKey(r.answer);
     const tf = new Map();
     for (const g of grams(a)) tf.set(g, (tf.get(g) || 0) + 1);
-    return { row: r, title: new Set(grams(t)), page: new Set(grams(searchKey(r.page))), tf, len: a.length };
+    return { row: r, title: new Set(grams(t)), page: new Set(grams(searchKey(r.page))), tf, len: a.length, text: t + '|' + a };
   });
   const avgLen = docs.reduce((s, d) => s + d.len, 0) / docs.length;
   const df = new Map();
@@ -150,7 +150,10 @@ export function createAssistant(kb) {
     if (!qg.length) return [];
     // 題庫裡完全沒出現過的字組也算進分母：問的東西題庫沒有，就不硬配
     const total = qg.reduce((s, g) => s + idf(g), 0) + (all.length - qg.length) * unseen;
-    const scored = [];
+    const scored = [], phraseHits = [];
+    // 短詞退路：只打一個專有名詞（如「補接種通知單」）時，字組多半只出現在答案、不在題目，
+    // 會被下方的題目覆蓋門檻濾掉；此時改收題目或答案「逐字含有整個提問」的題目（去虛詞後至少 4 字）
+    const phrase = strict ? '' : searchKey(question);
     for (const d of docs) {
       if (!valid(d.row, today)) continue;
       let s = 0, inTitle = 0, anywhere = 0, titleHits = 0;
@@ -162,12 +165,14 @@ export function createAssistant(kb) {
         if (t) { inTitle += w; titleHits++; }
         if (t || tf) anywhere += w;
       }
+      if (phrase.length >= 4 && d.text.includes(phrase)) phraseHits.push({ row: d.row, score: s / total + (d.row.core ? 0.05 : 0) });
       const titleCov = inTitle / total, cov = anywhere / total;
       if (titleCov < 0.3 && !(cov >= 0.75 && titleCov >= 0.15)) continue;
       if (qg.length >= 3 && titleHits < 2) continue;
       if (strict && titleCov < 0.45) continue;
       scored.push({ row: d.row, score: s / total + (d.row.core ? 0.05 : 0) });
     }
+    if (!scored.length) scored.push(...phraseHits);
     scored.sort((a, b) => b.score - a.score);
     const top = scored[0]?.score || 0;
     return scored.filter((h) => h.score >= top * 0.55).slice(0, limit);
