@@ -57,7 +57,7 @@
    ============================================================ */
 'use strict';
 
-const VERSION = 'lhpc-pwa-v9';
+const VERSION = 'lhpc-pwa-v10';
 const PRECACHE = [
   '/offline.html',
   '/tailwind.css',
