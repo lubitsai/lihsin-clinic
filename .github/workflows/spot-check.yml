@@ -364,7 +364,7 @@ jobs:
           #    已在盯「首頁還在不在」，不需要再補 5 條頁哨兵。
           # ⚠️ 連動維護義務（防呆 17）：最新消息卡換圖、換檔名或整張退場時，
           #    對應這一行要同批改或刪，不可放著讓它誤報。
-          check /images/flu-vaccine-2026-thumb.jpg 200
+          check /images/flu-vaccine-2026-20260930-thumb.jpg 200
           check /images/flu-vaccine-public-2026-thumb.jpg 200
           check /images/flu-vaccine-doses-2026-thumb.jpg 200
           # 2026-09-09j 新增（院長指令「因應流感季，加入最新消息第二篇」）：第 6 張卡的縮圖。
