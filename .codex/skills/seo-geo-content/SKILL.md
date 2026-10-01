@@ -51,6 +51,8 @@ description: 立欣診所官網 SEO／AEO／GEO 關鍵字研究與內容生成�
 **凡產出可見文字(模式 B、既有文章改寫、最新消息、首頁卡標題),落筆前併讀
 `references/anti-ai-tone.md`**——38 項去 AI 味自檢,含「SOP 要件不算 AI 味」的豁免表
 (FAQ ≥6 題、疫苗四但書、危險徵象條列一律保留)。模式 A 零可見文字變更,只查工具痕跡兩項。
+模式 B 選題與起稿時另讀 `references/hook-structure.md`——從家長留言/私訊選題、
+第一句用結果/反差/問題開場、逐段判斷哪段該刪(院長 2026-10-01 指示納入)。
 
 四層補強的四個落點速記:①`keywords` meta(分層擴充,promotional 詞只進這層)②FAPage schema
 (+高意圖完整問句,跨頁零重複,答案帶但書;**2026-09-25l 起只放頁面上答得出來的題目**,雙載頁新增題目要同批加可見 `<details>`)③隱藏 `#ai-knowledge-block`(+長尾問答段/GEO 實體
