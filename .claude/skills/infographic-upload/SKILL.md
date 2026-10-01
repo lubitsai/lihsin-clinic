@@ -72,7 +72,7 @@ python3 internal/tools/make_infographic.py "<上傳圖路徑>" <slug>
 輸出寫入 `images/`，覆寫同名檔（冪等：同來源產出 byte-identical）。
 
 ### 3 掛載
-- **替換既有頁的圖**：檔名相同 → HTML 免動，直接進第 4 步。
+- **替換既有頁的圖**：⚠️ **不要同檔名覆寫**——`/images/*` 有 30 天瀏覽器快取＋`sw.js` 快取優先，回訪者會一直看到舊圖（2026-10-01w 第 3 次踩到）。slug 加日期尾碼產新檔（例：`flu-vaccine-2026-20260930`），`git rm` 舊檔，並同步所有引用（`grep -rn <舊檔名>`：picture／img、og:image、schema image、`sitemap.xml` image:loc、`.github/workflows/spot-check.yml` 哨兵）。
 - **新頁主圖／新首頁卡**：HTML 用下列標準片段（比照 flu/covid 模板），檔名對齊 slug：
   - 內文 `<figure>`：
     ```html
