@@ -391,6 +391,7 @@ jobs:
           check /images/scarlet-fever-infographic.jpg 200
           check /health/kawasaki-disease.html 200
           check /images/kawasaki-disease-infographic.jpg 200
+          check /health/umbilical-granuloma.html 200
           check /game/ 200
           check /game/game.html 200
           echo "=== 內容抽驗 ==="
@@ -1056,6 +1057,10 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           kd=$(curl -s --max-time 20 "$BASE/health/kawasaki-disease.html" | grep -c '時間是治療效果的一部分' || true)
           if [ "$kd" -ge 1 ]; then echo "OK    川崎病頁正文已上線"; else echo "FAIL  川崎病頁未見『時間是治療效果的一部分』——09-29e 新頁疑已回退"; fail=1; fi
+          # 2026-10-01e：新增衛教頁〈臍息肉（臍肉芽腫）〉的可見層哨兵（取字沿 09-26t：本句只在本頁可見層，全站 1 檔 1 處）。
+          # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          ug=$(curl -s --max-time 20 "$BASE/health/umbilical-granuloma.html" | grep -c '肉芽處理一兩次還是長回來' || true)
+          if [ "$ug" -ge 1 ]; then echo "OK    臍息肉頁正文已上線"; else echo "FAIL  臍息肉頁未見『肉芽處理一兩次還是長回來』——10-01e 新頁疑已回退"; fail=1; fi
           # 2026-09-20d：在地詞「從未佈局」的 9 頁補齊（與 09-20b 的語序缺口是不同類）。
           # ⚠️ 本批動的全是中繼層（keywords／隱藏 #ai-knowledge-block／llms 雙檔），
           # **9 頁可見層已程式化證明 byte-identical**，既有哨兵一條都不會叫。
