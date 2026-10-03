@@ -70,6 +70,9 @@ const SUITABLE = /(?:我|孩子|我家|兒子|女兒|寶寶|老大|老二|他|�
 const ACTION = /(?:幫我|替我|幫忙|可以幫).{0,6}(?:預約|掛號|取消|改期|改時間|查)|我的.{0,4}(?:預約|號碼|號次|未到)|排第幾|還要等多久|還要等幾|還有名額|還有位子|有沒有名額|可以插號|提前看/;
 const LATE = /遲到|沒趕上|來不及|趕不上/;
 // 流感疫苗預購（院長 2026-09-27；官網可見層不寫）：保留到效期、不退費只能轉讓、鼻噴不適合退差額
+// 公費流感疫苗當日品牌／指定／預約保留：回首頁公告⑧（院長 2026-10-03：品牌依當日配給、LINE「流感疫苗資訊」查、恕無法指定品牌、預約或保留）
+const PUBLIC_FLU = /公費.{0,12}(?:流感|疫苗|打)|(?:流感|疫苗).{0,12}公費/;
+const BRAND_ASK = /品牌|牌子|廠牌|哪一?牌|哪[一個]?家|什麼疫苗|哪一?支|指定|選牌|挑|預約|預購|預定|預訂|保留|留(?:一|給|著)/;
 const PREORDER = /預購|預定|預訂|訂了.{0,6}疫苗|先付.{0,4}錢/;
 // 預約額滿、電話預約（院長 2026-09-24）：只有網路系統一個管道，額滿不加號
 const QUOTA = /額滿|滿了|約滿|約不到|沒名額|沒有名額|加號|加掛|還有名額|有沒有名額|還有位子|電話.{0,4}(?:預約|掛號|約)|打電話.{0,6}(?:約|掛)/;
@@ -286,6 +289,14 @@ export function createAssistant(kb) {
     if (PERSONAL.test(q)) return reply('privacy', '提醒您，這個對話不需要提供個人資料，也不適合討論個別病情，請直接來電 06-2516086 由專人協助。');
     // 3. 次級紅旗（第三節）
     if (SOON.test(q)) return reply('soon', kb.soon_reply);
+    // 3-0. 公費流感疫苗品牌：先於預購規則（自費預購規則不適用公費；公費無法指定、預約或保留）
+    if (PUBLIC_FLU.test(q) && BRAND_ASK.test(q) && !/自費/.test(q)) {
+      const n = kb.notices.find((x) => !x.schedule && valid(x, today) && /公費.*品牌/.test(x.title));
+      if (n) {
+        const hits = search(raw.replace(/今天|今日|當天|現在/g, ''), today, 3, true).filter((h) => !/^流感疫苗預購規則/.test(h.row.title));
+        return reply('results', '', [{ type: 'notice', title: n.title, text: n.answer }, factsBlock(['line', 'phone']), ...(hits.length ? [faqBlock(hits)] : [])]);
+      }
+    }
     // 3-1. 流感疫苗預購：先回預購規則卡（先於適合性與費用，「預購鼻噴不適合」「預購可以退費嗎」都走這裡）
     if (PREORDER.test(q)) {
       const rows = kb.faqs.filter((r) => /^流感疫苗預購規則/.test(r.title));
