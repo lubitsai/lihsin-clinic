@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-10-03</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -96,7 +96,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
-    <lastmod>2026-10-02</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -546,6 +546,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lhpedclinic.com.tw/health/flu-vaccine-egg-cell.html</loc>
+    <lastmod>2026-10-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://lhpedclinic.com.tw/health/flu-antivirals.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/flu-antivirals-infographic.jpg</image:loc></image:image>
     <lastmod>2026-09-09</lastmod>
@@ -682,7 +688,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/</loc>
-    <lastmod>2026-10-02</lastmod>
+    <lastmod>2026-10-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
