@@ -12,6 +12,8 @@
         └── 六、補充問答（⏰ 12 月後整節刪）
     index.html
         └── 可見門診時間表＋JS 的 SCHEDULE/EXCEPTIONS（沿用 sync_schedule.py 的解析與交叉核對）
+    internal/AI客服_自費價目.json
+        └── 自費價目比對規則＋官網版回覆（院長 2026-10-05；§4-12 例外擴充）
                     │
                     ▼
     clinic-assistant/knowledge.json（產生檔，勿手改）
@@ -43,6 +45,9 @@ import sync_schedule  # noqa: E402
 SITE = 'https://lhpedclinic.com.tw'
 OUT_REL = 'clinic-assistant/knowledge.json'
 KB_GLOB = 'AI客服知識庫_立欣診所_正本_*.md'
+PRICES_REL = 'internal/AI客服_自費價目.json'
+# 公開 JSON 的護欄：官網不提優惠與藥物俗名（院長 2026-10-05 裁示；LINE 版優惠文字只放 LINE 程式包）
+PRICE_FORBIDDEN = re.compile(r'原價|推廣|優惠|同行|折抵|每人折|瘦瘦筆|瘦瘦針|猛健樂|週纖達|胰妥讚|Mounjaro|Wegovy')
 
 
 class KbError(RuntimeError):
@@ -97,6 +102,33 @@ def extract_qa(text: str, prefix: str) -> list[dict]:
             'seasonal': bool(m.group(2)),
         })
     return rows
+
+
+def load_prices(root: Path) -> dict:
+    path = root / PRICES_REL
+    if not path.exists():
+        raise KbError(f'找不到 {PRICES_REL}')
+    src = json.loads(path.read_text(encoding='utf-8'))
+    rules, seen = [], set()
+    for r in src['rules']:
+        if r['id'] in seen:
+            raise KbError(f'自費價目 ID 重複：{r["id"]}')
+        seen.add(r['id'])
+        if r.get('kind') not in ('vaccine', 'test', 'weight', 'other', 'ask') or not r.get('all') or not r.get('reply'):
+            raise KbError(f'自費價目 {r["id"]} 缺 kind／all／reply')
+        for rx in r['all'] + ([r['not']] if r.get('not') else []):
+            try:
+                re.compile(rx)
+            except re.error as e:
+                raise KbError(f'自費價目 {r["id"]} 規則無法編譯：{rx}（{e}）')
+        bad = PRICE_FORBIDDEN.search(r['reply'])
+        if bad:
+            raise KbError(f'自費價目 {r["id"]} 的官網回覆含「{bad.group(0)}」（官網不提優惠與藥物俗名）')
+        extra = set(r) - {'id', 'kind', 'all', 'not', 'reply'}
+        if extra:
+            raise KbError(f'自費價目 {r["id"]} 有未知欄位 {sorted(extra)}（LINE 專用文字不得進公開 JSON）')
+        rules.append({k: r[k] for k in ('id', 'kind', 'all', 'not', 'reply') if k in r})
+    return {'reviewed_at': src['reviewed_at'], 'no_data': src['no_data'], 'rules': rules}
 
 
 def build(root: Path, kb_path: Path) -> dict:
@@ -243,6 +275,7 @@ def build(root: Path, kb_path: Path) -> dict:
         'soon_reply': urgent_blocks[1],
         'facts': facts,
         'fees': fees,
+        'prices': load_prices(root),
         'schedule': {'weekly': sched['weekly'], 'exceptions': sched['exceptions']},
         'notices': notices,
         'faqs': faqs + supp + guides,

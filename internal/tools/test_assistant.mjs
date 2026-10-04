@@ -39,7 +39,7 @@ kind('我的電話0912345678', 'privacy');
 n++; assert(looksPersonal('病歷號 12345') && !looksPersonal('初診要帶什麼'));
 
 // ── 費用、個別評估、代辦、消歧義、現貨 ──
-kind('疫苗多少錢', 'price');
+kind('疫苗多少錢', 'price_item'); // 先問是哪一種自費疫苗（院長 2026-10-05 自費價目）
 n++; assert(!/\d+\s*元/.test(texts(ask('流感疫苗費用'))), '費用回覆不得出現金額');
 kind('孩子有氣喘可以打鼻噴嗎', 'clinical');
 kind('退燒藥吃多少', 'clinical');
@@ -81,11 +81,11 @@ for (const q of ['額滿了可以加號嗎', '可以打電話預約嗎', '還有
 }
 kind('幫我取消預約', 'action');
 n++; assert(/現場掛號/.test(texts(ask('額滿了可以加號嗎'))), '額滿時要告知仍可現場掛號');
-// 門診收費標準＝第 5 條唯一例外（院長 2026-09-24）：掛號費可給金額，其他自費仍轉人工
-for (const q of ['掛號費多少', '看一次多少錢', '健保卡忘記帶', '診斷書多少錢', '慢性處方箋領藥要掛號費嗎']) kind(q, 'fee');
+// 門診收費標準＝第 5 條例外一（院長 2026-09-24）：掛號費可給金額
+for (const q of ['掛號費多少', '看一次多少錢', '健保卡忘記帶', '慢性處方箋領藥要掛號費嗎']) kind(q, 'fee');
 n++; assert(texts(ask('掛號費多少')).includes('150') && texts(ask('掛號費多少')).includes('其他自費項目'));
 n++; assert.deepEqual(live.fees.rows[0], ['一般民眾', '150', '50']);
-for (const q of ['疫苗多少錢', '過敏原檢測多少錢']) {
+for (const q of ['過敏原檢測多少錢', '打針多少錢']) {
   kind(q, 'price');
   n++; assert(!/\b(?:150|550|350)\b/.test(texts(ask(q))), `「${q}」不得帶出收費表金額`);
 }
@@ -155,5 +155,46 @@ const flu = kb.faqs.find((r) => /流感疫苗常見副作用/.test(r.title));
 n++; assert(A.present(flu).includes('仿單'));
 n++; assert(A.present(kb.faqs.find((r) => /營業時間|門診時間/.test(r.title))).includes('實際門診時間以官網'));
 n++; assert.equal(A.search('聽說門診時間要改', '2099-01-01').some((h) => h.row.valid_until), false, '有到期日的題目過期後不出現');
+
+// ── 自費價目（院長 2026-10-05；第 5 條例外二）：只答被問到的品項，官網不提優惠與藥物俗名 ──
+const price = (q, re, msg) => { const r = ask(q); n++; assert.equal(r.kind, 'price_item', `「${q}」應為 price_item`); n++; assert(re.test(r.text), msg || `「${q}」回覆不符：${r.text}`); return r; };
+price('水痘疫苗多少錢', /2,400 元/);
+price('MMR多少', /1,000 元/);
+price('20價肺炎鏈球菌多少', /20 價.*4,500 元/);
+price('肺炎疫苗多少錢', /15 價.*4,000.*20 價.*4,500.*哪一種/, '肺炎鏈球菌不分價數要先問');
+price('RSV多少錢', /快篩.*單株抗體.*成人/, 'RSV 要先問哪一種');
+price('寶寶RSV單株抗體多少錢', /16,000 元/);
+price('RSV快篩多少', /250 元/);
+price('流感多少錢', /快篩.*疫苗/, '流感要先分快篩或疫苗');
+price('流感快篩多少錢', /250 元/);
+price('我女兒A肝多少錢', /幼兒.*900 元.*需先預約/);
+price('A肝疫苗多少', /1,800.*900/);
+price('B肝疫苗多少錢', /成人 B 型肝炎疫苗費用為 500 元/);
+price('B型腦膜炎疫苗價格', /6,500 元/);
+price('兩劑型輪狀多少', /3 劑型.*櫃檯/);
+price('破傷風多少錢', /三合一.*1,500/);
+price('診斷書多少錢', /第 2 份起每份 50 元/);
+price('多開三天藥多少錢', /70 元.*200 元/);
+price('打點滴多少錢', /850 元起/);
+price('勞工體檢多少', /800 元/);
+price('快篩多少錢', /哪一種快篩/);
+price('自費疫苗多少錢', /哪一種自費疫苗/);
+for (const q of ['帶狀皰疹疫苗多少', '皮蛇疫苗兩個人一起打多少', 'HPV多少錢', '減重8週多少錢', '減重多少錢', '瘦瘦筆一支多少錢', '猛健樂多少錢']) {
+  const t = texts(ask(q));
+  n++; assert(!/原價|推廣|優惠|同行|折|瘦瘦筆|猛健樂/.test(t.replace(/"title":"[^"]*"/g, '')), `「${q}」官網回覆不得提優惠或藥物俗名`);
+}
+price('瘦瘦筆一支多少錢', /沒有單一藥品的價格.*醫師評估後開立的藥物/);
+n++; assert(/仿單/.test(texts(ask('水痘疫苗多少錢'))), '疫苗價格附四但書');
+n++; assert(!/仿單/.test(texts(ask('流感快篩多少錢'))), '快篩不附疫苗但書');
+n++; assert(!/不另外收取掛號費/.test(ask('流感快篩多少錢').text), '快篩不得套用免掛號費');
+// 閘門：公費、疫苗問免費、沒問價錢、自費流感疫苗（無價格資料）都交給既有規則
+kind('公費水痘疫苗多少錢', 'fee');
+n++; assert.notEqual(ask('水痘疫苗免費嗎').kind, 'price_item');
+n++; assert.notEqual(ask('水痘疫苗要打幾劑').kind, 'price_item');
+kind('自費流感疫苗多少錢', 'price');
+kind('打自費疫苗要掛號費嗎', 'price');
+kind('學生體檢多少錢', 'price');
+kind('克流感多少錢', 'price');
+n++; assert(live.prices.rules.every((r) => !/原價|推廣|優惠|同行|瘦瘦筆/.test(r.reply)), '公開 JSON 不含優惠與藥物俗名');
 
 console.log(`✓ ${n} assertions passed`);

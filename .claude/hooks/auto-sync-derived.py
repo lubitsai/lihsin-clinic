@@ -9,7 +9,7 @@
      重產後跑 test_assistant.mjs；測試失敗會回報，不回滾。
 順序有依賴：2 改了正本，3 才會看到新題目。
 
-觸發：Edit／Write／MultiEdit 的目標是對外 .html（排除 booking-system／archive／internal）或知識庫正本；
+觸發：Edit／Write／MultiEdit 的目標是對外 .html（排除 booking-system／archive／internal）、知識庫正本或自費價目 JSON；
 或 Bash 指令字串含 .html／知識庫正本檔名（本 repo 常用 python／sed 改檔，只掛 Edit 會漏）。
 不 commit：重產的檔案留在工作區，隨本批一起提交；validate_site.py（E-SCHEDULE／E-KBSYNC／E-ASSISTANT）仍是 push 前的最後防線。
 不涵蓋：預約系統主機的 npx tsx scripts/sync-schedule.ts（要登入主機）；Codex／GitHub 網頁改檔不觸發。
@@ -22,6 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 TOOLS = ROOT / "internal" / "tools"
 KB_GLOB = "AI客服知識庫_立欣診所_正本_*.md"
+PRICES = "AI客服_自費價目.json"  # 自費價目（2026-10-05）→ knowledge.json
 SKIP = ("booking-system", "archive", "internal", "node_modules")
 
 
@@ -41,10 +42,10 @@ def relevant(payload: dict) -> bool:
             return False
         if p.suffix == ".html":
             return rel.parts[0] not in SKIP
-        return p.match(KB_GLOB)
+        return p.match(KB_GLOB) or p.name == PRICES
     if name == "Bash":
         cmd = ti.get("command") or ""
-        return ".html" in cmd or "AI客服知識庫" in cmd
+        return ".html" in cmd or "AI客服知識庫" in cmd or PRICES in cmd
     return False
 
 
