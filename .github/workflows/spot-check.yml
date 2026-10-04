@@ -374,6 +374,7 @@ jobs:
           check /images/nasal-flu-vaccine-thumb.jpg 200
           # 2026-10-01 新增：健康幣最新消息卡縮圖（時效卡，刪卡時本行同批移除，防呆 17）。
           check /images/health-token-2026-thumb.jpg 200
+          check /images/flu-vaccine-egg-cell-thumb.jpg 200
           # 2026-08-31d 續:上方已補 check /services/weight-management.html 200,
           # 該不對稱已解除——本行 FAIL 而頁哨兵 OK ＝ 只有圖掉了;兩行同時 FAIL ＝ 整頁不見。
           # 小鹿醫師 3D 看診趣(2026-08-16 新增,PR #97):/game/ 是刻意公開的獨立
