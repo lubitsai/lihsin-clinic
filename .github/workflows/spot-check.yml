@@ -394,6 +394,11 @@ jobs:
           check /images/scarlet-fever-infographic.jpg 200
           check /health/kawasaki-disease.html 200
           check /images/kawasaki-disease-infographic.jpg 200
+          # 2026-10-05m 新增（院長對話交付衛教圖，走 infographic-upload）：health/dust-mite.html
+          # 的內文主圖，同時是 og:image、MedicalWebPage.image 與 sitemap image:image 的標的。
+          # 圖掉了頁面照樣 200、validate_site.py 全綠，沒有任何機制會發現。只盯 .jpg 不盯 .webp
+          # （webp 掉了會靜默 fallback 回 jpg）。換圖時須改用帶日期檔名並同批改本行，不可直接刪（防呆 17）。
+          check /images/dust-mite-infographic.jpg 200
           check /health/umbilical-granuloma.html 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
