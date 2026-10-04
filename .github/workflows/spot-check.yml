@@ -346,7 +346,7 @@ jobs:
           #    不可直接刪——刪掉等於把這張圖唯一的線上回歸保護拿掉。
           #    換版清單見 00 §6 標 🗓 那條與 health/flu-vaccine.html 的現場註解第 ④ 項。
           check /health/flu-vaccine.html 200
-          check /images/flu-vaccine-public-2026-infographic.jpg 200
+          check /images/flu-vaccine-public-2026-20261004-infographic.jpg 200
           # 2026-09-05c（院長裁示「5 張縮圖哨兵一起補」）：首頁「最新消息」5 張卡的 480² 縮圖。
           # 為什麼值得補：這 5 張是**首頁**唯一的內容圖，圖掉了首頁最新消息區會整排開天窗，
           # 而頁面照樣 200、既有的 08:00–11:00 門診表哨兵也照樣 OK——沒有任何機制會發現。
@@ -365,7 +365,7 @@ jobs:
           # ⚠️ 連動維護義務（防呆 17）：最新消息卡換圖、換檔名或整張退場時，
           #    對應這一行要同批改或刪，不可放著讓它誤報。
           check /images/flu-vaccine-2026-20260930-thumb.jpg 200
-          check /images/flu-vaccine-public-2026-thumb.jpg 200
+          check /images/flu-vaccine-public-2026-20261004-thumb.jpg 200
           check /images/flu-vaccine-doses-2026-thumb.jpg 200
           # 2026-09-09j 新增（院長指令「因應流感季，加入最新消息第二篇」）：第 6 張卡的縮圖。
           # 理由同上——圖掉了首頁最新消息區會開天窗，而頁面照樣 200、既有哨兵都不會亮。
