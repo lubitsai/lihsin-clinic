@@ -547,6 +547,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/flu-vaccine-egg-cell.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/flu-vaccine-egg-cell-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
