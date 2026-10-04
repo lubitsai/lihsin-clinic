@@ -397,6 +397,7 @@ jobs:
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
+          check /images/flu-vaccine-egg-cell-infographic.jpg 200
           check /images/umbilical-granuloma-infographic.jpg 200
           check /news/health-token-2026.html 200
           check /images/health-token-2026-infographic.jpg 200
