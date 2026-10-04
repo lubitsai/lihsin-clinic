@@ -258,6 +258,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/dust-mite.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/dust-mite-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -451,7 +452,8 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/pneumococcal-vaccine.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <lastmod>2026-10-05</lastmod>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/pneumococcal-vaccine-20261005-infographic.jpg</image:loc></image:image>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
