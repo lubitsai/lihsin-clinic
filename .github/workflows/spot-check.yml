@@ -970,6 +970,13 @@ jobs:
           # 改了就該連同本檢查一起改（防呆 17），不要直接刪。
           hw=$(curl -s --max-time 20 "$BASE/" | grep -c '夜間與假日門診人潮較多，建議先查詢即時看診進度，或提前線上預約。' || true)
           if [ "$hw" -ge 1 ]; then echo "OK    首頁 hero 等候期待管理文案已上線"; else echo "FAIL  首頁未見等候期待管理文案——09-14l 院長核可的可見文字疑已回退"; fail=1; fi
+          # 2026-10-05zb 新增（PR #346 李佳玲醫師新生兒科專科醫師）：該 PR 合併時 Netlify
+          # 因 credits 用完回 503，部署疑似失敗、恢復後線上仍是舊版。盯 dr-lee 可見「專科資格」行
+          # 與新生兒照護頁 H1，日後同類「合併了但沒部署上去」才看得出來。
+          dl=$(curl -s --max-time 20 "$BASE/team/dr-lee.html" | grep -c '新生兒科專科醫師（台灣新生兒科醫學會）</p>' || true)
+          if [ "$dl" -ge 1 ]; then echo "OK    dr-lee 專科資格行含新生兒科專科醫師"; else echo "FAIL  dr-lee 未見『新生兒科專科醫師（台灣新生兒科醫學會）』——10-05z 資格更新未上線或已回退"; fail=1; fi
+          nb=$(curl -s --max-time 20 "$BASE/services/newborn-care.html" | grep -c '李佳玲醫師・新生兒科專科醫師）</h1>' || true)
+          if [ "$nb" -ge 1 ]; then echo "OK    新生兒照護頁 H1 含新生兒科專科醫師"; else echo "FAIL  新生兒照護頁 H1 未見『李佳玲醫師・新生兒科專科醫師』——10-05z 更新未上線或已回退"; fail=1; fi
           # 2026-09-19d 新增（本批新頁〈傳染性紅斑（蘋果病）〉的可見層哨兵）：
           # 盯病程第 2 階段那句「蘋果臉」的描述。挑這句的理由是**全站唯一性**：
           # 實測 grep -rl 全站 HTML 僅 health/erythema-infectiosum.html 命中。
