@@ -85,6 +85,11 @@ const VAX_CUTOFF = /(?:疫苗|打針|接種|施打).{0,8}(?:最晚|最後|截止
 // 打流感疫苗要帶什麼：學生（補接種通知單＋健保卡）與 6 個月至入學前（健保卡＋兒童健康手冊）分流
 const FLU_DOCS = /流感.{0,12}(?:帶什麼|要帶|攜帶|帶哪些|準備什麼|什麼證件|證件)|(?:帶什麼|要帶|攜帶|帶哪些|準備什麼|什麼證件|證件).{0,12}流感/;
 const STUDENT = /學生|國小|國中|高中|高職|小學|補接種/;
+// 5-0a 直接回的官網既有題目：以標題指定，不用 Q 編號（重產題庫時編號會依頁面順序順移；2026-10-05 院長裁示）。
+// 標題改了就找不到 → 回 null、交給後面的分流（不會指錯題）；test_assistant.mjs 斷言四題都在。LINE 程式包逐字核對本段。
+const PIN_CUTOFF = ['週六、週日或夜診時段可以接種疫苗嗎？', '打疫苗需要預約嗎？要先確認有沒有貨嗎？'];
+const PIN_FLU_DOCS = ['打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？', '國小到高中職學生要打公費流感疫苗，需要帶什麼？'];
+const PIN_FLU_DOCS_STUDENT = ['國小到高中職學生要打公費流感疫苗，需要帶什麼？', '打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？'];
 // 預約額滿、電話預約（院長 2026-09-24）：只有網路系統一個管道，額滿不加號
 const QUOTA = /額滿|滿了|約滿|約不到|沒名額|沒有名額|加號|加掛|還有名額|有沒有名額|還有位子|電話.{0,4}(?:預約|掛號|約)|打電話.{0,6}(?:約|掛)/;
 // 現場掛號不能跨診次（院長 2026-09-24）：「早上先掛下午的號」「可以預掛晚診嗎」
@@ -344,18 +349,18 @@ export function createAssistant(kb) {
       return reply('action', '線上小幫手無法代為預約、改期、取消，也查不到個人的預約、號次或候診時間。', [factsBlock(['booking', 'queue', 'phone'])]);
     }
     // 5-0a. 疫苗最後施打時間、打流感疫苗要帶什麼：直接回官網既有題目（不新增答案文字）
-    const pinned = (ids) => {
-      const rows = ids.map((id) => kb.faqs.find((r) => r.id === id)).filter(Boolean);
+    const pinned = (titles) => {
+      const rows = titles.map((t) => kb.faqs.find((r) => r.title === t && valid(r, today))).filter(Boolean);
       if (!rows.length) return null;
       const fb = faqBlock(rows.map((row) => ({ row, score: 1 })));
       return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
     };
     if (VAX_CUTOFF.test(q) && !PRICE.test(q)) {
-      const r = pinned(['Q226', 'Q198']);
+      const r = pinned(PIN_CUTOFF);
       if (r) return r;
     }
     if (FLU_DOCS.test(q) && !PRICE.test(q)) {
-      const r = pinned(STUDENT.test(q) ? ['Q202', 'Q524'] : ['Q524', 'Q202']);
+      const r = pinned(STUDENT.test(q) ? PIN_FLU_DOCS_STUDENT : PIN_FLU_DOCS);
       if (r) return r;
     }
     // 5-1. 自費價目：只回答被問到的品項；疫苗類附四但書（第 11 條）

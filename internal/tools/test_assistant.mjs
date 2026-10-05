@@ -217,13 +217,27 @@ for (const q of ['最後幾點可以打疫苗？', '幾點以後不能打疫苗'
   n++; assert.equal(r.kind, 'results', `「${q}」`);
   n++; assert(/20:30.*17:00.*20:00/.test(first(r)?.text), `「${q}」第一題應列出停打時間`);
 }
-for (const [q, id] of [['3歲小孩打公費流感要帶什麼', 'Q524'], ['打流感疫苗要帶什麼', 'Q524'],
-  ['學生打公費流感要帶什麼', 'Q202'], ['國中生打公費流感要帶什麼證件', 'Q202']]) {
+const T_KIDS = '打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？', T_STUDENT = '國小到高中職學生要打公費流感疫苗，需要帶什麼？';
+const T_CUTOFF = '週六、週日或夜診時段可以接種疫苗嗎？', T_BOOK = '打疫苗需要預約嗎？要先確認有沒有貨嗎？';
+for (const t of [T_KIDS, T_STUDENT, T_CUTOFF, T_BOOK]) { n++; assert(live.faqs.some((r) => r.title === t), `5-0a 指定題目不存在：${t}`); }
+const docCases = [['3歲小孩打公費流感要帶什麼', T_KIDS], ['打流感疫苗要帶什麼', T_KIDS],
+  ['學生打公費流感要帶什麼', T_STUDENT], ['國中生打公費流感要帶什麼證件', T_STUDENT]];
+for (const [q, t] of docCases) {
   const r = ask(q, '2026-10-05');
-  n++; assert.equal(first(r)?.id, id, `「${q}」第一題應為 ${id}`);
+  n++; assert.equal(first(r)?.title, t, `「${q}」第一題應為〈${t}〉`);
   n++; assert.equal(first(r)?.open, true);
 }
+// 題庫重產時 Q 編號會順移：模擬全部編號 +1，5-0a 仍要回同一題（2026-10-05 改用標題指定的理由）
+{
+  const shifted = structuredClone(kb);
+  shifted.faqs = shifted.faqs.map((r) => (/^Q\d+$/.test(r.id) ? { ...r, id: 'Q' + String(+r.id.slice(1) + 1).padStart(3, '0') } : r));
+  const B = createAssistant(shifted);
+  for (const [q, t] of [...docCases, ['最後幾點可以打疫苗？', T_CUTOFF]]) {
+    const f = B.ask(q, '2026-10-05').blocks.find((b) => b.type === 'faq')?.items[0];
+    n++; assert.equal(f?.title, t, `編號順移後「${q}」仍應回〈${t}〉`);
+  }
+}
 n++; assert(/兒童健康手冊/.test(first(ask('3歲小孩打公費流感要帶什麼', '2026-10-05')).text));
-n++; assert.notEqual(first(ask('打完疫苗可以洗澡嗎', '2026-10-05'))?.id, 'Q226');
+n++; assert.notEqual(first(ask('打完疫苗可以洗澡嗎', '2026-10-05'))?.title, T_CUTOFF);
 
 console.log(`✓ ${n} assertions passed`);
