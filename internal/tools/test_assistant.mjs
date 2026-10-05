@@ -209,4 +209,21 @@ kind('學生體檢多少錢', 'price');
 kind('克流感多少錢', 'price');
 n++; assert(live.prices.rules.every((r) => !/原價|推廣|優惠|同行|瘦瘦筆/.test(r.reply)), '公開 JSON 不含優惠與藥物俗名');
 
+// ── 流感開打第一週實際問法（2026-10-05p）──
+const first = (r) => r.blocks.find((b) => b.type === 'faq')?.items[0];
+n++; assert(brandCard(ask('今天公費哪一牌？', '2026-10-05')), '「今天公費哪一牌」應回公費品牌公告，不是門診表');
+for (const q of ['最後幾點可以打疫苗？', '幾點以後不能打疫苗', '疫苗打到幾點', '週六最晚幾點可以打疫苗']) {
+  const r = ask(q, '2026-10-05');
+  n++; assert.equal(r.kind, 'results', `「${q}」`);
+  n++; assert(/20:30.*17:00.*20:00/.test(first(r)?.text), `「${q}」第一題應列出停打時間`);
+}
+for (const [q, id] of [['3歲小孩打公費流感要帶什麼', 'Q524'], ['打流感疫苗要帶什麼', 'Q524'],
+  ['學生打公費流感要帶什麼', 'Q202'], ['國中生打公費流感要帶什麼證件', 'Q202']]) {
+  const r = ask(q, '2026-10-05');
+  n++; assert.equal(first(r)?.id, id, `「${q}」第一題應為 ${id}`);
+  n++; assert.equal(first(r)?.open, true);
+}
+n++; assert(/兒童健康手冊/.test(first(ask('3歲小孩打公費流感要帶什麼', '2026-10-05')).text));
+n++; assert.notEqual(first(ask('打完疫苗可以洗澡嗎', '2026-10-05'))?.id, 'Q226');
+
 console.log(`✓ ${n} assertions passed`);
