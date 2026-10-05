@@ -78,6 +78,13 @@ const LATE = /遲到|沒趕上|來不及|趕不上/;
 const PUBLIC_FLU = /公費.{0,12}(?:流感|疫苗|打)|(?:流感|疫苗).{0,12}公費/;
 const BRAND_ASK = /品牌|牌子|廠牌|哪一?牌|哪[一個]?家|什麼疫苗|哪一?支|指定|選牌|挑|預約|預購|預定|預訂|保留|留(?:一|給|著)/;
 const PREORDER = /預購|預定|預訂|訂了.{0,6}疫苗|先付.{0,4}錢/;
+// 「今天公費哪一牌」沒講流感／疫苗，但公費＋牌子在流感季只會是公費流感疫苗
+const PUBLIC_BRAND = /公費.{0,8}(?:品牌|牌子|廠牌|哪一?牌)/;
+// 疫苗最後施打時間（每日最後一診結束前 1 小時停打）；「疫苗打到幾點」原本會配到夜診題
+const VAX_CUTOFF = /(?:疫苗|打針|接種|施打).{0,8}(?:最晚|最後|截止|停止|到幾點|幾點前|幾點以前|幾點後|幾點以後|幾點為止)|(?:最晚|最後|截止|停止|幾點).{0,8}(?:疫苗|打針|接種|施打)/;
+// 打流感疫苗要帶什麼：學生（補接種通知單＋健保卡）與 6 個月至入學前（健保卡＋兒童健康手冊）分流
+const FLU_DOCS = /流感.{0,12}(?:帶什麼|要帶|攜帶|帶哪些|準備什麼|什麼證件|證件)|(?:帶什麼|要帶|攜帶|帶哪些|準備什麼|什麼證件|證件).{0,12}流感/;
+const STUDENT = /學生|國小|國中|高中|高職|小學|補接種/;
 // 預約額滿、電話預約（院長 2026-09-24）：只有網路系統一個管道，額滿不加號
 const QUOTA = /額滿|滿了|約滿|約不到|沒名額|沒有名額|加號|加掛|還有名額|有沒有名額|還有位子|電話.{0,4}(?:預約|掛號|約)|打電話.{0,6}(?:約|掛)/;
 // 現場掛號不能跨診次（院長 2026-09-24）：「早上先掛下午的號」「可以預掛晚診嗎」
@@ -302,7 +309,7 @@ export function createAssistant(kb) {
     // 3. 次級紅旗（第三節）
     if (SOON.test(q)) return reply('soon', kb.soon_reply);
     // 3-0. 公費流感疫苗品牌：先於預購規則（自費預購規則不適用公費；公費無法指定、預約或保留）
-    if (PUBLIC_FLU.test(q) && BRAND_ASK.test(q) && !/自費/.test(q)) {
+    if (((PUBLIC_FLU.test(q) && BRAND_ASK.test(q)) || PUBLIC_BRAND.test(q)) && !/自費/.test(q)) {
       const n = kb.notices.find((x) => !x.schedule && valid(x, today) && /公費.*品牌/.test(x.title));
       if (n) {
         const hits = search(raw.replace(/今天|今日|當天|現在/g, ''), today, 3, true).filter((h) => !/^流感疫苗預購規則/.test(h.row.title));
@@ -335,6 +342,21 @@ export function createAssistant(kb) {
     // 5. 代訂／查號次／承諾名額（第 17 條）
     if (ACTION.test(q)) {
       return reply('action', '線上小幫手無法代為預約、改期、取消，也查不到個人的預約、號次或候診時間。', [factsBlock(['booking', 'queue', 'phone'])]);
+    }
+    // 5-0a. 疫苗最後施打時間、打流感疫苗要帶什麼：直接回官網既有題目（不新增答案文字）
+    const pinned = (ids) => {
+      const rows = ids.map((id) => kb.faqs.find((r) => r.id === id)).filter(Boolean);
+      if (!rows.length) return null;
+      const fb = faqBlock(rows.map((row) => ({ row, score: 1 })));
+      return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
+    };
+    if (VAX_CUTOFF.test(q) && !PRICE.test(q)) {
+      const r = pinned(['Q226', 'Q198']);
+      if (r) return r;
+    }
+    if (FLU_DOCS.test(q) && !PRICE.test(q)) {
+      const r = pinned(STUDENT.test(q) ? ['Q202', 'Q524'] : ['Q524', 'Q202']);
+      if (r) return r;
     }
     // 5-1. 自費價目：只回答被問到的品項；疫苗類附四但書（第 11 條）
     const pr = priceRule(q);
