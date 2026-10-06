@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.8）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.9）
 
-2026-10-06 第二版 2.8｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-10-06 第二版 2.9｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.9 補三個商品名（2026-10-06）
+
+- 價目比對再認得：補施追／Boostrix（Tdap）、安在時／Engerix-B（成人 B 肝）、肺恩賜／Vaxneuvance（15 價肺鏈）。回覆文字不變。
 
 ## 2.8 院內疫苗品牌名（2026-10-06）
 

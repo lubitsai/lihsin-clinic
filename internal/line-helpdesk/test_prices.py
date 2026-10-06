@@ -43,7 +43,8 @@ class PriceTests(unittest.TestCase):
     def test_clinic_brand_names(self):
         # 院長 2026-10-06 交付的院內疫苗品項表：品牌名對到同一條價目
         for q, part in [('必思諾多少錢', '6,500 元'), ('沛兒20多少錢', '4,500 元'), ('伏痘敏多少錢', '2,400 元'),
-                        ('恩穩健多少錢', '4,100 元'), ('Beyfortus多少錢', '16,000 元'), ('M-M-R II多少錢', '1,000 元')]:
+                        ('恩穩健多少錢', '4,100 元'), ('Beyfortus多少錢', '16,000 元'), ('M-M-R II多少錢', '1,000 元'),
+                        ('補施追多少錢', '1,500 元'), ('安在時多少錢', '500 元'), ('肺恩賜多少錢', '4,000 元')]:
             self.assertPrice(q, part)
 
     def test_line_promotions(self):
