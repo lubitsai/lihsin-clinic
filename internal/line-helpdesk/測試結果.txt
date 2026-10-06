@@ -1,4 +1,4 @@
-2026-10-06 第二版 2.9（補施追、安在時、肺恩賜）
+2026-10-06 第二版 2.9（補施追、安在時、肺恩賜；首頁 B 型腦膜炎雙球菌疫苗用詞統一後重產）
 - build_faq.py --check 同步；python3 -m unittest 82 項全部通過；官網 test_assistant.mjs 269 項通過。
 - 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
 
