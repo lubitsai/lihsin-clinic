@@ -78,9 +78,10 @@ python3 internal/tools/make_infographic.py "<上傳圖路徑>" <slug>
     ```html
     <picture>
     <source type="image/webp" srcset="/images/<slug>-infographic-768.webp 768w, /images/<slug>-infographic.webp 1254w" sizes="(max-width: 767px) 82vw, 700px">
-    <img src="/images/<slug>-infographic.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="…忠實描述圖內重點…" class="w-full max-w-2xl mx-auto rounded-2xl shadow-md">
+    <img src="/images/<slug>-infographic.jpg" width="1254" height="1254" fetchpriority="high" decoding="async" alt="…忠實描述圖內重點…" class="w-full max-w-2xl mx-auto rounded-2xl shadow-md">
     </picture>
     ```
+    ⚠️ 上面是**首屏主圖**（文章第一張圖，放在快速重點之前）的寫法：`fetchpriority="high"`、**不加** `loading="lazy"`。第二張以後、不在首屏的圖才把 `fetchpriority="high"` 換成 `loading="lazy"`。（2026-10-07d：本片段原本寫 `loading="lazy"`，照抄的結果是 60 頁首屏圖延遲載入、手機 LCP 13.4 s。）
   - 首頁最新消息卡：
     ```html
     <source type="image/webp" srcset="/images/<slug>-thumb.webp">

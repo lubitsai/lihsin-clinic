@@ -144,6 +144,12 @@ jobs:
               "TBT: \(.audits["total-blocking-time"].displayValue // "n/a")",
               "SpeedIndex: \(.audits["speed-index"].displayValue // "n/a")"
             ' /tmp/lh.json || echo "Lighthouse 取得失敗"
+            # 2026-10-06 SEO 健檢批:補印 LCP 元素與位移元素,實驗室數據亮紅時能直接定位,
+            # 不必再猜(首頁 CLS 0.113 本機加 4G/4x CPU 節流仍重現不出,差在 GA4/Clarity 等線上資源)。
+            echo "─ LCP 元素:"
+            jq -r '.audits["largest-contentful-paint-element"].details.items[0].items[0].node.snippet // "n/a"' /tmp/lh.json 2>/dev/null | cut -c1-200 || true
+            echo "─ 位移元素(layout-shifts):"
+            jq -r '.audits["layout-shifts"].details.items[]? | "  \(.score|tostring|.[0:6])  \(.node.selector // "?")  \(.node.snippet // "" | .[0:120])"' /tmp/lh.json 2>/dev/null || true
             echo "─ 改善機會(>100ms):"
             jq -r '.audits | to_entries[] | select(.value.details.type=="opportunity" and .value.details.overallSavingsMs>100) | "  \(.value.title): 可省 \(.value.details.overallSavingsMs|round)ms"' /tmp/lh.json 2>/dev/null || true
           }
