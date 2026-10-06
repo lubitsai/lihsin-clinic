@@ -1,0 +1,1536 @@
+{
+  "立欣診所": {
+    "type": "flex",
+    "altText": "診所資訊",
+    "contents": {
+      "type": "bubble",
+      "hero": {
+        "type": "image",
+        "url": "https://storage.googleapis.com/ls_clinic/LH_Time3.png",
+        "size": "full",
+        "aspectRatio": "20:13",
+        "aspectMode": "cover",
+        "action": {
+          "type": "uri",
+          "uri": "https://line.me/"
+        }
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "◆ 診所資訊",
+            "weight": "bold",
+            "color": "#3D0C02",
+            "size": "lg"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "baseline",
+                "contents": [
+                  {
+                    "type": "icon",
+                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "text",
+                    "text": "電話  :  06 - 2516086",
+                    "margin": "md",
+                    "weight": "bold",
+                    "size": "sm",
+                    "contents": []
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "icon",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                      },
+                      {
+                        "type": "text",
+                        "text": "地址  :  ",
+                        "margin": "md",
+                        "weight": "bold",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ],
+                    "height": "22px"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "box",
+                        "layout": "baseline",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "台南市北區育德路467號",
+                            "margin": "25px",
+                            "weight": "regular",
+                            "size": "sm",
+                            "contents": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "contents": [
+                  {
+                    "type": "icon",
+                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "text",
+                    "text": "門診時間 :",
+                    "margin": "md",
+                    "weight": "bold",
+                    "size": "sm",
+                    "contents": []
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "早上 08:00 - 12:00",
+                        "margin": "25px",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "        (週六、日 08:00 - 11:30)",
+                        "margin": "25px",
+                        "weight": "bold",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "下午 14:30 - 18:00",
+                        "margin": "25px",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "晚上 18:30 - 21:30",
+                        "margin": "25px",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "        (週日 18:30 - 21:00)",
+                        "margin": "25px",
+                        "weight": "bold",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "週六晚上及周日下午休診",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": [],
+                        "margin": "25px"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "spacing": "2px"
+          }
+        ]
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "地圖導航",
+                  "uri": "https://maps.app.goo.gl/Z9k5pigizhbdM9cp9"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451",
+                "margin": "none"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "致電診所",
+                  "uri": "tel:06-2516086"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ],
+            "spacing": "lg"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": []
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "最新門診異動",
+              "text": "最新門診異動"
+            },
+            "style": "primary",
+            "height": "sm",
+            "margin": "md",
+            "color": "#E74C3C"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": []
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "診療項目",
+              "text": "診療項目"
+            },
+            "style": "primary",
+            "height": "sm",
+            "margin": "md",
+            "color": "#F89880"
+          }
+        ],
+        "action": {
+          "type": "message",
+          "label": "action",
+          "text": "診療項目"
+        }
+      }
+    }
+  },
+  "過敏減重諮詢": {
+    "type": "flex",
+    "altText": "醫師介紹",
+    "contents": {
+      "type": "bubble",
+      "size": "mega",
+      "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "特別門診諮詢",
+            "margin": "none",
+            "size": "lg",
+            "weight": "bold",
+            "color": "#FFFFFF",
+            "decoration": "none",
+            "align": "center"
+          }
+        ],
+        "height": "60px",
+        "backgroundColor": "#A52A2A"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": []
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "過敏氣喘諮詢",
+              "text": "過敏氣喘諮詢"
+            },
+            "style": "primary",
+            "color": "#F89880",
+            "gravity": "center"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "減重營養諮詢",
+              "text": "減重營養諮詢"
+            },
+            "style": "primary",
+            "color": "#008080",
+            "offsetTop": "xl"
+          }
+        ],
+        "spacing": "none",
+        "margin": "none",
+        "height": "150px"
+      }
+    }
+  },
+  "醫師介紹": {
+    "type": "flex",
+    "altText": "醫師介紹",
+    "contents": {
+      "type": "carousel",
+      "contents": [
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "醫師介紹",
+                "color": "#FFFFFF",
+                "align": "center",
+                "weight": "bold",
+                "size": "lg"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/doctor.png",
+                "margin": "xs",
+                "size": "3xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "蔡宗儒  院長",
+                    "weight": "bold",
+                    "size": "xl",
+                    "margin": "none"
+                  }
+                ],
+                "alignItems": "center"
+              },
+              {
+                "type": "separator",
+                "margin": "md"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "■  中國醫藥大學 醫學士暨公共衛生碩士",
+                    "size": "sm",
+                    "margin": "none",
+                    "offsetTop": "none"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  中國醫藥大學 醫學士",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  天主教輔仁醫院 兒科主治醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  台北馬偕醫院  兒童過敏氣喘免疫",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "風濕科研究醫師",
+                    "size": "sm",
+                    "margin": "md",
+                    "offsetStart": "lg"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  日本順天堂大學醫院 兒科臨床進修",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  新光醫院  兒科總醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  成大醫院  兒科住院醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "xs",
+                "color": "#FFFFFF"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "■  中華民國小兒科專科醫師",
+                    "size": "sm",
+                    "margin": "none",
+                    "offsetTop": "none"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  青少年醫學專科醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  氣喘慢性照護醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  台灣肥胖醫學會醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  糖尿病共同照護網認證",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  成人預防保健服務醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  兒童發展與健康篩檢服務醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  }
+                ]
+              }
+            ],
+            "margin": "none",
+            "spacing": "xxl"
+          },
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "點我>>小鹿醫師粉絲專頁",
+                  "uri": "https://www.facebook.com/drdeertsai2024/"
+                },
+                "color": "#C47451",
+                "height": "sm",
+                "style": "primary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "診療項目",
+                  "text": "診療項目"
+                },
+                "style": "primary",
+                "margin": "lg",
+                "height": "sm",
+                "color": "#F89880"
+              }
+            ]
+          }
+        },
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "醫師介紹",
+                "color": "#FFFFFF",
+                "align": "center",
+                "weight": "bold",
+                "size": "lg"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/DrLee2.png",
+                "margin": "xs",
+                "size": "3xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "李佳玲  醫師",
+                    "weight": "bold",
+                    "size": "xl",
+                    "margin": "none"
+                  }
+                ],
+                "alignItems": "center"
+              },
+              {
+                "type": "separator",
+                "margin": "md"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "■  國防醫學院 醫學士",
+                    "size": "sm",
+                    "margin": "none",
+                    "offsetTop": "none"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  台北禾馨民權婦幼診所 兒科主治醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  台北國泰綜合醫院 兒科主治醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  台北國泰綜合醫院 新生兒次專科研究醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  國泰醫院兒科總醫師 兒科住院醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  }
+                ]
+              },
+              {
+                "type": "separator",
+                "margin": "xs",
+                "color": "#FFFFFF"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "■  中華民國小兒科專科醫師",
+                    "size": "sm",
+                    "margin": "none",
+                    "offsetTop": "none"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  兒童發展與健康篩檢服務醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  青少年醫學專科醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  糖尿病共同照護網認證",
+                    "size": "sm",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  成人預防保健服務醫師",
+                    "size": "sm",
+                    "margin": "md"
+                  }
+                ]
+              }
+            ],
+            "margin": "none",
+            "spacing": "xxl"
+          },
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "點我>>小鹿醫師粉絲專頁",
+                  "uri": "https://www.facebook.com/drdeertsai2024/"
+                },
+                "color": "#C47451",
+                "height": "sm",
+                "style": "primary"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "message",
+                  "label": "診療項目",
+                  "text": "診療項目"
+                },
+                "style": "primary",
+                "margin": "lg",
+                "height": "sm",
+                "color": "#F89880"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "診療項目": {
+    "type": "flex",
+    "altText": "診療項目",
+    "contents": {
+      "type": "carousel",
+      "contents": [
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/Baby.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "小 兒 專 科",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "兒童感染病症、感冒發燒、呼吸道",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "疾病、泌尿道疾病、腸病毒、兒童",
+                    "margin": "xs"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "健康檢查、生長發育評估、育嬰指導",
+                "margin": "xs"
+              }
+            ]
+          },
+          "direction": "ltr"
+        },
+        {
+          "type": "bubble",
+          "direction": "ltr",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/ENT.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "耳鼻喉治療",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "感冒、頭痛、發燒、久咳不癒、耳痛",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "text",
+                    "margin": "xs",
+                    "text": "耳鳴、眩暈、中耳炎、耳垢清理、"
+                  },
+                  {
+                    "type": "text",
+                    "text": "鼻塞、鼻竇炎、流鼻血、鼻涕倒流",
+                    "margin": "xs"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "喉嚨痛、聲音沙啞、魚刺、口腔潰瘍",
+                "margin": "xs"
+              }
+            ]
+          }
+        },
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/Sneeze.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "過 敏 氣 喘",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "各種過敏疾病、過敏性鼻炎、氣喘控",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "制及照護、異位性皮膚炎照護",
+                    "margin": "xs"
+                  }
+                ]
+              }
+            ]
+          },
+          "direction": "ltr"
+        },
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/Iche.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "皮 膚 疾 病",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "皮膚過敏、濕疹、蕁麻疹、黴菌感染",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "皰疹",
+                    "margin": "xs"
+                  }
+                ]
+              }
+            ]
+          },
+          "direction": "ltr"
+        },
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/high_pressure.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "三高慢性病",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "成人慢性病控制、高血壓、高血脂、",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "糖尿病、腎臟病、痛風、失眠",
+                    "margin": "xs"
+                  }
+                ]
+              }
+            ]
+          },
+          "direction": "ltr"
+        },
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/injury.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "外 傷 處 理",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "外傷及膿瘍處理、蜂窩性組織炎、",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "傷口縫合、傷口拆線",
+                    "margin": "xs"
+                  }
+                ]
+              }
+            ]
+          },
+          "direction": "ltr"
+        },
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/vacacine.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "預 防 保 健",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "成人健檢、各項公自費疫苗接種",
+                    "margin": "xxl"
+                  }
+                ]
+              }
+            ]
+          },
+          "direction": "ltr"
+        },
+        {
+          "type": "bubble",
+          "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": "診療項目",
+                "weight": "bold",
+                "align": "center",
+                "size": "lg",
+                "color": "#FFFFFF"
+              }
+            ],
+            "height": "60px",
+            "backgroundColor": "#A52A2A"
+          },
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "image",
+                "url": "https://storage.googleapis.com/ls_clinic/weight.png",
+                "size": "xl"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "體 重 管 理",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "減重門診、體態分析、飲食評估指導",
+                    "margin": "xxl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "Inbody測量",
+                    "margin": "xs"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "診所資訊": {
+    "type": "flex",
+    "altText": "診所資訊",
+    "contents": {
+      "type": "bubble",
+      "hero": {
+        "type": "image",
+        "url": "https://storage.googleapis.com/ls_clinic/LH_Time3.png",
+        "size": "full",
+        "aspectRatio": "20:13",
+        "aspectMode": "cover",
+        "action": {
+          "type": "uri",
+          "uri": "https://line.me/"
+        }
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "◆ 診所資訊",
+            "weight": "bold",
+            "color": "#3D0C02",
+            "size": "lg"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "baseline",
+                "contents": [
+                  {
+                    "type": "icon",
+                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "text",
+                    "text": "電話  :  06 - 2516086",
+                    "margin": "md",
+                    "weight": "bold",
+                    "size": "sm",
+                    "contents": []
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "icon",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                      },
+                      {
+                        "type": "text",
+                        "text": "地址  :  ",
+                        "margin": "md",
+                        "weight": "bold",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ],
+                    "height": "22px"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                      {
+                        "type": "box",
+                        "layout": "baseline",
+                        "contents": [
+                          {
+                            "type": "text",
+                            "text": "台南市北區育德路467號",
+                            "margin": "25px",
+                            "weight": "regular",
+                            "size": "sm",
+                            "contents": []
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "contents": [
+                  {
+                    "type": "icon",
+                    "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "text",
+                    "text": "門診時間 :",
+                    "margin": "md",
+                    "weight": "bold",
+                    "size": "sm",
+                    "contents": []
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "早上 08:00 - 12:00",
+                        "margin": "25px",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "        (週六、日 08:00 - 11:30)",
+                        "margin": "25px",
+                        "weight": "bold",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "下午 14:30 - 18:00",
+                        "margin": "25px",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "晚上 18:30 - 21:30",
+                        "margin": "25px",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "        (週日 18:30 - 21:00)",
+                        "margin": "25px",
+                        "weight": "bold",
+                        "size": "sm",
+                        "contents": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "週六晚上及周日下午休診",
+                        "weight": "regular",
+                        "size": "sm",
+                        "contents": [],
+                        "margin": "25px"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "spacing": "2px"
+          }
+        ]
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "地圖導航",
+                  "uri": "https://maps.app.goo.gl/Z9k5pigizhbdM9cp9"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451",
+                "margin": "none"
+              },
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "致電診所",
+                  "uri": "tel:06-2516086"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ],
+            "spacing": "lg"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": []
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "最新門診異動",
+              "text": "最新門診異動"
+            },
+            "style": "primary",
+            "height": "sm",
+            "margin": "md",
+            "color": "#E74C3C"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": []
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "message",
+              "label": "診療項目",
+              "text": "診療項目"
+            },
+            "style": "primary",
+            "height": "sm",
+            "margin": "md",
+            "color": "#F89880"
+          }
+        ],
+        "action": {
+          "type": "message",
+          "label": "action",
+          "text": "診療項目"
+        }
+      }
+    }
+  }
+}

@@ -844,6 +844,29 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
         except bak.KbError as e:
             rep.err("clinic-assistant/knowledge.json", "E-ASSISTANT", f"無法重產：{e}")
 
+    # LINE 小幫手（2026-10-06 起程式包放在 internal/line-helpdesk/）：faq.json 與 knowledge.json／search.js 不同步＝WARN。
+    # 為何是 WARN 不是 ERROR：LINE 端要另外打包部署到 Cloud Run，repo 內的 faq.json 過期不會讓正式站答錯；
+    # 但院長要求「官網與 LINE 小幫手都要同步更新」，交付說明必須講清楚。修法：python3 internal/line-helpdesk/build_faq.py。
+    line_dir = root / "internal" / "line-helpdesk"
+    if (line_dir / "build_faq.py").exists() and kb_json.exists() and not partial:
+        import importlib.util
+        sys.path.insert(0, str(line_dir))
+        try:
+            spec = importlib.util.spec_from_file_location("line_build_faq", line_dir / "build_faq.py")
+            bf = importlib.util.module_from_spec(spec); spec.loader.exec_module(bf)
+            bf.check_regex_parity((root / "clinic-assistant" / "search.js").read_text(encoding="utf-8"))
+            data, _, _ = bf.build(kb_json.read_bytes(),
+                                  json.loads((line_dir / "aliases.json").read_text(encoding="utf-8")),
+                                  json.loads((line_dir / "prices_line.json").read_text(encoding="utf-8")))
+            rendered = json.dumps(data, ensure_ascii=False, indent=1) + "\n"
+            if (line_dir / "faq.json").read_text(encoding="utf-8") != rendered:
+                rep.warn("internal/line-helpdesk/faq.json", "W-LINE",
+                         "LINE 小幫手題庫與官網不同步 → python3 internal/line-helpdesk/build_faq.py，並重新部署 LINE")
+        except SystemExit as e:
+            rep.warn("internal/line-helpdesk/faq.json", "W-LINE", f"LINE 小幫手無法重產：{e}")
+        finally:
+            sys.path.remove(str(line_dir))
+
     # 知識庫正本 ↔ 官網（2026-09-28e 起）：Q&A 區（全站 FAQ）與第四節 ⏰ 公告表（首頁公告）不同步＝ERROR。
     # 為何是 ERROR：小幫手讀的是正本，首頁上架了颱風停診公告、正本沒跟上，小幫手就會回答「今天照常看診」。
     # 修法：python3 internal/tools/build_chatbot_kb.py --kb <正本> → build_assistant_kb.py（Claude Code 內由 hook 自動跑）。

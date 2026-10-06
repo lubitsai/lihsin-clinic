@@ -7,6 +7,8 @@
                             （2026-09-28e 起；標記區外的手寫內容不動）
   3. build_assistant_kb.py  知識庫正本＋首頁門診時間＋頁面標題 → clinic-assistant/knowledge.json（線上小幫手）
      重產後跑 test_assistant.mjs；測試失敗會回報，不回滾。
+  4. internal/line-helpdesk/build_faq.py  knowledge.json＋search.js → LINE 小幫手 faq.json（院長 2026-10-06「官網與 LINE
+     小幫手都要同步更新」）。search.js 的規則若改了而 LINE 的 core.py 沒跟上，build 會拒絕並回報（見 assistant-sync skill）。
 順序有依賴：2 改了正本，3 才會看到新題目。
 
 觸發：Edit／Write／MultiEdit 的目標是對外 .html（排除 booking-system／archive／internal）、知識庫正本或自費價目 JSON；
@@ -23,6 +25,8 @@ ROOT = Path(__file__).resolve().parents[2]
 TOOLS = ROOT / "internal" / "tools"
 KB_GLOB = "AI客服知識庫_立欣診所_正本_*.md"
 PRICES = "AI客服_自費價目.json"  # 自費價目（2026-10-05）→ knowledge.json
+LINE = ROOT / "internal" / "line-helpdesk"
+LINE_SOURCES = ("search.js", "core.py", "aliases.json", "prices_line.json", "build_faq.py")
 SKIP = ("booking-system", "archive", "internal", "node_modules")
 
 
@@ -42,10 +46,12 @@ def relevant(payload: dict) -> bool:
             return False
         if p.suffix == ".html":
             return rel.parts[0] not in SKIP
+        if p.name in LINE_SOURCES and (rel.parts[0] == "clinic-assistant" or rel.parts[:2] == ("internal", "line-helpdesk")):
+            return True
         return p.match(KB_GLOB) or p.name == PRICES
     if name == "Bash":
         cmd = ti.get("command") or ""
-        return ".html" in cmd or "AI客服知識庫" in cmd or PRICES in cmd
+        return ".html" in cmd or "AI客服知識庫" in cmd or PRICES in cmd or "search.js" in cmd or "line-helpdesk" in cmd
     return False
 
 
@@ -100,6 +106,10 @@ def main() -> int:
         step("線上小幫手 clinic-assistant/knowledge.json",
              [py, str(TOOLS / "build_assistant_kb.py"), "--check"],
              [py, str(TOOLS / "build_assistant_kb.py")], notes, after=test)
+    if (LINE / "build_faq.py").exists():
+        step("LINE 小幫手 internal/line-helpdesk/faq.json",
+             [py, str(LINE / "build_faq.py"), "--check"], [py, str(LINE / "build_faq.py")], notes)
+        notes.append("  ⚠️ LINE 端需另行打包部署（assistant-sync skill 第 4 步）") if notes and notes[-1].startswith("✓ LINE") else None
     return report(notes)
 
 
