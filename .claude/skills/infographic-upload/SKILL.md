@@ -87,6 +87,7 @@ python3 internal/tools/make_infographic.py "<上傳圖路徑>" <slug>
     <img src="/images/<slug>-thumb.jpg" width="480" height="480" loading="lazy" decoding="async" alt="…" class="w-full">
     ```
   - og:image 指向 `/images/<slug>-infographic.jpg`。**width/height 必填**（防 CLS）。
+- **📍 衛教文章只有一張圖時，預設放在「快速重點」之前**（院長 2026-10-06 裁示）：頁面順序＝標題 → 作者那一行 → 衛教圖 → ⚡快速重點。`<figure class="mb-8">` 插在 `</header>` 之後、速覽框之前；圖在首屏，`img` 不加 `loading="lazy"`、改加 `fetchpriority="high"`。**第二張以後的圖**才依內容放到對應段落（例：`atopic-dermatitis` 第二張圖在屏障段）。先例：`travel-medications` 首次掛在段末，院長隨即指示移到速覽前（10-06l）。
 
 ### 4 驗證（ERROR 清零才能 push）
 ```
