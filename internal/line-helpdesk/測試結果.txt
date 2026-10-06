@@ -1,0 +1,48 @@
+2026-10-06 第二版 2.9（補施追、安在時、肺恩賜；首頁 B 型腦膜炎雙球菌疫苗用詞統一後重產）
+- build_faq.py --check 同步；python3 -m unittest 82 項全部通過；官網 test_assistant.mjs 269 項通過。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
+2026-10-06 第二版 2.8（院內疫苗品牌名）
+- 在官網 repo 內執行：build_faq.py --check 同步；python3 -m unittest 82 項全部通過（新增品牌名測試 1 項）。
+- 官網小幫手 test_assistant.mjs 263 項通過；10 個品牌名問法兩邊都回對應價目，「公費水痘疫苗多少錢」仍回掛號費說明。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
+2026-10-06 第二版 2.7（醫師專科資格＋正本移入官網 repo）
+- 在官網 repo 內執行（預設讀 repo 的 knowledge.json／search.js）：build_faq.py --check 同步；問答 924、價目規則 52、LINE 用語改寫 212 則；來源 sha f10e440569d4。
+- python3 -m unittest：81 項全部通過（無略過）。
+- 「醫師」回答含兩位醫師的新專科資格；「肥胖症專科醫師」可找到蔡院長資歷題。
+- hook 與 validate_site W-LINE 正反兩向實測：題庫過期時 hook 自動重產、validator 報 WARN。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
+2026-10-06（下午）第二版 2.6（再次對官網最新內容重產）
+- 官網 main（PR #354～#357 合併後：肺炎鏈球菌疫苗頁補強、出國備用藥圖移位、蔡院長肥胖症專科醫師）重產 faq.json：問答 924、營運 8、公告 8、價目規則 52、LINE 用語改寫 212 則；來源 sha 0aea7cb20006；--check 同步。
+- search.js 與自費價目無變更；python3 -m unittest：81 項全部通過。
+- 已知缺口：兩位醫師的新專科資格（肥胖症／新生兒科）只在醫師頁可見區，未進 FAQ，官網與 LINE 小幫手都還答不出來（待院長決定是否補進 FAQ）。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
+2026-10-06 第二版 2.6（對官網最新內容重產）
+- 官網 main（PR #353 合併後：新增「出國備用藥」衛教頁、異膚頁補強）重產 faq.json：問答 923、營運 8、公告 8、價目規則 52、LINE 用語改寫 211 則；來源 sha ea9639a7ebcf；--check 同步。
+- 官網小幫手程式（search.js）與自費價目自上次無變更，分流規則核對通過。
+- python3 -m unittest：81 項全部通過。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
+2026-10-05 第二版 2.6（補齊官網前置規則＋以標題指定題目）
+- python3 -m unittest：81 項全部通過（2.5 的 73 項＋新增 8 項；以 KB_PATH、SEARCH_JS 指定官網 knowledge.json 與「以標題指定」分支的 search.js）。
+- 以 Node 實跑官網 search.js 比對 35 個費用／代辦／藥量／流感問句：分流結果全部一致。
+- build_faq.py --check：同步（來源 sha 6d1019c46f1b）；新增 10 條 regex、3 組指定題目標題、3 句固定回覆皆與 search.js 逐字核對。
+- 官網 PR #348（search.js 改以標題指定）已合併，部署完成後即可用預設（讀官網線上檔）跑 --check。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
+2026-10-05 第二版 2.5（流感 3 條分流）
+- python3 -m unittest：73 項全部通過（2.4 的 64 項＋新增 test_routing.py 9 項；以 KB_PATH、SEARCH_JS 指定官網 main 的 knowledge.json／search.js）。
+- build_faq.py --kb／--search-js 指向官網 main（PR #343 合併後）：--check 已同步，新增的 7 條分流規則與 search.js 逐字一致；故意改動 search.js 的 VAX_CUTOFF 會 exit 1。
+- 實測 2.4 → 2.5：「今天公費哪一牌」「公費流感可以指定品牌嗎」「最後幾點可以打疫苗」「週六最晚幾點可以打疫苗」「國中生打公費流感要帶什麼證件」由 unknown（轉專人）改為直接回答；「3歲小孩打公費流感要帶什麼」由學生題改為 Q524（含兒童健康手冊）。
+- 公費品牌公告 LINE 用語改為「點選選單的「流感疫苗資訊」查詢」，faq.json 重產（改寫 210 則），--check 同步，73 項仍全過。
+- 對官網最新 main（PR #346／#347 合併後）重產 faq.json：來源 sha 6d1019c46f1b，--check 同步，73 項全過。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
+2026-10-05 第二版 2.4（自費流感疫苗價格）
+- python3 -m unittest：64 項全部通過（以 KB_PATH、SEARCH_JS 指定官網 knowledge.json／search.js）。
+- 以 Node 實跑官網 search.js 比對：90 個價格問句命中的價目規則完全一致。
+- build_faq.py：問答 914、營運 8、公告 8、價目規則 52；來源為官網 main（PR #339 合併後）的 knowledge.json（sha c8b1576a2f79），--check 已同步。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
