@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-10-06</lastmod>
+    <lastmod>2026-10-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -59,6 +59,13 @@
   <!-- ============================================================
        最新消息（News）
        ============================================================ -->
+  <url>
+    <loc>https://lhpedclinic.com.tw/news/japan-flu-travel-2026.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/japan-flu-travel-2026-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://lhpedclinic.com.tw/news/health-token-2026.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/health-token-2026-infographic.jpg</image:loc></image:image>
@@ -713,7 +720,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/news/</loc>
-    <lastmod>2026-10-01</lastmod>
+    <lastmod>2026-10-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

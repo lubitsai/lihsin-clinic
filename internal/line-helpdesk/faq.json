@@ -2,13 +2,13 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "e6216c4becc4a071e0a7faf4d8242b735721b853991026154b695302f98dca66"
+   "kb_sha256": "b1a8110c50908387dcb8e5d3d96879d27f73c7cef0c8359e96d9651665d6f700"
   },
-  "knowledge_sha256": "7ead85d0b8ab461b5b231edbf91e107b790ed155ef59e50aeca7f540bc413ab1",
+  "knowledge_sha256": "06363470e7c4724a9ee70ea24e529d9701d4b9a76747b1165a062b286a43ef2d",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
-   "faq": 924,
+   "faq": 926,
    "ops": 8,
    "notice": 8,
    "navigation": 1
@@ -13039,6 +13039,34 @@
   {
    "id": "Q897",
    "kind": "faq",
+   "title": "日本現在的流感疫情如何？",
+   "questions": [
+    "日本現在的流感疫情如何？"
+   ],
+   "answer": "依 115 年 10 月 3 日新聞引述疾管署資料，日本流感疫情已連續九週上升，沖繩、東京、愛知等地病例較多。疫情每週都在變動，出發前請再查詢疾管署最新的國際疫情資訊。",
+   "kb_answer": "依 115 年 10 月 3 日新聞引述疾管署資料，日本流感疫情已連續九週上升，沖繩、東京、愛知等地病例較多。疫情每週都在變動，出發前請再查詢疾管署最新的國際疫情資訊。",
+   "page": "日本流感升溫！帶孩子出國，疫苗要提早準備",
+   "source_url": "https://lhpedclinic.com.tw/news/japan-flu-travel-2026.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q898",
+   "kind": "faq",
+   "title": "在日本旅途中發燒、咳嗽，可以自己判斷是不是流感嗎？",
+   "questions": [
+    "在日本旅途中發燒、咳嗽，可以自己判斷是不是流感嗎？"
+   ],
+   "answer": "不能單靠症狀確診流感。發燒、咳嗽或肌肉痠痛時，應就醫評估；若出現呼吸困難、胸痛或意識改變，應儘速就醫。",
+   "kb_answer": "不能單靠症狀確診流感。發燒、咳嗽或肌肉痠痛時，應就醫評估；若出現呼吸困難、胸痛或意識改變，應儘速就醫。",
+   "page": "日本流感升溫！帶孩子出國，疫苗要提早準備",
+   "source_url": "https://lhpedclinic.com.tw/news/japan-flu-travel-2026.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q899",
+   "kind": "faq",
    "title": "小鹿醫師 3D 看診趣是什麼？需要下載嗎？",
    "questions": [
     "小鹿醫師 3D 看診趣是什麼？需要下載嗎？"
@@ -13051,7 +13079,7 @@
    "seasonal": false
   },
   {
-   "id": "Q898",
+   "id": "Q900",
    "kind": "faq",
    "title": "適合幾歲的孩子玩？",
    "questions": [
@@ -13065,7 +13093,7 @@
    "seasonal": false
   },
   {
-   "id": "Q899",
+   "id": "Q901",
    "kind": "faq",
    "title": "遊戲裡的六個步驟，和真的看診一樣嗎？",
    "questions": [
@@ -13079,7 +13107,7 @@
    "seasonal": false
   },
   {
-   "id": "Q900",
+   "id": "Q902",
    "kind": "faq",
    "title": "孩子玩過就不會怕看醫生了嗎？",
    "questions": [
@@ -13093,7 +13121,7 @@
    "seasonal": false
   },
   {
-   "id": "Q901",
+   "id": "Q903",
    "kind": "faq",
    "title": "要收費嗎？會蒐集孩子的資料嗎？",
    "questions": [
@@ -13107,7 +13135,7 @@
    "seasonal": false
   },
   {
-   "id": "Q902",
+   "id": "Q904",
    "kind": "faq",
    "title": "可以加到手機主畫面，像 App 一樣打開嗎？",
    "questions": [
@@ -13121,7 +13149,7 @@
    "seasonal": false
   },
   {
-   "id": "Q903",
+   "id": "Q905",
    "kind": "faq",
    "title": "沒有聲音、聽不到小鹿醫師說話怎麼辦？",
    "questions": [
