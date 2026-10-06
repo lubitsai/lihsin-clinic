@@ -404,6 +404,7 @@ jobs:
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
           check /health/travel-medications.html 200
+          check /images/travel-medications-infographic.jpg 200
           check /images/flu-vaccine-egg-cell-infographic.jpg 200
           check /images/umbilical-granuloma-infographic.jpg 200
           check /news/health-token-2026.html 200
