@@ -403,6 +403,7 @@ jobs:
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
+          check /health/travel-medications.html 200
           check /images/flu-vaccine-egg-cell-infographic.jpg 200
           check /images/umbilical-granuloma-infographic.jpg 200
           check /news/health-token-2026.html 200
@@ -1095,6 +1096,10 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           egg=$(curl -s --max-time 20 "$BASE/health/flu-vaccine-egg-cell.html" | grep -c '細胞培養少了雞蛋這一步' || true)
           if [ "$egg" -ge 1 ]; then echo "OK    細胞培養與雞蛋培養流感疫苗頁正文已上線"; else echo "FAIL  細胞培養流感疫苗頁未見『細胞培養少了雞蛋這一步』——10-05 新頁疑已回退"; fail=1; fi
+          # 2026-10-06：新增衛教頁〈出國備用藥〉的可見層哨兵（本句只在本頁可見層，全站 1 檔 1 處）。
+          # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          trv=$(curl -s --max-time 20 "$BASE/health/travel-medications.html" | grep -c '大人的藥切半並不準確' || true)
+          if [ "$trv" -ge 1 ]; then echo "OK    出國備用藥頁正文已上線"; else echo "FAIL  出國備用藥頁未見『大人的藥切半並不準確』——10-06 新頁疑已回退"; fail=1; fi
           # 2026-09-20d：在地詞「從未佈局」的 9 頁補齊（與 09-20b 的語序缺口是不同類）。
           # ⚠️ 本批動的全是中繼層（keywords／隱藏 #ai-knowledge-block／llms 雙檔），
           # **9 頁可見層已程式化證明 byte-identical**，既有哨兵一條都不會叫。
