@@ -40,6 +40,12 @@ class PriceTests(unittest.TestCase):
         self.assertIsNone(CAT.prices.match('公費流感疫苗多少錢'))
         self.assertIsNone(CAT.prices.match('過敏鼻噴劑多少錢'))
 
+    def test_clinic_brand_names(self):
+        # 院長 2026-10-06 交付的院內疫苗品項表：品牌名對到同一條價目
+        for q, part in [('必思諾多少錢', '6,500 元'), ('沛兒20多少錢', '4,500 元'), ('伏痘敏多少錢', '2,400 元'),
+                        ('恩穩健多少錢', '4,100 元'), ('Beyfortus多少錢', '16,000 元'), ('M-M-R II多少錢', '1,000 元')]:
+            self.assertPrice(q, part)
+
     def test_line_promotions(self):
         self.assertPrice('帶狀皰疹疫苗多少', '16,500', '每人可折 500 元')
         self.assertPrice('皮蛇疫苗兩個人一起打多少', '同行優惠與兩劑付清的併用')

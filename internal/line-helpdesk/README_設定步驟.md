@@ -1,9 +1,14 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.7）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.8）
 
-2026-10-06 第二版 2.7｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-10-06 第二版 2.8｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.8 院內疫苗品牌名（2026-10-06）
+
+- 價目比對認得院內品項表上的品牌名：必思諾／Bexsero、沛兒 20／Prevenar 20、伏痘敏／Varivax、恩穩健／Envacgen、Beyfortus／Nirsevimab（輔流威護、能伏鼻、樂唯初、M-M-R II 原本就認得）。回覆文字不變。
+- 醫師資格同步官網最新版（蔡院長另含青少年醫學次專科醫師）。
 
 ## 2.7 醫師專科資格＋正本移入官網 repo（2026-10-06）
 

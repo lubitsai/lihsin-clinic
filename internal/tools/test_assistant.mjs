@@ -240,4 +240,9 @@ for (const [q, t] of docCases) {
 n++; assert(/兒童健康手冊/.test(first(ask('3歲小孩打公費流感要帶什麼', '2026-10-05')).text));
 n++; assert.notEqual(first(ask('打完疫苗可以洗澡嗎', '2026-10-05'))?.title, T_CUTOFF);
 
+// 院內疫苗品牌名（院長 2026-10-06 交付品項表）：問品牌也要回對應價目
+for (const [q, re] of [['必思諾多少錢', /6,500 元/], ['Bexsero多少錢', /6,500 元/], ['沛兒 20 價格', /20 價.*4,500 元/],
+  ['伏痘敏多少錢', /2,400 元/], ['Varivax多少', /2,400 元/], ['恩穩健多少錢', /4,100 元/], ['Envacgen多少錢', /4,100 元/],
+  ['M-M-R II多少錢', /1,000 元/], ['Beyfortus多少錢', /16,000 元/], ['Nirsevimab多少', /16,000 元/]]) price(q, re);
+kind('公費水痘疫苗多少錢', 'fee');
 console.log(`✓ ${n} assertions passed`);

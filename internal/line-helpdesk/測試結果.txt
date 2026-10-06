@@ -1,3 +1,8 @@
+2026-10-06 第二版 2.8（院內疫苗品牌名）
+- 在官網 repo 內執行：build_faq.py --check 同步；python3 -m unittest 82 項全部通過（新增品牌名測試 1 項）。
+- 官網小幫手 test_assistant.mjs 263 項通過；10 個品牌名問法兩邊都回對應價目，「公費水痘疫苗多少錢」仍回掛號費說明。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-06 第二版 2.7（醫師專科資格＋正本移入官網 repo）
 - 在官網 repo 內執行（預設讀 repo 的 knowledge.json／search.js）：build_faq.py --check 同步；問答 924、價目規則 52、LINE 用語改寫 212 則；來源 sha f10e440569d4。
 - python3 -m unittest：81 項全部通過（無略過）。
