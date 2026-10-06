@@ -982,10 +982,16 @@ jobs:
           # 2026-10-06r 新增（PR #357 蔡宗儒院長肥胖症專科醫師）：比照 10-05zb，盯 dr-tsai 可見
           # 「專科資格」行與減重頁看診醫師段。兩個字串各自全站唯一（grep -rlF 實測各 1 檔）。
           # ⚠️ 防呆 17：日後院長核可改寫這兩處時要同批改本檢查，不可直接刪。
-          dt=$(curl -s --max-time 20 "$BASE/team/dr-tsai.html" | grep -c '肥胖症專科醫師（中華民國肥胖研究學會）</p>' || true)
-          if [ "$dt" -ge 1 ]; then echo "OK    dr-tsai 專科資格行含肥胖症專科醫師"; else echo "FAIL  dr-tsai 未見『肥胖症專科醫師（中華民國肥胖研究學會）』——10-06r 資格更新未上線或已回退"; fail=1; fi
+          # 〔2026-10-06v 改〕專科資格行尾端加了青少年醫學次專科，原字串 '…研究學會）</p>' 不再命中，
+          # 改成整段比對，同時盯 10-06r 與 10-06v 兩項資格。
+          dt=$(curl -s --max-time 20 "$BASE/team/dr-tsai.html" | grep -c '肥胖症專科醫師（中華民國肥胖研究學會）、青少年醫學次專科醫師（臺灣兒科醫學會）</p>' || true)
+          if [ "$dt" -ge 1 ]; then echo "OK    dr-tsai 專科資格行含肥胖症專科＋青少年醫學次專科"; else echo "FAIL  dr-tsai 專科資格行未見『肥胖症專科醫師…、青少年醫學次專科醫師（臺灣兒科醫學會）』——10-06r／10-06v 資格更新未上線或已回退"; fail=1; fi
           wm=$(curl -s --max-time 20 "$BASE/services/weight-management.html" | grep -c '肥胖症專科醫師（中華民國肥胖研究學會）</strong>。' || true)
           if [ "$wm" -ge 1 ]; then echo "OK    減重頁看診醫師段含肥胖症專科醫師"; else echo "FAIL  減重頁未見『肥胖症專科醫師（中華民國肥胖研究學會）』——10-06r 更新未上線或已回退"; fail=1; fi
+          # 2026-10-06v 新增（PR #359 蔡宗儒院長青少年醫學次專科醫師）：盯首頁蔡醫師小卡那一條（全站唯一）。
+          # ⚠️ 防呆 17：日後院長核可改寫時要同批改本檢查，不可直接刪。
+          ix=$(curl -s --max-time 20 "$BASE/" | grep -c '<strong>臺灣兒科醫學會</strong> 青少年醫學次專科醫師' || true)
+          if [ "$ix" -ge 1 ]; then echo "OK    首頁蔡醫師小卡含青少年醫學次專科醫師"; else echo "FAIL  首頁未見『臺灣兒科醫學會 青少年醫學次專科醫師』——10-06v 更新未上線或已回退"; fail=1; fi
           # 2026-09-19d 新增（本批新頁〈傳染性紅斑（蘋果病）〉的可見層哨兵）：
           # 盯病程第 2 階段那句「蘋果臉」的描述。挑這句的理由是**全站唯一性**：
           # 實測 grep -rl 全站 HTML 僅 health/erythema-infectiosum.html 命中。
