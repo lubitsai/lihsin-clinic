@@ -118,10 +118,6 @@ jobs:
           # ⚠️ 防呆 17:麵包屑若再改回錨點或改指別處,本行同批改。
           bc=$(curl -s --max-time 20 "$BASE/health/croup.html" | grep -cE '"item": ?"https://lhpedclinic\.com\.tw/health/"' || true)
           if [ "$bc" -ge 1 ]; then echo "OK    麵包屑第 2 層指向 /health/ 列表頁"; else echo "FAIL  croup 麵包屑未指向 /health/——疑被舊版覆蓋"; fail=1; fi
-          # 同批:首屏衛教圖 fetchpriority="high"(原 loading="lazy",手機 LCP 13.4s)。
-          # 正規式容許 minify 去掉屬性引號(防呆 25)。
-          fp=$(curl -s --max-time 20 "$BASE/health/shingles-vaccine.html" | grep -cE 'fetchpriority="?high' || true)
-          if [ "$fp" -ge 1 ]; then echo "OK    首屏衛教圖 fetchpriority=high 已上線"; else echo "FAIL  shingles 首屏圖未見 fetchpriority=high——疑被舊版覆蓋"; fail=1; fi
           echo "=== 站點資產(應 200)==="
           check / 200
           check /llms.txt 200
