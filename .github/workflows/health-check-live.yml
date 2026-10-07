@@ -7,6 +7,15 @@ name: Website health check (live)
 
 on:
   workflow_dispatch:
+    inputs:
+      lh_urls:
+        description: "（選填）A/B 用：空白分隔的網址，各跑 Lighthouse 手機版 lh_runs 次；留空＝照預設 4 組"
+        required: false
+        default: ""
+      lh_runs:
+        description: "（選填）lh_urls 每個網址的重跑次數"
+        required: false
+        default: "3"
 
 jobs:
   health-check:
@@ -124,6 +133,9 @@ jobs:
           check "https://en.wikipedia.org/wiki/Human_metapneumovirus"
 
       - name: 6. Lighthouse CWV (runner-local, PSI API 無金鑰配額不可用)
+        env:
+          LH_URLS: ${{ github.event.inputs.lh_urls }}
+          LH_RUNS: ${{ github.event.inputs.lh_runs }}
         run: |
           # 先印一次 PSI API 錯誤原因供紀錄
           curl -s --max-time 60 "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://lhpedclinic.com.tw/&strategy=mobile" | head -c 400 || true
@@ -153,10 +165,18 @@ jobs:
             echo "─ 改善機會(>100ms):"
             jq -r '.audits | to_entries[] | select(.value.details.type=="opportunity" and .value.details.overallSavingsMs>100) | "  \(.value.title): 可省 \(.value.details.overallSavingsMs|round)ms"' /tmp/lh.json 2>/dev/null || true
           }
-          lh "https://lhpedclinic.com.tw/" mobile
-          lh "https://lhpedclinic.com.tw/" desktop
-          lh "https://lhpedclinic.com.tw/health/shingles-vaccine.html" mobile
-          lh "https://lhpedclinic.com.tw/growth.html" mobile
+          # 2026-10-07 起:可指定網址做 A/B(例如 Deploy Preview vs 正式站),每個網址重跑多次——
+          # 實驗室數據單次變異可差 4 倍(10-07d 教訓),不得以單次結果下結論。
+          if [ -n "${LH_URLS}" ]; then
+            for u in ${LH_URLS}; do
+              for i in $(seq 1 "${LH_RUNS:-3}"); do echo "[第 $i 次]"; lh "$u" mobile; done
+            done
+          else
+            lh "https://lhpedclinic.com.tw/" mobile
+            lh "https://lhpedclinic.com.tw/" desktop
+            lh "https://lhpedclinic.com.tw/health/shingles-vaccine.html" mobile
+            lh "https://lhpedclinic.com.tw/growth.html" mobile
+          fi
 
       - name: 7. Live content fingerprint
         run: |
