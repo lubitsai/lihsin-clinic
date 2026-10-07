@@ -6019,7 +6019,10 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  var mins = nxt.start - nowMin;
  if (mins <= 60) {
  dotColor = '#f59e0b'; color = '#fef9ec';
- message = '即將於 '+fmt(nxt.start)+' 開始'+nxt.name+'，敬請稍候';
+ // 晚診 18:00 開始現場掛號、18:30 開始看診（18:00–18:30 只受理掛號）
+ message = (nxt.name === '晚診' && nowMin >= 1080)
+   ? '18:00 起可現場掛號，'+fmt(nxt.start)+' 開始晚診'
+   : '即將於 '+fmt(nxt.start)+' 開始'+nxt.name+'，敬請稍候';
  } else {
  dotColor = '#f59e0b'; color = '#fef9ec';
  message = '今日'+nxt.name+' '+fmt(nxt.start)+' 開始，目前休診中';
