@@ -1,3 +1,7 @@
+2026-10-08 第二版 2.10（續：疫苗停打固定句、肥胖症專科 FAQ、不存在日期修正，PR #369／#370 合併後重產）
+- sync_assistants.py：官網 test_assistant.mjs 280 項、python3 -m unittest 89 項全部通過；一致性比對 207 句全部一致；build_faq.py --check 同步。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-08 第二版 2.10（補齊官網 search.js 第 7～10 步：現貨、遲到、跨診次、新冠、指定日期、假日、門診時間與聯絡資料）
 - 在官網 repo 內執行 sync_assistants.py：build_faq.py --check 同步（分流 regex、固定句、反問按鈕與 search.js 逐字核對）；python3 -m unittest 89 項全部通過（新增 7 項）；官網 test_assistant.mjs 269 項通過。
 - 一致性比對 201 句（新增日期解析比對）全部一致；不存在的日期（2/30、11/31）兩邊都視為沒有日期（官網同步修正，院長 2026-10-08 核可開 PR）。
