@@ -130,7 +130,7 @@ export function parseDate(question, today) {
     const pad = (n) => String(n).padStart(2, '0');
     let d = `${y}-${pad(md[1])}-${pad(md[2])}`;
     if (d < addDays(today, -30)) d = `${y + 1}-${pad(md[1])}-${pad(md[2])}`;
-    return isNaN(toDate(d)) ? null : d;
+    return fmtDate(new Date(Date.UTC(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8)))) === d ? d : null;   // 2/30、11/31 等不存在的日期回 null
   }
   const wk = q.match(/(下下|下|這|本)?週([一二三四五六日])/);
   if (wk) {
