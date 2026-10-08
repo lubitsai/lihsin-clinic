@@ -136,3 +136,54 @@ class WebsiteRulesV26Tests(unittest.TestCase):
         self.assertEqual(self.ans('孩子嘴唇發紫可以幫我預約嗎')[0], 'urgent')
         self.assertIn('2,400 元', self.ans('水痘疫苗多少錢')[1]['text'])     # price before fee rules
         self.assertIn('目前這份價目資料沒有', self.ans('打針多少錢')[1]['text'])   # generic price, not a staff case
+
+class TailRouteTests(unittest.TestCase):
+    """search.js 7–10 ported 2026-10-08o: cross-session, late, stock, COVID, dates, holidays, hours, contact."""
+    def ans(self, q, today=date(2026, 10, 8)):
+        return decide(q, False, CAT, LEGACY, PASS, today)
+
+    def test_stock_never_promises(self):
+        for q in ['鼻噴流感疫苗有現貨嗎', '水痘疫苗還有貨嗎']:
+            action, msg = self.ans(q)
+            self.assertEqual(action, 'answer', q)
+            self.assertIn('不代表今天有現貨', msg['text'])
+            self.assertIn('在此聊天室輸入「專人服務」', msg['text'])
+            self.assertNotIn('@lhpedclinic', msg['text'])
+
+    def test_late_and_cross_session(self):
+        action, msg = self.ans('我遲到了')
+        self.assertIn('預約時段遲到', msg['text'])
+        self.assertEqual(msg['buttons'], ['預約遲到怎麼辦', '現場號過號怎麼辦'])
+        action, msg = self.ans('可以掛晚上的號嗎')
+        self.assertIn('只受理當診次', msg['text'])
+        self.assertIn('現場掛號', msg['buttons'])
+
+    def test_covid(self):
+        action, msg = self.ans('有打新冠疫苗嗎')
+        self.assertTrue(msg['text'].startswith('提醒：本院沒有提供新冠疫苗'))
+
+    def test_date_answers_from_schedule(self):
+        action, msg = self.ans('10/10有看診嗎')
+        self.assertTrue(msg['text'].startswith('10 月 10 日（六）'))
+        self.assertIn('上午 08:00–11:30　蔡', msg['text'])
+        self.assertIn('蔡＝蔡宗儒院長', msg['text'])
+        self.assertIn('請以診所最新公告為準', msg['text'])
+        self.assertTrue(self.ans('明天有看診嗎')[1]['text'].startswith('10 月 9 日（五）'))
+        self.assertTrue(self.ans('下週六有開嗎')[1]['text'].startswith('10 月 17 日（六）'))
+        self.assertEqual(self.ans('9/26有看診嗎')[1]['text'], '這一天已經過去了，請輸入今天以後的日期。')
+
+    def test_schedule_exception(self):
+        msg = self.ans('9/26有看診嗎', today=date(2026, 9, 20))[1]
+        self.assertIn('｜門診異動', msg['text'])
+        self.assertIn('全日休診', msg['text'])
+        self.assertIn('常態週六門診', msg['text'])
+
+    def test_holiday(self):
+        action, msg = self.ans('中秋節有看診嗎')
+        self.assertTrue(msg['text'].startswith('國定假日、連假、颱風天門診可能調整，請以診所最新公告為準。'))
+        self.assertIn('客服不會主動通知門診異動', msg['text'])
+
+    def test_hours_and_contact(self):
+        self.assertIn('立欣診所門診時間', self.ans('夜診幾點')[1]['text'])
+        self.assertIn('lhpedclinic@gmail.com', self.ans('email')[1]['text'])
+        self.assertIn('台南市北區育德路', self.ans('停車方便嗎')[1]['text'])

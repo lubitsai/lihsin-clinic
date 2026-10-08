@@ -82,7 +82,9 @@ class CatalogTests(unittest.TestCase):
         for x in notices:
             after = date.fromisoformat(x['valid_until']) + timedelta(days=1)
             self.assertEqual(route(x['questions'][0], today=TODAY)[0], 'answer')
-            self.assertNotEqual(route(x['questions'][0], today=after)[0], 'answer')
+            action, msg = route(x['questions'][0], today=after)
+            # an expired notice is never shown again (its title may still route elsewhere, e.g. to a date answer)
+            self.assertFalse(action == 'answer' and x['answer'] in msg['text'], x['id'])
 
     def test_line_wording(self):
         q56 = next(i for i in DATA['items'] if i['id'] == 'Q056')

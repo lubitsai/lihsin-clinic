@@ -7,12 +7,13 @@ as buttons; the HTTP layer may automatically open a staff case when nothing rele
 Normalization, triage regexes and the related-question scorer are ported from the clinic website's
 assistant (https://lhpedclinic.com.tw/clinic-assistant/search.js, v1 2026-09-24) so the LINE bot and
 the website triage the same text the same way. build_faq.py --search-js checks they still match.
+Since 2.10 (2026-10-08) every search.js routing step is ported, including dates, holidays, stock and COVID.
 No negation handling on purpose (director 2026-10-03): 「沒有呼吸困難」 still gets the 119 reply, same as the website.
 """
 import math
 import re
 import unicodedata
-from datetime import date
+from datetime import date, timedelta
 
 # ── exact-match key (whole question, ignore spaces and common punctuation) ──
 def norm(text):
@@ -193,8 +194,62 @@ ROUTE_SRC = {
     'CHECKUP': r'成人健檢|公費健檢|成人預防保健|成人.{0,4}健康檢查',
     'CHILD': r'兒童|小孩|孩子|寶寶|嬰兒|幼兒|小朋友',
     'MONEY': r'多少|錢|費|免費|收費|付',
+    # search.js 7–10 (ported 2026-10-08o): cross-session registration, late, stock, COVID, dates, holidays, hours, contact
+    'LATE': r'遲到|沒趕上|來不及|趕不上',
+    'CROSS': r'預掛|掛.{0,4}(?:下午|晚上|晚診|午診|早診|明天|明早|下一診)|(?:早上|下午|晚上|晚診|午診|早診|明天|明早)的號|跨診|當診次',
+    'STOCK': r'現貨|庫存|有貨|剩幾|到貨了嗎|打得到嗎|還有疫苗嗎',
+    'COVID': r'新冠疫苗|covid19疫苗|covid疫苗|左流右新|莫德納|輝瑞|諾瓦瓦克斯',
+    'HOLIDAY': r'颱風|連假|國定假日|過年|春節|除夕|清明|端午|中秋|元旦|跨年',
+    'SCHED_WORDS': r'看診|門診|有診|開診|休診|休息|有開|開嗎|有沒有開|營業|上班|幾點|醫師在|看嗎|有看|掛號|時間|放假|休假',
+    'HOURS_TOPIC': r'門診時間|看診時間|營業時間|幾點開|幾點到|幾點看|幾點結束|夜診|晚診|早診|午診|班表|排班|哪天看診|哪幾天',
+    'QUEUE': r'看診進度|叫號|輪到|到幾號|看到幾號|現在幾號',
+    'ADDRESS': r'地址|在哪裡?$|在哪$|位置|怎麼去|怎麼走|交通|導航|停車',
+    'PHONE': r'電話|打電話|聯絡|聯繫',
 }
 PRICE, PUBLIC_FLU, BRAND_ASK, PUBLIC_BRAND, VAX_CUTOFF, FLU_DOCS, STUDENT, DOSE, SUITABLE, QUOTA, ACTION, FEE, PUBLIC_VAX, SELF_VAX, CHECKUP, CHILD, MONEY = (re.compile(ROUTE_SRC[n]) for n in ['PRICE', 'PUBLIC_FLU', 'BRAND_ASK', 'PUBLIC_BRAND', 'VAX_CUTOFF', 'FLU_DOCS', 'STUDENT', 'DOSE', 'SUITABLE', 'QUOTA', 'ACTION', 'FEE', 'PUBLIC_VAX', 'SELF_VAX', 'CHECKUP', 'CHILD', 'MONEY'])
+LATE, CROSS, STOCK, COVID, HOLIDAY, SCHED_WORDS, HOURS_TOPIC, QUEUE, ADDRESS, PHONE = (re.compile(ROUTE_SRC[n]) for n in ['LATE', 'CROSS', 'STOCK', 'COVID', 'HOLIDAY', 'SCHED_WORDS', 'HOURS_TOPIC', 'QUEUE', 'ADDRESS', 'PHONE'])
+# search.js 7 clarify buttons (verbatim)
+LATE_BUTTONS = ['預約遲到怎麼辦', '現場號過號怎麼辦']
+REGISTER_BUTTONS = ['網路預約怎麼約', '現場掛號幾點開始']
+
+# ── website parseDate(): one date (YYYY-MM-DD) from the question, Taiwan time; None when there is no date word ──
+DAY = ['日', '一', '二', '三', '四', '五', '六']
+def _weekday(d):   # Sunday = 0, like JS getUTCDay()
+    return (d.weekday() + 1) % 7
+
+def parse_date(text, today):
+    q = unicodedata.normalize('NFKC', str(text or ''))
+    for pattern, to in SYNONYMS:
+        q = re.sub(pattern, to, q)
+    rel = re.search(r'大後天|後天|明天|明日|今天|今日|今晚|今早', q)
+    if rel:
+        return today + timedelta(days={'大後天': 3, '後天': 2, '明天': 1, '明日': 1}.get(rel.group(0), 0))
+    md = re.search(r'(?<!\d)(1[0-2]|0?[1-9])(?:月|/|-)(3[01]|[12]\d|0?[1-9])(?:日|號)?(?!\d)', q)
+    if md:
+        m, dd = int(md.group(1)), int(md.group(2))
+        try:
+            d = date(today.year, m, dd)
+        except ValueError:
+            return None
+        if d < today - timedelta(days=30):
+            try:
+                d = date(today.year + 1, m, dd)
+            except ValueError:
+                return None
+        return d
+    wk = re.search(r'(下下|下|這|本)?週([一二三四五六日])', q)
+    if wk:
+        target = DAY.index(wk.group(2))
+        monday_idx = (_weekday(today) + 6) % 7
+        if wk.group(1) in ('下', '下下'):
+            return today + timedelta(days=-monday_idx + (7 if wk.group(1) == '下' else 14) + (target + 6) % 7)
+        return today + timedelta(days=(target - _weekday(today) + 7) % 7)
+    return None
+
+SESSION = {'MORNING': '上午', 'AFTERNOON': '下午', 'EVENING': '晚上'}
+
+def date_label(d):
+    return f'{d.month} 月 {d.day} 日（{DAY[_weekday(d)]}）'
 # 5-0a pinned FAQs by title (never by Q number: numbers shift when the knowledge base is regenerated)
 PINS = {
     'PIN_CUTOFF': ['週六、週日或夜診時段可以接種疫苗嗎？', '打疫苗需要預約嗎？要先確認有沒有貨嗎？'],
@@ -222,6 +277,8 @@ class Catalog:
         self.searcher = Searcher([i for i in self.items if i.get('kind') == 'faq' and not triage(i['title'])])
         self.prices = PriceMatcher(data.get('prices'))
         self.titles = {i['title']: i for i in self.items if i.get('enabled', True) and i.get('title')}
+        self.titles_by_id = {i['id']: i for i in self.items}
+        self.schedule = data.get('schedule') or {'weekly': {}, 'exceptions': {}, 'legend': ''}
 
     def by_title(self, title, today):
         item = self.titles.get(title)
@@ -282,6 +339,82 @@ class Catalog:
             return self.prices.no_data
         return None
 
+    # ── search.js 7–10: what is left after money questions ──
+    def _weekly_rows(self, w):
+        by_session = {}
+        for x in self.schedule['weekly'].get(str(w), []):
+            by_session.setdefault(x['session'], []).append(x)
+        rows = []
+        for key, lst in by_session.items():
+            spans = list(dict.fromkeys(f"{x['start']}–{x['end']}" for x in lst))
+            rows.append((SESSION[key], f"{spans[0]}　{'、'.join(d for x in lst for d in x['doctors'])}" if len(spans) == 1
+                         else '／'.join(f"{'、'.join(x['doctors'])} {x['start']}–{x['end']}" for x in lst)))
+        return rows
+
+    def _schedule_notices(self, today):
+        return [i for i in self.items if i.get('kind') == 'notice' and i.get('schedule') and is_valid(i, today)]
+
+    def _date_answer(self, d, today, q):
+        r = self.replies
+        if d < today:
+            return {'type': 'text', 'text': r['past_date']}
+        ex = self.schedule['exceptions'].get(d.isoformat())
+        special = ex is not None
+        rows = [(SESSION[x['session']], f"{x['start']}–{x['end']}") for x in ex] if special else self._weekly_rows(_weekday(d))
+        head = (f'今天 {date_label(d)}' if d == today else date_label(d)) + ('｜門診異動' if special else '')
+        parts = [head + '\n' + ('\n'.join(f'{a} {b}' for a, b in rows) if rows else '全日休診')
+                 + '\n' + ('當日依門診異動公告調整。' if special else self.schedule['legend'])]
+        if special:
+            parts.append(f'常態週{DAY[_weekday(d)]}門診\n' + '\n'.join(f'{a} {b}' for a, b in self._weekly_rows(_weekday(d)))
+                         + '\n' + self.schedule['legend'])
+        if special or HOLIDAY.search(q):
+            parts += [n['title'] + '\n' + n['answer'] for n in self._schedule_notices(today)]
+        if HOURS_TOPIC.search(q):
+            parts.append(self.titles_by_id['KEY01']['answer'])
+        tail = [r['hours_note']]
+        if not special:
+            tail.insert(0, r['holiday_note'])
+        if '掛號' in q and 'G1' in self.titles_by_id:
+            tail.insert(0, self.titles_by_id['G1']['answer'])
+        parts.append('\n'.join(tail))
+        return {'type': 'text', 'text': '\n\n'.join(parts)}
+
+    def tail_route(self, text, today):
+        """search.js 7–10 after the money rules: cross-session registration, late/registration clarify, stock, COVID,
+        a specific date, holidays, then opening hours / contact facts (with related titles as buttons). Text message or None."""
+        q = normalize(text)
+        r = self.replies
+        if CROSS.search(q) and not re.search('預約系統|網路|線上', q):
+            rows = [i for i in self.items if i.get('kind') == 'faq' and '跨診次' in i['title'] and is_valid(i, today)]
+            g1 = self.titles_by_id.get('G1')
+            rows += [g1] if g1 else []
+            if rows:
+                return {'type': 'text', 'text': rows[0]['answer'], 'buttons': [x['title'] for x in rows[1:3]]}
+        if LATE.search(q) and not re.search('預約|現場|過號|報到', q):
+            return {'type': 'text', 'text': r['late_clarify'], 'buttons': LATE_BUTTONS}
+        if '掛號' in q and not re.search('現場|網路|線上|預約|開始|幾點|時間|過號|電話|帶|證件|健保|費', q) and not parse_date(text, today):
+            return {'type': 'text', 'text': r['register_clarify'], 'buttons': REGISTER_BUTTONS}
+        if STOCK.search(q):
+            return {'type': 'text', 'text': r['stock']}
+        if COVID.search(q):
+            return {'type': 'text', 'text': r['covid'], 'buttons': [h['title'] for h in self.related(text, today)]}
+        d = parse_date(text, today)
+        if d and (SCHED_WORDS.search(q) or len(q) <= 8):
+            return self._date_answer(d, today, q)
+        if HOLIDAY.search(q) and SCHED_WORDS.search(q):
+            return {'type': 'text', 'text': '\n\n'.join([r['holiday_note'], *(n['title'] + '\n' + n['answer'] for n in self._schedule_notices(today)), r['holiday_tail']])}
+        parts = []
+        if HOURS_TOPIC.search(q) or (re.search('週[一二三四五六日]', q) and SCHED_WORDS.search(q)):
+            parts.append(self.titles_by_id['KEY01']['answer'])
+        facts = self.replies['facts']
+        keys = [k for k, rx in (('address', ADDRESS), ('phone', PHONE), ('email', re.compile('email|信箱|mail')), ('queue', QUEUE)) if rx.search(q)]
+        if keys:
+            parts.append('\n'.join(facts[k] for k in keys))
+        if parts:
+            hits = self.searcher.search(text, today, 3, strict=True)
+            return {'type': 'text', 'text': '\n\n'.join(parts), 'buttons': [h['title'] for h in hits]}
+        return None
+
     def lookup(self, text, today):
         item = self.exact.get(norm(text))
         return item if item and is_valid(item, today) else None
@@ -336,6 +469,9 @@ def decide(text, pending, catalog, legacy, passthrough, today):
     money = catalog.money_route(text, today)
     if money:
         return 'answer', {'type': 'text', 'text': money}
+    tail = catalog.tail_route(text, today)
+    if tail:
+        return 'answer', tail
     hits = catalog.related(text, today)
     if hits:
         return 'suggest', hits

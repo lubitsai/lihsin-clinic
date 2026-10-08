@@ -51,6 +51,8 @@ CONTACT = '請來電 06-2516086 或' + LINE_HERE + '詢問。'
 OTHER_FEES = '自費疫苗、快篩、減重等項目的費用，可以直接輸入項目名稱查詢（例如「水痘疫苗多少錢」）；其他自費項目' + CONTACT
 HANDLE = r'LINE\s*@lhpedclinic'
 LINE_RULES = [
+    # 「請以診所最新公告或 LINE @lhpedclinic 為準」（假日提醒）：讀者已在 LINE 裡，只留「以診所最新公告為準」
+    (re.compile(r'或\s*' + HANDLE + r'\s*為準'), '為準'),
     # 「或 LINE @lhpedclinic 確認」「或加／洽官方 LINE @lhpedclinic」；「或 LINE @lhpedclinic 預約」指圖文選單預約，保留
     (re.compile(r'或\s*(?:加|洽官方|洽|以)?\s*(?:官方\s*)?' + HANDLE + r'(?!\s*(?:線上)?預約)\s*'), '或' + LINE_HERE),
     # 「也可洽官方 LINE @lhpedclinic」
@@ -127,6 +129,14 @@ def read_source(src):
 CLINICAL = '這需要醫師當面評估才能決定，請攜帶健保卡、兒童健康手冊與目前用藥來院；疫苗現貨請先來電 06-2516086 確認。'
 ACTION_TEXT = '線上小幫手無法代為預約、改期、取消，也查不到個人的預約、號次或候診時間。'
 SELF_VAX_TAIL = "'自費疫苗本身的費用，' + CONTACT"
+# search.js 7–10 (ported 2026-10-08o), verbatim; parity-checked
+LATE_CLARIFY = '請問是「預約時段遲到」，還是「現場號過號」？兩者規則不同。'
+REGISTER_CLARIFY = '請問您是要網路預約，還是直接到現場掛號？'
+STOCK_HEAD = '公告中的「已到貨」不代表今天有現貨。'
+HOLIDAY_NOTE = '國定假日、連假、颱風天門診可能調整，請以診所最新公告或 LINE @lhpedclinic 為準。'
+HOLIDAY_TAIL = '客服不會主動通知門診異動；已預約的時段若受影響，請在預約系統查看，或透過 LINE、來電與櫃檯聯繫。'
+PAST_DATE = '這一天已經過去了，請輸入今天以後的日期。'
+BUTTONS = (("quick: ['預約遲到怎麼辦', '現場號過號怎麼辦']", core.LATE_BUTTONS), ("quick: ['網路預約怎麼約', '現場掛號幾點開始']", core.REGISTER_BUTTONS))
 
 def check_regex_parity(js):
     for name, mine in (('URGENT', core.URGENT_SRC), ('SOON', core.SOON_SRC), *core.ROUTE_SRC.items()):
@@ -137,9 +147,13 @@ def check_regex_parity(js):
         m = re.search(r'^const ' + name + r' = \[(.*)\];$', js, re.M)
         if not m or re.findall(r"'([^']+)'", m.group(1)) != mine:
             raise SystemExit(f'✗ core.PINS[{name}] 與官網 search.js 不一致，請先同步 core.py')
-    for literal in (CLINICAL, ACTION_TEXT, SELF_VAX_TAIL):
+    for literal in (CLINICAL, ACTION_TEXT, SELF_VAX_TAIL, LATE_CLARIFY, REGISTER_CLARIFY, STOCK_HEAD, HOLIDAY_NOTE,
+                    HOLIDAY_TAIL, PAST_DATE, HOURS_NOTE, COVID_NOTE):
         if literal not in js:
             raise SystemExit('✗ 固定回覆與官網 search.js 不一致：' + literal[:30])
+    for literal, mine in BUTTONS:
+        if literal != 'quick: ' + repr(mine).replace('"', "'") or literal not in js:
+            raise SystemExit('✗ 反問按鈕與官網 search.js 不一致：' + literal)
 
 def line_prices(kb, overrides, add_line):
     """官網 prices（比對規則＋官網版回覆）＋ LINE 覆寫（優惠文字、同行規則）→ LINE 用價目。"""
@@ -178,7 +192,8 @@ def build(kb_bytes, aliases, overrides=None):
     for n in kb['notices']:
         qs = list(dict.fromkeys([n['title'], n['title'].split('｜')[0].strip()]))
         items.append({'id': n['id'], 'kind': 'notice', 'title': n['title'], 'questions': qs,
-                      'answer': add_line(n['id'], n['answer']), 'valid_until': n['valid_until']})
+                      'answer': add_line(n['id'], n['answer']), 'valid_until': n['valid_until'],
+                      **({'schedule': True} if n.get('schedule') else {})})
     items.append({'id': 'NAV_WEBSITE', 'kind': 'navigation', 'questions': [], 'answer': kb['site'] + '/'})
     by_id = {i['id']: i for i in items}
     for item_id, extra in aliases.items():
@@ -216,6 +231,16 @@ def build(kb_bytes, aliases, overrides=None):
         'vaccine_note': VACCINE_NOTE,
         'other_fees': OTHER_FEES,
         'fee_table': fee_table,
+        'late_clarify': LATE_CLARIFY,
+        'register_clarify': REGISTER_CLARIFY,
+        'stock': STOCK_HEAD + CONTACT,
+        'covid': COVID_NOTE,
+        'holiday_note': add_line('holiday_note', HOLIDAY_NOTE),
+        'holiday_tail': HOLIDAY_TAIL,
+        'hours_note': HOURS_NOTE,
+        'past_date': PAST_DATE,
+        'facts': {'address': f"地址：{fx['地址']}", 'phone': f"電話：{fx['電話']}", 'email': f"Email：{fx['Email']}",
+                  'queue': f"看診進度查詢：{fx['看診進度查詢']}"},
         'greeting_reference': add_line('greeting', kb['greeting']),
         'suggestions_reference': kb['suggestions'],
     }
@@ -225,6 +250,8 @@ def build(kb_bytes, aliases, overrides=None):
                  'counts': {k: sum(i['kind'] == k for i in items) for k in ('faq', 'ops', 'notice', 'navigation')}},
         'replies': replies,
         'prices': prices,
+        'schedule': {'weekly': kb['schedule']['weekly'], 'exceptions': kb['schedule']['exceptions'],
+                     'legend': '，'.join(f'{n.strip()[0]}＝{n.strip()}' for n in re.split('[（(]', fx['醫師'])[0].split('、'))},
         'items': items,
     }
     cat = core.Catalog(data)  # raises on duplicate normalized questions

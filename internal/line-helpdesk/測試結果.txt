@@ -1,3 +1,8 @@
+2026-10-08 第二版 2.10（補齊官網 search.js 第 7～10 步：現貨、遲到、跨診次、新冠、指定日期、假日、門診時間與聯絡資料）
+- 在官網 repo 內執行 sync_assistants.py：build_faq.py --check 同步（分流 regex、固定句、反問按鈕與 search.js 逐字核對）；python3 -m unittest 89 項全部通過（新增 7 項）；官網 test_assistant.mjs 269 項通過。
+- 一致性比對 198 句（新增日期解析比對）全部一致；唯一刻意差異：不存在的日期（如 2/30）LINE 視為沒有日期，官網會照字面顯示。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-06 第二版 2.9（補施追、安在時、肺恩賜；首頁 B 型腦膜炎雙球菌疫苗用詞統一後重產）
 - build_faq.py --check 同步；python3 -m unittest 82 項全部通過；官網 test_assistant.mjs 269 項通過。
 - 未執行真實 LINE 與 Firestore 整合測試；尚未部署。

@@ -11,7 +11,7 @@
           → internal/line-helpdesk/faq.json（build_faq.py，含分流規則與 search.js 逐字核對）
   2. 測試：node internal/tools/test_assistant.mjs；LINE 單元測試（缺 Flask／Firestore 套件時只跑不需要它們的兩檔）
   3. 一致性比對（parity_queries.json＋--ask 問句）：Node 實跑官網 search.js、Python 實跑 LINE core.py，
-     比三件事——緊急判斷（urgent／soon）、自費價目命中哪一條、相似題檢索前 3 名。三者在設計上必須完全相同。
+     比四件事——緊急判斷（urgent／soon）、自費價目命中哪一條、相似題檢索前 3 名、問句解析出的日期。四者在設計上必須完全相同。
   4. validate_site.py --stage deploy（E-ASSISTANT＝官網、W-LINE＝LINE）
   5. --zip：打包 internal/line-helpdesk/ 給院長部署（檔名帶 git HEAD）
 
@@ -90,7 +90,7 @@ def tests():
 
 NODE_SCRIPT = r'''
 import fs from 'fs';
-import { createAssistant, normalize } from '%(search)s';
+import { createAssistant, normalize, parseDate } from '%(search)s';
 const kb = JSON.parse(fs.readFileSync('%(kb)s', 'utf8'));
 const js = fs.readFileSync('%(search)s', 'utf8');
 const rx = (n) => new RegExp(js.match(new RegExp('^const ' + n + ' = /(.*)/;$', 'm'))[1]);
@@ -106,7 +106,7 @@ const A = createAssistant(kb);
 const qs = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
 const today = process.argv[3];
 console.log(JSON.stringify(qs.map((q) => { const n = normalize(q);
-  return { triage: URGENT.test(n) ? 'urgent' : SOON.test(n) ? 'soon' : null, price: price(n),
+  return { triage: URGENT.test(n) ? 'urgent' : SOON.test(n) ? 'soon' : null, price: price(n), date: parseDate(q, today),
            search: A.search(q, today, 3).map((h) => h.row.id), answer: A.ask(q, today) }; })));
 '''
 
@@ -144,11 +144,12 @@ def parity(extra, today_s):
     for q, s in zip(queries, site):
         r = web_prices.match(q)
         mine = {'triage': core.triage(q), 'price': r['id'] if r else None,
-                'search': [h['id'] for h in searcher.search(q, today, 3)]}
+                'search': [h['id'] for h in searcher.search(q, today, 3)],
+                'date': (lambda d: d.isoformat() if d else None)(core.parse_date(q, today))}
         for k in mine:
             if mine[k] != s[k]:
                 diffs.append(f'  「{q}」{k}：官網 {s[k]}｜LINE {mine[k]}')
-    report(f'一致性比對（{len(queries)} 句 × 緊急判斷／價目／檢索）', not diffs, f'{len(diffs)} 處不一致' if diffs else '全部一致')
+    report(f'一致性比對（{len(queries)} 句 × 緊急判斷／價目／檢索／日期）', not diffs, f'{len(diffs)} 處不一致' if diffs else '全部一致')
     for d in diffs[:30]:
         print(d)
     return site, queries, core, cat, legacy, today
