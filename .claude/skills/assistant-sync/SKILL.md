@@ -23,30 +23,28 @@ internal/line-helpdesk/aliases.json、prices_line.json ── build_faq.py ─�
 - **小幫手只認得 FAQ**：只寫在頁面可見區、沒進該頁 FAQ schema 的事實，兩個小幫手都答不出來（2026-10-06 醫師專科資格就是這樣漏的）。新增可見事實時，問一句「家長會不會問小幫手這件事？」會的話同步補進 FAQ（可見文字，需院長逐字核可）。
 - **搜尋以題目標題為主**：答案裡有、標題沒有的關鍵字，口語問法常常找不到。
 
-## 標準流程
+## 標準流程（一鍵）
 
-1. **同步 main**：`git fetch origin main`，看自上次以來改了什麼：
-   `git log --oneline <上次>..origin/main`、`git diff --stat <上次> origin/main -- clinic-assistant/ internal/AI客服_自費價目.json internal/line-helpdesk/`
-2. **重產（Claude Code 內由 hook 自動跑，手動指令如下）**
+1. **同步 main**：`git fetch origin main && git merge origin/main`，看自上次以來改了什麼：
+   `git diff --stat <上次> origin/main -- clinic-assistant/ internal/AI客服_自費價目.json internal/line-helpdesk/`
+2. **一條指令完成重產＋測試＋兩邊一致性比對＋validate_site＋打包**
    ```
-   python3 internal/tools/build_chatbot_kb.py --kb internal/AI客服知識庫_立欣診所_正本_<日期>.md
-   python3 internal/tools/build_assistant_kb.py
-   python3 internal/line-helpdesk/build_faq.py          # 在 repo 內預設讀 repo 的 knowledge.json／search.js
+   python3 internal/tools/sync_assistants.py --zip <scratchpad> --ask <這批新增內容家長會怎麼問…>
    ```
-3. **驗證**（全部要過才交付）
-   ```
-   node internal/tools/test_assistant.mjs                # 官網小幫手
-   python3 internal/line-helpdesk/build_faq.py --check   # LINE 題庫同步＋分流規則與 search.js 逐字核對
-   cd internal/line-helpdesk && python3 -m unittest      # 需先 pip install -r requirements.lock.txt
-   python3 internal/tools/validate_site.py --root . --stage deploy   # E-ASSISTANT＝官網、W-LINE＝LINE
-   ```
-   再抽 3～5 句「這批新增內容家長會怎麼問」，兩邊都問一次（官網用 `createAssistant(kb).ask(q, 日期)`，LINE 用 `core.decide`）。查不到就回報缺口，不要自己加 FAQ。
-4. **打包 LINE 給院長部署**（LINE 跑在 Cloud Run，repo 內的 faq.json 不會自己上線）
-   ```
-   cd internal && zip -qr <scratchpad>/立欣診所_LINE客服_<版本>_<日期>.zip line-helpdesk -x 'line-helpdesk/__pycache__/*'
-   ```
-   用 SendUserFile 交付，並更新 `line-helpdesk/測試結果.txt` 與 README 版本行。部署步驟見 `line-helpdesk/README_設定步驟.md`。
+   - 重產：正本 Q&A 區 → `knowledge.json` → LINE `faq.json`（各自先 `--check`，不同步才重產；Claude Code 內 hook 通常已先跑過）
+   - 測試：`test_assistant.mjs`（官網）＋ LINE unittest（缺 Flask／Firestore 時只跑題庫與價目兩檔；完整版用裝好 `requirements.lock.txt` 的 Python 執行本腳本）
+   - **一致性比對**：Node 實跑官網 `search.js`、Python 實跑 LINE `core.py`，對 `internal/line-helpdesk/parity_queries.json`（165 句）＋ `--ask` 問句比三件事——緊急判斷、自費價目命中哪條、相似題前 3 名。設計上必須完全相同，任何一處不同即失敗
+   - `validate_site --stage deploy`（E-ASSISTANT／W-LINE 任一出現即失敗）
+   - `--ask`：兩邊回答並排印出，用來抽查新內容家長問不問得到。查不到就回報缺口，不要自己加 FAQ
+   - `--zip`：全部通過才打包 `立欣診所_LINE客服_<README 版本>_main-<HEAD>.zip`，用 SendUserFile 交付
+   - `--check`：只檢查不寫檔（push 前把關）；結束碼 0＝全過、1＝有 ✗
+3. 新增常見問法時，把句子加進 `parity_queries.json`，比對範圍就跟著變大。
+4. LINE 有改程式／規則時，更新 `line-helpdesk/測試結果.txt` 與 README 版本行；部署步驟見 `line-helpdesk/README_設定步驟.md`（LINE 跑在 Cloud Run，repo 內的 faq.json 不會自己上線）。
 5. **PR 判準**（CLAUDE.md）：只重產衍生檔、沒改頁面 → 跟著改動來源的那一批走；只動 `internal/**` → 直推 main；改了 FAQ／search.js（小幫手的回答）→ 判準① 開 PR。00／01 照 §8 先備份再登錄。
+
+### 已知的設計差異（`--ask` 會看到，不算失敗）
+
+官網有、LINE 尚未移植的前置規則：STOCK（現貨）、LATE／CROSS／COVID、假日與指定日期門診。LINE 遇到這類問句會改給相似題或轉專人。是否移植待院長決定。
 
 ## 改規則時的鐵律
 
@@ -59,4 +57,4 @@ internal/line-helpdesk/aliases.json、prices_line.json ── build_faq.py ─�
 
 ## 審查別人交來的 LINE 新版本
 
-逐檔 diff 對照 `internal/line-helpdesk/`；在 repo 內跑第 3 步全部驗證（外部版本常因手上沒有官網檔而略過比對測試）；特別看：緊急判斷有沒有被放寬、分流順序是否仍與 search.js 一致（SOON 先於前置規則）、有沒有用 Q 編號、有沒有新文字未經核可。採用後覆蓋進 `internal/line-helpdesk/` 並登錄 00。
+逐檔 diff 對照 `internal/line-helpdesk/`；覆蓋進 repo 後跑 `sync_assistants.py --check`（外部版本常因手上沒有官網檔而略過比對測試）；特別看：緊急判斷有沒有被放寬、分流順序是否仍與 search.js 一致（SOON 先於前置規則）、有沒有用 Q 編號、有沒有新文字未經核可。採用後覆蓋進 `internal/line-helpdesk/` 並登錄 00。
