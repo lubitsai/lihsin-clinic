@@ -48,8 +48,9 @@ class RoutingTests(unittest.TestCase):
         for q in ['最後幾點可以打疫苗？', '幾點以後不能打疫苗', '疫苗打到幾點', '週六最晚幾點可以打疫苗']:
             action, msg = route(q)
             self.assertEqual(action, 'answer', q)
-            self.assertIn('週一至週五 20:30、週六 17:00、週日 20:00', msg['text'], q)
-            self.assertEqual(msg['buttons'], [CAT.titles['打疫苗需要預約嗎？要先確認有沒有貨嗎？']['title']], q)
+            self.assertTrue(msg['text'].startswith('您好，因疫苗清點與申報作業，本院於每日最後一診結束前一小時暫停疫苗施打。'), q)
+            self.assertTrue(msg['text'].endswith('最後施打時間：週一至週五 20:30、週六 17:00、週日 20:00。'), q)
+            self.assertEqual(msg['buttons'], [T['Q226'], T['Q198']], q)
 
     def test_flu_documents(self):
         for q, first, second in [('3歲小孩打公費流感要帶什麼', 'Q524', 'Q202'), ('打流感疫苗要帶什麼', 'Q524', 'Q202'),
@@ -80,7 +81,7 @@ class RoutingTests(unittest.TestCase):
         self.assertNotIn('buttons', out)
         items = out['quickReply']['items']
         self.assertEqual(items[-1], main.STAFF_BUTTON)
-        self.assertEqual(items[0]['action']['text'], CAT.titles['打疫苗需要預約嗎？要先確認有沒有貨嗎？']['title'])
+        self.assertEqual(items[0]['action']['text'], T['Q226'])
         self.assertLessEqual(len(items[0]['action']['label'].encode('utf-16-le')) // 2, 20)
 
 if __name__ == '__main__':
