@@ -47,7 +47,6 @@ internal/line-helpdesk/aliases.json、prices_line.json ── build_faq.py ─�
 2026-10-08o 起 search.js 每一步分流（含第 7～10 步：跨診次、遲到／掛號反問、現貨、新冠、指定日期、假日、門診時間與聯絡資料）都已移植到 LINE `core.py`（`Catalog.tail_route`、`parse_date`），regex、固定句、反問按鈕由 `build_faq.py` 逐字核對。剩下的差異都是刻意的：
 - LINE 先比對整句問法（aliases.json、歡迎詞），所以「掛號」「今天有看診嗎」走固定回答，不走官網的反問／日期卡。
 - 官網的卡片（門診表、聯絡資料）在 LINE 是純文字＋相關題目按鈕。
-- 不存在的日期（2/30）：LINE 視為沒有日期；官網照字面顯示（官網小瑕疵，未修）。
 - search.js 新增分流步驟時，三處要同步：`core.ROUTE_SRC`／`tail_route`、`build_faq.py` 固定句清單、`parity_queries.json` 補問句。
 
 ## 改規則時的鐵律

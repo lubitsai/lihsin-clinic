@@ -227,16 +227,11 @@ def parse_date(text, today):
     md = re.search(r'(?<!\d)(1[0-2]|0?[1-9])(?:月|/|-)(3[01]|[12]\d|0?[1-9])(?:日|號)?(?!\d)', q)
     if md:
         m, dd = int(md.group(1)), int(md.group(2))
+        y = today.year if f'{today.year}-{m:02d}-{dd:02d}' >= (today - timedelta(days=30)).isoformat() else today.year + 1
         try:
-            d = date(today.year, m, dd)
-        except ValueError:
+            return date(y, m, dd)
+        except ValueError:   # 2/30, 11/31: no such date (same as the website)
             return None
-        if d < today - timedelta(days=30):
-            try:
-                d = date(today.year + 1, m, dd)
-            except ValueError:
-                return None
-        return d
     wk = re.search(r'(下下|下|這|本)?週([一二三四五六日])', q)
     if wk:
         target = DAY.index(wk.group(2))

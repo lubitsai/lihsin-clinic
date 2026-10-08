@@ -61,6 +61,9 @@ n++; assert.equal(parseDate('10/10有開嗎', DAY), '2026-10-10');
 n++; assert.equal(parseDate('下週三晚上', DAY), '2026-09-30');
 n++; assert.equal(parseDate('1月5日', DAY), '2027-01-05');
 n++; assert.equal(parseDate('孩子3個月大發燒', DAY), null);
+n++; assert.equal(parseDate('2/30有看診嗎', DAY), null);   // 不存在的日期不顯示「2 月 30 日」
+n++; assert.equal(parseDate('11/31有開嗎', DAY), null);
+n++; assert.equal(parseDate('2/29有開嗎', '2027-10-01'), '2028-02-29');   // 閏年：跨年後才合法
 kind('颱風天有看診嗎', 'dynamic');
 
 // ── 檢索品質：建議問題與常見問法要找得到對的題 ──
