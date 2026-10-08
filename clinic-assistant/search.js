@@ -87,6 +87,8 @@ const FLU_DOCS = /流感.{0,12}(?:帶什麼|要帶|攜帶|帶哪些|準備什麼
 const STUDENT = /學生|國小|國中|高中|高職|小學|補接種/;
 // 5-0a 直接回的官網既有題目：以標題指定，不用 Q 編號（重產題庫時編號會依頁面順序順移；2026-10-05 院長裁示）。
 // 標題改了就找不到 → 回 null、交給後面的分流（不會指錯題）；test_assistant.mjs 斷言四題都在。LINE 程式包逐字核對本段。
+// 疫苗停打固定回覆（院長 2026-10-08 逐字提供）＋各日最後施打時間（由週班表算：最後一診結束前 1 小時）
+const VAX_CUTOFF_REPLY = '您好，因疫苗清點與申報作業，本院於每日最後一診結束前一小時暫停疫苗施打。若需接種疫苗，請於打烊前一小時前到院，謝謝您的配合！';
 const PIN_CUTOFF = ['週六、週日或夜診時段可以接種疫苗嗎？', '打疫苗需要預約嗎？要先確認有沒有貨嗎？'];
 const PIN_FLU_DOCS = ['打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？', '國小到高中職學生要打公費流感疫苗，需要帶什麼？'];
 const PIN_FLU_DOCS_STUDENT = ['國小到高中職學生要打公費流感疫苗，需要帶什麼？', '打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？'];
@@ -255,6 +257,22 @@ export function createAssistant(kb) {
   const scheduleNotices = (today) => kb.notices.filter((n) => n.schedule && valid(n, today))
     .map((n) => ({ type: 'notice', title: n.title, text: n.answer }));
 
+  // 各日最後施打時間：最後一診結束前 1 小時，連續同時間的日子合併（週一至週五 20:30、週六 17:00、週日 20:00）
+  function cutoffLine() {
+    const groups = [];
+    for (const w of [1, 2, 3, 4, 5, 6, 0]) {
+      const ends = (kb.schedule?.weekly[String(w)] || []).map((x) => x.end).sort();
+      if (!ends.length) continue;
+      const [h, m] = ends[ends.length - 1].split(':').map(Number);
+      const t = `${String(h - 1).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+      const last = groups[groups.length - 1];
+      if (last && last.t === t && last.days[last.days.length - 1] === (w + 6) % 7) last.days.push(w);
+      else groups.push({ t, days: [w] });
+    }
+    const name = (d) => d.length >= 3 ? `週${DAY[d[0]]}至週${DAY[d[d.length - 1]]}` : d.map((x) => `週${DAY[x]}`).join('、');
+    return groups.length ? '最後施打時間：' + groups.map((g) => `${name(g.days)} ${g.t}`).join('、') + '。' : '';
+  }
+
   const weekTable = () => ({
     type: 'schedule', title: '常態門診時間', note: legend(),
     days: [1, 2, 3, 4, 5, 6, 0].map((w) => ({ day: `週${DAY[w]}`, rows: weeklyRows(w) })),
@@ -357,7 +375,7 @@ export function createAssistant(kb) {
     };
     if (VAX_CUTOFF.test(q) && !PRICE.test(q)) {
       const r = pinned(PIN_CUTOFF);
-      if (r) return r;
+      return reply('results', [VAX_CUTOFF_REPLY, cutoffLine()].filter(Boolean).join('\n'), r ? r.blocks : []);
     }
     if (FLU_DOCS.test(q) && !PRICE.test(q)) {
       const r = pinned(STUDENT.test(q) ? PIN_FLU_DOCS_STUDENT : PIN_FLU_DOCS);

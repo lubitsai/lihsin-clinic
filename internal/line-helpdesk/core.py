@@ -302,8 +302,11 @@ class Catalog:
             return {'type': 'text', 'text': r['action']}
         pin = None
         if VAX_CUTOFF.search(q) and not PRICE.search(q):
-            pin = PINS['PIN_CUTOFF']
-        elif FLU_DOCS.search(q) and not PRICE.search(q):
+            # director's fixed sentence (2026-10-08) + last vaccination times, then the pinned FAQs as buttons
+            rows = [x for x in (self.by_title(t, today) for t in PINS['PIN_CUTOFF']) if x]
+            return {'type': 'text', 'text': '\n'.join(filter(None, [r['vax_cutoff'], self.cutoff_line()])),
+                    'buttons': [x['title'] for x in rows]}
+        if FLU_DOCS.search(q) and not PRICE.search(q):
             pin = PINS['PIN_FLU_DOCS_STUDENT'] if STUDENT.search(q) else PINS['PIN_FLU_DOCS']
         if pin:
             first, second = (self.by_title(t, today) for t in pin)
@@ -333,6 +336,22 @@ class Catalog:
         if PRICE.search(q):
             return self.prices.no_data
         return None
+
+    def cutoff_line(self):
+        """search.js cutoffLine(): last vaccination time per day = last session end minus one hour, runs merged."""
+        groups = []
+        for w in [1, 2, 3, 4, 5, 6, 0]:
+            ends = sorted(x['end'] for x in self.schedule['weekly'].get(str(w), []))
+            if not ends:
+                continue
+            h, m = map(int, ends[-1].split(':'))
+            t = f'{h - 1:02d}:{m:02d}'
+            if groups and groups[-1][0] == t and groups[-1][1][-1] == (w + 6) % 7:
+                groups[-1][1].append(w)
+            else:
+                groups.append((t, [w]))
+        name = lambda d: f'週{DAY[d[0]]}至週{DAY[d[-1]]}' if len(d) >= 3 else '、'.join(f'週{DAY[x]}' for x in d)
+        return '最後施打時間：' + '、'.join(f'{name(d)} {t}' for t, d in groups) + '。' if groups else ''
 
     # ── search.js 7–10: what is left after money questions ──
     def _weekly_rows(self, w):
