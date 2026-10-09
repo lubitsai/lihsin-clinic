@@ -397,6 +397,8 @@ jobs:
           check /images/roseola-infographic.jpg 200
           check /health/croup.html 200
           check /images/croup-infographic.jpg 200
+          check /health/mouth-sores.html 200
+          check /images/mouth-sores-infographic.jpg 200
           check /health/child-emergency-signs.html 200
           check /images/child-emergency-signs-infographic.jpg 200
           check /health/high-allergen-foods.html 200
