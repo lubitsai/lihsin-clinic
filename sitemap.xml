@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -103,7 +103,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -397,6 +397,13 @@
     <loc>https://lhpedclinic.com.tw/health/croup.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/croup-infographic.jpg</image:loc></image:image>
     <lastmod>2026-09-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/mouth-sores.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/mouth-sores-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -706,7 +713,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/</loc>
-    <lastmod>2026-10-06</lastmod>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
