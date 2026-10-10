@@ -400,6 +400,7 @@ jobs:
           check /health/mouth-sores.html 200
           check /images/mouth-sores-infographic.jpg 200
           check /health/baby-constipation.html 200
+          check /images/baby-constipation-infographic.jpg 200
           check /health/child-emergency-signs.html 200
           check /images/child-emergency-signs-infographic.jpg 200
           check /health/high-allergen-foods.html 200
