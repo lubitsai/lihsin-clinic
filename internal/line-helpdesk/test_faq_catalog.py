@@ -78,7 +78,8 @@ class CatalogTests(unittest.TestCase):
 
     def test_announcements_expire(self):
         notices = [x for x in DATA['items'] if x['kind'] == 'notice']
-        self.assertEqual(len(notices), 8)
+        self.assertEqual(len(notices), DATA['meta']['counts']['notice'])   # grows with homepage announcements
+        self.assertGreaterEqual(len(notices), 1)
         for x in notices:
             after = date.fromisoformat(x['valid_until']) + timedelta(days=1)
             self.assertEqual(route(x['questions'][0], today=TODAY)[0], 'answer')
