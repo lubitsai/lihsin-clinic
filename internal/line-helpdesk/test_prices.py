@@ -33,9 +33,9 @@ class PriceTests(unittest.TestCase):
         self.assertPrice('打點滴多少錢', '850 元起')
 
     def test_flu_vaccines(self):
-        self.assertPrice('自費流感疫苗多少錢', '伏流感 1,000', '1,500', '1,900 元，目前已售完', '1,600', '仿單')
+        self.assertPrice('自費流感疫苗多少錢', '伏流感 1,000', '1,500', '1,900 元，本季已售完，不再進貨', '1,600', '仿單')
         self.assertPrice('能伏鼻多少', '1,600 元')
-        self.assertPrice('輔流禦多少錢', '目前已售完')
+        self.assertPrice('輔流禦多少錢', '本季已售完，不再進貨')
         self.assertPrice('流感多少錢', '快篩', '疫苗')
         self.assertIsNone(CAT.prices.match('公費流感疫苗多少錢'))
         self.assertIsNone(CAT.prices.match('過敏鼻噴劑多少錢'))
