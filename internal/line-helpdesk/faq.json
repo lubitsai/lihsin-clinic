@@ -2,13 +2,13 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "91e01a12007d74eff06ac7049f56d6afa387f4b94ca1b9316c75780b54e84477"
+   "kb_sha256": "ecae75d2974ffc5b563fd73e741f6e253f9763363485e342af93f5445e652ad5"
   },
-  "knowledge_sha256": "6f4f5a53b2baba3a469d4f0bdfd4167313fb46968a89fbdea5302cf3af911d4a",
+  "knowledge_sha256": "b812a0938d39719e244481be446aff875f4fb173426077ce795687b57c1aa72d",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
-   "faq": 936,
+   "faq": 943,
    "ops": 8,
    "notice": 9,
    "navigation": 1
@@ -5215,6 +5215,104 @@
   {
    "id": "Q323",
    "kind": "faq",
+   "title": "寶寶好幾天沒大便，是便秘嗎？",
+   "questions": [
+    "寶寶好幾天沒大便，是便秘嗎？"
+   ],
+   "answer": "不一定。判斷嬰幼兒便秘要看大便軟硬、解便會不會痛、有沒有憋便，次數只是其中一項。純母乳寶寶滿月後，有些一週左右才解一次，只要解出來是軟便、體重照生長曲線增加，就屬於正常範圍。反過來，每天都解、但每次都很硬很痛，仍要當成便秘處理。",
+   "kb_answer": "不一定。判斷嬰幼兒便秘要看大便軟硬、解便會不會痛、有沒有憋便，次數只是其中一項。純母乳寶寶滿月後，有些一週左右才解一次，只要解出來是軟便、體重照生長曲線增加，就屬於正常範圍。反過來，每天都解、但每次都很硬很痛，仍要當成便秘處理。",
+   "page": "寶寶便秘怎麼辦？0～3 歲嬰幼兒功能性便秘判斷與照護",
+   "source_url": "https://lhpedclinic.com.tw/health/baby-constipation.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q324",
+   "kind": "faq",
+   "title": "寶寶大便前用力到臉紅、一直哭，是便秘嗎？",
+   "questions": [
+    "寶寶大便前用力到臉紅、一直哭，是便秘嗎？"
+   ],
+   "answer": "如果寶寶未滿 9 個月，用力哭鬧十幾分鐘後解出來的是軟便，其他方面也都健康，比較像「嬰兒排便困難」（infant dyschezia）。解便需要肚子用力、同時放鬆肛門，小嬰兒還在學這個協調，多數幾週內會自己學會，不需要吃藥。可以讓寶寶仰躺、把膝蓋往肚子方向輕輕彎曲幫助使力，不建議用棉花棒或肛溫計刺激肛門。",
+   "kb_answer": "如果寶寶未滿 9 個月，用力哭鬧十幾分鐘後解出來的是軟便，其他方面也都健康，比較像「嬰兒排便困難」（infant dyschezia）。解便需要肚子用力、同時放鬆肛門，小嬰兒還在學這個協調，多數幾週內會自己學會，不需要吃藥。可以讓寶寶仰躺、把膝蓋往肚子方向輕輕彎曲幫助使力，不建議用棉花棒或肛溫計刺激肛門。",
+   "page": "寶寶便秘怎麼辦？0～3 歲嬰幼兒功能性便秘判斷與照護",
+   "source_url": "https://lhpedclinic.com.tw/health/baby-constipation.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q325",
+   "kind": "faq",
+   "title": "喝配方奶的寶寶便秘，要換奶粉嗎？",
+   "questions": [
+    "喝配方奶的寶寶便秘，要換奶粉嗎？"
+   ],
+   "answer": "先確認沖泡比例。奶粉放太多、水太少，大便容易變硬，請依罐上的比例沖泡，不要自行多加奶粉，也不要自行加水稀釋。一便秘就換奶粉，反而不容易看出真正的原因；若醫師評估懷疑和牛奶蛋白過敏有關，會再討論是否改用特殊配方並觀察 2～4 週。",
+   "kb_answer": "先確認沖泡比例。奶粉放太多、水太少，大便容易變硬，請依罐上的比例沖泡，不要自行多加奶粉，也不要自行加水稀釋。一便秘就換奶粉，反而不容易看出真正的原因；若醫師評估懷疑和牛奶蛋白過敏有關，會再討論是否改用特殊配方並觀察 2～4 週。",
+   "page": "寶寶便秘怎麼辦？0～3 歲嬰幼兒功能性便秘判斷與照護",
+   "source_url": "https://lhpedclinic.com.tw/health/baby-constipation.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q326",
+   "kind": "faq",
+   "title": "寶寶便秘可以用棉花棒或肛溫計刺激肛門嗎？",
+   "questions": [
+    "寶寶便秘可以用棉花棒或肛溫計刺激肛門嗎？"
+   ],
+   "answer": "不建議自行這樣做。寶寶可能因此習慣靠外力才解得出來，反覆刺激也可能造成肛門周圍破皮。甘油球、浣腸和成人瀉劑也一樣，請在醫師指示下才使用，不要自行反覆使用。",
+   "kb_answer": "不建議自行這樣做。寶寶可能因此習慣靠外力才解得出來，反覆刺激也可能造成肛門周圍破皮。甘油球、浣腸和成人瀉劑也一樣，請在醫師指示下才使用，不要自行反覆使用。",
+   "page": "寶寶便秘怎麼辦？0～3 歲嬰幼兒功能性便秘判斷與照護",
+   "source_url": "https://lhpedclinic.com.tw/health/baby-constipation.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q327",
+   "kind": "faq",
+   "title": "未滿 6 個月的寶寶便秘，可以餵水嗎？",
+   "questions": [
+    "未滿 6 個月的寶寶便秘，可以餵水嗎？"
+   ],
+   "answer": "未滿 6 個月的寶寶，母乳或配方奶裡的水分已經足夠，不需要另外餵水或糖水。開始吃副食品之後，才可以少量喝水。",
+   "kb_answer": "未滿 6 個月的寶寶，母乳或配方奶裡的水分已經足夠，不需要另外餵水或糖水。開始吃副食品之後，才可以少量喝水。",
+   "page": "寶寶便秘怎麼辦？0～3 歲嬰幼兒功能性便秘判斷與照護",
+   "source_url": "https://lhpedclinic.com.tw/health/baby-constipation.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q328",
+   "kind": "faq",
+   "title": "開始吃副食品後便秘，可以吃什麼？",
+   "questions": [
+    "開始吃副食品後便秘，可以吃什麼？"
+   ],
+   "answer": "副食品初期以米精、米糊為主，蔬菜水果吃得少，大便容易變硬。可以逐步加入蔬菜泥，以及黑棗、梨子、李子、蘋果等水果泥，並少量喝水。未滿 1 歲一般不建議喝果汁，用水果泥取代即可。",
+   "kb_answer": "副食品初期以米精、米糊為主，蔬菜水果吃得少，大便容易變硬。可以逐步加入蔬菜泥，以及黑棗、梨子、李子、蘋果等水果泥，並少量喝水。未滿 1 歲一般不建議喝果汁，用水果泥取代即可。",
+   "page": "寶寶便秘怎麼辦？0～3 歲嬰幼兒功能性便秘判斷與照護",
+   "source_url": "https://lhpedclinic.com.tw/health/baby-constipation.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q329",
+   "kind": "faq",
+   "title": "寶寶便秘出現哪些情況要儘快就醫？",
+   "questions": [
+    "寶寶便秘出現哪些情況要儘快就醫？"
+   ],
+   "answer": "新生兒出生超過 48 小時還沒有解胎便；出生後第 1 個月就開始便秘；肚子明顯脹大、持續嘔吐，特別是吐出黃綠色液體；餵食困難、體重不增加或活力明顯變差；大便很細像鉛筆，或血便量多、血混在大便裡；腰背下方皮膚有凹陷、一撮毛髮或色塊，或雙腳無力。以上請儘速就醫評估。發燒合併嘔吐、肚子脹硬、精神變差時，請直接前往急診。",
+   "kb_answer": "新生兒出生超過 48 小時還沒有解胎便；出生後第 1 個月就開始便秘；肚子明顯脹大、持續嘔吐，特別是吐出黃綠色液體；餵食困難、體重不增加或活力明顯變差；大便很細像鉛筆，或血便量多、血混在大便裡；腰背下方皮膚有凹陷、一撮毛髮或色塊，或雙腳無力。以上請儘速就醫評估。發燒合併嘔吐、肚子脹硬、精神變差時，請直接前往急診。",
+   "page": "寶寶便秘怎麼辦？0～3 歲嬰幼兒功能性便秘判斷與照護",
+   "source_url": "https://lhpedclinic.com.tw/health/baby-constipation.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q330",
+   "kind": "faq",
    "title": "寶寶溢奶、吐奶正常嗎？",
    "questions": [
     "寶寶溢奶、吐奶正常嗎？"
@@ -5227,7 +5325,7 @@
    "seasonal": false
   },
   {
-   "id": "Q324",
+   "id": "Q331",
    "kind": "faq",
    "title": "溢奶和吐奶有什麼不一樣？",
    "questions": [
@@ -5241,7 +5339,7 @@
    "seasonal": false
   },
   {
-   "id": "Q325",
+   "id": "Q332",
    "kind": "faq",
    "title": "怎麼減少寶寶溢奶吐奶？",
    "questions": [
@@ -5255,7 +5353,7 @@
    "seasonal": false
   },
   {
-   "id": "Q326",
+   "id": "Q333",
    "kind": "faq",
    "title": "寶寶吐奶出現哪些情況要立刻就醫？",
    "questions": [
@@ -5269,7 +5367,7 @@
    "seasonal": false
   },
   {
-   "id": "Q327",
+   "id": "Q334",
    "kind": "faq",
    "title": "寶寶一直溢奶，需要換水解奶粉或在奶瓶裡加米精嗎？",
    "questions": [
@@ -5283,7 +5381,7 @@
    "seasonal": false
   },
   {
-   "id": "Q328",
+   "id": "Q335",
    "kind": "faq",
    "title": "台南哪裡可以做嬰兒餵食與吐奶評估？",
    "questions": [
@@ -5297,7 +5395,7 @@
    "seasonal": false
   },
   {
-   "id": "Q329",
+   "id": "Q336",
    "kind": "faq",
    "title": "寶寶容易溢奶，睡覺可以改成趴睡或側睡嗎？",
    "questions": [
@@ -5311,7 +5409,7 @@
    "seasonal": false
   },
   {
-   "id": "Q330",
+   "id": "Q337",
    "kind": "faq",
    "title": "寶寶的溢奶大概到什麼時候會改善？",
    "questions": [
@@ -5325,7 +5423,7 @@
    "seasonal": false
   },
   {
-   "id": "Q331",
+   "id": "Q338",
    "kind": "faq",
    "title": "開學後流感、腸病毒和新冠會同時流行嗎？",
    "questions": [
@@ -5339,7 +5437,7 @@
    "seasonal": false
   },
   {
-   "id": "Q332",
+   "id": "Q339",
    "kind": "faq",
    "title": "孩子發燒了，怎麼從症狀初步判斷是流感、腸病毒還是新冠？",
    "questions": [
@@ -5353,7 +5451,7 @@
    "seasonal": false
   },
   {
-   "id": "Q333",
+   "id": "Q340",
    "kind": "faq",
    "title": "嘴巴破、手腳長疹子，一定是腸病毒嗎？沒發燒是不是就可以排除？",
    "questions": [
@@ -5367,7 +5465,7 @@
    "seasonal": false
   },
   {
-   "id": "Q334",
+   "id": "Q341",
    "kind": "faq",
    "title": "突然高燒又全身痠痛，是流感還是新冠？兩者要怎麼分？",
    "questions": [
@@ -5381,7 +5479,7 @@
    "seasonal": false
   },
   {
-   "id": "Q335",
+   "id": "Q342",
    "kind": "faq",
    "title": "流感、腸病毒與新冠各自的危險徵象有哪些？",
    "questions": [
@@ -5395,7 +5493,7 @@
    "seasonal": false
   },
   {
-   "id": "Q336",
+   "id": "Q343",
    "kind": "faq",
    "title": "孩子在學校被傳染，回家後家人要怎麼隔開？",
    "questions": [
@@ -5409,7 +5507,7 @@
    "seasonal": false
   },
   {
-   "id": "Q337",
+   "id": "Q344",
    "kind": "faq",
    "title": "開學季孩子發燒，要先自己快篩還是先看醫生？",
    "questions": [
@@ -5423,7 +5521,7 @@
    "seasonal": false
   },
   {
-   "id": "Q338",
+   "id": "Q345",
    "kind": "faq",
    "title": "這三種病毒得過一次還會再得嗎？",
    "questions": [
@@ -5437,7 +5535,7 @@
    "seasonal": false
   },
   {
-   "id": "Q339",
+   "id": "Q346",
    "kind": "faq",
    "title": "孩子生病要請假幾天才能回學校？班上會停課嗎？",
    "questions": [
@@ -5451,7 +5549,7 @@
    "seasonal": false
   },
   {
-   "id": "Q340",
+   "id": "Q347",
    "kind": "faq",
    "title": "開學季孩子發燒要看哪一科？台南北區哪裡可以看？",
    "questions": [
@@ -5465,7 +5563,7 @@
    "seasonal": false
   },
   {
-   "id": "Q341",
+   "id": "Q348",
    "kind": "faq",
    "title": "小孩幾歲還會尿床才需要看醫生？",
    "questions": [
@@ -5479,7 +5577,7 @@
    "seasonal": false
   },
   {
-   "id": "Q342",
+   "id": "Q349",
    "kind": "faq",
    "title": "孩子本來已經不尿床，最近又開始尿床是怎麼回事？",
    "questions": [
@@ -5493,7 +5591,7 @@
    "seasonal": false
   },
   {
-   "id": "Q343",
+   "id": "Q350",
    "kind": "faq",
    "title": "尿床是孩子偷懶、故意的嗎？罵他或處罰有用嗎？",
    "questions": [
@@ -5507,7 +5605,7 @@
    "seasonal": false
   },
   {
-   "id": "Q344",
+   "id": "Q351",
    "kind": "faq",
    "title": "孩子尿床需要做什麼檢查？一定要驗尿嗎？",
    "questions": [
@@ -5521,7 +5619,7 @@
    "seasonal": false
   },
   {
-   "id": "Q345",
+   "id": "Q352",
    "kind": "faq",
    "title": "半夜把孩子叫起來尿尿有用嗎？睡前要不要限水？",
    "questions": [
@@ -5535,7 +5633,7 @@
    "seasonal": false
   },
   {
-   "id": "Q346",
+   "id": "Q353",
    "kind": "faq",
    "title": "尿床鬧鈴是什麼？和吃藥比起來要怎麼選？",
    "questions": [
@@ -5549,7 +5647,7 @@
    "seasonal": false
   },
   {
-   "id": "Q347",
+   "id": "Q354",
    "kind": "faq",
    "title": "尿床可以吃藥治療嗎？用藥要注意什麼？",
    "questions": [
@@ -5563,7 +5661,7 @@
    "seasonal": false
   },
   {
-   "id": "Q348",
+   "id": "Q355",
    "kind": "faq",
    "title": "尿床要看哪一科？台南哪裡可以評估孩子的尿床？",
    "questions": [
@@ -5577,7 +5675,7 @@
    "seasonal": false
   },
   {
-   "id": "Q349",
+   "id": "Q356",
    "kind": "faq",
    "title": "孩子咳嗽多久算久咳需要看醫生？",
    "questions": [
@@ -5591,7 +5689,7 @@
    "seasonal": false
   },
   {
-   "id": "Q350",
+   "id": "Q357",
    "kind": "faq",
    "title": "孩子半夜咳不停可能是氣喘嗎？",
    "questions": [
@@ -5605,7 +5703,7 @@
    "seasonal": false
   },
   {
-   "id": "Q351",
+   "id": "Q358",
    "kind": "faq",
    "title": "什麼是肺功能檢測？怎麼確認是不是氣喘？",
    "questions": [
@@ -5619,7 +5717,7 @@
    "seasonal": false
   },
   {
-   "id": "Q352",
+   "id": "Q359",
    "kind": "faq",
    "title": "兒童氣喘可以治療好嗎？",
    "questions": [
@@ -5633,7 +5731,7 @@
    "seasonal": false
   },
   {
-   "id": "Q353",
+   "id": "Q360",
    "kind": "faq",
    "title": "台南北區哪裡可以評估孩子久咳與氣喘？",
    "questions": [
@@ -5647,7 +5745,7 @@
    "seasonal": false
   },
   {
-   "id": "Q354",
+   "id": "Q361",
    "kind": "faq",
    "title": "孩子一直咳，會咳到「喘」嗎？久咳和喘有什麼不同？",
    "questions": [
@@ -5661,7 +5759,7 @@
    "seasonal": false
   },
   {
-   "id": "Q355",
+   "id": "Q362",
    "kind": "faq",
    "title": "感冒好了還一直咳，是感染後咳嗽還是氣喘？",
    "questions": [
@@ -5675,7 +5773,7 @@
    "seasonal": false
   },
   {
-   "id": "Q356",
+   "id": "Q363",
    "kind": "faq",
    "title": "孩子久咳要看小兒科還是耳鼻喉科？台南久咳門診怎麼選？",
    "questions": [
@@ -5689,7 +5787,7 @@
    "seasonal": false
   },
   {
-   "id": "Q357",
+   "id": "Q364",
    "kind": "faq",
    "title": "孩子久咳好幾週，看診時要跟醫師說哪些事？",
    "questions": [
@@ -5703,7 +5801,7 @@
    "seasonal": false
   },
   {
-   "id": "Q358",
+   "id": "Q365",
    "kind": "faq",
    "title": "孩子咳了一個月還沒好，台南久咳要做哪些檢查？診所評估得出來嗎？",
    "questions": [
@@ -5717,7 +5815,7 @@
    "seasonal": false
   },
   {
-   "id": "Q359",
+   "id": "Q366",
    "kind": "faq",
    "title": "孩子久咳可以先自己買止咳藥水或感冒成藥吃嗎？",
    "questions": [
@@ -5731,7 +5829,7 @@
    "seasonal": false
   },
   {
-   "id": "Q360",
+   "id": "Q367",
    "kind": "faq",
    "title": "寶寶好幾天才大便一次，是便秘嗎？",
    "questions": [
@@ -5745,7 +5843,7 @@
    "seasonal": false
   },
   {
-   "id": "Q361",
+   "id": "Q368",
    "kind": "faq",
    "title": "小孩解便會痛、還帶血絲，該怎麼辦？",
    "questions": [
@@ -5759,7 +5857,7 @@
    "seasonal": false
   },
   {
-   "id": "Q362",
+   "id": "Q369",
    "kind": "faq",
    "title": "孩子明明想大便卻夾腿、踮腳憋住，是為什麼？",
    "questions": [
@@ -5773,7 +5871,7 @@
    "seasonal": false
   },
   {
-   "id": "Q363",
+   "id": "Q370",
    "kind": "faq",
    "title": "孩子內褲上常沾到大便，是懶得去廁所嗎？",
    "questions": [
@@ -5787,7 +5885,7 @@
    "seasonal": false
   },
   {
-   "id": "Q364",
+   "id": "Q371",
    "kind": "faq",
    "title": "兒童便秘一定要吃藥嗎？軟便藥會不會有依賴性？",
    "questions": [
@@ -5801,7 +5899,7 @@
    "seasonal": false
   },
   {
-   "id": "Q365",
+   "id": "Q372",
    "kind": "faq",
    "title": "可以自己買浣腸或甘油球給孩子用嗎？",
    "questions": [
@@ -5815,7 +5913,7 @@
    "seasonal": false
   },
   {
-   "id": "Q366",
+   "id": "Q373",
    "kind": "faq",
    "title": "什麼情況的便秘需要進一步檢查？",
    "questions": [
@@ -5829,7 +5927,7 @@
    "seasonal": false
   },
   {
-   "id": "Q367",
+   "id": "Q374",
    "kind": "faq",
    "title": "孩子發燒到幾度要去急診？",
    "questions": [
@@ -5843,7 +5941,7 @@
    "seasonal": false
   },
   {
-   "id": "Q368",
+   "id": "Q375",
    "kind": "faq",
    "title": "未滿 3 個月的寶寶發燒，可以先吃退燒藥觀察嗎？",
    "questions": [
@@ -5857,7 +5955,7 @@
    "seasonal": false
   },
   {
-   "id": "Q369",
+   "id": "Q376",
    "kind": "faq",
    "title": "孩子抽搐的時候，家長當下要做什麼？",
    "questions": [
@@ -5871,11 +5969,12 @@
    "seasonal": false
   },
   {
-   "id": "Q370",
+   "id": "Q377",
    "kind": "faq",
    "title": "怎麼判斷孩子有沒有脫水？",
    "questions": [
-    "怎麼判斷孩子有沒有脫水？"
+    "怎麼判斷孩子有沒有脫水？",
+    "小孩發燒什麼時候要看醫生？"
    ],
    "answer": "最容易觀察的是尿量。超過 8 小時沒有尿（包尿布的孩子看尿布一直是乾的）、哭的時候沒有眼淚，就是明顯的脫水警訊，請直接去急診。其他線索包括嘴唇與口腔乾燥、嬰兒頭頂的囟門凹陷、精神變差、手腳冰冷。腸胃炎一直吐或拉的孩子最容易脫水，吐完可以小口小口補充口服電解質液，喝了就吐、完全喝不下時，請盡快就醫。",
    "kb_answer": "最容易觀察的是尿量。超過 8 小時沒有尿（包尿布的孩子看尿布一直是乾的）、哭的時候沒有眼淚，就是明顯的脫水警訊，請直接去急診。其他線索包括嘴唇與口腔乾燥、嬰兒頭頂的囟門凹陷、精神變差、手腳冰冷。腸胃炎一直吐或拉的孩子最容易脫水，吐完可以小口小口補充口服電解質液，喝了就吐、完全喝不下時，請盡快就醫。",
@@ -5885,7 +5984,7 @@
    "seasonal": false
   },
   {
-   "id": "Q371",
+   "id": "Q378",
    "kind": "faq",
    "title": "皮膚的紅點「壓不退」是什麼意思？怎麼檢查？",
    "questions": [
@@ -5899,7 +5998,7 @@
    "seasonal": false
   },
   {
-   "id": "Q372",
+   "id": "Q379",
    "kind": "faq",
    "title": "什麼時候要叫救護車，什麼時候可以自己開車去急診？",
    "questions": [
@@ -5913,7 +6012,7 @@
    "seasonal": false
   },
   {
-   "id": "Q373",
+   "id": "Q380",
    "kind": "faq",
    "title": "帶孩子去急診前要準備什麼？",
    "questions": [
@@ -5927,7 +6026,7 @@
    "seasonal": false
   },
   {
-   "id": "Q374",
+   "id": "Q381",
    "kind": "faq",
    "title": "台南北區立欣診所可以處理急診的狀況嗎？",
    "questions": [
@@ -5941,7 +6040,7 @@
    "seasonal": false
   },
   {
-   "id": "Q375",
+   "id": "Q382",
    "kind": "faq",
    "title": "小孩幾度算發燒？耳溫、額溫準不準？",
    "questions": [
@@ -5955,7 +6054,7 @@
    "seasonal": false
   },
   {
-   "id": "Q376",
+   "id": "Q383",
    "kind": "faq",
    "title": "一定要把體溫退到正常才行嗎？退燒藥的目的是什麼？",
    "questions": [
@@ -5969,12 +6068,11 @@
    "seasonal": false
   },
   {
-   "id": "Q377",
+   "id": "Q384",
    "kind": "faq",
    "title": "退燒藥多久可以吃一次？可以兩種交替使用嗎？",
    "questions": [
-    "退燒藥多久可以吃一次？可以兩種交替使用嗎？",
-    "小孩發燒什麼時候要看醫生？"
+    "退燒藥多久可以吃一次？可以兩種交替使用嗎？"
    ],
    "answer": "兒童常用的口服退燒藥有兩類：acetaminophen 一般每 4～6 小時可使用一次；ibuprofen 一般每 6～8 小時可使用一次。若需要交替使用不同成分，必須考量各藥物的半衰期，且不同藥物之間應至少間隔 1 小時以上，以避免劑量重複或藥物過量。實際劑量需依孩子的體重計算，請由醫師或藥師指示，不要自行加量、縮短間隔或憑印象餵藥；家中若有多種退燒藥（藥水、塞劑），要先確認成分是否相同，避免同一成分重複給予。",
    "kb_answer": "兒童常用的口服退燒藥有兩類：acetaminophen 一般每 4～6 小時可使用一次；ibuprofen 一般每 6～8 小時可使用一次。若需要交替使用不同成分，必須考量各藥物的半衰期，且不同藥物之間應至少間隔 1 小時以上，以避免劑量重複或藥物過量。實際劑量需依孩子的體重計算，請由醫師或藥師指示，不要自行加量、縮短間隔或憑印象餵藥；家中若有多種退燒藥（藥水、塞劑），要先確認成分是否相同，避免同一成分重複給予。",
@@ -5984,7 +6082,7 @@
    "seasonal": false
   },
   {
-   "id": "Q378",
+   "id": "Q385",
    "kind": "faq",
    "title": "冰枕、退熱貼、溫水拭浴有退燒效果嗎？可以用酒精擦嗎？",
    "questions": [
@@ -5998,7 +6096,7 @@
    "seasonal": false
   },
   {
-   "id": "Q379",
+   "id": "Q386",
    "kind": "faq",
    "title": "阿斯匹靈可以給小孩退燒嗎？",
    "questions": [
@@ -6012,7 +6110,7 @@
    "seasonal": false
   },
   {
-   "id": "Q380",
+   "id": "Q387",
    "kind": "faq",
    "title": "小孩發燒抽筋（熱痙攣）怎麼辦？會不會傷到腦子？",
    "questions": [
@@ -6026,7 +6124,7 @@
    "seasonal": false
   },
   {
-   "id": "Q381",
+   "id": "Q388",
    "kind": "faq",
    "title": "小孩發燒什麼情況要立刻就醫？",
    "questions": [
@@ -6040,7 +6138,7 @@
    "seasonal": false
   },
   {
-   "id": "Q382",
+   "id": "Q389",
    "kind": "faq",
    "title": "台南北區哪裡可以看小孩發燒？晚上或假日也有門診嗎？",
    "questions": [
@@ -6054,7 +6152,7 @@
    "seasonal": false
   },
   {
-   "id": "Q383",
+   "id": "Q390",
    "kind": "faq",
    "title": "台南發燒診所推薦怎麼選？台南看發燒門診可以參考哪些條件？",
    "questions": [
@@ -6068,7 +6166,7 @@
    "seasonal": false
   },
   {
-   "id": "Q384",
+   "id": "Q391",
    "kind": "faq",
    "title": "大人發燒在台南可以看哪裡？發燒診所要看小兒科還是家醫科？",
    "questions": [
@@ -6082,7 +6180,7 @@
    "seasonal": false
   },
   {
-   "id": "Q385",
+   "id": "Q392",
    "kind": "faq",
    "title": "孩子兩歲還不太會說話，可以再等等看嗎？",
    "questions": [
@@ -6096,7 +6194,7 @@
    "seasonal": false
   },
   {
-   "id": "Q386",
+   "id": "Q393",
    "kind": "faq",
    "title": "兩歲的孩子語言發展大概會到哪裡？",
    "questions": [
@@ -6110,7 +6208,7 @@
    "seasonal": false
   },
   {
-   "id": "Q387",
+   "id": "Q394",
    "kind": "faq",
    "title": "男生比較晚說話、大雞晚啼，是真的嗎？",
    "questions": [
@@ -6124,7 +6222,7 @@
    "seasonal": false
   },
   {
-   "id": "Q388",
+   "id": "Q395",
    "kind": "faq",
    "title": "孩子聽得懂但不太說，和聽也聽不懂，差別在哪裡？",
    "questions": [
@@ -6138,7 +6236,7 @@
    "seasonal": false
   },
   {
-   "id": "Q389",
+   "id": "Q396",
    "kind": "faq",
    "title": "新生兒聽力篩檢通過了，還需要擔心孩子的聽力嗎？",
    "questions": [
@@ -6152,7 +6250,7 @@
    "seasonal": false
   },
   {
-   "id": "Q390",
+   "id": "Q397",
    "kind": "faq",
    "title": "雙語或多語家庭會讓孩子說話變慢嗎？",
    "questions": [
@@ -6166,7 +6264,7 @@
    "seasonal": false
   },
   {
-   "id": "Q391",
+   "id": "Q398",
    "kind": "faq",
    "title": "懷疑語言遲緩要看哪一科？評估流程怎麼走？",
    "questions": [
@@ -6180,7 +6278,7 @@
    "seasonal": false
   },
   {
-   "id": "Q392",
+   "id": "Q399",
    "kind": "faq",
    "title": "帶孩子去門診談語言發展，要準備什麼？",
    "questions": [
@@ -6194,7 +6292,7 @@
    "seasonal": false
   },
   {
-   "id": "Q393",
+   "id": "Q400",
    "kind": "faq",
    "title": "語言發展評估是怎麼做的？和發展篩檢是同一件事嗎？",
    "questions": [
@@ -6208,7 +6306,7 @@
    "seasonal": false
   },
   {
-   "id": "Q394",
+   "id": "Q401",
    "kind": "faq",
    "title": "台南北區哪裡可以評估孩子的語言發展、做兒童發展篩檢？",
    "questions": [
@@ -6222,7 +6320,7 @@
    "seasonal": false
   },
   {
-   "id": "Q395",
+   "id": "Q402",
    "kind": "faq",
    "title": "兒童蕁麻疹一定是食物過敏引起的嗎？",
    "questions": [
@@ -6236,7 +6334,7 @@
    "seasonal": false
   },
   {
-   "id": "Q396",
+   "id": "Q403",
    "kind": "faq",
    "title": "急性和慢性蕁麻疹怎麼分？",
    "questions": [
@@ -6250,7 +6348,7 @@
    "seasonal": false
   },
   {
-   "id": "Q397",
+   "id": "Q404",
    "kind": "faq",
    "title": "蕁麻疹需要做過敏原檢測嗎？",
    "questions": [
@@ -6264,7 +6362,7 @@
    "seasonal": false
   },
   {
-   "id": "Q398",
+   "id": "Q405",
    "kind": "faq",
    "title": "蕁麻疹擦藥膏就會好嗎？",
    "questions": [
@@ -6278,7 +6376,7 @@
    "seasonal": false
   },
   {
-   "id": "Q399",
+   "id": "Q406",
    "kind": "faq",
    "title": "孩子起蕁麻疹，什麼情況要立刻就醫？",
    "questions": [
@@ -6292,7 +6390,7 @@
    "seasonal": false
   },
   {
-   "id": "Q400",
+   "id": "Q407",
    "kind": "faq",
    "title": "台南哪裡可以看兒童蕁麻疹、做過敏原檢測？",
    "questions": [
@@ -6306,7 +6404,7 @@
    "seasonal": false
   },
   {
-   "id": "Q401",
+   "id": "Q408",
    "kind": "faq",
    "title": "蕁麻疹會傳染嗎？",
    "questions": [
@@ -6320,7 +6418,7 @@
    "seasonal": false
   },
   {
-   "id": "Q402",
+   "id": "Q409",
    "kind": "faq",
    "title": "蕁麻疹癢到睡不著怎麼辦？",
    "questions": [
@@ -6334,7 +6432,7 @@
    "seasonal": false
   },
   {
-   "id": "Q403",
+   "id": "Q410",
    "kind": "faq",
    "title": "兒童慢性蕁麻疹會好嗎？",
    "questions": [
@@ -6348,7 +6446,7 @@
    "seasonal": false
   },
   {
-   "id": "Q404",
+   "id": "Q411",
    "kind": "faq",
    "title": "起蕁麻疹可以洗熱水澡嗎？",
    "questions": [
@@ -6362,7 +6460,7 @@
    "seasonal": false
   },
   {
-   "id": "Q405",
+   "id": "Q412",
    "kind": "faq",
    "title": "孩子起蕁麻疹需要忌口嗎？",
    "questions": [
@@ -6376,7 +6474,7 @@
    "seasonal": false
   },
   {
-   "id": "Q406",
+   "id": "Q413",
    "kind": "faq",
    "title": "小孩發燒但沒有咳嗽流鼻水，會是泌尿道感染嗎？",
    "questions": [
@@ -6390,7 +6488,7 @@
    "seasonal": false
   },
   {
-   "id": "Q407",
+   "id": "Q414",
    "kind": "faq",
    "title": "小孩懷疑泌尿道感染，一定要驗尿嗎？",
    "questions": [
@@ -6404,7 +6502,7 @@
    "seasonal": false
   },
   {
-   "id": "Q408",
+   "id": "Q415",
    "kind": "faq",
    "title": "尿液常規檢查正常，就可以排除泌尿道感染嗎？",
    "questions": [
@@ -6418,7 +6516,7 @@
    "seasonal": false
   },
   {
-   "id": "Q409",
+   "id": "Q416",
    "kind": "faq",
    "title": "寶寶還包尿布不會自己尿尿，要怎麼採檢尿液？集尿袋準嗎？",
    "questions": [
@@ -6432,7 +6530,7 @@
    "seasonal": false
   },
   {
-   "id": "Q410",
+   "id": "Q417",
    "kind": "faq",
    "title": "兒童泌尿道感染的抗生素要吃多久？退燒了可以停藥嗎？",
    "questions": [
@@ -6446,7 +6544,7 @@
    "seasonal": false
   },
   {
-   "id": "Q411",
+   "id": "Q418",
    "kind": "faq",
    "title": "泌尿道感染為什麼要做腎臟超音波？什麼是膀胱輸尿管逆流？",
    "questions": [
@@ -6460,7 +6558,7 @@
    "seasonal": false
   },
   {
-   "id": "Q412",
+   "id": "Q419",
    "kind": "faq",
    "title": "小孩常常泌尿道感染，日常可以怎麼預防？",
    "questions": [
@@ -6474,7 +6572,7 @@
    "seasonal": false
   },
   {
-   "id": "Q413",
+   "id": "Q420",
    "kind": "faq",
    "title": "台南哪裡可以幫小孩驗尿、評估泌尿道感染？",
    "questions": [
@@ -6488,7 +6586,7 @@
    "seasonal": false
   },
   {
-   "id": "Q414",
+   "id": "Q421",
    "kind": "faq",
    "title": "怎麼知道小朋友是不是在喘？",
    "questions": [
@@ -6502,7 +6600,7 @@
    "seasonal": false
   },
   {
-   "id": "Q415",
+   "id": "Q422",
    "kind": "faq",
    "title": "怎麼數孩子的呼吸次數？幾下算太快？",
    "questions": [
@@ -6516,7 +6614,7 @@
    "seasonal": false
   },
   {
-   "id": "Q416",
+   "id": "Q423",
    "kind": "faq",
    "title": "孩子呼吸有咻咻聲，一定是氣喘嗎？",
    "questions": [
@@ -6530,7 +6628,7 @@
    "seasonal": false
   },
   {
-   "id": "Q417",
+   "id": "Q424",
    "kind": "faq",
    "title": "出現哪些情形要立刻帶孩子就醫？",
    "questions": [
@@ -6544,7 +6642,7 @@
    "seasonal": false
   },
   {
-   "id": "Q418",
+   "id": "Q425",
    "kind": "faq",
    "title": "反覆喘需要做什麼檢查？",
    "questions": [
@@ -6558,7 +6656,7 @@
    "seasonal": false
   },
   {
-   "id": "Q419",
+   "id": "Q426",
    "kind": "faq",
    "title": "台南哪裡可以評估孩子的喘或氣喘？",
    "questions": [
@@ -6572,7 +6670,7 @@
    "seasonal": false
   },
   {
-   "id": "Q420",
+   "id": "Q427",
    "kind": "faq",
    "title": "什麼是「喘」？孩子會喘就是氣喘嗎？",
    "questions": [
@@ -6586,7 +6684,7 @@
    "seasonal": false
   },
   {
-   "id": "Q421",
+   "id": "Q428",
    "kind": "faq",
    "title": "小朋友為什麼會喘？喘鳴常見的原因有哪些？",
    "questions": [
@@ -6600,7 +6698,7 @@
    "seasonal": false
   },
   {
-   "id": "Q422",
+   "id": "Q429",
    "kind": "faq",
    "title": "怎麼判斷我的孩子是不是過重或肥胖？",
    "questions": [
@@ -6614,7 +6712,7 @@
    "seasonal": false
   },
   {
-   "id": "Q423",
+   "id": "Q430",
    "kind": "faq",
    "title": "孩子胖是不是吃太多、少吃一點就好？",
    "questions": [
@@ -6628,7 +6726,7 @@
    "seasonal": false
   },
   {
-   "id": "Q424",
+   "id": "Q431",
    "kind": "faq",
    "title": "小時候胖會自己瘦回來嗎？",
    "questions": [
@@ -6642,7 +6740,7 @@
    "seasonal": false
   },
   {
-   "id": "Q425",
+   "id": "Q432",
    "kind": "faq",
    "title": "家長可以怎麼幫孩子？",
    "questions": [
@@ -6656,7 +6754,7 @@
    "seasonal": false
   },
   {
-   "id": "Q426",
+   "id": "Q433",
    "kind": "faq",
    "title": "可以讓孩子節食或吃減重藥嗎？",
    "questions": [
@@ -6670,7 +6768,7 @@
    "seasonal": false
   },
   {
-   "id": "Q427",
+   "id": "Q434",
    "kind": "faq",
    "title": "台南哪裡可以評估孩子的體位與成長？",
    "questions": [
@@ -6684,7 +6782,7 @@
    "seasonal": false
   },
   {
-   "id": "Q428",
+   "id": "Q435",
    "kind": "faq",
    "title": "螢幕時間和睡眠會影響孩子的體重嗎？",
    "questions": [
@@ -6698,7 +6796,7 @@
    "seasonal": false
   },
   {
-   "id": "Q429",
+   "id": "Q436",
    "kind": "faq",
    "title": "兒童肥胖可能帶來哪些健康影響？",
    "questions": [
@@ -6712,7 +6810,7 @@
    "seasonal": false
   },
   {
-   "id": "Q430",
+   "id": "Q437",
    "kind": "faq",
    "title": "感冒的時候開始吃維生素C，會好得比較快嗎？",
    "questions": [
@@ -6726,7 +6824,7 @@
    "seasonal": false
   },
   {
-   "id": "Q431",
+   "id": "Q438",
    "kind": "faq",
    "title": "那維生素C 到底要不要補？怎麼補比較合理？",
    "questions": [
@@ -6740,7 +6838,7 @@
    "seasonal": false
   },
   {
-   "id": "Q432",
+   "id": "Q439",
    "kind": "faq",
    "title": "維生素D 跟感冒有關嗎？小孩需要另外補嗎？",
    "questions": [
@@ -6754,7 +6852,7 @@
    "seasonal": false
   },
   {
-   "id": "Q433",
+   "id": "Q440",
    "kind": "faq",
    "title": "聽說鋅可以縮短感冒病程，小孩也適用嗎？",
    "questions": [
@@ -6768,7 +6866,7 @@
    "seasonal": false
   },
   {
-   "id": "Q434",
+   "id": "Q441",
    "kind": "faq",
    "title": "保健食品可以取代感冒藥或醫師開的藥嗎？",
    "questions": [
@@ -6782,7 +6880,7 @@
    "seasonal": false
   },
   {
-   "id": "Q435",
+   "id": "Q442",
    "kind": "faq",
    "title": "小孩感冒都沒食慾，要不要靠營養品把營養補回來？",
    "questions": [
@@ -6796,7 +6894,7 @@
    "seasonal": false
   },
   {
-   "id": "Q436",
+   "id": "Q443",
    "kind": "faq",
    "title": "怎麼看懂維生素產品的標示？會不會不小心吃過量？",
    "questions": [
@@ -6810,7 +6908,7 @@
    "seasonal": false
   },
   {
-   "id": "Q437",
+   "id": "Q444",
    "kind": "faq",
    "title": "哪些人買營養補充品之前一定要先問醫師？",
    "questions": [
@@ -6824,7 +6922,7 @@
    "seasonal": false
   },
   {
-   "id": "Q438",
+   "id": "Q445",
    "kind": "faq",
    "title": "台南北區哪裡可以問孩子的感冒照護與營養補充？",
    "questions": [
@@ -6838,7 +6936,7 @@
    "seasonal": false
   },
   {
-   "id": "Q439",
+   "id": "Q446",
    "kind": "faq",
    "title": "怎麼知道現在新冠 COVID-19 的流行狀況？",
    "questions": [
@@ -6852,7 +6950,7 @@
    "seasonal": false
   },
   {
-   "id": "Q440",
+   "id": "Q447",
    "kind": "faq",
    "title": "感染新冠後多久會出現症狀？",
    "questions": [
@@ -6866,7 +6964,7 @@
    "seasonal": false
   },
   {
-   "id": "Q441",
+   "id": "Q448",
    "kind": "faq",
    "title": "新冠常見症狀有哪些？",
    "questions": [
@@ -6880,7 +6978,7 @@
    "seasonal": false
   },
   {
-   "id": "Q442",
+   "id": "Q449",
    "kind": "faq",
    "title": "新冠、流感和一般感冒的症狀要怎麼分辨？",
    "questions": [
@@ -6894,7 +6992,7 @@
    "seasonal": false
   },
   {
-   "id": "Q443",
+   "id": "Q450",
    "kind": "faq",
    "title": "快篩陰性就代表沒有感染嗎？",
    "questions": [
@@ -6908,7 +7006,7 @@
    "seasonal": false
   },
   {
-   "id": "Q444",
+   "id": "Q451",
    "kind": "faq",
    "title": "哪些人屬於高風險族群？出現症狀該怎麼辦？",
    "questions": [
@@ -6922,7 +7020,7 @@
    "seasonal": false
   },
   {
-   "id": "Q445",
+   "id": "Q452",
    "kind": "faq",
    "title": "出現哪些情況要立即就醫？",
    "questions": [
@@ -6936,7 +7034,7 @@
    "seasonal": false
   },
   {
-   "id": "Q446",
+   "id": "Q453",
    "kind": "faq",
    "title": "台南北區想做新冠評估或看診，立欣診所可以嗎？",
    "questions": [
@@ -6950,7 +7048,7 @@
    "seasonal": false
   },
   {
-   "id": "Q447",
+   "id": "Q454",
    "kind": "faq",
    "title": "哮吼是什麼？孩子的咳嗽為什麼會像狗叫？",
    "questions": [
@@ -6964,7 +7062,7 @@
    "seasonal": false
   },
   {
-   "id": "Q448",
+   "id": "Q455",
    "kind": "faq",
    "title": "哮吼的咳嗽和一般感冒、氣喘的咻咻聲怎麼分？",
    "questions": [
@@ -6978,7 +7076,7 @@
    "seasonal": false
   },
   {
-   "id": "Q449",
+   "id": "Q456",
    "kind": "faq",
    "title": "哮吼為什麼常在半夜發作？當下在家可以先做什麼？",
    "questions": [
@@ -6992,7 +7090,7 @@
    "seasonal": false
   },
   {
-   "id": "Q450",
+   "id": "Q457",
    "kind": "faq",
    "title": "哮吼要怎麼治療？需要吃抗生素嗎？",
    "questions": [
@@ -7006,7 +7104,7 @@
    "seasonal": false
   },
   {
-   "id": "Q451",
+   "id": "Q458",
    "kind": "faq",
    "title": "孩子有哪些情況要立刻送急診？",
    "questions": [
@@ -7020,7 +7118,7 @@
    "seasonal": false
   },
   {
-   "id": "Q452",
+   "id": "Q459",
    "kind": "faq",
    "title": "哮吼會傳染嗎？可以去幼兒園嗎？",
    "questions": [
@@ -7034,7 +7132,7 @@
    "seasonal": false
   },
   {
-   "id": "Q453",
+   "id": "Q460",
    "kind": "faq",
    "title": "哮吼會不會再發作？有疫苗可以預防嗎？",
    "questions": [
@@ -7048,7 +7146,7 @@
    "seasonal": false
   },
   {
-   "id": "Q454",
+   "id": "Q461",
    "kind": "faq",
    "title": "台南哪裡可以評估孩子的犬吠咳與吸氣喘鳴？",
    "questions": [
@@ -7062,7 +7160,7 @@
    "seasonal": false
   },
   {
-   "id": "Q455",
+   "id": "Q462",
    "kind": "faq",
    "title": "血糖多少算糖尿病？診斷標準是什麼？",
    "questions": [
@@ -7076,7 +7174,7 @@
    "seasonal": false
   },
   {
-   "id": "Q456",
+   "id": "Q463",
    "kind": "faq",
    "title": "糖尿病前期是什麼？會變成糖尿病嗎？可以逆轉嗎？",
    "questions": [
@@ -7090,7 +7188,7 @@
    "seasonal": false
   },
   {
-   "id": "Q457",
+   "id": "Q464",
    "kind": "faq",
    "title": "糖尿病有什麼早期症狀？",
    "questions": [
@@ -7104,7 +7202,7 @@
    "seasonal": false
   },
   {
-   "id": "Q458",
+   "id": "Q465",
    "kind": "faq",
    "title": "糖尿病一定要打胰島素或吃藥嗎？",
    "questions": [
@@ -7118,7 +7216,7 @@
    "seasonal": false
   },
   {
-   "id": "Q459",
+   "id": "Q466",
    "kind": "faq",
    "title": "糖化血色素（HbA1c）是什麼？多久驗一次？",
    "questions": [
@@ -7132,7 +7230,7 @@
    "seasonal": false
   },
   {
-   "id": "Q460",
+   "id": "Q467",
    "kind": "faq",
    "title": "哪些人建議檢查血糖？",
    "questions": [
@@ -7146,7 +7244,7 @@
    "seasonal": false
   },
   {
-   "id": "Q461",
+   "id": "Q468",
    "kind": "faq",
    "title": "血糖長期控制不好，會有哪些併發症？",
    "questions": [
@@ -7160,7 +7258,7 @@
    "seasonal": false
   },
   {
-   "id": "Q462",
+   "id": "Q469",
    "kind": "faq",
    "title": "台南北區哪裡可以檢查與追蹤糖尿病？",
    "questions": [
@@ -7174,7 +7272,7 @@
    "seasonal": false
   },
   {
-   "id": "Q463",
+   "id": "Q470",
    "kind": "faq",
    "title": "糖尿病人突然冒冷汗、發抖、意識不清怎麼辦？",
    "questions": [
@@ -7188,7 +7286,7 @@
    "seasonal": false
   },
   {
-   "id": "Q464",
+   "id": "Q471",
    "kind": "faq",
    "title": "塵蟎為什麼會引起過敏？",
    "questions": [
@@ -7202,7 +7300,7 @@
    "seasonal": false
   },
   {
-   "id": "Q465",
+   "id": "Q472",
    "kind": "faq",
    "title": "塵蟎喜歡什麼環境？家裡哪裡最多？",
    "questions": [
@@ -7216,7 +7314,7 @@
    "seasonal": false
   },
   {
-   "id": "Q466",
+   "id": "Q473",
    "kind": "faq",
    "title": "防蟎寢具有效嗎？怎麼選？",
    "questions": [
@@ -7230,7 +7328,7 @@
    "seasonal": false
   },
   {
-   "id": "Q467",
+   "id": "Q474",
    "kind": "faq",
    "title": "怎麼清洗寢具才能除塵蟎？",
    "questions": [
@@ -7244,7 +7342,7 @@
    "seasonal": false
   },
   {
-   "id": "Q468",
+   "id": "Q475",
    "kind": "faq",
    "title": "除塵蟎對過敏性鼻炎與氣喘有幫助嗎？",
    "questions": [
@@ -7258,7 +7356,7 @@
    "seasonal": false
   },
   {
-   "id": "Q469",
+   "id": "Q476",
    "kind": "faq",
    "title": "孩子對塵蟎過敏會出現哪些症狀？",
    "questions": [
@@ -7272,7 +7370,7 @@
    "seasonal": false
   },
   {
-   "id": "Q470",
+   "id": "Q477",
    "kind": "faq",
    "title": "台南的氣候是不是特別容易滋生塵蟎？",
    "questions": [
@@ -7286,7 +7384,7 @@
    "seasonal": false
   },
   {
-   "id": "Q471",
+   "id": "Q478",
    "kind": "faq",
    "title": "腸病毒有哪些症狀？一定會發燒嗎？",
    "questions": [
@@ -7300,7 +7398,7 @@
    "seasonal": false
   },
   {
-   "id": "Q472",
+   "id": "Q479",
    "kind": "faq",
    "title": "腸病毒重症前兆有哪些？什麼時候要立即送醫？",
    "questions": [
@@ -7314,7 +7412,7 @@
    "seasonal": false
   },
   {
-   "id": "Q473",
+   "id": "Q480",
    "kind": "faq",
    "title": "腸病毒用酒精消毒有效嗎？",
    "questions": [
@@ -7328,7 +7426,7 @@
    "seasonal": false
   },
   {
-   "id": "Q474",
+   "id": "Q481",
    "kind": "faq",
    "title": "孩子得了腸病毒要隔離幾天？",
    "questions": [
@@ -7342,7 +7440,7 @@
    "seasonal": false
   },
   {
-   "id": "Q475",
+   "id": "Q482",
    "kind": "faq",
    "title": "腸病毒會自己好嗎？有特效藥嗎？",
    "questions": [
@@ -7356,7 +7454,7 @@
    "seasonal": false
   },
   {
-   "id": "Q476",
+   "id": "Q483",
    "kind": "faq",
    "title": "孩子腸病毒嘴破不肯吃東西怎麼辦？",
    "questions": [
@@ -7370,7 +7468,7 @@
    "seasonal": false
   },
   {
-   "id": "Q477",
+   "id": "Q484",
    "kind": "faq",
    "title": "台南北區哪裡可以看腸病毒？",
    "questions": [
@@ -7384,7 +7482,7 @@
    "seasonal": false
   },
   {
-   "id": "Q478",
+   "id": "Q485",
    "kind": "faq",
    "title": "腸病毒流行期是幾月？台南什麼時候要特別注意？",
    "questions": [
@@ -7398,7 +7496,7 @@
    "seasonal": false
   },
   {
-   "id": "Q479",
+   "id": "Q486",
    "kind": "faq",
    "title": "小孩腸病毒晚上或週末發作，台南北區有夜間或假日門診嗎？",
    "questions": [
@@ -7412,7 +7510,7 @@
    "seasonal": false
   },
   {
-   "id": "Q480",
+   "id": "Q487",
    "kind": "faq",
    "title": "腸病毒71型疫苗可以預防什麼？",
    "questions": [
@@ -7426,7 +7524,7 @@
    "seasonal": false
   },
   {
-   "id": "Q481",
+   "id": "Q488",
    "kind": "faq",
    "title": "腸病毒71型疫苗的接種對象與劑數是什麼？",
    "questions": [
@@ -7440,7 +7538,7 @@
    "seasonal": false
   },
   {
-   "id": "Q482",
+   "id": "Q489",
    "kind": "faq",
    "title": "腸病毒71型疫苗有哪些副作用？接種後要注意什麼？",
    "questions": [
@@ -7454,7 +7552,7 @@
    "seasonal": false
   },
   {
-   "id": "Q483",
+   "id": "Q490",
    "kind": "faq",
    "title": "打了腸病毒71型疫苗，還會得腸病毒嗎？",
    "questions": [
@@ -7468,7 +7566,7 @@
    "seasonal": false
   },
   {
-   "id": "Q484",
+   "id": "Q491",
    "kind": "faq",
    "title": "孩子得過腸病毒了，還需要打腸病毒71型疫苗嗎？",
    "questions": [
@@ -7482,7 +7580,7 @@
    "seasonal": false
   },
   {
-   "id": "Q485",
+   "id": "Q492",
    "kind": "faq",
    "title": "腸病毒重症有哪些前兆？什麼時候要立刻送醫？",
    "questions": [
@@ -7496,7 +7594,7 @@
    "seasonal": false
   },
   {
-   "id": "Q486",
+   "id": "Q493",
    "kind": "faq",
    "title": "台南北區哪裡可以接種腸病毒71型疫苗？",
    "questions": [
@@ -7510,7 +7608,7 @@
    "seasonal": false
   },
   {
-   "id": "Q487",
+   "id": "Q494",
    "kind": "faq",
    "title": "未滿2歲接種恩穩健，需要追加劑（第三劑）嗎？",
    "questions": [
@@ -7524,7 +7622,7 @@
    "seasonal": false
   },
   {
-   "id": "Q488",
+   "id": "Q495",
    "kind": "faq",
    "title": "腸病毒71型疫苗可以和其他常規疫苗（如四合一、肺炎鏈球菌）一起打嗎？",
    "questions": [
@@ -7538,7 +7636,7 @@
    "seasonal": false
   },
   {
-   "id": "Q489",
+   "id": "Q496",
    "kind": "faq",
    "title": "傳染性紅斑（蘋果病）有哪些症狀？",
    "questions": [
@@ -7552,7 +7650,7 @@
    "seasonal": false
   },
   {
-   "id": "Q490",
+   "id": "Q497",
    "kind": "faq",
    "title": "傳染性紅斑的潛伏期多久？什麼時候最會傳染？",
    "questions": [
@@ -7566,7 +7664,7 @@
    "seasonal": false
   },
   {
-   "id": "Q491",
+   "id": "Q498",
    "kind": "faq",
    "title": "得了傳染性紅斑要請假嗎？多久可以回學校？",
    "questions": [
@@ -7580,7 +7678,7 @@
    "seasonal": false
   },
   {
-   "id": "Q492",
+   "id": "Q499",
    "kind": "faq",
    "title": "傳染性紅斑的紅疹退了又冒出來，是又被傳染了嗎？",
    "questions": [
@@ -7594,7 +7692,7 @@
    "seasonal": false
   },
   {
-   "id": "Q493",
+   "id": "Q500",
    "kind": "faq",
    "title": "傳染性紅斑和麻疹、玫瑰疹、猩紅熱怎麼分？",
    "questions": [
@@ -7608,7 +7706,7 @@
    "seasonal": false
   },
   {
-   "id": "Q494",
+   "id": "Q501",
    "kind": "faq",
    "title": "傳染性紅斑有疫苗或特效藥嗎？要怎麼治療？",
    "questions": [
@@ -7622,7 +7720,7 @@
    "seasonal": false
   },
   {
-   "id": "Q495",
+   "id": "Q502",
    "kind": "faq",
    "title": "孕婦接觸到傳染性紅斑的孩子怎麼辦？會影響胎兒嗎？",
    "questions": [
@@ -7636,7 +7734,7 @@
    "seasonal": false
   },
   {
-   "id": "Q496",
+   "id": "Q503",
    "kind": "faq",
    "title": "哪些人得到傳染性紅斑要特別小心？",
    "questions": [
@@ -7650,7 +7748,7 @@
    "seasonal": false
   },
   {
-   "id": "Q497",
+   "id": "Q504",
    "kind": "faq",
    "title": "台南北區哪裡可以評估孩子的紅疹？",
    "questions": [
@@ -7664,7 +7762,7 @@
    "seasonal": false
   },
   {
-   "id": "Q498",
+   "id": "Q505",
    "kind": "faq",
    "title": "流感抗病毒藥物有哪些？公費和自費差在哪裡？",
    "questions": [
@@ -7678,7 +7776,7 @@
    "seasonal": false
   },
   {
-   "id": "Q499",
+   "id": "Q506",
    "kind": "faq",
    "title": "克流感、紓伏效、瑞貝塔差在哪裡？要怎麼選？",
    "questions": [
@@ -7692,7 +7790,7 @@
    "seasonal": false
   },
   {
-   "id": "Q500",
+   "id": "Q507",
    "kind": "faq",
    "title": "紓伏效（Xofluza）真的吃一次就好嗎？幾歲可以用？",
    "questions": [
@@ -7706,7 +7804,7 @@
    "seasonal": false
   },
   {
-   "id": "Q501",
+   "id": "Q508",
    "kind": "faq",
    "title": "瑞貝塔（Rapiacta）是打針的流感藥嗎？什麼情況才會用？",
    "questions": [
@@ -7720,7 +7818,7 @@
    "seasonal": false
   },
   {
-   "id": "Q502",
+   "id": "Q509",
    "kind": "faq",
    "title": "流感抗病毒藥物一定要在 48 小時內用嗎？超過還有沒有用？",
    "questions": [
@@ -7734,7 +7832,7 @@
    "seasonal": false
   },
   {
-   "id": "Q503",
+   "id": "Q510",
    "kind": "faq",
    "title": "克流感一定要吃滿 5 天嗎？症狀好了可以先停藥嗎？",
    "questions": [
@@ -7748,7 +7846,7 @@
    "seasonal": false
   },
   {
-   "id": "Q504",
+   "id": "Q511",
    "kind": "faq",
    "title": "流感抗病毒藥物有什麼常見副作用？小孩吃了要注意什麼？",
    "questions": [
@@ -7762,7 +7860,7 @@
    "seasonal": false
   },
   {
-   "id": "Q505",
+   "id": "Q512",
    "kind": "faq",
    "title": "流感特效藥是什麼？和一般感冒藥、退燒藥差在哪裡？",
    "questions": [
@@ -7776,7 +7874,7 @@
    "seasonal": false
   },
   {
-   "id": "Q506",
+   "id": "Q513",
    "kind": "faq",
    "title": "流感快篩陽性就一定要吃流感特效藥嗎？沒做快篩可以開藥嗎？",
    "questions": [
@@ -7790,7 +7888,7 @@
    "seasonal": false
   },
   {
-   "id": "Q507",
+   "id": "Q514",
    "kind": "faq",
    "title": "台南哪裡可以評估流感抗病毒藥物？立欣診所有公費和自費嗎？",
    "questions": [
@@ -7804,7 +7902,7 @@
    "seasonal": false
   },
   {
-   "id": "Q508",
+   "id": "Q515",
    "kind": "faq",
    "title": "蛋過敏的孩子可以打流感疫苗嗎？",
    "questions": [
@@ -7818,7 +7916,7 @@
    "seasonal": false
   },
   {
-   "id": "Q509",
+   "id": "Q516",
    "kind": "faq",
    "title": "雞蛋過敏可以打雞蛋培養的流感疫苗嗎？",
    "questions": [
@@ -7832,7 +7930,7 @@
    "seasonal": false
   },
   {
-   "id": "Q510",
+   "id": "Q517",
    "kind": "faq",
    "title": "對蛋嚴重過敏，一定要打細胞培養的流感疫苗嗎？",
    "questions": [
@@ -7846,7 +7944,7 @@
    "seasonal": false
   },
   {
-   "id": "Q511",
+   "id": "Q518",
    "kind": "faq",
    "title": "雞蛋培養和細胞培養的流感疫苗差在哪？",
    "questions": [
@@ -7860,7 +7958,7 @@
    "seasonal": false
   },
   {
-   "id": "Q512",
+   "id": "Q519",
    "kind": "faq",
    "title": "細胞培養的流感疫苗保護力比較好嗎？差多少？",
    "questions": [
@@ -7874,7 +7972,7 @@
    "seasonal": false
   },
   {
-   "id": "Q513",
+   "id": "Q520",
    "kind": "faq",
    "title": "為什麼 H3N2 跟雞蛋培養特別有關？",
    "questions": [
@@ -7888,7 +7986,7 @@
    "seasonal": false
   },
   {
-   "id": "Q514",
+   "id": "Q521",
    "kind": "faq",
    "title": "打流感疫苗前，要先做蛋過敏的皮膚測試嗎？",
    "questions": [
@@ -7902,7 +8000,7 @@
    "seasonal": false
   },
   {
-   "id": "Q515",
+   "id": "Q522",
    "kind": "faq",
    "title": "細胞培養流感疫苗幾歲可以打？有公費嗎？",
    "questions": [
@@ -7916,7 +8014,7 @@
    "seasonal": false
   },
   {
-   "id": "Q516",
+   "id": "Q523",
    "kind": "faq",
    "title": "台南哪裡可以打細胞培養的流感疫苗？",
    "questions": [
@@ -7930,7 +8028,7 @@
    "seasonal": false
   },
   {
-   "id": "Q517",
+   "id": "Q524",
    "kind": "faq",
    "title": "哪些人是公費流感疫苗的接種對象？",
    "questions": [
@@ -7944,7 +8042,7 @@
    "seasonal": false
   },
   {
-   "id": "Q518",
+   "id": "Q525",
    "kind": "faq",
    "title": "115 年度公費流感疫苗什麼時候開打？分幾個階段、對象有哪些？",
    "questions": [
@@ -7958,7 +8056,7 @@
    "seasonal": true
   },
   {
-   "id": "Q519",
+   "id": "Q526",
    "kind": "faq",
    "title": "流感疫苗可以和新冠疫苗同一天接種嗎？什麼是「左流右新」？",
    "questions": [
@@ -7972,7 +8070,7 @@
    "seasonal": true
   },
   {
-   "id": "Q520",
+   "id": "Q527",
    "kind": "faq",
    "title": "流感疫苗打完多久才有保護力？可以和其他疫苗同一天接種嗎？",
    "questions": [
@@ -7986,7 +8084,7 @@
    "seasonal": false
   },
   {
-   "id": "Q521",
+   "id": "Q528",
    "kind": "faq",
    "title": "幾個月以上的寶寶可以打流感疫苗？孩子要打幾劑？",
    "questions": [
@@ -8000,7 +8098,7 @@
    "seasonal": false
   },
   {
-   "id": "Q522",
+   "id": "Q529",
    "kind": "faq",
    "title": "孕婦可以打流感疫苗嗎？",
    "questions": [
@@ -8014,7 +8112,7 @@
    "seasonal": false
   },
   {
-   "id": "Q523",
+   "id": "Q530",
    "kind": "faq",
    "title": "對雞蛋過敏可以打流感疫苗嗎？",
    "questions": [
@@ -8028,7 +8126,7 @@
    "seasonal": false
   },
   {
-   "id": "Q524",
+   "id": "Q531",
    "kind": "faq",
    "title": "什麼情況不適合接種流感疫苗、或需要暫緩？",
    "questions": [
@@ -8042,7 +8140,7 @@
    "seasonal": false
   },
   {
-   "id": "Q525",
+   "id": "Q532",
    "kind": "faq",
    "title": "台南北區哪裡可以接種流感疫苗？",
    "questions": [
@@ -8056,7 +8154,7 @@
    "seasonal": false
   },
   {
-   "id": "Q526",
+   "id": "Q533",
    "kind": "faq",
    "title": "打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？",
    "questions": [
@@ -8070,7 +8168,7 @@
    "seasonal": false
   },
   {
-   "id": "Q527",
+   "id": "Q534",
    "kind": "faq",
    "title": "流感疫苗要看哪一科？小兒科和家醫科都可以打嗎？",
    "questions": [
@@ -8084,7 +8182,7 @@
    "seasonal": false
   },
   {
-   "id": "Q528",
+   "id": "Q535",
    "kind": "faq",
    "title": "台南流感疫苗推薦怎麼選？在台南打流感疫苗（公費或自費）可以參考哪些條件？",
    "questions": [
@@ -8098,7 +8196,7 @@
    "seasonal": false
   },
   {
-   "id": "Q529",
+   "id": "Q536",
    "kind": "faq",
    "title": "公費流感疫苗和自費流感疫苗怎麼選？符合公費資格的人還需要考慮自費嗎？",
    "questions": [
@@ -8112,7 +8210,7 @@
    "seasonal": false
   },
   {
-   "id": "Q530",
+   "id": "Q537",
    "kind": "faq",
    "title": "哺乳期間可以打流感疫苗嗎？",
    "questions": [
@@ -8126,7 +8224,7 @@
    "seasonal": false
   },
   {
-   "id": "Q531",
+   "id": "Q538",
    "kind": "faq",
    "title": "得過流感，還需要打流感疫苗嗎？",
    "questions": [
@@ -8140,7 +8238,7 @@
    "seasonal": false
   },
   {
-   "id": "Q532",
+   "id": "Q539",
    "kind": "faq",
    "title": "出國前多久要打流感疫苗？",
    "questions": [
@@ -8154,7 +8252,7 @@
    "seasonal": false
   },
   {
-   "id": "Q533",
+   "id": "Q540",
    "kind": "faq",
    "title": "為什麼流感疫苗從四價改成三價？",
    "questions": [
@@ -8168,7 +8266,7 @@
    "seasonal": false
   },
   {
-   "id": "Q534",
+   "id": "Q541",
    "kind": "faq",
    "title": "生長曲線的百分位是什麼意思？第 50 百分位就是標準嗎？",
    "questions": [
@@ -8182,7 +8280,7 @@
    "seasonal": false
   },
   {
-   "id": "Q535",
+   "id": "Q542",
    "kind": "faq",
    "title": "落在第幾百分位算正常？低於第 3 百分位怎麼辦？",
    "questions": [
@@ -8196,7 +8294,7 @@
    "seasonal": false
   },
   {
-   "id": "Q536",
+   "id": "Q543",
    "kind": "faq",
    "title": "為什麼醫師說「要看趨勢」比看第幾百分位重要？",
    "questions": [
@@ -8210,7 +8308,7 @@
    "seasonal": false
   },
   {
-   "id": "Q537",
+   "id": "Q544",
    "kind": "faq",
    "title": "生長曲線有哪三個指標？頭圍為什麼也要量？",
    "questions": [
@@ -8224,7 +8322,7 @@
    "seasonal": false
   },
   {
-   "id": "Q538",
+   "id": "Q545",
    "kind": "faq",
    "title": "台灣的兒童生長曲線是用什麼標準畫的？",
    "questions": [
@@ -8238,7 +8336,7 @@
    "seasonal": false
   },
   {
-   "id": "Q539",
+   "id": "Q546",
    "kind": "faq",
    "title": "早產兒的生長曲線要怎麼看？什麼是矯正年齡？",
    "questions": [
@@ -8252,7 +8350,7 @@
    "seasonal": false
   },
   {
-   "id": "Q540",
+   "id": "Q547",
    "kind": "faq",
    "title": "有沒有工具可以自己在家看孩子的生長曲線？",
    "questions": [
@@ -8266,7 +8364,7 @@
    "seasonal": false
   },
   {
-   "id": "Q541",
+   "id": "Q548",
    "kind": "faq",
    "title": "台南北區哪裡可以做兒童生長評估與追蹤？",
    "questions": [
@@ -8280,7 +8378,7 @@
    "seasonal": false
   },
   {
-   "id": "Q542",
+   "id": "Q549",
    "kind": "faq",
    "title": "全方位健康檢查包含哪些項目？",
    "questions": [
@@ -8294,7 +8392,7 @@
    "seasonal": false
   },
   {
-   "id": "Q543",
+   "id": "Q550",
    "kind": "faq",
    "title": "健康檢查前需要空腹嗎？要準備什麼？",
    "questions": [
@@ -8308,7 +8406,7 @@
    "seasonal": false
   },
   {
-   "id": "Q544",
+   "id": "Q551",
    "kind": "faq",
    "title": "癌症篩檢（腫瘤標記）數值正常就代表沒有癌症嗎？",
    "questions": [
@@ -8322,7 +8420,7 @@
    "seasonal": false
   },
   {
-   "id": "Q545",
+   "id": "Q552",
    "kind": "faq",
    "title": "健康檢查要多久做一次？我適合哪一種套組？",
    "questions": [
@@ -8336,7 +8434,7 @@
    "seasonal": false
   },
   {
-   "id": "Q546",
+   "id": "Q553",
    "kind": "faq",
    "title": "過敏原檢測驗出來的項目，是不是就一定要忌口？",
    "questions": [
@@ -8350,7 +8448,7 @@
    "seasonal": false
   },
   {
-   "id": "Q547",
+   "id": "Q554",
    "kind": "faq",
    "title": "台南北區哪裡可以做自費健康檢查？",
    "questions": [
@@ -8364,7 +8462,7 @@
    "seasonal": false
   },
   {
-   "id": "Q548",
+   "id": "Q555",
    "kind": "faq",
    "title": "熱傷害有哪幾種？中暑和熱衰竭差在哪裡？",
    "questions": [
@@ -8378,7 +8476,7 @@
    "seasonal": false
   },
   {
-   "id": "Q549",
+   "id": "Q556",
    "kind": "faq",
    "title": "小孩中暑怎麼辦？急救五步驟是什麼？",
    "questions": [
@@ -8392,7 +8490,7 @@
    "seasonal": false
   },
   {
-   "id": "Q550",
+   "id": "Q557",
    "kind": "faq",
    "title": "要怎麼幫孩子快速散熱降溫？",
    "questions": [
@@ -8406,7 +8504,7 @@
    "seasonal": false
   },
   {
-   "id": "Q551",
+   "id": "Q558",
    "kind": "faq",
    "title": "中暑可以給退燒藥嗎？",
    "questions": [
@@ -8420,7 +8518,7 @@
    "seasonal": false
   },
   {
-   "id": "Q552",
+   "id": "Q559",
    "kind": "faq",
    "title": "為什麼嬰幼兒特別容易中暑？",
    "questions": [
@@ -8434,7 +8532,7 @@
    "seasonal": false
   },
   {
-   "id": "Q553",
+   "id": "Q560",
    "kind": "faq",
    "title": "可以把孩子單獨留在車上一下嗎？",
    "questions": [
@@ -8448,7 +8546,7 @@
    "seasonal": false
   },
   {
-   "id": "Q554",
+   "id": "Q561",
    "kind": "faq",
    "title": "怎麼預防孩子在夏天中暑？",
    "questions": [
@@ -8462,7 +8560,7 @@
    "seasonal": false
   },
   {
-   "id": "Q555",
+   "id": "Q562",
    "kind": "faq",
    "title": "台南夏天孩子熱到不舒服，哪裡可以看？",
    "questions": [
@@ -8476,7 +8574,7 @@
    "seasonal": false
   },
   {
-   "id": "Q556",
+   "id": "Q563",
    "kind": "faq",
    "title": "中暑要看哪一科？大人和小孩看的科別一樣嗎？",
    "questions": [
@@ -8490,7 +8588,7 @@
    "seasonal": false
   },
   {
-   "id": "Q557",
+   "id": "Q564",
    "kind": "faq",
    "title": "孩子體溫飆高，怎麼判斷是發燒還是中暑？",
    "questions": [
@@ -8504,7 +8602,7 @@
    "seasonal": false
   },
   {
-   "id": "Q558",
+   "id": "Q565",
    "kind": "faq",
    "title": "C 型肝炎怎麼傳染？一起吃飯、擁抱會不會傳染？",
    "questions": [
@@ -8518,7 +8616,7 @@
    "seasonal": false
   },
   {
-   "id": "Q559",
+   "id": "Q566",
    "kind": "faq",
    "title": "在診所打針、打點滴會感染 C 型肝炎嗎？",
    "questions": [
@@ -8532,7 +8630,7 @@
    "seasonal": false
   },
   {
-   "id": "Q560",
+   "id": "Q567",
    "kind": "faq",
    "title": "曾在被通報感染管制缺失的院所打過針，該怎麼辦？",
    "questions": [
@@ -8546,7 +8644,7 @@
    "seasonal": false
   },
   {
-   "id": "Q561",
+   "id": "Q568",
    "kind": "faq",
    "title": "C 型肝炎有什麼症狀？沒有不舒服代表沒事嗎？",
    "questions": [
@@ -8560,7 +8658,7 @@
    "seasonal": false
   },
   {
-   "id": "Q562",
+   "id": "Q569",
    "kind": "faq",
    "title": "C 肝抗體陽性就是現在有 C 型肝炎嗎？",
    "questions": [
@@ -8574,7 +8672,7 @@
    "seasonal": false
   },
   {
-   "id": "Q563",
+   "id": "Q570",
    "kind": "faq",
    "title": "C 型肝炎可以治好嗎？療程多久、健保有給付嗎？",
    "questions": [
@@ -8588,7 +8686,7 @@
    "seasonal": false
   },
   {
-   "id": "Q564",
+   "id": "Q571",
    "kind": "faq",
    "title": "有 C 型肝炎疫苗嗎？治好之後會不會再感染？",
    "questions": [
@@ -8602,7 +8700,7 @@
    "seasonal": false
   },
   {
-   "id": "Q565",
+   "id": "Q572",
    "kind": "faq",
    "title": "誰可以做免費的 B、C 型肝炎篩檢？台南北區哪裡可以做？",
    "questions": [
@@ -8616,7 +8714,7 @@
    "seasonal": false
   },
   {
-   "id": "Q566",
+   "id": "Q573",
    "kind": "faq",
    "title": "高致敏性食物有哪些？",
    "questions": [
@@ -8630,7 +8728,7 @@
    "seasonal": false
   },
   {
-   "id": "Q567",
+   "id": "Q574",
    "kind": "faq",
    "title": "寶寶的高致敏食物要不要延後吃？",
    "questions": [
@@ -8644,7 +8742,7 @@
    "seasonal": false
   },
   {
-   "id": "Q568",
+   "id": "Q575",
    "kind": "faq",
    "title": "初次給寶寶吃高致敏食物要注意什麼？",
    "questions": [
@@ -8658,7 +8756,7 @@
    "seasonal": false
   },
   {
-   "id": "Q569",
+   "id": "Q576",
    "kind": "faq",
    "title": "寶寶可以吃花生、堅果嗎？會不會噎到？",
    "questions": [
@@ -8672,7 +8770,7 @@
    "seasonal": false
   },
   {
-   "id": "Q570",
+   "id": "Q577",
    "kind": "faq",
    "title": "吃了高致敏食物後，怎樣算過敏反應？",
    "questions": [
@@ -8686,7 +8784,7 @@
    "seasonal": false
   },
   {
-   "id": "Q571",
+   "id": "Q578",
    "kind": "faq",
    "title": "哪些寶寶加入高致敏食物前要先問醫師？",
    "questions": [
@@ -8700,7 +8798,7 @@
    "seasonal": false
   },
   {
-   "id": "Q572",
+   "id": "Q579",
    "kind": "faq",
    "title": "哺乳媽媽需要避開高致敏食物嗎？",
    "questions": [
@@ -8714,7 +8812,7 @@
    "seasonal": false
   },
   {
-   "id": "Q573",
+   "id": "Q580",
    "kind": "faq",
    "title": "包裝食品的過敏原標示怎麼看？",
    "questions": [
@@ -8728,7 +8826,7 @@
    "seasonal": false
   },
   {
-   "id": "Q574",
+   "id": "Q581",
    "kind": "faq",
    "title": "孩子吃東西後出現哪些情形要立刻就醫？",
    "questions": [
@@ -8742,7 +8840,7 @@
    "seasonal": false
   },
   {
-   "id": "Q575",
+   "id": "Q582",
    "kind": "faq",
    "title": "台南哪裡可以評估孩子的食物過敏？",
    "questions": [
@@ -8756,7 +8854,7 @@
    "seasonal": false
   },
   {
-   "id": "Q576",
+   "id": "Q583",
    "kind": "faq",
    "title": "hMPV 人類間質肺炎病毒有哪些症狀？",
    "questions": [
@@ -8770,7 +8868,7 @@
    "seasonal": false
   },
   {
-   "id": "Q577",
+   "id": "Q584",
    "kind": "faq",
    "title": "小孩狂咳、高燒不退就是 hMPV 確診嗎？",
    "questions": [
@@ -8784,7 +8882,7 @@
    "seasonal": false
   },
   {
-   "id": "Q578",
+   "id": "Q585",
    "kind": "faq",
    "title": "hMPV 是新的病毒嗎？酒精消毒有效嗎？",
    "questions": [
@@ -8798,7 +8896,7 @@
    "seasonal": false
   },
   {
-   "id": "Q579",
+   "id": "Q586",
    "kind": "faq",
    "title": "hMPV 出現哪些警訊要盡快就醫？",
    "questions": [
@@ -8812,7 +8910,7 @@
    "seasonal": false
   },
   {
-   "id": "Q580",
+   "id": "Q587",
    "kind": "faq",
    "title": "hMPV 有特效藥或疫苗嗎？怎麼治療？",
    "questions": [
@@ -8826,7 +8924,7 @@
    "seasonal": false
   },
   {
-   "id": "Q581",
+   "id": "Q588",
    "kind": "faq",
    "title": "台南北區哪裡可以評估孩子的呼吸道感染？",
    "questions": [
@@ -8840,7 +8938,7 @@
    "seasonal": false
   },
   {
-   "id": "Q582",
+   "id": "Q589",
    "kind": "faq",
    "title": "hMPV 和 RSV、流感、黴漿菌要怎麼分辨？",
    "questions": [
@@ -8854,7 +8952,7 @@
    "seasonal": false
   },
   {
-   "id": "Q583",
+   "id": "Q590",
    "kind": "faq",
    "title": "hMPV 大約多久會好？生病期間可以上學嗎？",
    "questions": [
@@ -8868,7 +8966,7 @@
    "seasonal": false
   },
   {
-   "id": "Q584",
+   "id": "Q591",
    "kind": "faq",
    "title": "HPV是什麼？只有女生需要擔心嗎？",
    "questions": [
@@ -8882,7 +8980,7 @@
    "seasonal": false
   },
   {
-   "id": "Q585",
+   "id": "Q592",
    "kind": "faq",
    "title": "9價HPV疫苗可以預防哪些型別？",
    "questions": [
@@ -8896,7 +8994,7 @@
    "seasonal": false
   },
   {
-   "id": "Q586",
+   "id": "Q593",
    "kind": "faq",
    "title": "HPV疫苗建議哪些人接種？男生也可以打嗎？",
    "questions": [
@@ -8910,7 +9008,7 @@
    "seasonal": false
   },
   {
-   "id": "Q587",
+   "id": "Q594",
    "kind": "faq",
    "title": "HPV疫苗安全嗎？有哪些副作用？",
    "questions": [
@@ -8924,7 +9022,7 @@
    "seasonal": false
   },
   {
-   "id": "Q588",
+   "id": "Q595",
    "kind": "faq",
    "title": "已經有性經驗，還需要打HPV疫苗嗎？",
    "questions": [
@@ -8938,7 +9036,7 @@
    "seasonal": false
   },
   {
-   "id": "Q589",
+   "id": "Q596",
    "kind": "faq",
    "title": "HPV如何傳染？感染後會有哪些症狀？",
    "questions": [
@@ -8952,7 +9050,7 @@
    "seasonal": false
   },
   {
-   "id": "Q590",
+   "id": "Q597",
    "kind": "faq",
    "title": "HPV疫苗的保護力可以維持多久？打完還要打補追嗎？",
    "questions": [
@@ -8966,7 +9064,7 @@
    "seasonal": false
   },
   {
-   "id": "Q591",
+   "id": "Q598",
    "kind": "faq",
    "title": "台南北區哪裡可以接種9價HPV疫苗？",
    "questions": [
@@ -8980,7 +9078,7 @@
    "seasonal": false
   },
   {
-   "id": "Q592",
+   "id": "Q599",
    "kind": "faq",
    "title": "9價HPV疫苗可以和流感疫苗或其他疫苗同時接種嗎？",
    "questions": [
@@ -8994,7 +9092,7 @@
    "seasonal": false
   },
   {
-   "id": "Q593",
+   "id": "Q600",
    "kind": "faq",
    "title": "HPV疫苗第二劑、第三劑要間隔多久？中間隔太久需要重新打嗎？",
    "questions": [
@@ -9008,7 +9106,7 @@
    "seasonal": false
   },
   {
-   "id": "Q594",
+   "id": "Q601",
    "kind": "faq",
    "title": "台南 9 價 HPV 疫苗怎麼選？可以參考哪些條件？",
    "questions": [
@@ -9022,7 +9120,7 @@
    "seasonal": false
   },
   {
-   "id": "Q595",
+   "id": "Q602",
    "kind": "faq",
    "title": "血脂多少算高血脂？各項標準是多少？",
    "questions": [
@@ -9036,7 +9134,7 @@
    "seasonal": false
   },
   {
-   "id": "Q596",
+   "id": "Q603",
    "kind": "faq",
    "title": "好膽固醇、壞膽固醇差在哪？LDL 和 HDL 是什麼？",
    "questions": [
@@ -9050,7 +9148,7 @@
    "seasonal": false
   },
   {
-   "id": "Q597",
+   "id": "Q604",
    "kind": "faq",
    "title": "高血脂有症狀嗎？",
    "questions": [
@@ -9064,7 +9162,7 @@
    "seasonal": false
   },
   {
-   "id": "Q598",
+   "id": "Q605",
    "kind": "faq",
    "title": "膽固醇高一定要吃藥嗎？可以只靠飲食運動改善嗎？",
    "questions": [
@@ -9078,7 +9176,7 @@
    "seasonal": false
   },
   {
-   "id": "Q599",
+   "id": "Q606",
    "kind": "faq",
    "title": "血脂控制正常後，降血脂藥可以自己停嗎？",
    "questions": [
@@ -9092,7 +9190,7 @@
    "seasonal": false
   },
   {
-   "id": "Q600",
+   "id": "Q607",
    "kind": "faq",
    "title": "台南北區哪裡可以檢查與追蹤高血脂？",
    "questions": [
@@ -9106,7 +9204,7 @@
    "seasonal": false
   },
   {
-   "id": "Q601",
+   "id": "Q608",
    "kind": "faq",
    "title": "三酸甘油酯非常高會怎樣？",
    "questions": [
@@ -9120,7 +9218,7 @@
    "seasonal": false
   },
   {
-   "id": "Q602",
+   "id": "Q609",
    "kind": "faq",
    "title": "血壓多少算高血壓？現在的標準是多少？",
    "questions": [
@@ -9134,7 +9232,7 @@
    "seasonal": false
   },
   {
-   "id": "Q603",
+   "id": "Q610",
    "kind": "faq",
    "title": "為什麼改成居家血壓？722 原則怎麼量？",
    "questions": [
@@ -9148,7 +9246,7 @@
    "seasonal": false
   },
   {
-   "id": "Q604",
+   "id": "Q611",
    "kind": "faq",
    "title": "高血壓有什麼症狀？沒有感覺需要處理嗎？",
    "questions": [
@@ -9162,7 +9260,7 @@
    "seasonal": false
   },
   {
-   "id": "Q605",
+   "id": "Q612",
    "kind": "faq",
    "title": "高血壓一定要吃藥嗎？可以只靠飲食運動控制嗎？",
    "questions": [
@@ -9176,7 +9274,7 @@
    "seasonal": false
   },
   {
-   "id": "Q606",
+   "id": "Q613",
    "kind": "faq",
    "title": "血壓降下來後，高血壓的藥可以自己停嗎？",
    "questions": [
@@ -9190,7 +9288,7 @@
    "seasonal": false
   },
   {
-   "id": "Q607",
+   "id": "Q614",
    "kind": "faq",
    "title": "哪些人建議定期量血壓？",
    "questions": [
@@ -9204,7 +9302,7 @@
    "seasonal": false
   },
   {
-   "id": "Q608",
+   "id": "Q615",
    "kind": "faq",
    "title": "高血壓飲食要注意什麼？一天鹽分吃多少？",
    "questions": [
@@ -9218,7 +9316,7 @@
    "seasonal": false
   },
   {
-   "id": "Q609",
+   "id": "Q616",
    "kind": "faq",
    "title": "台南北區哪裡可以量血壓與追蹤高血壓？",
    "questions": [
@@ -9232,7 +9330,7 @@
    "seasonal": false
   },
   {
-   "id": "Q610",
+   "id": "Q617",
    "kind": "faq",
    "title": "血壓突然飆很高，還頭痛、胸痛怎麼辦？",
    "questions": [
@@ -9246,7 +9344,7 @@
    "seasonal": false
   },
   {
-   "id": "Q611",
+   "id": "Q618",
    "kind": "faq",
    "title": "嬰幼兒腸胃炎可以喝運動飲料補充電解質嗎？",
    "questions": [
@@ -9260,7 +9358,7 @@
    "seasonal": false
   },
   {
-   "id": "Q612",
+   "id": "Q619",
    "kind": "faq",
    "title": "寶寶腸胃炎需要禁食嗎？",
    "questions": [
@@ -9274,7 +9372,7 @@
    "seasonal": false
   },
   {
-   "id": "Q613",
+   "id": "Q620",
    "kind": "faq",
    "title": "輪狀病毒和諾羅病毒有什麼不一樣？",
    "questions": [
@@ -9288,7 +9386,7 @@
    "seasonal": false
   },
   {
-   "id": "Q614",
+   "id": "Q621",
    "kind": "faq",
    "title": "輪狀病毒疫苗要打幾劑？什麼時候打？",
    "questions": [
@@ -9302,7 +9400,7 @@
    "seasonal": false
   },
   {
-   "id": "Q615",
+   "id": "Q622",
    "kind": "faq",
    "title": "寶寶腸胃炎出現哪些情況要立刻就醫？",
    "questions": [
@@ -9316,7 +9414,7 @@
    "seasonal": false
   },
   {
-   "id": "Q616",
+   "id": "Q623",
    "kind": "faq",
    "title": "台南哪裡可以看嬰幼兒腸胃炎、接種輪狀病毒疫苗？",
    "questions": [
@@ -9330,7 +9428,7 @@
    "seasonal": false
   },
   {
-   "id": "Q617",
+   "id": "Q624",
    "kind": "faq",
    "title": "寶寶腸胃炎可以喝奶嗎？",
    "questions": [
@@ -9344,7 +9442,7 @@
    "seasonal": false
   },
   {
-   "id": "Q618",
+   "id": "Q625",
    "kind": "faq",
    "title": "嬰幼兒腸胃炎會傳染嗎？怎麼預防？",
    "questions": [
@@ -9358,7 +9456,7 @@
    "seasonal": false
   },
   {
-   "id": "Q619",
+   "id": "Q626",
    "kind": "faq",
    "title": "腸胃炎拉肚子可以自行吃止瀉藥嗎？",
    "questions": [
@@ -9372,7 +9470,7 @@
    "seasonal": false
   },
   {
-   "id": "Q620",
+   "id": "Q627",
    "kind": "faq",
    "title": "嬰幼兒腸胃炎多久會好？",
    "questions": [
@@ -9386,7 +9484,7 @@
    "seasonal": false
   },
   {
-   "id": "Q621",
+   "id": "Q628",
    "kind": "faq",
    "title": "寶寶腸胃炎可以吃什麼？哪些食物要先避免？",
    "questions": [
@@ -9400,7 +9498,7 @@
    "seasonal": false
   },
   {
-   "id": "Q622",
+   "id": "Q629",
    "kind": "faq",
    "title": "病毒性腸胃炎和細菌性腸胃炎怎麼分？台南看哪裡？",
    "questions": [
@@ -9414,7 +9512,7 @@
    "seasonal": false
   },
   {
-   "id": "Q623",
+   "id": "Q630",
    "kind": "faq",
    "title": "台南腸胃炎診所推薦怎麼選？台南看腸胃炎的診所可以參考哪些條件？",
    "questions": [
@@ -9428,7 +9526,7 @@
    "seasonal": false
   },
   {
-   "id": "Q624",
+   "id": "Q631",
    "kind": "faq",
    "title": "「腸胃型感冒」和腸胃炎是同一件事嗎？台南腸胃型感冒看哪科？",
    "questions": [
@@ -9442,7 +9540,7 @@
    "seasonal": false
   },
   {
-   "id": "Q625",
+   "id": "Q632",
    "kind": "faq",
    "title": "流感和一般感冒差在哪裡？怎麼分辨？",
    "questions": [
@@ -9456,7 +9554,7 @@
    "seasonal": false
   },
   {
-   "id": "Q626",
+   "id": "Q633",
    "kind": "faq",
    "title": "流感的潛伏期多久？什麼時候最會傳染？",
    "questions": [
@@ -9470,7 +9568,7 @@
    "seasonal": false
   },
   {
-   "id": "Q627",
+   "id": "Q634",
    "kind": "faq",
    "title": "小孩得流感大概多久會好？會自己好嗎？",
    "questions": [
@@ -9484,7 +9582,7 @@
    "seasonal": false
   },
   {
-   "id": "Q628",
+   "id": "Q635",
    "kind": "faq",
    "title": "流感可能有什麼併發症？哪些人風險比較高？",
    "questions": [
@@ -9498,7 +9596,7 @@
    "seasonal": false
   },
   {
-   "id": "Q629",
+   "id": "Q636",
    "kind": "faq",
    "title": "孩子得流感，什麼情況要立刻就醫？",
    "questions": [
@@ -9512,7 +9610,7 @@
    "seasonal": false
   },
   {
-   "id": "Q630",
+   "id": "Q637",
    "kind": "faq",
    "title": "流感一定要吃抗病毒藥物（如克流感）嗎？可以自己買嗎？",
    "questions": [
@@ -9526,7 +9624,7 @@
    "seasonal": false
   },
   {
-   "id": "Q631",
+   "id": "Q638",
    "kind": "faq",
    "title": "得過流感就不會再得了嗎？還需要打疫苗嗎？",
    "questions": [
@@ -9540,7 +9638,7 @@
    "seasonal": false
   },
   {
-   "id": "Q632",
+   "id": "Q639",
    "kind": "faq",
    "title": "A 流和 B 流差在哪裡？哪一種比較嚴重？",
    "questions": [
@@ -9554,7 +9652,7 @@
    "seasonal": false
   },
   {
-   "id": "Q633",
+   "id": "Q640",
    "kind": "faq",
    "title": "孩子得流感後一直喊小腿痛、不太願意走路，需要注意什麼？",
    "questions": [
@@ -9568,7 +9666,7 @@
    "seasonal": false
   },
   {
-   "id": "Q634",
+   "id": "Q641",
    "kind": "faq",
    "title": "台南北區哪裡可以看小孩流感？晚上或假日也能看嗎？",
    "questions": [
@@ -9582,7 +9680,7 @@
    "seasonal": false
   },
   {
-   "id": "Q635",
+   "id": "Q642",
    "kind": "faq",
    "title": "川崎病有哪些症狀？",
    "questions": [
@@ -9596,7 +9694,7 @@
    "seasonal": false
   },
   {
-   "id": "Q636",
+   "id": "Q643",
    "kind": "faq",
    "title": "川崎病會傳染嗎？是什麼原因造成的？",
    "questions": [
@@ -9610,7 +9708,7 @@
    "seasonal": false
   },
   {
-   "id": "Q637",
+   "id": "Q644",
    "kind": "faq",
    "title": "孩子發燒幾天要懷疑川崎病？",
    "questions": [
@@ -9624,7 +9722,7 @@
    "seasonal": false
   },
   {
-   "id": "Q638",
+   "id": "Q645",
    "kind": "faq",
    "title": "川崎病為什麼要住院打免疫球蛋白？",
    "questions": [
@@ -9638,7 +9736,7 @@
    "seasonal": false
   },
   {
-   "id": "Q639",
+   "id": "Q646",
    "kind": "faq",
    "title": "川崎病會影響心臟嗎？會有後遺症嗎？",
    "questions": [
@@ -9652,7 +9750,7 @@
    "seasonal": false
   },
   {
-   "id": "Q640",
+   "id": "Q647",
    "kind": "faq",
    "title": "川崎病出院後要追蹤什麼？吃阿斯匹靈要注意什麼？",
    "questions": [
@@ -9666,7 +9764,7 @@
    "seasonal": false
   },
   {
-   "id": "Q641",
+   "id": "Q648",
    "kind": "faq",
    "title": "得過川崎病，疫苗還可以打嗎？",
    "questions": [
@@ -9680,7 +9778,7 @@
    "seasonal": false
   },
   {
-   "id": "Q642",
+   "id": "Q649",
    "kind": "faq",
    "title": "川崎病和猩紅熱怎麼分？",
    "questions": [
@@ -9694,7 +9792,7 @@
    "seasonal": false
   },
   {
-   "id": "Q643",
+   "id": "Q650",
    "kind": "faq",
    "title": "台南北區哪裡可以評估孩子是不是川崎病？",
    "questions": [
@@ -9708,7 +9806,7 @@
    "seasonal": false
   },
   {
-   "id": "Q644",
+   "id": "Q651",
    "kind": "faq",
    "title": "麻疹有哪些症狀？",
    "questions": [
@@ -9722,7 +9820,7 @@
    "seasonal": false
   },
   {
-   "id": "Q645",
+   "id": "Q652",
    "kind": "faq",
    "title": "麻疹傳染力有多強？",
    "questions": [
@@ -9736,7 +9834,7 @@
    "seasonal": false
   },
   {
-   "id": "Q646",
+   "id": "Q653",
    "kind": "faq",
    "title": "出國前需要補打MMR疫苗嗎？",
    "questions": [
@@ -9750,7 +9848,7 @@
    "seasonal": false
   },
   {
-   "id": "Q647",
+   "id": "Q654",
    "kind": "faq",
    "title": "MMR疫苗要打幾劑？",
    "questions": [
@@ -9764,7 +9862,7 @@
    "seasonal": false
   },
   {
-   "id": "Q648",
+   "id": "Q655",
    "kind": "faq",
    "title": "孩子接觸到麻疹病例該怎麼辦？要注意多久？",
    "questions": [
@@ -9778,7 +9876,7 @@
    "seasonal": false
   },
   {
-   "id": "Q649",
+   "id": "Q656",
    "kind": "faq",
    "title": "得了麻疹可能出現哪些併發症？誰要特別小心？",
    "questions": [
@@ -9792,7 +9890,7 @@
    "seasonal": false
   },
   {
-   "id": "Q650",
+   "id": "Q657",
    "kind": "faq",
    "title": "還沒滿 1 歲的寶寶要出國到麻疹流行地區，可以先打疫苗嗎？回國後要注意什麼？",
    "questions": [
@@ -9806,7 +9904,7 @@
    "seasonal": false
   },
   {
-   "id": "Q651",
+   "id": "Q658",
    "kind": "faq",
    "title": "B型腦膜炎雙球菌疫苗要打嗎？可以預防什麼？",
    "questions": [
@@ -9820,7 +9918,7 @@
    "seasonal": false
   },
   {
-   "id": "Q652",
+   "id": "Q659",
    "kind": "faq",
    "title": "必思諾 Bexsero 幾個月可以打？要打幾劑？",
    "questions": [
@@ -9834,7 +9932,7 @@
    "seasonal": false
   },
   {
-   "id": "Q653",
+   "id": "Q660",
    "kind": "faq",
    "title": "B型腦膜炎雙球菌疫苗可以和公費常規疫苗同一天接種嗎？",
    "questions": [
@@ -9848,7 +9946,7 @@
    "seasonal": false
   },
   {
-   "id": "Q654",
+   "id": "Q661",
    "kind": "faq",
    "title": "打完必思諾容易發燒嗎？可以先給退燒藥嗎？",
    "questions": [
@@ -9862,7 +9960,7 @@
    "seasonal": false
   },
   {
-   "id": "Q655",
+   "id": "Q662",
    "kind": "faq",
    "title": "哪些寶寶不適合接種B型腦膜炎雙球菌疫苗？",
    "questions": [
@@ -9876,7 +9974,7 @@
    "seasonal": false
   },
   {
-   "id": "Q656",
+   "id": "Q663",
    "kind": "faq",
    "title": "B型腦膜炎雙球菌疫苗是公費還是自費？",
    "questions": [
@@ -9890,7 +9988,7 @@
    "seasonal": false
   },
   {
-   "id": "Q657",
+   "id": "Q664",
    "kind": "faq",
    "title": "B型腦膜炎雙球菌疫苗和ACWY四價疫苗差在哪？打了一種還要打另一種嗎？",
    "questions": [
@@ -9904,7 +10002,7 @@
    "seasonal": false
   },
   {
-   "id": "Q658",
+   "id": "Q665",
    "kind": "faq",
    "title": "台南北區哪裡可以接種B型腦膜炎雙球菌疫苗（必思諾 Bexsero）？",
    "questions": [
@@ -9918,7 +10016,7 @@
    "seasonal": false
   },
   {
-   "id": "Q659",
+   "id": "Q666",
    "kind": "faq",
    "title": "代謝症候群是什麼？算是一種病嗎？",
    "questions": [
@@ -9932,7 +10030,7 @@
    "seasonal": false
   },
   {
-   "id": "Q660",
+   "id": "Q667",
    "kind": "faq",
    "title": "代謝症候群的判定標準是什麼？",
    "questions": [
@@ -9946,7 +10044,7 @@
    "seasonal": false
   },
   {
-   "id": "Q661",
+   "id": "Q668",
    "kind": "faq",
    "title": "有代謝症候群會怎樣？風險有多高？",
    "questions": [
@@ -9960,7 +10058,7 @@
    "seasonal": false
   },
   {
-   "id": "Q662",
+   "id": "Q669",
    "kind": "faq",
    "title": "腰圍怎麼量才正確？",
    "questions": [
@@ -9974,7 +10072,7 @@
    "seasonal": false
   },
   {
-   "id": "Q663",
+   "id": "Q670",
    "kind": "faq",
    "title": "代謝症候群要怎麼改善？一定要吃藥嗎？",
    "questions": [
@@ -9988,7 +10086,7 @@
    "seasonal": false
   },
   {
-   "id": "Q664",
+   "id": "Q671",
    "kind": "faq",
    "title": "台南北區哪裡可以檢查與追蹤代謝症候群？",
    "questions": [
@@ -10002,7 +10100,7 @@
    "seasonal": false
   },
   {
-   "id": "Q665",
+   "id": "Q672",
    "kind": "faq",
    "title": "MMR 疫苗是什麼？預防哪些疾病？",
    "questions": [
@@ -10016,7 +10114,7 @@
    "seasonal": false
   },
   {
-   "id": "Q666",
+   "id": "Q673",
    "kind": "faq",
    "title": "MMR 疫苗公費幾歲打？要打幾劑？",
    "questions": [
@@ -10030,7 +10128,7 @@
    "seasonal": false
   },
   {
-   "id": "Q667",
+   "id": "Q674",
    "kind": "faq",
    "title": "6 個月以下、未滿 1 歲可以打 MMR 嗎？出國怎麼辦？",
    "questions": [
@@ -10044,7 +10142,7 @@
    "seasonal": false
   },
   {
-   "id": "Q668",
+   "id": "Q675",
    "kind": "faq",
    "title": "成人需要補打 MMR 嗎？育齡婦女要注意什麼？",
    "questions": [
@@ -10058,7 +10156,7 @@
    "seasonal": false
   },
   {
-   "id": "Q669",
+   "id": "Q676",
    "kind": "faq",
    "title": "哪些人不適合打 MMR？有什麼禁忌？",
    "questions": [
@@ -10072,7 +10170,7 @@
    "seasonal": false
   },
   {
-   "id": "Q670",
+   "id": "Q677",
    "kind": "faq",
    "title": "MMR 疫苗常見副作用有哪些？打完要注意什麼？",
    "questions": [
@@ -10086,7 +10184,7 @@
    "seasonal": false
   },
   {
-   "id": "Q671",
+   "id": "Q678",
    "kind": "faq",
    "title": "台南北區哪裡可以接種 MMR 疫苗？",
    "questions": [
@@ -10100,7 +10198,7 @@
    "seasonal": false
   },
   {
-   "id": "Q672",
+   "id": "Q679",
    "kind": "faq",
    "title": "孩子嘴巴有紅點或嘴破，就一定是腸病毒嗎？",
    "questions": [
@@ -10114,7 +10212,7 @@
    "seasonal": false
   },
   {
-   "id": "Q673",
+   "id": "Q680",
    "kind": "faq",
    "title": "疱疹性咽峽炎和手足口病怎麼分？",
    "questions": [
@@ -10128,7 +10226,7 @@
    "seasonal": false
   },
   {
-   "id": "Q674",
+   "id": "Q681",
    "kind": "faq",
    "title": "孩子牙齦又紅又腫、會流血，嘴唇周圍也破了，是什麼？",
    "questions": [
@@ -10142,7 +10240,7 @@
    "seasonal": false
   },
   {
-   "id": "Q675",
+   "id": "Q682",
    "kind": "faq",
    "title": "上顎有紅色出血點，是鏈球菌感染嗎？",
    "questions": [
@@ -10156,7 +10254,7 @@
    "seasonal": false
   },
   {
-   "id": "Q676",
+   "id": "Q683",
    "kind": "faq",
    "title": "一般的嘴破（阿弗他潰瘍）會傳染嗎？要擦藥嗎？",
    "questions": [
@@ -10170,7 +10268,7 @@
    "seasonal": false
   },
   {
-   "id": "Q677",
+   "id": "Q684",
    "kind": "faq",
    "title": "孩子嘴破痛到不吃不喝，在家可以怎麼照顧？",
    "questions": [
@@ -10184,7 +10282,7 @@
    "seasonal": false
   },
   {
-   "id": "Q678",
+   "id": "Q685",
    "kind": "faq",
    "title": "嘴破的孩子出現哪些情況要盡快就醫？",
    "questions": [
@@ -10198,7 +10296,7 @@
    "seasonal": false
   },
   {
-   "id": "Q679",
+   "id": "Q686",
    "kind": "faq",
    "title": "台南孩子嘴破、喉嚨有紅點要看哪一科？",
    "questions": [
@@ -10212,7 +10310,7 @@
    "seasonal": false
   },
   {
-   "id": "Q680",
+   "id": "Q687",
    "kind": "faq",
    "title": "黴漿菌肺炎為什麼叫「會走路的肺炎」？",
    "questions": [
@@ -10226,7 +10324,7 @@
    "seasonal": false
   },
   {
-   "id": "Q681",
+   "id": "Q688",
    "kind": "faq",
    "title": "黴漿菌和一般感冒怎麼分？",
    "questions": [
@@ -10240,7 +10338,7 @@
    "seasonal": false
   },
   {
-   "id": "Q682",
+   "id": "Q689",
    "kind": "faq",
    "title": "黴漿菌肺炎會傳染嗎？要怎麼預防？",
    "questions": [
@@ -10254,7 +10352,7 @@
    "seasonal": false
   },
   {
-   "id": "Q683",
+   "id": "Q690",
    "kind": "faq",
    "title": "黴漿菌肺炎要吃抗生素嗎？為什麼一般抗生素沒效？",
    "questions": [
@@ -10268,7 +10366,7 @@
    "seasonal": false
   },
   {
-   "id": "Q684",
+   "id": "Q691",
    "kind": "faq",
    "title": "孩子久咳發燒，什麼時候要盡快就醫？",
    "questions": [
@@ -10282,7 +10380,7 @@
    "seasonal": false
   },
   {
-   "id": "Q685",
+   "id": "Q692",
    "kind": "faq",
    "title": "台南哪裡可以評估孩子久咳、懷疑黴漿菌？",
    "questions": [
@@ -10296,7 +10394,7 @@
    "seasonal": false
   },
   {
-   "id": "Q686",
+   "id": "Q693",
    "kind": "faq",
    "title": "黴漿菌肺炎會自己好嗎？",
    "questions": [
@@ -10310,7 +10408,7 @@
    "seasonal": false
   },
   {
-   "id": "Q687",
+   "id": "Q694",
    "kind": "faq",
    "title": "黴漿菌潛伏期多久？會傳染多久？",
    "questions": [
@@ -10324,7 +10422,7 @@
    "seasonal": false
   },
   {
-   "id": "Q688",
+   "id": "Q695",
    "kind": "faq",
    "title": "黴漿菌肺炎需要照 X 光嗎？",
    "questions": [
@@ -10338,7 +10436,7 @@
    "seasonal": false
   },
   {
-   "id": "Q689",
+   "id": "Q696",
    "kind": "faq",
    "title": "大人會被孩子傳染黴漿菌嗎？",
    "questions": [
@@ -10352,7 +10450,7 @@
    "seasonal": false
   },
   {
-   "id": "Q690",
+   "id": "Q697",
    "kind": "faq",
    "title": "懷疑孩子是黴漿菌，要怎麼驗？診所驗得到嗎？",
    "questions": [
@@ -10366,7 +10464,7 @@
    "seasonal": false
   },
   {
-   "id": "Q691",
+   "id": "Q698",
    "kind": "faq",
    "title": "久咳懷疑黴漿菌，一定要先驗出來才能治療嗎？",
    "questions": [
@@ -10380,7 +10478,7 @@
    "seasonal": false
   },
   {
-   "id": "Q692",
+   "id": "Q699",
    "kind": "faq",
    "title": "黴漿菌肺炎多久會好？需要複診嗎？",
    "questions": [
@@ -10394,7 +10492,7 @@
    "seasonal": false
   },
   {
-   "id": "Q693",
+   "id": "Q700",
    "kind": "faq",
    "title": "孩子本來就有氣喘，得到黴漿菌會讓氣喘變嚴重嗎？",
    "questions": [
@@ -10408,7 +10506,7 @@
    "seasonal": false
   },
   {
-   "id": "Q694",
+   "id": "Q701",
    "kind": "faq",
    "title": "黴漿菌除了咳嗽，還可能出現皮疹等肺部以外的症狀嗎？",
    "questions": [
@@ -10422,7 +10520,7 @@
    "seasonal": false
   },
   {
-   "id": "Q695",
+   "id": "Q702",
    "kind": "faq",
    "title": "黴漿菌可能有哪些併發症？",
    "questions": [
@@ -10436,7 +10534,7 @@
    "seasonal": false
   },
   {
-   "id": "Q696",
+   "id": "Q703",
    "kind": "faq",
    "title": "黴漿菌肺炎什麼情況需要住院？",
    "questions": [
@@ -10450,7 +10548,7 @@
    "seasonal": false
   },
   {
-   "id": "Q697",
+   "id": "Q704",
    "kind": "faq",
    "title": "黴漿菌得過一次還會再得嗎？",
    "questions": [
@@ -10464,7 +10562,7 @@
    "seasonal": false
   },
   {
-   "id": "Q698",
+   "id": "Q705",
    "kind": "faq",
    "title": "鼻噴式流感疫苗幾歲可以打？未滿 2 歲的寶寶可以打嗎？",
    "questions": [
@@ -10478,7 +10576,7 @@
    "seasonal": false
   },
   {
-   "id": "Q699",
+   "id": "Q706",
    "kind": "faq",
    "title": "孩子有氣喘，可以打鼻噴式流感疫苗嗎？",
    "questions": [
@@ -10492,7 +10590,7 @@
    "seasonal": false
   },
   {
-   "id": "Q700",
+   "id": "Q707",
    "kind": "faq",
    "title": "打鼻噴式流感疫苗會不會反而得到流感？",
    "questions": [
@@ -10506,7 +10604,7 @@
    "seasonal": false
   },
   {
-   "id": "Q701",
+   "id": "Q708",
    "kind": "faq",
    "title": "打完鼻噴式流感疫苗一週內發燒，流感快篩會不會驗出陽性？",
    "questions": [
@@ -10520,7 +10618,7 @@
    "seasonal": false
   },
   {
-   "id": "Q702",
+   "id": "Q709",
    "kind": "faq",
    "title": "剛噴完鼻噴流感疫苗就得了流感，還能吃抗病毒藥嗎？",
    "questions": [
@@ -10534,7 +10632,7 @@
    "seasonal": false
   },
   {
-   "id": "Q703",
+   "id": "Q710",
    "kind": "faq",
    "title": "打完鼻噴式流感疫苗後打噴嚏、流出來了，要再補噴一次嗎？",
    "questions": [
@@ -10548,7 +10646,7 @@
    "seasonal": false
   },
   {
-   "id": "Q704",
+   "id": "Q711",
    "kind": "faq",
    "title": "接種當天孩子鼻塞、流鼻涕，還可以打鼻噴式流感疫苗嗎？",
    "questions": [
@@ -10562,7 +10660,7 @@
    "seasonal": false
   },
   {
-   "id": "Q705",
+   "id": "Q712",
    "kind": "faq",
    "title": "鼻噴式流感疫苗的保護力和針劑一樣嗎？哪一種比較好？",
    "questions": [
@@ -10576,7 +10674,7 @@
    "seasonal": false
   },
   {
-   "id": "Q706",
+   "id": "Q713",
    "kind": "faq",
    "title": "本流感季要打 2 劑的孩子，第 2 劑也要打鼻噴嗎？",
    "questions": [
@@ -10590,7 +10688,7 @@
    "seasonal": false
   },
   {
-   "id": "Q707",
+   "id": "Q714",
    "kind": "faq",
    "title": "鼻噴式流感疫苗有公費嗎？費用怎麼問？",
    "questions": [
@@ -10604,7 +10702,7 @@
    "seasonal": false
   },
   {
-   "id": "Q708",
+   "id": "Q715",
    "kind": "faq",
    "title": "台南哪裡可以打鼻噴式流感疫苗？要預約嗎、看哪一科？",
    "questions": [
@@ -10618,7 +10716,7 @@
    "seasonal": false
   },
   {
-   "id": "Q709",
+   "id": "Q716",
    "kind": "faq",
    "title": "「鼻噴式疫苗」和「鼻噴式流感疫苗」是同一種嗎？台南哪裡打得到？",
    "questions": [
@@ -10632,7 +10730,7 @@
    "seasonal": false
   },
   {
-   "id": "Q710",
+   "id": "Q717",
    "kind": "faq",
    "title": "能伏鼻是什麼？台南可以打到嗎？",
    "questions": [
@@ -10646,7 +10744,7 @@
    "seasonal": false
   },
   {
-   "id": "Q711",
+   "id": "Q718",
    "kind": "faq",
    "title": "孩子很怕打針，台南哪裡有不用打針的流感疫苗？",
    "questions": [
@@ -10660,7 +10758,7 @@
    "seasonal": false
   },
   {
-   "id": "Q712",
+   "id": "Q719",
    "kind": "faq",
    "title": "孩子有鼻子過敏（過敏性鼻炎），可以打鼻噴式流感疫苗嗎？",
    "questions": [
@@ -10674,7 +10772,7 @@
    "seasonal": false
   },
   {
-   "id": "Q713",
+   "id": "Q720",
    "kind": "faq",
    "title": "新生兒多久要餵一次奶？一天要餵幾次？",
    "questions": [
@@ -10688,7 +10786,7 @@
    "seasonal": false
   },
   {
-   "id": "Q714",
+   "id": "Q721",
    "kind": "faq",
    "title": "怎麼知道寶寶有沒有喝飽？",
    "questions": [
@@ -10702,7 +10800,7 @@
    "seasonal": false
   },
   {
-   "id": "Q715",
+   "id": "Q722",
    "kind": "faq",
    "title": "寶寶一天要換幾片尿布、大便長怎樣才正常？",
    "questions": [
@@ -10716,7 +10814,7 @@
    "seasonal": false
   },
   {
-   "id": "Q716",
+   "id": "Q723",
    "kind": "faq",
    "title": "新生兒體重下降正常嗎？多久會回到出生體重？",
    "questions": [
@@ -10730,7 +10828,7 @@
    "seasonal": false
   },
   {
-   "id": "Q717",
+   "id": "Q724",
    "kind": "faq",
    "title": "寶寶一直哭是不是沒喝飽？",
    "questions": [
@@ -10744,7 +10842,7 @@
    "seasonal": false
   },
   {
-   "id": "Q718",
+   "id": "Q725",
    "kind": "faq",
    "title": "台南哪裡可以做新生兒餵食評估與生長追蹤？",
    "questions": [
@@ -10758,7 +10856,7 @@
    "seasonal": false
   },
   {
-   "id": "Q719",
+   "id": "Q726",
    "kind": "faq",
    "title": "新生兒需要額外餵開水或葡萄糖水嗎？",
    "questions": [
@@ -10772,7 +10870,7 @@
    "seasonal": false
   },
   {
-   "id": "Q720",
+   "id": "Q727",
    "kind": "faq",
    "title": "寶寶的大便變成灰白色要緊嗎？",
    "questions": [
@@ -10786,7 +10884,7 @@
    "seasonal": false
   },
   {
-   "id": "Q721",
+   "id": "Q728",
    "kind": "faq",
    "title": "寶寶幾度算發燒？",
    "questions": [
@@ -10800,7 +10898,7 @@
    "seasonal": false
   },
   {
-   "id": "Q722",
+   "id": "Q729",
    "kind": "faq",
    "title": "三個月以下的新生兒發燒一定要看醫生嗎？",
    "questions": [
@@ -10814,7 +10912,7 @@
    "seasonal": false
   },
   {
-   "id": "Q723",
+   "id": "Q730",
    "kind": "faq",
    "title": "新生兒發燒可以先自己吃退燒藥嗎？",
    "questions": [
@@ -10828,7 +10926,7 @@
    "seasonal": false
   },
   {
-   "id": "Q724",
+   "id": "Q731",
    "kind": "faq",
    "title": "量新生兒體溫用耳溫槍可以嗎？",
    "questions": [
@@ -10842,7 +10940,7 @@
    "seasonal": false
   },
   {
-   "id": "Q725",
+   "id": "Q732",
    "kind": "faq",
    "title": "寶寶發燒出現哪些情況要立刻就醫？",
    "questions": [
@@ -10856,7 +10954,7 @@
    "seasonal": false
   },
   {
-   "id": "Q726",
+   "id": "Q733",
    "kind": "faq",
    "title": "台南哪裡可以看新生兒、嬰兒發燒？",
    "questions": [
@@ -10870,7 +10968,7 @@
    "seasonal": false
   },
   {
-   "id": "Q727",
+   "id": "Q734",
    "kind": "faq",
    "title": "寶寶發燒可以用溫水擦澡嗎？可以用酒精或冰水嗎？",
    "questions": [
@@ -10884,7 +10982,7 @@
    "seasonal": false
   },
   {
-   "id": "Q728",
+   "id": "Q735",
    "kind": "faq",
    "title": "退燒藥一定要把體溫降到正常才行嗎？",
    "questions": [
@@ -10898,7 +10996,7 @@
    "seasonal": false
   },
   {
-   "id": "Q729",
+   "id": "Q736",
    "kind": "faq",
    "title": "新生兒黃疸什麼時候出現？什麼時候會退？",
    "questions": [
@@ -10912,7 +11010,7 @@
    "seasonal": false
   },
   {
-   "id": "Q730",
+   "id": "Q737",
    "kind": "faq",
    "title": "母乳寶寶比較容易黃疸嗎？需要因此停餵母乳嗎？",
    "questions": [
@@ -10926,7 +11024,7 @@
    "seasonal": false
   },
   {
-   "id": "Q731",
+   "id": "Q738",
    "kind": "faq",
    "title": "寶寶黃疸出現哪些情況要立即就醫？",
    "questions": [
@@ -10940,7 +11038,7 @@
    "seasonal": false
   },
   {
-   "id": "Q732",
+   "id": "Q739",
    "kind": "faq",
    "title": "聽說照太陽、喝葡萄糖水可以退黃疸，是真的嗎？",
    "questions": [
@@ -10954,7 +11052,7 @@
    "seasonal": false
   },
   {
-   "id": "Q733",
+   "id": "Q740",
    "kind": "faq",
    "title": "黃疸照光治療是什麼？膽紅素多高需要照光？",
    "questions": [
@@ -10968,7 +11066,7 @@
    "seasonal": false
   },
   {
-   "id": "Q734",
+   "id": "Q741",
    "kind": "faq",
    "title": "台南哪裡可以做新生兒黃疸追蹤？",
    "questions": [
@@ -10982,7 +11080,7 @@
    "seasonal": false
   },
   {
-   "id": "Q735",
+   "id": "Q742",
    "kind": "faq",
    "title": "新生兒黃疸需要追蹤多久？要回診幾次？",
    "questions": [
@@ -10996,7 +11094,7 @@
    "seasonal": false
   },
   {
-   "id": "Q736",
+   "id": "Q743",
    "kind": "faq",
    "title": "寶寶的黃疸指數要怎麼測量？經皮測量和抽血差在哪？",
    "questions": [
@@ -11010,7 +11108,7 @@
    "seasonal": false
   },
   {
-   "id": "Q737",
+   "id": "Q744",
    "kind": "faq",
    "title": "寶寶一定要仰睡嗎？側睡可以嗎？",
    "questions": [
@@ -11024,7 +11122,7 @@
    "seasonal": false
   },
   {
-   "id": "Q738",
+   "id": "Q745",
    "kind": "faq",
    "title": "嬰兒可以使用枕頭嗎？",
    "questions": [
@@ -11038,7 +11136,7 @@
    "seasonal": false
   },
   {
-   "id": "Q739",
+   "id": "Q746",
    "kind": "faq",
    "title": "可以和寶寶同床睡嗎？",
    "questions": [
@@ -11052,7 +11150,7 @@
    "seasonal": false
   },
   {
-   "id": "Q740",
+   "id": "Q747",
    "kind": "faq",
    "title": "仰睡會不會比較容易嗆奶？",
    "questions": [
@@ -11066,7 +11164,7 @@
    "seasonal": false
   },
   {
-   "id": "Q741",
+   "id": "Q748",
    "kind": "faq",
    "title": "寶寶喜歡趴睡、趴睡頭型比較漂亮怎麼辦？",
    "questions": [
@@ -11080,7 +11178,7 @@
    "seasonal": false
   },
   {
-   "id": "Q742",
+   "id": "Q749",
    "kind": "faq",
    "title": "台南哪裡可以諮詢新生兒照護？",
    "questions": [
@@ -11094,7 +11192,7 @@
    "seasonal": false
   },
   {
-   "id": "Q743",
+   "id": "Q750",
    "kind": "faq",
    "title": "嬰兒床可以放棉被、防撞護墊或填充玩偶嗎？",
    "questions": [
@@ -11108,7 +11206,7 @@
    "seasonal": false
   },
   {
-   "id": "Q744",
+   "id": "Q751",
    "kind": "faq",
    "title": "除了仰睡，還有哪些做法能降低嬰兒猝死風險？",
    "questions": [
@@ -11122,7 +11220,7 @@
    "seasonal": false
   },
   {
-   "id": "Q745",
+   "id": "Q752",
    "kind": "faq",
    "title": "寶寶舌頭白白的是鵝口瘡還是奶垢？",
    "questions": [
@@ -11136,7 +11234,7 @@
    "seasonal": false
   },
   {
-   "id": "Q746",
+   "id": "Q753",
    "kind": "faq",
    "title": "寶寶為什麼會得鵝口瘡？",
    "questions": [
@@ -11150,7 +11248,7 @@
    "seasonal": false
   },
   {
-   "id": "Q747",
+   "id": "Q754",
    "kind": "faq",
    "title": "鵝口瘡會自己好嗎？一定要看醫師嗎？",
    "questions": [
@@ -11164,7 +11262,7 @@
    "seasonal": false
   },
   {
-   "id": "Q748",
+   "id": "Q755",
    "kind": "faq",
    "title": "鵝口瘡的藥要擦多久？白斑消失就可以停藥嗎？",
    "questions": [
@@ -11178,7 +11276,7 @@
    "seasonal": false
   },
   {
-   "id": "Q749",
+   "id": "Q756",
    "kind": "faq",
    "title": "寶寶得鵝口瘡，哺乳媽媽需要一起治療嗎？",
    "questions": [
@@ -11192,7 +11290,7 @@
    "seasonal": false
   },
   {
-   "id": "Q750",
+   "id": "Q757",
    "kind": "faq",
    "title": "鵝口瘡期間，奶瓶奶嘴要怎麼清潔消毒？",
    "questions": [
@@ -11206,7 +11304,7 @@
    "seasonal": false
   },
   {
-   "id": "Q751",
+   "id": "Q758",
    "kind": "faq",
    "title": "寶寶鵝口瘡出現哪些情況要盡快就醫？",
    "questions": [
@@ -11220,7 +11318,7 @@
    "seasonal": false
   },
   {
-   "id": "Q752",
+   "id": "Q759",
    "kind": "faq",
    "title": "台南哪裡可以看寶寶的鵝口瘡？",
    "questions": [
@@ -11234,7 +11332,7 @@
    "seasonal": false
   },
   {
-   "id": "Q753",
+   "id": "Q760",
    "kind": "faq",
    "title": "孩子一直揉耳朵、抓耳朵，就是中耳炎嗎？",
    "questions": [
@@ -11248,7 +11346,7 @@
    "seasonal": false
   },
   {
-   "id": "Q754",
+   "id": "Q761",
    "kind": "faq",
    "title": "小孩中耳炎一定要吃抗生素嗎？",
    "questions": [
@@ -11262,7 +11360,7 @@
    "seasonal": false
   },
   {
-   "id": "Q755",
+   "id": "Q762",
    "kind": "faq",
    "title": "中耳炎需要回診追蹤嗎？多久回診一次？",
    "questions": [
@@ -11276,7 +11374,7 @@
    "seasonal": false
   },
   {
-   "id": "Q756",
+   "id": "Q763",
    "kind": "faq",
    "title": "急性期好了，醫師說耳朵裡還有積水，要緊嗎？",
    "questions": [
@@ -11290,7 +11388,7 @@
    "seasonal": false
   },
   {
-   "id": "Q757",
+   "id": "Q764",
    "kind": "faq",
    "title": "中耳炎會影響孩子的聽力或語言發展嗎？",
    "questions": [
@@ -11304,7 +11402,7 @@
    "seasonal": false
   },
   {
-   "id": "Q758",
+   "id": "Q765",
    "kind": "faq",
    "title": "中耳炎會傳染嗎？可以去上學嗎？",
    "questions": [
@@ -11318,7 +11416,7 @@
    "seasonal": false
   },
   {
-   "id": "Q759",
+   "id": "Q766",
    "kind": "faq",
    "title": "要怎麼降低中耳炎反覆發作？疫苗有幫助嗎？",
    "questions": [
@@ -11332,7 +11430,7 @@
    "seasonal": false
   },
   {
-   "id": "Q760",
+   "id": "Q767",
    "kind": "faq",
    "title": "肺炎鏈球菌是什麼？會引起哪些疾病？",
    "questions": [
@@ -11346,7 +11444,7 @@
    "seasonal": false
   },
   {
-   "id": "Q761",
+   "id": "Q768",
    "kind": "faq",
    "title": "「肺炎疫苗」就是肺炎鏈球菌疫苗嗎？打了就不會得肺炎嗎？",
    "questions": [
@@ -11360,7 +11458,7 @@
    "seasonal": false
   },
   {
-   "id": "Q762",
+   "id": "Q769",
    "kind": "faq",
    "title": "肺炎鏈球菌疫苗有哪幾種？結合型和多醣體差在哪？",
    "questions": [
@@ -11374,7 +11472,7 @@
    "seasonal": false
   },
   {
-   "id": "Q763",
+   "id": "Q770",
    "kind": "faq",
    "title": "幼兒肺炎鏈球菌疫苗公費幾劑？時程怎麼安排？",
    "questions": [
@@ -11388,7 +11486,7 @@
    "seasonal": false
   },
   {
-   "id": "Q764",
+   "id": "Q771",
    "kind": "faq",
    "title": "6 個月加打一劑可以嗎？",
    "questions": [
@@ -11402,7 +11500,7 @@
    "seasonal": false
   },
   {
-   "id": "Q765",
+   "id": "Q772",
    "kind": "faq",
    "title": "成人與 65 歲以上長者要打肺炎鏈球菌疫苗嗎？",
    "questions": [
@@ -11416,7 +11514,7 @@
    "seasonal": false
   },
   {
-   "id": "Q766",
+   "id": "Q773",
    "kind": "faq",
    "title": "115 年 8 月 10 日起公費肺炎鏈球菌疫苗有什麼改變？",
    "questions": [
@@ -11430,7 +11528,7 @@
    "seasonal": true
   },
   {
-   "id": "Q767",
+   "id": "Q774",
    "kind": "faq",
    "title": "哪些人可以公費接種 20 價或 21 價肺炎鏈球菌疫苗？",
    "questions": [
@@ -11444,7 +11542,7 @@
    "seasonal": false
   },
   {
-   "id": "Q768",
+   "id": "Q775",
    "kind": "faq",
    "title": "以前打過 23 價或 13 價，還可以公費打新的肺炎鏈球菌疫苗嗎？",
    "questions": [
@@ -11458,7 +11556,7 @@
    "seasonal": false
   },
   {
-   "id": "Q769",
+   "id": "Q776",
    "kind": "faq",
    "title": "肺炎鏈球菌疫苗和流感疫苗可以一起打嗎？",
    "questions": [
@@ -11472,7 +11570,7 @@
    "seasonal": false
   },
   {
-   "id": "Q770",
+   "id": "Q777",
    "kind": "faq",
    "title": "肺炎鏈球菌疫苗有什麼副作用？哪些人要注意？",
    "questions": [
@@ -11486,7 +11584,7 @@
    "seasonal": false
   },
   {
-   "id": "Q771",
+   "id": "Q778",
    "kind": "faq",
    "title": "台南北區哪裡可以接種肺炎鏈球菌疫苗？",
    "questions": [
@@ -11500,7 +11598,7 @@
    "seasonal": false
   },
   {
-   "id": "Q772",
+   "id": "Q779",
    "kind": "faq",
    "title": "孩子一直清喉嚨、鼻涕倒流，是過敏還是感冒？",
    "questions": [
@@ -11514,7 +11612,7 @@
    "seasonal": false
   },
   {
-   "id": "Q773",
+   "id": "Q780",
    "kind": "faq",
    "title": "為什麼過敏性鼻炎會讓孩子一直咳嗽？",
    "questions": [
@@ -11528,7 +11626,7 @@
    "seasonal": false
   },
   {
-   "id": "Q774",
+   "id": "Q781",
    "kind": "faq",
    "title": "孩子睡覺張口呼吸、打鼾，跟過敏有關嗎？",
    "questions": [
@@ -11542,7 +11640,7 @@
    "seasonal": false
   },
   {
-   "id": "Q775",
+   "id": "Q782",
    "kind": "faq",
    "title": "家長在家可以先觀察什麼？",
    "questions": [
@@ -11556,7 +11654,7 @@
    "seasonal": false
   },
   {
-   "id": "Q776",
+   "id": "Q783",
    "kind": "faq",
    "title": "這種情況什麼時候要看醫生？",
    "questions": [
@@ -11570,7 +11668,7 @@
    "seasonal": false
   },
   {
-   "id": "Q777",
+   "id": "Q784",
    "kind": "faq",
    "title": "台南哪裡可以評估孩子的過敏與久咳？",
    "questions": [
@@ -11584,7 +11682,7 @@
    "seasonal": false
   },
   {
-   "id": "Q778",
+   "id": "Q785",
    "kind": "faq",
    "title": "孩子晚上一躺下就咳、清晨起床咳不停，和鼻涕倒流有關嗎？",
    "questions": [
@@ -11598,7 +11696,7 @@
    "seasonal": false
   },
   {
-   "id": "Q779",
+   "id": "Q786",
    "kind": "faq",
    "title": "過敏性鼻炎控制不好，會影響氣喘或讓久咳更難好嗎？",
    "questions": [
@@ -11612,7 +11710,7 @@
    "seasonal": false
   },
   {
-   "id": "Q780",
+   "id": "Q787",
    "kind": "faq",
    "title": "立欣診所有哪些快篩項目？",
    "questions": [
@@ -11626,7 +11724,7 @@
    "seasonal": false
   },
   {
-   "id": "Q781",
+   "id": "Q788",
    "kind": "faq",
    "title": "公費快篩和自費快篩差在哪裡？我符合公費資格嗎？",
    "questions": [
@@ -11640,7 +11738,7 @@
    "seasonal": false
   },
   {
-   "id": "Q782",
+   "id": "Q789",
    "kind": "faq",
    "title": "孩子發燒就要快篩嗎？醫師怎麼決定要不要驗、驗哪一項？",
    "questions": [
@@ -11654,7 +11752,7 @@
    "seasonal": false
   },
   {
-   "id": "Q783",
+   "id": "Q790",
    "kind": "faq",
    "title": "什麼時候採檢，快篩結果比較可靠？",
    "questions": [
@@ -11668,7 +11766,7 @@
    "seasonal": false
   },
   {
-   "id": "Q784",
+   "id": "Q791",
    "kind": "faq",
    "title": "快篩要從鼻子採檢嗎？小孩會不會很不舒服？",
    "questions": [
@@ -11682,7 +11780,7 @@
    "seasonal": false
   },
   {
-   "id": "Q785",
+   "id": "Q792",
    "kind": "faq",
    "title": "快篩和 PCR、抽血檢查差在哪裡？",
    "questions": [
@@ -11696,7 +11794,7 @@
    "seasonal": false
   },
   {
-   "id": "Q786",
+   "id": "Q793",
    "kind": "faq",
    "title": "家用快篩和到診所做的快篩一樣嗎？",
    "questions": [
@@ -11710,7 +11808,7 @@
    "seasonal": false
   },
   {
-   "id": "Q787",
+   "id": "Q794",
    "kind": "faq",
    "title": "發燒一次要把流感、RSV、腺病毒全部驗過嗎？",
    "questions": [
@@ -11724,7 +11822,7 @@
    "seasonal": false
   },
   {
-   "id": "Q788",
+   "id": "Q795",
    "kind": "faq",
    "title": "台南北區哪裡可以做兒童快篩？要看哪一科、需要預約嗎？",
    "questions": [
@@ -11738,7 +11836,7 @@
    "seasonal": false
   },
   {
-   "id": "Q789",
+   "id": "Q796",
    "kind": "faq",
    "title": "流感快篩驗得出是 A 流還是 B 流嗎？",
    "questions": [
@@ -11752,7 +11850,7 @@
    "seasonal": false
   },
   {
-   "id": "Q790",
+   "id": "Q797",
    "kind": "faq",
    "title": "知道是 A 流還是 B 流，會影響治療方式嗎？",
    "questions": [
@@ -11766,7 +11864,7 @@
    "seasonal": false
   },
   {
-   "id": "Q791",
+   "id": "Q798",
    "kind": "faq",
    "title": "本院的快篩試劑是哪裡來的？",
    "questions": [
@@ -11780,7 +11878,7 @@
    "seasonal": false
   },
   {
-   "id": "Q792",
+   "id": "Q799",
    "kind": "faq",
    "title": "玫瑰疹有哪些症狀？病程怎麼走？",
    "questions": [
@@ -11794,7 +11892,7 @@
    "seasonal": false
   },
   {
-   "id": "Q793",
+   "id": "Q800",
    "kind": "faq",
    "title": "寶寶高燒三天，什麼時候該擔心不是玫瑰疹？",
    "questions": [
@@ -11808,7 +11906,7 @@
    "seasonal": false
   },
   {
-   "id": "Q794",
+   "id": "Q801",
    "kind": "faq",
    "title": "玫瑰疹會不會引起熱痙攣？發生了該怎麼辦？",
    "questions": [
@@ -11822,7 +11920,7 @@
    "seasonal": false
   },
   {
-   "id": "Q795",
+   "id": "Q802",
    "kind": "faq",
    "title": "玫瑰疹要吃抗生素嗎？要擦藥嗎？",
    "questions": [
@@ -11836,7 +11934,7 @@
    "seasonal": false
   },
   {
-   "id": "Q796",
+   "id": "Q803",
    "kind": "faq",
    "title": "玫瑰疹會傳染嗎？可以去幼兒園嗎？",
    "questions": [
@@ -11850,7 +11948,7 @@
    "seasonal": false
   },
   {
-   "id": "Q797",
+   "id": "Q804",
    "kind": "faq",
    "title": "玫瑰疹得過一次還會再得嗎？",
    "questions": [
@@ -11864,7 +11962,7 @@
    "seasonal": false
   },
   {
-   "id": "Q798",
+   "id": "Q805",
    "kind": "faq",
    "title": "玫瑰疹和麻疹、德國麻疹、腸病毒、藥物疹怎麼分？",
    "questions": [
@@ -11878,7 +11976,7 @@
    "seasonal": false
   },
   {
-   "id": "Q799",
+   "id": "Q806",
    "kind": "faq",
    "title": "台南哪裡可以評估寶寶的高燒與出疹？",
    "questions": [
@@ -11892,7 +11990,7 @@
    "seasonal": false
   },
   {
-   "id": "Q800",
+   "id": "Q807",
    "kind": "faq",
    "title": "輪狀病毒疫苗要打嗎？預防什麼？",
    "questions": [
@@ -11906,7 +12004,7 @@
    "seasonal": false
   },
   {
-   "id": "Q801",
+   "id": "Q808",
    "kind": "faq",
    "title": "輪狀病毒疫苗有幾種？2 劑型和 3 劑型差在哪？",
    "questions": [
@@ -11920,7 +12018,7 @@
    "seasonal": false
   },
   {
-   "id": "Q802",
+   "id": "Q809",
    "kind": "faq",
    "title": "輪狀病毒疫苗幾個月打？有月齡上限嗎？",
    "questions": [
@@ -11934,7 +12032,7 @@
    "seasonal": false
   },
   {
-   "id": "Q803",
+   "id": "Q810",
    "kind": "faq",
    "title": "輪狀病毒疫苗是公費還是自費？",
    "questions": [
@@ -11948,7 +12046,7 @@
    "seasonal": false
   },
   {
-   "id": "Q804",
+   "id": "Q811",
    "kind": "faq",
    "title": "哪些寶寶不適合打輪狀病毒疫苗？有什麼要注意？",
    "questions": [
@@ -11962,7 +12060,7 @@
    "seasonal": false
   },
   {
-   "id": "Q805",
+   "id": "Q812",
    "kind": "faq",
    "title": "口服輪狀病毒疫苗有副作用嗎？吐出來要補吃嗎？",
    "questions": [
@@ -11976,7 +12074,7 @@
    "seasonal": false
   },
   {
-   "id": "Q806",
+   "id": "Q813",
    "kind": "faq",
    "title": "台南北區哪裡可以接種輪狀病毒疫苗？",
    "questions": [
@@ -11990,7 +12088,7 @@
    "seasonal": false
   },
   {
-   "id": "Q807",
+   "id": "Q814",
    "kind": "faq",
    "title": "RSV 單株抗體（樂唯初）是疫苗嗎？和疫苗有什麼不同？",
    "questions": [
@@ -12004,7 +12102,7 @@
    "seasonal": false
   },
   {
-   "id": "Q808",
+   "id": "Q815",
    "kind": "faq",
    "title": "RSV 單株抗體的保護力有多久？",
    "questions": [
@@ -12018,7 +12116,7 @@
    "seasonal": false
   },
   {
-   "id": "Q809",
+   "id": "Q816",
    "kind": "faq",
    "title": "哪些寶寶適合施打 RSV 單株抗體？",
    "questions": [
@@ -12032,7 +12130,7 @@
    "seasonal": false
   },
   {
-   "id": "Q810",
+   "id": "Q817",
    "kind": "faq",
    "title": "RSV 單株抗體安全嗎？有哪些副作用？",
    "questions": [
@@ -12046,7 +12144,7 @@
    "seasonal": false
   },
   {
-   "id": "Q811",
+   "id": "Q818",
    "kind": "faq",
    "title": "打過 RSV 單株抗體，寶寶還會得 RSV 或感冒嗎？",
    "questions": [
@@ -12060,7 +12158,7 @@
    "seasonal": false
   },
   {
-   "id": "Q812",
+   "id": "Q819",
    "kind": "faq",
    "title": "寶寶呼吸道感染出現哪些情形要立刻就醫？",
    "questions": [
@@ -12074,7 +12172,7 @@
    "seasonal": false
   },
   {
-   "id": "Q813",
+   "id": "Q820",
    "kind": "faq",
    "title": "樂唯初和西那吉斯（Synagis）有什麼不同？",
    "questions": [
@@ -12088,7 +12186,7 @@
    "seasonal": false
   },
   {
-   "id": "Q814",
+   "id": "Q821",
    "kind": "faq",
    "title": "樂唯初可以和常規疫苗（如五合一、肺炎鏈球菌）一起打嗎？",
    "questions": [
@@ -12102,7 +12200,7 @@
    "seasonal": false
   },
   {
-   "id": "Q815",
+   "id": "Q822",
    "kind": "faq",
    "title": "RSV 單株抗體（樂唯初）有公費或健保給付嗎？",
    "questions": [
@@ -12116,7 +12214,7 @@
    "seasonal": false
   },
   {
-   "id": "Q816",
+   "id": "Q823",
    "kind": "faq",
    "title": "媽媽孕期打過 RSV 疫苗，寶寶還需要打單株抗體嗎？",
    "questions": [
@@ -12130,7 +12228,7 @@
    "seasonal": false
   },
   {
-   "id": "Q817",
+   "id": "Q824",
    "kind": "faq",
    "title": "台南北區哪裡可以施打 RSV 單株抗體（樂唯初）？",
    "questions": [
@@ -12144,7 +12242,7 @@
    "seasonal": false
   },
   {
-   "id": "Q818",
+   "id": "Q825",
    "kind": "faq",
    "title": "寶寶的 RSV 疫苗在台南哪裡打？寶寶打的是疫苗還是單株抗體？",
    "questions": [
@@ -12158,7 +12256,7 @@
    "seasonal": false
   },
   {
-   "id": "Q819",
+   "id": "Q826",
    "kind": "faq",
    "title": "猩紅熱有哪些症狀？",
    "questions": [
@@ -12172,7 +12270,7 @@
    "seasonal": false
   },
   {
-   "id": "Q820",
+   "id": "Q827",
    "kind": "faq",
    "title": "猩紅熱會傳染嗎？潛伏期多久？",
    "questions": [
@@ -12186,7 +12284,7 @@
    "seasonal": false
   },
   {
-   "id": "Q821",
+   "id": "Q828",
    "kind": "faq",
    "title": "猩紅熱要吃多久抗生素？症狀好了可以停藥嗎？",
    "questions": [
@@ -12200,7 +12298,7 @@
    "seasonal": false
   },
   {
-   "id": "Q822",
+   "id": "Q829",
    "kind": "faq",
    "title": "得了猩紅熱多久可以回學校？",
    "questions": [
@@ -12214,7 +12312,7 @@
    "seasonal": false
   },
   {
-   "id": "Q823",
+   "id": "Q830",
    "kind": "faq",
    "title": "猩紅熱和鏈球菌咽喉炎有什麼不同？",
    "questions": [
@@ -12228,7 +12326,7 @@
    "seasonal": false
   },
   {
-   "id": "Q824",
+   "id": "Q831",
    "kind": "faq",
    "title": "猩紅熱退疹後手指脫皮正常嗎？",
    "questions": [
@@ -12242,7 +12340,7 @@
    "seasonal": false
   },
   {
-   "id": "Q825",
+   "id": "Q832",
    "kind": "faq",
    "title": "猩紅熱會有什麼併發症？",
    "questions": [
@@ -12256,7 +12354,7 @@
    "seasonal": false
   },
   {
-   "id": "Q826",
+   "id": "Q833",
    "kind": "faq",
    "title": "猩紅熱有疫苗嗎？得過還會再得嗎？",
    "questions": [
@@ -12270,7 +12368,7 @@
    "seasonal": false
   },
   {
-   "id": "Q827",
+   "id": "Q834",
    "kind": "faq",
    "title": "台南北區哪裡可以評估孩子的猩紅熱？",
    "questions": [
@@ -12284,7 +12382,7 @@
    "seasonal": false
   },
   {
-   "id": "Q828",
+   "id": "Q835",
    "kind": "faq",
    "title": "帶狀皰疹（皮蛇）是怎麼發生的？",
    "questions": [
@@ -12298,7 +12396,7 @@
    "seasonal": false
   },
   {
-   "id": "Q829",
+   "id": "Q836",
    "kind": "faq",
    "title": "帶狀皰疹疫苗的保護力如何？",
    "questions": [
@@ -12312,7 +12410,7 @@
    "seasonal": false
   },
   {
-   "id": "Q830",
+   "id": "Q837",
    "kind": "faq",
    "title": "哪些人建議接種帶狀皰疹疫苗？",
    "questions": [
@@ -12326,7 +12424,7 @@
    "seasonal": false
   },
   {
-   "id": "Q831",
+   "id": "Q838",
    "kind": "faq",
    "title": "接種帶狀皰疹疫苗後會有哪些副作用？",
    "questions": [
@@ -12340,7 +12438,7 @@
    "seasonal": false
   },
   {
-   "id": "Q832",
+   "id": "Q839",
    "kind": "faq",
    "title": "曾經得過帶狀皰疹，還需要打疫苗嗎？",
    "questions": [
@@ -12354,7 +12452,7 @@
    "seasonal": false
   },
   {
-   "id": "Q833",
+   "id": "Q840",
    "kind": "faq",
    "title": "帶狀皰疹會傳染嗎？有哪些初期症狀？該看哪一科？",
    "questions": [
@@ -12368,7 +12466,7 @@
    "seasonal": false
   },
   {
-   "id": "Q834",
+   "id": "Q841",
    "kind": "faq",
    "title": "帶狀皰疹疫苗要打幾劑？保護力可以維持多久？費用大概多少？",
    "questions": [
@@ -12382,7 +12480,7 @@
    "seasonal": false
   },
   {
-   "id": "Q835",
+   "id": "Q842",
    "kind": "faq",
    "title": "台南市帶狀皰疹疫苗有公費補助嗎？資格條件是什麼？",
    "questions": [
@@ -12396,7 +12494,7 @@
    "seasonal": false
   },
   {
-   "id": "Q836",
+   "id": "Q843",
    "kind": "faq",
    "title": "立欣診所有公費帶狀皰疹疫苗嗎？公費要去哪裡打？",
    "questions": [
@@ -12410,7 +12508,7 @@
    "seasonal": false
   },
   {
-   "id": "Q837",
+   "id": "Q844",
    "kind": "faq",
    "title": "台南北區哪裡可以接種帶狀皰疹疫苗？",
    "questions": [
@@ -12424,7 +12522,7 @@
    "seasonal": false
   },
   {
-   "id": "Q838",
+   "id": "Q845",
    "kind": "faq",
    "title": "帶狀皰疹疫苗有分哪幾種？活性減毒疫苗與非活性重組疫苗差在哪？",
    "questions": [
@@ -12438,7 +12536,7 @@
    "seasonal": false
   },
   {
-   "id": "Q839",
+   "id": "Q846",
    "kind": "faq",
    "title": "帶狀皰疹疫苗可以和流感、肺炎鏈球菌等其他疫苗一起打嗎？兩劑要間隔多久？",
    "questions": [
@@ -12452,7 +12550,7 @@
    "seasonal": false
   },
   {
-   "id": "Q840",
+   "id": "Q847",
    "kind": "faq",
    "title": "帶狀疱疹和帶狀皰疹是同一件事嗎？皮蛇、皮蛇疫苗說的是什麼？",
    "questions": [
@@ -12466,7 +12564,7 @@
    "seasonal": false
   },
   {
-   "id": "Q841",
+   "id": "Q848",
    "kind": "faq",
    "title": "第二劑帶狀皰疹疫苗超過建議間隔還沒打，要重新從第一劑開始嗎？",
    "questions": [
@@ -12480,7 +12578,7 @@
    "seasonal": false
   },
   {
-   "id": "Q842",
+   "id": "Q849",
    "kind": "faq",
    "title": "台南帶狀皰疹疫苗推薦怎麼選？台南打帶狀疱疹疫苗（皮蛇疫苗）可以參考哪些條件？",
    "questions": [
@@ -12494,7 +12592,7 @@
    "seasonal": false
   },
   {
-   "id": "Q843",
+   "id": "Q850",
    "kind": "faq",
    "title": "帶狀皰疹疫苗（欣剋疹）值得打嗎？網路上的懶人包、心得與評價可以當作決定的依據嗎？",
    "questions": [
@@ -12508,7 +12606,7 @@
    "seasonal": false
   },
   {
-   "id": "Q844",
+   "id": "Q851",
    "kind": "faq",
    "title": "「新型帶狀疱疹疫苗」指的是哪一種？和舊型有什麼不同？",
    "questions": [
@@ -12522,7 +12620,7 @@
    "seasonal": false
   },
   {
-   "id": "Q845",
+   "id": "Q852",
    "kind": "faq",
    "title": "戒菸門診要自費嗎？",
    "questions": [
@@ -12536,7 +12634,7 @@
    "seasonal": false
   },
   {
-   "id": "Q846",
+   "id": "Q853",
    "kind": "faq",
    "title": "怎樣才符合二代戒菸補助？",
    "questions": [
@@ -12550,7 +12648,7 @@
    "seasonal": false
   },
   {
-   "id": "Q847",
+   "id": "Q854",
    "kind": "faq",
    "title": "補助一年可以用幾次？",
    "questions": [
@@ -12564,7 +12662,7 @@
    "seasonal": false
   },
   {
-   "id": "Q848",
+   "id": "Q855",
    "kind": "faq",
    "title": "戒菸藥有什麼副作用？",
    "questions": [
@@ -12578,7 +12676,7 @@
    "seasonal": false
   },
   {
-   "id": "Q849",
+   "id": "Q856",
    "kind": "faq",
    "title": "可以改抽電子菸或加熱菸來戒菸嗎？",
    "questions": [
@@ -12592,7 +12690,7 @@
    "seasonal": false
   },
   {
-   "id": "Q850",
+   "id": "Q857",
    "kind": "faq",
    "title": "以前戒過但失敗了，還可以再來嗎？",
    "questions": [
@@ -12606,7 +12704,7 @@
    "seasonal": false
   },
   {
-   "id": "Q851",
+   "id": "Q858",
    "kind": "faq",
    "title": "懷孕或哺乳中可以用戒菸藥嗎？",
    "questions": [
@@ -12620,7 +12718,7 @@
    "seasonal": false
   },
   {
-   "id": "Q852",
+   "id": "Q859",
    "kind": "faq",
    "title": "每天抽不到 10 支，也可以來看嗎？",
    "questions": [
@@ -12634,7 +12732,7 @@
    "seasonal": false
   },
   {
-   "id": "Q853",
+   "id": "Q860",
    "kind": "faq",
    "title": "出國備用藥可以在立欣診所開嗎？",
    "questions": [
@@ -12648,7 +12746,7 @@
    "seasonal": false
   },
   {
-   "id": "Q854",
+   "id": "Q861",
    "kind": "faq",
    "title": "慢性病的藥不夠吃到回國怎麼辦？",
    "questions": [
@@ -12662,7 +12760,7 @@
    "seasonal": false
   },
   {
-   "id": "Q855",
+   "id": "Q862",
    "kind": "faq",
    "title": "孩子的退燒藥可以把大人的藥切半給他吃嗎？",
    "questions": [
@@ -12676,7 +12774,7 @@
    "seasonal": false
   },
   {
-   "id": "Q856",
+   "id": "Q863",
    "kind": "faq",
    "title": "在國外拉肚子，可以馬上吃止瀉藥嗎？",
    "questions": [
@@ -12690,7 +12788,7 @@
    "seasonal": false
   },
   {
-   "id": "Q857",
+   "id": "Q864",
    "kind": "faq",
    "title": "止暈藥什麼時候吃？",
    "questions": [
@@ -12704,7 +12802,7 @@
    "seasonal": false
   },
   {
-   "id": "Q858",
+   "id": "Q865",
    "kind": "faq",
    "title": "要去高山旅遊，需要先吃高山症預防藥嗎？",
    "questions": [
@@ -12718,7 +12816,7 @@
    "seasonal": false
   },
   {
-   "id": "Q859",
+   "id": "Q866",
    "kind": "faq",
    "title": "安眠藥可以帶出國嗎？",
    "questions": [
@@ -12732,7 +12830,7 @@
    "seasonal": false
   },
   {
-   "id": "Q860",
+   "id": "Q867",
    "kind": "faq",
    "title": "在國外看病，健保有給付嗎？",
    "questions": [
@@ -12746,7 +12844,7 @@
    "seasonal": false
   },
   {
-   "id": "Q861",
+   "id": "Q868",
    "kind": "faq",
    "title": "寶寶肚臍長出一顆紅紅的肉、一直濕濕的，是什麼？",
    "questions": [
@@ -12760,7 +12858,7 @@
    "seasonal": false
   },
   {
-   "id": "Q862",
+   "id": "Q869",
    "kind": "faq",
    "title": "臍息肉和臍肉芽腫一樣嗎？",
    "questions": [
@@ -12774,7 +12872,7 @@
    "seasonal": false
   },
   {
-   "id": "Q863",
+   "id": "Q870",
    "kind": "faq",
    "title": "臍肉芽腫會自己好嗎？要觀察多久？",
    "questions": [
@@ -12788,7 +12886,7 @@
    "seasonal": false
   },
   {
-   "id": "Q864",
+   "id": "Q871",
    "kind": "faq",
    "title": "硝酸銀點肚臍會痛嗎？要點幾次？",
    "questions": [
@@ -12802,7 +12900,7 @@
    "seasonal": false
   },
   {
-   "id": "Q865",
+   "id": "Q872",
    "kind": "faq",
    "title": "可以在家用鹽巴、藥膏或綁線處理臍息肉嗎？",
    "questions": [
@@ -12816,7 +12914,7 @@
    "seasonal": false
   },
   {
-   "id": "Q866",
+   "id": "Q873",
    "kind": "faq",
    "title": "寶寶肚臍出現哪些情況要盡快就醫？",
    "questions": [
@@ -12830,7 +12928,7 @@
    "seasonal": false
   },
   {
-   "id": "Q867",
+   "id": "Q874",
    "kind": "faq",
    "title": "台南哪裡可以看寶寶的臍息肉？",
    "questions": [
@@ -12844,7 +12942,7 @@
    "seasonal": false
   },
   {
-   "id": "Q868",
+   "id": "Q875",
    "kind": "faq",
    "title": "水痘疫苗是什麼？水痘會很嚴重嗎？",
    "questions": [
@@ -12858,7 +12956,7 @@
    "seasonal": false
   },
   {
-   "id": "Q869",
+   "id": "Q876",
    "kind": "faq",
    "title": "水痘疫苗要打幾劑？公費和自費怎麼分？",
    "questions": [
@@ -12872,7 +12970,7 @@
    "seasonal": false
   },
   {
-   "id": "Q870",
+   "id": "Q877",
    "kind": "faq",
    "title": "只打 1 劑水痘疫苗夠嗎？什麼是突破性水痘？",
    "questions": [
@@ -12886,7 +12984,7 @@
    "seasonal": false
   },
   {
-   "id": "Q871",
+   "id": "Q878",
    "kind": "faq",
    "title": "得過水痘還要打疫苗嗎？成人沒得過可以打嗎？",
    "questions": [
@@ -12900,7 +12998,7 @@
    "seasonal": false
   },
   {
-   "id": "Q872",
+   "id": "Q879",
    "kind": "faq",
    "title": "哪些人不適合打水痘疫苗？有什麼禁忌？",
    "questions": [
@@ -12914,7 +13012,7 @@
    "seasonal": false
   },
   {
-   "id": "Q873",
+   "id": "Q880",
    "kind": "faq",
    "title": "水痘疫苗有副作用嗎？打完要注意什麼？",
    "questions": [
@@ -12928,7 +13026,7 @@
    "seasonal": false
   },
   {
-   "id": "Q874",
+   "id": "Q881",
    "kind": "faq",
    "title": "台南北區哪裡可以接種水痘疫苗？",
    "questions": [
@@ -12942,7 +13040,7 @@
    "seasonal": false
   },
   {
-   "id": "Q875",
+   "id": "Q882",
    "kind": "faq",
    "title": "現在還可以接種 2026 自費流感疫苗嗎？怎麼知道有沒有現貨？",
    "questions": [
@@ -12956,7 +13054,7 @@
    "seasonal": true
   },
   {
-   "id": "Q876",
+   "id": "Q883",
    "kind": "faq",
    "title": "有哪些廠牌可以選？今年是三價還是四價？",
    "questions": [
@@ -12970,7 +13068,7 @@
    "seasonal": true
   },
   {
-   "id": "Q877",
+   "id": "Q884",
    "kind": "faq",
    "title": "選了鼻噴流感疫苗，醫師評估後不適合怎麼辦？已預購的費用怎麼處理？",
    "questions": [
@@ -12984,7 +13082,7 @@
    "seasonal": false
   },
   {
-   "id": "Q878",
+   "id": "Q885",
    "kind": "faq",
    "title": "孩子本季要打 2 劑，第 1 劑打鼻噴，第 2 劑也可以打鼻噴嗎？",
    "questions": [
@@ -12998,7 +13096,7 @@
    "seasonal": false
   },
   {
-   "id": "Q879",
+   "id": "Q886",
    "kind": "faq",
    "title": "50 歲以上長輩有適合的流感疫苗嗎？",
    "questions": [
@@ -13012,7 +13110,7 @@
    "seasonal": false
   },
   {
-   "id": "Q880",
+   "id": "Q887",
    "kind": "faq",
    "title": "流感疫苗適合哪些人？兒童和成人都可以打嗎？",
    "questions": [
@@ -13026,7 +13124,7 @@
    "seasonal": false
   },
   {
-   "id": "Q881",
+   "id": "Q888",
    "kind": "faq",
    "title": "流感疫苗常見副作用有哪些？打完要注意什麼？",
    "questions": [
@@ -13040,7 +13138,7 @@
    "seasonal": false
   },
   {
-   "id": "Q882",
+   "id": "Q889",
    "kind": "faq",
    "title": "各款自費流感疫苗的費用怎麼查？",
    "questions": [
@@ -13054,7 +13152,7 @@
    "seasonal": false
   },
   {
-   "id": "Q883",
+   "id": "Q890",
    "kind": "faq",
    "title": "什麼情況不適合、或需要延後接種流感疫苗？",
    "questions": [
@@ -13068,7 +13166,7 @@
    "seasonal": false
   },
   {
-   "id": "Q884",
+   "id": "Q891",
    "kind": "faq",
    "title": "公費和自費流感疫苗有什麼不同？我適合打哪一種？",
    "questions": [
@@ -13082,7 +13180,7 @@
    "seasonal": false
   },
   {
-   "id": "Q885",
+   "id": "Q892",
    "kind": "faq",
    "title": "流感疫苗每年都要打嗎？什麼時候打比較好？",
    "questions": [
@@ -13096,7 +13194,7 @@
    "seasonal": false
   },
   {
-   "id": "Q886",
+   "id": "Q893",
    "kind": "faq",
    "title": "輔流威護的「細胞培養」是什麼意思？和一般流感疫苗差在哪裡？",
    "questions": [
@@ -13110,7 +13208,7 @@
    "seasonal": false
   },
   {
-   "id": "Q887",
+   "id": "Q894",
    "kind": "faq",
    "title": "輔流禦的「佐劑」是什麼？為什麼熟齡型流感疫苗要加佐劑？",
    "questions": [
@@ -13124,7 +13222,7 @@
    "seasonal": false
   },
   {
-   "id": "Q888",
+   "id": "Q895",
    "kind": "faq",
    "title": "公費有提供含佐劑或高劑量的「加強型」流感疫苗嗎？65 歲以上長輩都打得到嗎？",
    "questions": [
@@ -13138,7 +13236,7 @@
    "seasonal": false
   },
   {
-   "id": "Q889",
+   "id": "Q896",
    "kind": "faq",
    "title": "滿 6 個月至未滿 3 歲的幼兒，為什麼要看「過去累計接種幾劑」？",
    "questions": [
@@ -13152,7 +13250,7 @@
    "seasonal": false
   },
   {
-   "id": "Q890",
+   "id": "Q897",
    "kind": "faq",
    "title": "去年打過流感疫苗了，今年還要打 2 劑嗎？",
    "questions": [
@@ -13166,7 +13264,7 @@
    "seasonal": true
   },
   {
-   "id": "Q891",
+   "id": "Q898",
    "kind": "faq",
    "title": "3 歲至未滿 9 歲的孩子今年要打幾劑？",
    "questions": [
@@ -13180,7 +13278,7 @@
    "seasonal": true
   },
   {
-   "id": "Q892",
+   "id": "Q899",
    "kind": "faq",
    "title": "9 歲以上還需要打 2 劑嗎？",
    "questions": [
@@ -13194,7 +13292,7 @@
    "seasonal": false
   },
   {
-   "id": "Q893",
+   "id": "Q900",
    "kind": "faq",
    "title": "兩劑之間要間隔多久？",
    "questions": [
@@ -13208,7 +13306,7 @@
    "seasonal": false
   },
   {
-   "id": "Q894",
+   "id": "Q901",
    "kind": "faq",
    "title": "第 2 劑可以打和第 1 劑不同廠牌的流感疫苗嗎？",
    "questions": [
@@ -13222,7 +13320,7 @@
    "seasonal": false
   },
   {
-   "id": "Q895",
+   "id": "Q902",
    "kind": "faq",
    "title": "第 2 劑拖過 4 週才打，需要從第 1 劑重新打嗎？",
    "questions": [
@@ -13236,7 +13334,7 @@
    "seasonal": false
   },
   {
-   "id": "Q896",
+   "id": "Q903",
    "kind": "faq",
    "title": "不確定孩子以前打過幾劑，可以怎麼查？",
    "questions": [
@@ -13250,7 +13348,7 @@
    "seasonal": false
   },
   {
-   "id": "Q897",
+   "id": "Q904",
    "kind": "faq",
    "title": "幾個月大可以打流感疫苗？未滿 6 個月可以打嗎？",
    "questions": [
@@ -13264,7 +13362,7 @@
    "seasonal": false
   },
   {
-   "id": "Q898",
+   "id": "Q905",
    "kind": "faq",
    "title": "台南北區想帶孩子打流感疫苗，立欣診所可以嗎？",
    "questions": [
@@ -13278,7 +13376,7 @@
    "seasonal": false
   },
   {
-   "id": "Q899",
+   "id": "Q906",
    "kind": "faq",
    "title": "健康幣是什麼？",
    "questions": [
@@ -13292,7 +13390,7 @@
    "seasonal": false
   },
   {
-   "id": "Q900",
+   "id": "Q907",
    "kind": "faq",
    "title": "孩子打疫苗可以累積健康幣嗎？",
    "questions": [
@@ -13306,7 +13404,7 @@
    "seasonal": false
   },
   {
-   "id": "Q901",
+   "id": "Q908",
    "kind": "faq",
    "title": "打哪些疫苗可以累積健康幣？自費疫苗也算嗎？",
    "questions": [
@@ -13320,7 +13418,7 @@
    "seasonal": false
   },
   {
-   "id": "Q902",
+   "id": "Q909",
    "kind": "faq",
    "title": "10 月 1 日以前打的疫苗、做的健檢算不算？",
    "questions": [
@@ -13334,7 +13432,7 @@
    "seasonal": false
   },
   {
-   "id": "Q903",
+   "id": "Q910",
    "kind": "faq",
    "title": "打完疫苗多久會看到健康幣？需要自己上傳證明嗎？",
    "questions": [
@@ -13348,7 +13446,7 @@
    "seasonal": false
   },
   {
-   "id": "Q904",
+   "id": "Q911",
    "kind": "faq",
    "title": "健康幣要怎麼登記／認證？",
    "questions": [
@@ -13362,7 +13460,7 @@
    "seasonal": false
   },
   {
-   "id": "Q905",
+   "id": "Q912",
    "kind": "faq",
    "title": "健康幣什麼時候可以用？有使用期限嗎？",
    "questions": [
@@ -13376,7 +13474,7 @@
    "seasonal": false
   },
   {
-   "id": "Q906",
+   "id": "Q913",
    "kind": "faq",
    "title": "在立欣診所打流感疫苗或做成人健檢，會累積健康幣嗎？",
    "questions": [
@@ -13390,7 +13488,7 @@
    "seasonal": false
   },
   {
-   "id": "Q907",
+   "id": "Q914",
    "kind": "faq",
    "title": "日本現在的流感疫情如何？",
    "questions": [
@@ -13404,7 +13502,7 @@
    "seasonal": false
   },
   {
-   "id": "Q908",
+   "id": "Q915",
    "kind": "faq",
    "title": "在日本旅途中發燒、咳嗽，可以自己判斷是不是流感嗎？",
    "questions": [
@@ -13418,7 +13516,7 @@
    "seasonal": false
   },
   {
-   "id": "Q909",
+   "id": "Q916",
    "kind": "faq",
    "title": "小鹿醫師 3D 看診趣是什麼？需要下載嗎？",
    "questions": [
@@ -13432,7 +13530,7 @@
    "seasonal": false
   },
   {
-   "id": "Q910",
+   "id": "Q917",
    "kind": "faq",
    "title": "適合幾歲的孩子玩？",
    "questions": [
@@ -13446,7 +13544,7 @@
    "seasonal": false
   },
   {
-   "id": "Q911",
+   "id": "Q918",
    "kind": "faq",
    "title": "遊戲裡的六個步驟，和真的看診一樣嗎？",
    "questions": [
@@ -13460,7 +13558,7 @@
    "seasonal": false
   },
   {
-   "id": "Q912",
+   "id": "Q919",
    "kind": "faq",
    "title": "孩子玩過就不會怕看醫生了嗎？",
    "questions": [
@@ -13474,7 +13572,7 @@
    "seasonal": false
   },
   {
-   "id": "Q913",
+   "id": "Q920",
    "kind": "faq",
    "title": "要收費嗎？會蒐集孩子的資料嗎？",
    "questions": [
@@ -13488,7 +13586,7 @@
    "seasonal": false
   },
   {
-   "id": "Q914",
+   "id": "Q921",
    "kind": "faq",
    "title": "可以加到手機主畫面，像 App 一樣打開嗎？",
    "questions": [
@@ -13502,7 +13600,7 @@
    "seasonal": false
   },
   {
-   "id": "Q915",
+   "id": "Q922",
    "kind": "faq",
    "title": "沒有聲音、聽不到小鹿醫師說話怎麼辦？",
    "questions": [
