@@ -203,6 +203,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/newborn-jaundice.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/newborn-jaundice-infographic.jpg</image:loc></image:image>
     <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

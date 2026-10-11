@@ -414,6 +414,7 @@ jobs:
           check /images/chickenpox-infographic.jpg 200
           check /images/norovirus-infographic.jpg 200
           check /images/child-pneumonia-infographic.jpg 200
+          check /images/newborn-jaundice-infographic.jpg 200
           check /health/child-emergency-signs.html 200
           check /images/child-emergency-signs-infographic.jpg 200
           check /health/high-allergen-foods.html 200
