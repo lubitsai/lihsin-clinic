@@ -395,24 +395,28 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/common-cold.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/common-cold-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/chickenpox.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/chickenpox-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/norovirus.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/norovirus-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/child-pneumonia.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/child-pneumonia-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
