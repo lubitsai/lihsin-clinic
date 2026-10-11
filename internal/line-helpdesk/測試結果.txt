@@ -1,3 +1,8 @@
+2026-10-11 第二版 2.11（緊急字詞補 8 詞，PR #379 合併後；題庫含感冒、水痘、諾羅病毒、兒童肺炎新頁）
+- sync_assistants.py（以裝好 requirements.lock.txt 的 Python 執行）：官網 test_assistant.mjs 280 項、python3 -m unittest 89 項全部通過；一致性比對 217 句全部一致；validate_site 通過。
+- --ask 抽查：「寶寶呼吸很快胸口凹陷」兩邊皆 urgent；肺炎、水痘、諾羅病毒問法兩邊皆命中新頁題目。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-10 第二版 2.10（對官網最新 main 重產：國慶連假公告、嘴破鑑別新文章）
 - sync_assistants.py：官網 280 項、LINE 89 項全部通過；一致性比對 207 句全部一致。公告數改由 faq.json 計數，不再寫死 8 則（首頁新增公告後測試誤報）。
 - 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
