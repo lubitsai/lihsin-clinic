@@ -1,3 +1,7 @@
+2026-10-12 第二版 2.14（只重產題庫：氣喘與腸套疊頁依衛教圖修改的內容；程式與緊急字詞同 2.13）
+- sync_assistants.py（以裝好 requirements.lock.txt 的 Python 執行）：官網 280 項、LINE unittest 89 項全部通過；一致性比對全部一致；validate_site 通過。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-12 第二版 2.13（緊急字詞補腸套疊 7 詞，PR #383 合併後；題庫同 2.12）
 - sync_assistants.py（以裝好 requirements.lock.txt 的 Python 執行）：官網 test_assistant.mjs 280 項、python3 -m unittest 89 項全部通過；一致性比對全部一致；validate_site 通過。
 - --ask 抽查：「寶寶一陣一陣大哭吐」「嬰兒吐綠色的」兩邊皆 urgent；「寶寶大便有血絲」維持一般檢索。已知未涵蓋：「寶寶大便像果醬」。
