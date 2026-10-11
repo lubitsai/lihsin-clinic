@@ -33,6 +33,7 @@
 
 - 維持靜態多頁 HTML＋Tailwind utility class；不要改成 SPA、不要引入建置工具鏈、不要另寫獨立 CSS，除非先討論。
 - `FIRECRAWL_API_KEY` 一律走環境變數，**不得**寫進 `.mcp.json` 或任何 commit。
+- **不讀、不改、不印 `.env` 系列檔**（`.env`、`.env.local`、`.env.production` 等，含 `booking-system/`）：需要變數名稱一律看 `booking-system/.env.example`；需要真值就請院長在環境變數設定，不要讓金鑰出現在對話或輸出裡。
 
 ## Codex 執行注意
 

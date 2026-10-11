@@ -10,6 +10,33 @@
       "mcp__bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a__list_triggers",
       "mcp__bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a__update_trigger",
       "mcp__bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a__delete_trigger"
+    ],
+    "deny": [
+      "Read(**/.env)",
+      "Edit(**/.env)",
+      "Read(**/.env.local)",
+      "Edit(**/.env.local)",
+      "Read(**/.env.development)",
+      "Edit(**/.env.development)",
+      "Read(**/.env.production)",
+      "Edit(**/.env.production)",
+      "Read(**/.env.*.local)",
+      "Edit(**/.env.*.local)",
+      "Bash(cat *.env)",
+      "Bash(cat *.env.local)",
+      "Bash(cat *.env.production)",
+      "Bash(head *.env)",
+      "Bash(head *.env.local)",
+      "Bash(head *.env.production)",
+      "Bash(tail *.env)",
+      "Bash(tail *.env.local)",
+      "Bash(tail *.env.production)",
+      "Bash(less *.env)",
+      "Bash(less *.env.local)",
+      "Bash(less *.env.production)",
+      "Bash(more *.env)",
+      "Bash(more *.env.local)",
+      "Bash(more *.env.production)"
     ]
   },
   "hooks": {

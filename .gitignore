@@ -17,3 +17,9 @@
 
 __pycache__/
 *.pyc
+
+# 環境變數檔（密鑰）：整棵樹由 Netlify 公開部署，誤 commit 等於公開金鑰。
+# 範本 .env.example 不含真值，照常入版控。
+.env
+.env.*
+!.env.example
