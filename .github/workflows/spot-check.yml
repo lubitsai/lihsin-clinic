@@ -406,6 +406,9 @@ jobs:
           check /health/chickenpox.html 200
           check /health/norovirus.html 200
           check /health/child-pneumonia.html 200
+          check /health/cow-milk-allergy.html 200
+          check /health/asthma-inhaler.html 200
+          check /health/intussusception.html 200
           check /images/rsv-infographic.jpg 200
           check /images/common-cold-infographic.jpg 200
           check /images/chickenpox-infographic.jpg 200
