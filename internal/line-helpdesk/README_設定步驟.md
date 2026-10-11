@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.12）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.13）
 
-2026-10-12 第二版 2.12｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-10-12 第二版 2.13｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.13 緊急字詞補腸套疊 7 詞（2026-10-12）
+
+與官網小幫手（PR #383）逐字同步，`core.py` 的 `URGENT_SRC` 新增：一陣一陣大哭、陣發性哭鬧、果醬便、果醬樣血便、綠色嘔吐、吐綠色、膽汁。家長輸入這些描述時，直接回「請立即撥打 119 或前往急診」。依院長裁示「血便」不加，避免牛奶蛋白過敏的血絲便誤觸急診回覆。題庫內容同 2.12。
 
 ## 2.12 題庫更新（2026-10-12）
 
