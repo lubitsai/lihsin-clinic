@@ -415,6 +415,9 @@ jobs:
           check /images/norovirus-infographic.jpg 200
           check /images/child-pneumonia-20261012-infographic.jpg 200
           check /images/newborn-jaundice-infographic.jpg 200
+          check /images/asthma-inhaler-infographic.jpg 200
+          check /images/cow-milk-allergy-infographic.jpg 200
+          check /images/intussusception-infographic.jpg 200
           check /health/child-emergency-signs.html 200
           check /images/child-emergency-signs-infographic.jpg 200
           check /health/high-allergen-foods.html 200
