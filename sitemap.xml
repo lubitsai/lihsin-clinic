@@ -424,18 +424,21 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/cow-milk-allergy.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/cow-milk-allergy-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/asthma-inhaler.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/asthma-inhaler-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/intussusception.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/intussusception-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
