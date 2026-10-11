@@ -402,6 +402,7 @@ jobs:
           check /health/baby-constipation.html 200
           check /images/baby-constipation-infographic.jpg 200
           check /health/rsv.html 200
+          check /health/common-cold.html 200
           check /images/rsv-infographic.jpg 200
           check /health/child-emergency-signs.html 200
           check /images/child-emergency-signs-infographic.jpg 200
