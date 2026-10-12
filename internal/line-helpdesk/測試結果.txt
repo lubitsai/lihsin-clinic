@@ -1,3 +1,8 @@
+2026-10-12 第二版 2.15（只重產題庫與價目：輔流禦本季已售完不再進貨、菲流達預計 10/30 到貨；程式與緊急字詞同 2.14）
+- sync_assistants.py：官網 280 項通過；LINE unittest 89 項全部通過（venv 裝 requirements.lock.txt）；一致性比對 227 句全部一致；validate_site 通過。
+- --ask 抽查：「菲流達多少錢」兩邊皆回到貨註記；「50歲長輩可以打哪一種流感疫苗」兩邊首選「50 歲以上長輩有適合的流感疫苗嗎？」。已知缺口：「有輔流禦嗎」兩邊都沒有直接回售完（官網列相關問答、LINE 推佐劑題），未自行新增 FAQ。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-12 第二版 2.14（只重產題庫：氣喘與腸套疊頁依衛教圖修改的內容；程式與緊急字詞同 2.13）
 - sync_assistants.py（以裝好 requirements.lock.txt 的 Python 執行）：官網 280 項、LINE unittest 89 項全部通過；一致性比對全部一致；validate_site 通過。
 - 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
