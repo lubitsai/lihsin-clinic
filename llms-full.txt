@@ -623,7 +623,7 @@ A：立欣診所（台南市北區育德路 467 號、鄰近成大醫院，電�
 - 諾羅病毒症狀有哪些？傳染期多久、家裡怎麼消毒才有效（含傳染途徑與群聚、潛伏期與病程、補水照顧、肥皂洗手與漂白水 1:50／1:10 泡法、嘔吐物清理步驟、返校返工、與輪狀病毒及食物中毒的分辨、脫水警訊）：https://lhpedclinic.com.tw/health/norovirus.html
 - 兒童肺炎症狀有哪些？發燒、咳嗽、呼吸變快怎麼判斷與照顧（含肺炎與感冒支氣管炎的差別、病原分類、數呼吸方法與 WHO 門檻、X 光時機、抗生素角色、居家照顧、住院時機、立即就醫徵象、疫苗預防）：https://lhpedclinic.com.tw/health/child-pneumonia.html
 - 寶寶牛奶蛋白過敏怎麼判斷？血便、溼疹、吐奶與水解配方的選擇（含立即型與延遲型症狀、過度診斷提醒、2～4 週避開再重新嘗試、檢測不單以數值忌口、母乳與配方奶寶寶的處理、深度水解與胺基酸配方、耐受時機、立即就醫徵象）：https://lhpedclinic.com.tw/health/cow-milk-allergy.html
-- 孩子的氣喘藥怎麼用？控制藥與急救藥、吸入器與吸藥輔助器使用步驟（含兩類藥差別、輔助艙步驟與清潔、吸入型類固醇與身高、GINA 控制評估、發作處理與立即就醫、誘發因子與流感疫苗）：https://lhpedclinic.com.tw/health/asthma-inhaler.html
+- 兒童氣喘用藥與 AeroChamber 吸藥輔助器：控制藥、急救藥與使用步驟（含兩類藥差別、輔助艙步驟與清潔、吸入型類固醇與身高、GINA 控制評估、發作處理與立即就醫、誘發因子與流感疫苗）：https://lhpedclinic.com.tw/health/asthma-inhaler.html
 - 腸套疊症狀有哪些？寶寶一陣一陣大哭、嘔吐、果醬樣血便要立即就醫（含成因與好發年齡、症狀辨識、為何需急診、超音波與灌腸復位、復發、與腸絞痛腸胃炎分辨、輪狀病毒疫苗接種後觀察）：https://lhpedclinic.com.tw/health/intussusception.html
 - 哮吼症狀是什麼？孩子半夜咳得像狗叫、吸氣有喘鳴（含犬吠咳與吸氣性喘鳴的成因、與氣喘咻咻聲的分辨、半夜發作的家中處理、會厭炎與異物吸入的鑑別）：https://lhpedclinic.com.tw/health/croup.html
 - 什麼時候建議去急診？孩子出現這些狀況，半夜也別等（含未滿 3 個月發燒、呼吸費力、抽搐、意識改變、脫水、黃綠色嘔吐與黑便、壓不退紫紅點等急診警訊，何時撥 119，抽搐當下處理，可等到門診的情況與出門前準備）：https://lhpedclinic.com.tw/health/child-emergency-signs.html
