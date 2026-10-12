@@ -2,9 +2,9 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "f37eaeba63a1923816868f95dcccf01e11df39bed826e9cf620eb46e045f5472"
+   "kb_sha256": "52a6dcba0e273754c4632115cdacddc7f6a773ed26f101a4ae1dd04d78ae93ba"
   },
-  "knowledge_sha256": "03c5a733c0499fde857be01bf7ac239eabb8212ced2f15df0c3f1c81292e99c4",
+  "knowledge_sha256": "829d2cda16262977506d94edbd70898ab6e9f5c39a525fda6a2cb3e11d8f5d54",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
@@ -10428,8 +10428,8 @@
    "questions": [
     "腸套疊會復發嗎？出院後要注意什麼？"
    ],
-   "answer": "會。灌腸復位成功後，約 1 成的孩子會再發生，多數在復位後 1 到 2 天內。出院後如果又出現一陣一陣的劇烈哭鬧、嘔吐、精神變差或血便，請立即回到急診。",
-   "kb_answer": "會。灌腸復位成功後，約 1 成的孩子會再發生，多數在復位後 1 到 2 天內。出院後如果又出現一陣一陣的劇烈哭鬧、嘔吐、精神變差或血便，請立即回到急診。",
+   "answer": "會。灌腸復位成功後，約 1 成的孩子會再發生，可能在幾天內，也可能在幾週甚至幾個月後。只要又出現一陣一陣的劇烈哭鬧、嘔吐、精神變差或血便，請立即回到急診。",
+   "kb_answer": "會。灌腸復位成功後，約 1 成的孩子會再發生，可能在幾天內，也可能在幾週甚至幾個月後。只要又出現一陣一陣的劇烈哭鬧、嘔吐、精神變差或血便，請立即回到急診。",
    "page": "腸套疊症狀是什麼？寶寶一陣一陣大哭、嘔吐、果醬樣血便要急診",
    "source_url": "https://lhpedclinic.com.tw/health/intussusception.html",
    "core": false,
