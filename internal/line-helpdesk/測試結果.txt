@@ -1,3 +1,7 @@
+2026-10-12 第二版 2.20（只重產題庫：氣喘頁標題改含 AeroChamber；程式與緊急字詞同 2.19）
+- sync_assistants.py（venv 裝 requirements.lock.txt）：官網 280 項、LINE unittest 89 項全部通過；一致性比對 250 句全部一致；validate_site 通過。--ask：「氣喘吸藥輔助器怎麼用」LINE 列出 AeroChamber 使用步驟題。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-12 第二版 2.19（緊急字詞補呼吸費力說法；題庫同 2.18）
 - sync_assistants.py（venv 裝 requirements.lock.txt）：官網 280 項、LINE unittest 89 項全部通過；一致性比對 250 句全部一致；validate_site 通過。--ask：「肚子一縮一縮的很用力呼吸」「寶寶點頭呼吸」兩邊 urgent；「大便很用力」走一般檢索（列出寶寶大便用力題）。
 - 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
