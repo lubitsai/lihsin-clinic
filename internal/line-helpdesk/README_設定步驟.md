@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.17）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.18）
 
-2026-10-12 第二版 2.17｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-10-12 第二版 2.18｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.18 緊急字詞排除尿布誤觸（2026-10-12）
+
+與官網小幫手逐字同步，`URGENT_SRC` 的「沒有尿」改為「沒有尿(?!布)」（院長 2026-10-12 指示）：「沒有尿布疹怎麼辦」不再誤觸急診回覆，「寶寶沒有尿」「一整天沒有尿」照舊判為立即就醫。題庫同 2.17。
 
 ## 2.17 緊急字詞補家長口語變體（2026-10-12）
 
