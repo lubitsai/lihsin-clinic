@@ -1265,4 +1265,17 @@ jobs:
           if [ "$sg1" -ge 1 ]; then echo "OK    帶狀皰疹疫苗頁『怎麼選』客觀條件段已上線"; else echo "FAIL  帶狀皰疹疫苗頁隱藏區未見『挑接種院所時可以參考的客觀條件有幾項』——09-22 的推薦／怎麼選客觀條件段疑已回退"; fail=1; fi
           sg2=$(curl -s --max-time 20 "$BASE/health/shingles-vaccine.html" | grep -c '不是由網路排名決定' || true)
           if [ "$sg2" -ge 1 ]; then echo "OK    帶狀皰疹疫苗頁『推薦怎麼選』FAQ 已上線"; else echo "FAIL  帶狀皰疹疫苗頁 FAQPage 未見『不是由網路排名決定』——09-22 新增的推薦怎麼選 FAQ 疑已回退"; fail=1; fi
+          # 2026-10-12u：既有檢查只驗這幾頁 200，驗不到「內文是否為最新版」。
+          # 補 10-12n（腸套疊臉色蒼白、勿自行灌腸；氣喘漱口吐掉）與 10-12s（輔流禦 FAQ）
+          # 的內文哨兵——急症警訊與供貨說法是最不能停在舊版的內容。
+          # 取字原則：純中文、全站僅該頁命中（keywords／llms 雙檔 0 命中），無 href／引號（防呆 25）。
+          # ⚠️ 防呆 17：日後改寫這幾句時要同批改本檢查。
+          is1=$(curl -s --max-time 20 "$BASE/health/intussusception.html" | grep -c '臉色蒼白、雙腿縮向肚子' || true)
+          if [ "$is1" -ge 1 ]; then echo "OK    腸套疊頁『臉色蒼白』警訊已上線"; else echo "FAIL  腸套疊頁未見『臉色蒼白、雙腿縮向肚子』——10-12n 依衛教圖修改的內文疑未上線或已回退"; fail=1; fi
+          is2=$(curl -s --max-time 20 "$BASE/health/intussusception.html" | grep -c '也不要自行在家灌腸' || true)
+          if [ "$is2" -ge 1 ]; then echo "OK    腸套疊頁『勿自行灌腸』提醒已上線"; else echo "FAIL  腸套疊頁未見『也不要自行在家灌腸』——10-12n 內文疑未上線或已回退"; fail=1; fi
+          ai1=$(curl -s --max-time 20 "$BASE/health/asthma-inhaler.html" | grep -c '吸完類固醇要漱口吐掉' || true)
+          if [ "$ai1" -ge 1 ]; then echo "OK    氣喘頁『漱口吐掉』已上線"; else echo "FAIL  氣喘頁未見『吸完類固醇要漱口吐掉』——10-12n 內文疑未上線或已回退"; fail=1; fi
+          fl1=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '現在還有輔流禦（Fluad）嗎？' || true)
+          if [ "$fl1" -ge 1 ]; then echo "OK    2026 流感頁輔流禦售完 FAQ 已上線"; else echo "FAIL  2026 流感頁未見 FAQ『現在還有輔流禦（Fluad）嗎？』——10-12s 新增題疑未上線或已回退"; fail=1; fi
           exit $fail
