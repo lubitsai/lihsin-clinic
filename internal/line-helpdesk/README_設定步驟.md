@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.22）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.23）
 
-2026-10-12 第二版 2.22｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-10-14 第二版 2.23｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.23 題庫更新（2026-10-14）
+
+程式與緊急字詞同 2.22，只重產題庫：①首頁公告「午、晚診掛號提醒」兩則（預告版至 10/18；正式版為常設，`valid_until` 9999-12-31）；②就診指南過號規則改為「現場號不足 5 組時，排在最後一組看診」；③就診指南新增「午診止掛與晚診掛號」與 FAQ「午診停止掛號後，怎麼看晚診？」（PR #393）。`test_faq_catalog.py` 的公告過期測試改為常設公告改驗「遠期仍答得出來」（原本 +1 天會超出日期上限）。
 
 ## 2.22 題庫更新（2026-10-12）
 

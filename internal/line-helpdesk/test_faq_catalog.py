@@ -81,8 +81,12 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(len(notices), DATA['meta']['counts']['notice'])   # grows with homepage announcements
         self.assertGreaterEqual(len(notices), 1)
         for x in notices:
-            after = date.fromisoformat(x['valid_until']) + timedelta(days=1)
+            until = date.fromisoformat(x['valid_until'])
             self.assertEqual(route(x['questions'][0], today=TODAY)[0], 'answer')
+            if until == date.max:   # 常設公告（9999-12-31，院長 2026-10-13 裁示）：永不過期，遠期仍要答得出來
+                self.assertEqual(route(x['questions'][0], today=date(2100, 1, 1))[0], 'answer', x['id'])
+                continue
+            after = until + timedelta(days=1)
             action, msg = route(x['questions'][0], today=after)
             # an expired notice is never shown again (its title may still route elsewhere, e.g. to a date answer)
             self.assertFalse(action == 'answer' and x['answer'] in msg['text'], x['id'])

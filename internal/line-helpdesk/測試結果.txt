@@ -1,3 +1,9 @@
+2026-10-14 第二版 2.23（只重產題庫：午、晚診掛號提醒公告兩則（正式版常設）、過號不足 5 組排最後一組、午診止掛與晚診掛號 FAQ；程式與緊急字詞同 2.22）
+- sync_assistants.py（venv 裝 requirements.lock.txt）：官網 280 項、LINE unittest 89 項全部通過；一致性比對 258 句全部一致（parity_queries 新增 4 句午晚診／過號問法）；validate_site 通過。
+- test_faq_catalog.py：常設公告（valid_until 9999-12-31）改驗 2100-01-01 仍答得出來（原本 +1 天超出 date 上限而 OverflowError）。
+- --ask 缺口（官網與 LINE 一致，未自行加 FAQ）：「午診停止掛號後怎麼看晚診」「午晚診掛號提醒」被「掛號」反問（網路預約／現場掛號）攔下；「過號不到5組怎麼辦」答不出來。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-12 第二版 2.22（只重產題庫：肺功能 FAQ 題目加「停藥」；程式與緊急字詞同 2.21）
 - sync_assistants.py（venv 裝 requirements.lock.txt）：官網 280 項、LINE unittest 89 項全部通過；一致性比對 253 句全部一致（parity_queries 新增 2 句停藥問法）；validate_site 通過。
 - 題目比較 4 版，--ask 四句（肺功能檢查前要停藥嗎／做肺功能前氣喘的藥要停嗎／肺功能要準備什麼／肺功能檢查要注意什麼）：採用「做兒童肺功能檢查前要停藥嗎？要注意什麼、準備什麼？」，四句 LINE 首選皆為該題；院長原提的「…要注意什麼？要停藥嗎？」會讓「肺功能要準備什麼」找不到該題。
