@@ -2288,7 +2288,7 @@
  </nav>
 
  <!-- 最新門診異動 Section（data-expires：公告適用末日，翌日起自動隱藏，以 UTC+8 判斷） -->
- <section id="clinic-notice" aria-labelledby="clinic-notice-heading" data-expires="2026-11-18" class="py-12 bg-white">
+ <section id="clinic-notice" aria-labelledby="clinic-notice-heading" data-expires="9999-12-31" class="py-12 bg-white">
  <div class="container mx-auto px-4">
  <div class="text-center mb-8 fade-in-up">
  <h2 id="clinic-notice-heading" class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-3 font-chinese">最新門診異動</h2>
@@ -2312,7 +2312,9 @@
 
  <!-- 公告④⑤：午、晚診掛號提醒（院長 2026-10-13 貼圖，10/19 起實施；院長指示「預告用有日期的，正式實施後用沒有日期的」）。
       ④預告版（圖上有「10/19（一）起實施」）顯示到 10/18；⑤正式版（無日期）以 data-show-from="2026-10-19" 當天起才顯示，
-      兩則同一時間只會出現一則。⑤的 data-expires=2026-11-18 是 session 暫定（實施滿一個月），院長未指定下架日，要延長直接改。
+      兩則同一時間只會出現一則。⑤為常設公告（院長 2026-10-13 裁示「正式版不需下架日，改成常設」）：data-expires=9999-12-31 是常設值
+      （build_chatbot_kb.py／check_visit_facts.py 都要求每則帶 data-expires，故不刪屬性）；區塊 backstop 同步 9999-12-31。
+      ⚠️ 日後新增時效公告，區塊 backstop 維持 9999-12-31，不要改回較早的日期，否則會把這則常設公告一起藏掉。
       非門診時間異動（各診次起訖不變），EXCEPTIONS 不列特例。原圖 1492×1054 橫式，只轉檔不裁切。 -->
  <div class="notice-item max-w-3xl mx-auto fade-in-up mb-14" data-kb-title="午、晚診掛號調整預告（10 月 19 日起實施）" data-expires="2026-10-18">
  <p class="text-gray-600 font-chinese text-center mb-4">實施日期：<time datetime="2026-10-19">2026 年 10 月 19 日（一）起</time></p>
@@ -2325,7 +2327,7 @@
  <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
  <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3"><strong>10 月 19 日（一）起實施</strong>午、晚診掛號調整：午診可能依現場看診情況<strong>提前停止掛號</strong>；晚診現場掛號 <strong>18:00 開放</strong>、<strong>18:30 開始看診</strong>，晚診重新從 1 號開始，依晚診現場掛號順序看診。午診已掛號、暫時離開者，<strong>須於 18:00 前返回櫃檯完成報到</strong>；未返回報到者，取消午診掛號，之後返回須重新排晚診現場掛號，不保留原號碼。週六無晚診、週日無午診，各診次時間請見下方門診時間表；洽詢電話 <strong>06-2516086</strong>。</p>
  </div>
- <div class="notice-item max-w-3xl mx-auto fade-in-up" data-kb-title="午、晚診掛號提醒（10 月 19 日起實施）" data-show-from="2026-10-19" data-expires="2026-11-18">
+ <div class="notice-item max-w-3xl mx-auto fade-in-up" data-kb-title="午、晚診掛號提醒（10 月 19 日起實施）" data-show-from="2026-10-19" data-expires="9999-12-31">
  <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視午、晚診掛號提醒公告圖（午診可能提前止掛；晚診 18:00 開放現場掛號；午診暫離者 18:00 前返回報到）" style="padding:0;cursor:zoom-in;">
  <picture>
  <source type="image/webp" srcset="/images/notice/clinic-notice-20261019.webp">
