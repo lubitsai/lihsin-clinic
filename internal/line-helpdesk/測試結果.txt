@@ -1,3 +1,8 @@
+2026-10-14 第二版 2.24（掛號反問與門診表分流微調＋兩題 FAQ 題目改寫；取代未部署的 2.23）
+- sync_assistants.py（venv 裝 requirements.lock.txt）：官網 280 項、LINE unittest 89 項全部通過；一致性比對 260 句全部一致；validate_site 通過。
+- --ask：「午診停止掛號後怎麼看晚診」「午診掛號先離開要幾點回來」「午診先離開幾點要回來」「午診止掛」→ 午診止掛 FAQ；「過號不到5組怎麼辦」「現場號不到5組」→ 過號 FAQ；「晚診幾點開始」「晚上幾點看診」仍回門診表；「掛號」「我要掛號」仍反問網路／現場。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-14 第二版 2.23（只重產題庫：午、晚診掛號提醒公告兩則（正式版常設）、過號不足 5 組排最後一組、午診止掛與晚診掛號 FAQ；程式與緊急字詞同 2.22）
 - sync_assistants.py（venv 裝 requirements.lock.txt）：官網 280 項、LINE unittest 89 項全部通過；一致性比對 258 句全部一致（parity_queries 新增 4 句午晚診／過號問法）；validate_site 通過。
 - test_faq_catalog.py：常設公告（valid_until 9999-12-31）改驗 2100-01-01 仍答得出來（原本 +1 天超出 date 上限而 OverflowError）。

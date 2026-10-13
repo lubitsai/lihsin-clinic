@@ -424,7 +424,7 @@ export function createAssistant(kb) {
     if (LATE.test(q) && !/預約|現場|過號|報到/.test(q)) {
       return reply('clarify', '請問是「預約時段遲到」，還是「現場號過號」？兩者規則不同。', [], { quick: ['預約遲到怎麼辦', '現場號過號怎麼辦'] });
     }
-    if (/掛號/.test(q) && !/現場|網路|線上|預約|開始|幾點|時間|過號|電話|帶|證件|健保|費/.test(q) && !parseDate(raw, today)) {
+    if (/掛號/.test(q) && !/現場|網路|線上|預約|開始|幾點|時間|過號|電話|帶|證件|健保|費|止掛|停止|午診|晚診|離開|暫離|提醒/.test(q) && !parseDate(raw, today)) {
       return reply('clarify', '請問您是要網路預約，還是直接到現場掛號？', [], { quick: ['網路預約怎麼約', '現場掛號幾點開始'] });
     }
     // 8. 現貨、新冠疫苗（第 12 條）
@@ -443,7 +443,8 @@ export function createAssistant(kb) {
 
     // 10. 一般門診時間、聯絡資訊，並附相關題目
     const blocks = [];
-    if (HOURS_TOPIC.test(q) || (/週[一二三四五六日]/.test(q) && SCHED_WORDS.test(q))) {
+    // 問止掛／暫離／過號規則時不先丟整週門診表，直接給相關題目（2026-10-14 院長「可以都改」）
+    if ((HOURS_TOPIC.test(q) || (/週[一二三四五六日]/.test(q) && SCHED_WORDS.test(q))) && !/止掛|停止|離開|暫離|過號|提醒/.test(q)) {
       blocks.push(weekTable(), { type: 'text', text: HOURS_NOTE });
     }
     const keys = [];
