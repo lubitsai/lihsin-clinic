@@ -406,7 +406,7 @@ class Catalog:
                 return {'type': 'text', 'text': rows[0]['answer'], 'buttons': [x['title'] for x in rows[1:3]]}
         if LATE.search(q) and not re.search('預約|現場|過號|報到', q):
             return {'type': 'text', 'text': r['late_clarify'], 'buttons': LATE_BUTTONS}
-        if '掛號' in q and not re.search('現場|網路|線上|預約|開始|幾點|時間|過號|電話|帶|證件|健保|費', q) and not parse_date(text, today):
+        if '掛號' in q and not re.search('現場|網路|線上|預約|開始|幾點|時間|過號|電話|帶|證件|健保|費|止掛|停止|午診|晚診|離開|暫離|提醒', q) and not parse_date(text, today):
             return {'type': 'text', 'text': r['register_clarify'], 'buttons': REGISTER_BUTTONS}
         if STOCK.search(q):
             return {'type': 'text', 'text': r['stock']}
@@ -418,7 +418,8 @@ class Catalog:
         if HOLIDAY.search(q) and SCHED_WORDS.search(q):
             return {'type': 'text', 'text': '\n\n'.join([r['holiday_note'], *(n['title'] + '\n' + n['answer'] for n in self._schedule_notices(today)), r['holiday_tail']])}
         parts = []
-        if HOURS_TOPIC.search(q) or (re.search('週[一二三四五六日]', q) and SCHED_WORDS.search(q)):
+        # 問止掛／暫離／過號規則時不先丟整週門診表（同 search.js 第 10 步）
+        if (HOURS_TOPIC.search(q) or (re.search('週[一二三四五六日]', q) and SCHED_WORDS.search(q))) and not re.search('止掛|停止|離開|暫離|過號|提醒', q):
             parts.append(self.titles_by_id['KEY01']['answer'])
         facts = self.replies['facts']
         keys = [k for k, rx in (('address', ADDRESS), ('phone', PHONE), ('email', re.compile('email|信箱|mail')), ('queue', QUEUE)) if rx.search(q)]
