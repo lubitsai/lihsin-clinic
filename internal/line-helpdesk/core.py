@@ -103,6 +103,8 @@ TOPIC = [
     (r'被(?:貓狗|狗狗|貓咪|狗|貓)(?=咬|抓)', '被貓狗'),
     (r'帶(?:狗狗|狗|貓咪|貓|毛小孩)', '帶寵物'),
     (r'linepay|街口支付|街口|applepay|悠遊付|電子支付', '行動支付'),
+    (r'艾沛兒|abrysvo', '孕婦rsv疫苗'),
+    (r'欣剋融|arexvy', '長輩rsv疫苗'),
 ]
 def search_key(text):
     t = normalize(text)

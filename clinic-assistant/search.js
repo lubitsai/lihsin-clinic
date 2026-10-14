@@ -63,6 +63,8 @@ const TOPIC = [
   [/被(?:貓狗|狗狗|貓咪|狗|貓)(?=咬|抓)/g, '被貓狗'],
   [/帶(?:狗狗|狗|貓咪|貓|毛小孩)/g, '帶寵物'],
   [/linepay|街口支付|街口|applepay|悠遊付|電子支付/g, '行動支付'],
+  [/艾沛兒|abrysvo/g, '孕婦rsv疫苗'],
+  [/欣剋融|arexvy/g, '長輩rsv疫苗'],
 ];
 const searchKey = (s) => {
   let t = normalize(s);
