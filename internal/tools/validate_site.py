@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝2026-07-07）
+validate_site.py — 立欣診所全站驗證器 v1.3（2026-10-14g；v1.0＝2026-07-07）
     v1.0.1（07-10）：W-SITEMAP 首頁 loc「/」對映修正（院長核可待決⑨），無其他變更。
     v1.2（09-25j）：新增 W-LDREF（懸空 @id 引用）與 W-LASTMOD（sitemap lastmod 落後
       dateModified）兩項一致性 WARN，站內現況皆 0 命中；不動 FORBIDDEN_TERMS。
+    v1.3（10-14g，院長選 A）：新增 W-FAQDUP（全站 FAQ 問句逐字重複）。各批手動做
+      「全站零撞題」掃描，但工具沒擋，08-28 後回流 9 組；已裁示維持的組別放
+      `FAQ_DUP_ALLOWLIST`。
     v1.1（08-02b，院長核可 P5）：新增 **W-HSELF／W-HFORBID＝隱藏 #ai-knowledge-block
       禁語掃描**＋`HIDDEN_EXTRA_ALLOWLIST`／`HIDDEN_SELF_PROMO_PATTERNS` 兩張表。
       補的是 v1.0 起就存在的治理死角：可見禁語掃描依歷批協議**刻意排除**該區
@@ -70,6 +73,8 @@ validate_site.py — 立欣診所全站驗證器 v1.1（2026-08-02b；v1.0＝202
               定義 X（懸空引用＝author／reviewedBy 解析不到人）   ｜09-25j visit-guide 回退攔截
   W-LASTMOD   sitemap lastmod 不得早於該頁 dateModified（R4：跳了
               dateModified 就要同步 lastmod）                     ｜09-25j 稽核查獲 2 頁
+  W-FAQDUP    FAQPage 的 Question.name 全站不得逐字重複（一題只屬
+              一頁；已裁示維持者列 FAQ_DUP_ALLOWLIST）             ｜10-14g 稽核查獲 9 組
 
 已知設計取捨（弱模型請勿「修正」這些行為）
 ------------------------------------------
@@ -288,6 +293,11 @@ TAILWIND_IGNORE = {
 
 # llms 雙檔必須在場的條目（07-06 回退攔截的機器化）
 LLMS_REQUIRED_TOKENS = ["/app.html", "/visit-guide.html", "/growth.html"]
+
+# W-FAQDUP 白名單：院長已裁示「維持現狀」的跨頁同題（08-28b）。新增需院長裁示。
+FAQ_DUP_ALLOWLIST = {
+    "立欣診所幾點開始現場掛號？早診、午診、晚診的掛號時間？",  # index／visit-guide
+}
 
 # robots.txt 必須在場的放行組（07-06 批③）與封鎖組
 ROBOTS_REQUIRED = ["Claude-User", "Claude-SearchBot", "Perplexity-User", "GPTBot"]
@@ -741,9 +751,12 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
     ld_re = re.compile(r'<script[^>]*type\s*=\s*["\']application/ld\+json["\'][^>]*>(.*?)</script\s*>',
                        re.S | re.I)
     defined, refs, page_dm = set(), [], {}
+    faq_q = {}
 
     def _walk(o, rel):
         if isinstance(o, dict):
+            if o.get("@type") == "Question" and isinstance(o.get("name"), str):
+                faq_q.setdefault(o["name"].strip(), set()).add(rel)
             if "@id" in o:
                 if "@type" in o:
                     defined.add(o["@id"])
@@ -770,6 +783,11 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
     for rel, rid in sorted(set(refs)):
         if rid.startswith(SITE_ORIGIN) and rid not in defined:
             rep.warn(rel, "W-LDREF", f"懸空 @id 引用（全站無此節點定義）：{rid}")
+    if not partial:
+        for q, rels in sorted(faq_q.items()):
+            if len(rels) > 1 and q not in FAQ_DUP_ALLOWLIST:
+                rep.warn(sorted(rels)[0], "W-FAQDUP",
+                         f"FAQ 問句與他頁逐字重複：{q}（{'、'.join(sorted(rels))}）")
     if sm_path.exists() and not partial:
         try:
             for u in ET.parse(sm_path).getroot():
