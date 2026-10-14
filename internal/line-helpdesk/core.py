@@ -76,7 +76,8 @@ def small_talk(text):
 FILLER = re.compile(r'請問|多少|可以|可不可以|能不能|什麼|怎麼|要不要|需要|是不是|會不會|有沒有|一定|還是|如果|你們|立欣診所|[嗎呢啊吧喔嗯的了]')
 TOPIC = [
     (r'長不高|太矮|矮小|身高不夠', '身高'), (r'什麼時候|什麼情況|哪些情況|哪種情況|何時', '何時'),
-    (r'看醫師|給醫師看|就診', '就醫'),
+    (r'看醫師|給醫師看|就診', '就醫'), (r'(?:掛|送|看|去|跑)急診', '急診'),
+    (r'差在哪裡?|差別在哪裡?|差別|差異|有什麼不同|有何不同|哪裡不同|有什麼不一樣|不一樣', '差異'), (r'針劑', '打針'),
 ]
 def search_key(text):
     t = normalize(text)
@@ -203,7 +204,7 @@ ROUTE_SRC = {
     'SCHED_WORDS': r'看診|門診|有診|開診|休診|休息|有開|開嗎|有沒有開|營業|上班|幾點|醫師在|看嗎|有看|掛號|時間|放假|休假',
     'HOURS_TOPIC': r'門診時間|看診時間|營業時間|幾點開|幾點到|幾點看|幾點結束|夜診|晚診|早診|午診|班表|排班|哪天看診|哪幾天',
     'QUEUE': r'看診進度|叫號|輪到|到幾號|看到幾號|現在幾號',
-    'ADDRESS': r'地址|在哪裡?$|在哪$|位置|怎麼去|怎麼走|交通|導航|停車',
+    'ADDRESS': r'地址|(?:^|[^差別同處題])在哪裡?$|位置|怎麼去|怎麼走|交通|導航|停車',
     'PHONE': r'電話|打電話|聯絡|聯繫',
 }
 PRICE, PUBLIC_FLU, BRAND_ASK, PUBLIC_BRAND, VAX_CUTOFF, FLU_DOCS, STUDENT, DOSE, SUITABLE, QUOTA, ACTION, FEE, PUBLIC_VAX, SELF_VAX, CHECKUP, CHILD, MONEY = (re.compile(ROUTE_SRC[n]) for n in ['PRICE', 'PUBLIC_FLU', 'BRAND_ASK', 'PUBLIC_BRAND', 'VAX_CUTOFF', 'FLU_DOCS', 'STUDENT', 'DOSE', 'SUITABLE', 'QUOTA', 'ACTION', 'FEE', 'PUBLIC_VAX', 'SELF_VAX', 'CHECKUP', 'CHILD', 'MONEY'])
