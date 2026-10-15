@@ -409,10 +409,12 @@ jobs:
           check /health/cow-milk-allergy.html 200
           check /health/asthma-inhaler.html 200
           check /health/intussusception.html 200
+          check /health/pertussis.html 200
           check /images/rsv-infographic.jpg 200
           check /images/common-cold-infographic.jpg 200
           check /images/chickenpox-infographic.jpg 200
           check /images/norovirus-infographic.jpg 200
+          check /images/pertussis-infographic.jpg 200
           check /images/child-pneumonia-20261012-infographic.jpg 200
           check /images/newborn-jaundice-infographic.jpg 200
           check /images/asthma-inhaler-infographic.jpg 200
@@ -1278,4 +1280,7 @@ jobs:
           if [ "$ai1" -ge 1 ]; then echo "OK    氣喘頁『漱口吐掉』已上線"; else echo "FAIL  氣喘頁未見『吸完類固醇要漱口吐掉』——10-12n 內文疑未上線或已回退"; fail=1; fi
           fl1=$(curl -s --max-time 20 "$BASE/news/flu-vaccine-2026.html" | grep -c '現在還有輔流禦（Fluad）嗎？' || true)
           if [ "$fl1" -ge 1 ]; then echo "OK    2026 流感頁輔流禦售完 FAQ 已上線"; else echo "FAIL  2026 流感頁未見 FAQ『現在還有輔流禦（Fluad）嗎？』——10-12s 新增題疑未上線或已回退"; fail=1; fi
+          # 2026-10-15h：百日咳新頁的大人久咳提醒（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          pt1=$(curl -s --max-time 20 "$BASE/health/pertussis.html" | grep -c '家裡的大人咳嗽超過兩週' || true)
+          if [ "$pt1" -ge 1 ]; then echo "OK    百日咳頁『大人久咳先就醫』已上線"; else echo "FAIL  百日咳頁未見『家裡的大人咳嗽超過兩週』——10-15h 新頁內文疑未上線或已回退"; fail=1; fi
           exit $fail
