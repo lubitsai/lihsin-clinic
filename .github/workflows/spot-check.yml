@@ -414,6 +414,7 @@ jobs:
           check /images/common-cold-infographic.jpg 200
           check /images/chickenpox-infographic.jpg 200
           check /images/norovirus-infographic.jpg 200
+          check /images/pertussis-infographic.jpg 200
           check /images/child-pneumonia-20261012-infographic.jpg 200
           check /images/newborn-jaundice-infographic.jpg 200
           check /images/asthma-inhaler-infographic.jpg 200
