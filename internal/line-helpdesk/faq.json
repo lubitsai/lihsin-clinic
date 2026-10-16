@@ -2,13 +2,13 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "f329f4f02ed837c5c7a81fe87f5d763e6b53db71a08247fd644b8c7c81351268"
+   "kb_sha256": "d6fb6aa26ddeef52a991fbe95a439e26675414b4413e154e0b71f91a4105d7ca"
   },
-  "knowledge_sha256": "c4f37a4cd6d83741918d3324fda2b3c7ef40835929f1541190c1f06d955188ab",
+  "knowledge_sha256": "caea2f3679ed45d7374df4baf7952fdc2c2514c1a7978d5a6407c17d2b31ddac",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
-   "faq": 1049,
+   "faq": 1050,
    "ops": 8,
    "notice": 10,
    "navigation": 1
@@ -14436,6 +14436,20 @@
   {
    "id": "Q981",
    "kind": "faq",
+   "title": "台南哪裡可以打自費流感疫苗？要先預約嗎？",
+   "questions": [
+    "台南哪裡可以打自費流感疫苗？要先預約嗎？"
+   ],
+   "answer": "立欣診所位於台南市北區育德路 467 號（鄰近成大醫院、台南公園），公費與自費流感疫苗都有提供。本年度自費流感疫苗共 5 款、皆為三價，其中東洋輔流禦本季已售完，其餘品項的到貨與現貨狀態以首頁「最新流感疫苗資訊」公告為準。公告寫明備有現貨的品項，門診時段可直接前來掛號，由醫師評估後接種；想縮短候診，也可以先在網路預約時段。現貨會隨接種情形變動，出門前可來電 06-2516086 或在此聊天室輸入「專人服務」確認。每日最後一診結束前 1 小時停止疫苗施打：週一至週五 20:30、週六 17:00、週日 20:00。當天請帶健保卡，國小入學前的孩子還要帶兒童健康手冊。適用對象與劑數依原廠仿單記載並由醫師評估，發燒或患有急性中重度疾病時建議待病情穩定後再接種，曾對疫苗成分或前一劑發生嚴重過敏反應者不宜接種。本院為門診、非急診。",
+   "kb_answer": "立欣診所位於台南市北區育德路 467 號（鄰近成大醫院、台南公園），公費與自費流感疫苗都有提供。本年度自費流感疫苗共 5 款、皆為三價，其中東洋輔流禦本季已售完，其餘品項的到貨與現貨狀態以首頁「最新流感疫苗資訊」公告為準。公告寫明備有現貨的品項，門診時段可直接前來掛號，由醫師評估後接種；想縮短候診，也可以先在網路預約時段。現貨會隨接種情形變動，出門前可來電 06-2516086 或洽官方 LINE @lhpedclinic 確認。每日最後一診結束前 1 小時停止疫苗施打：週一至週五 20:30、週六 17:00、週日 20:00。當天請帶健保卡，國小入學前的孩子還要帶兒童健康手冊。適用對象與劑數依原廠仿單記載並由醫師評估，發燒或患有急性中重度疾病時建議待病情穩定後再接種，曾對疫苗成分或前一劑發生嚴重過敏反應者不宜接種。本院為門診、非急診。",
+   "page": "2026 自費流感疫苗資訊",
+   "source_url": "https://lhpedclinic.com.tw/news/flu-vaccine-2026.html",
+   "core": false,
+   "seasonal": false
+  },
+  {
+   "id": "Q982",
+   "kind": "faq",
    "title": "有哪些廠牌可以選？今年是三價還是四價？",
    "questions": [
     "有哪些廠牌可以選？今年是三價還是四價？"
@@ -14448,7 +14462,7 @@
    "seasonal": true
   },
   {
-   "id": "Q982",
+   "id": "Q983",
    "kind": "faq",
    "title": "2026 自費流感疫苗中，鼻噴型（能伏鼻）和一般針劑有什麼不同？哪些人適合？",
    "questions": [
@@ -14462,7 +14476,7 @@
    "seasonal": true
   },
   {
-   "id": "Q983",
+   "id": "Q984",
    "kind": "faq",
    "title": "選了鼻噴流感疫苗，醫師評估後不適合怎麼辦？已預購的費用怎麼處理？",
    "questions": [
@@ -14476,7 +14490,7 @@
    "seasonal": false
   },
   {
-   "id": "Q984",
+   "id": "Q985",
    "kind": "faq",
    "title": "孩子本季要打 2 劑，第 1 劑打鼻噴，第 2 劑也可以打鼻噴嗎？",
    "questions": [
@@ -14490,7 +14504,7 @@
    "seasonal": false
   },
   {
-   "id": "Q985",
+   "id": "Q986",
    "kind": "faq",
    "title": "50 歲以上長輩有適合的流感疫苗嗎？",
    "questions": [
@@ -14504,7 +14518,7 @@
    "seasonal": false
   },
   {
-   "id": "Q986",
+   "id": "Q987",
    "kind": "faq",
    "title": "現在還有輔流禦（Fluad）嗎？",
    "questions": [
@@ -14518,7 +14532,7 @@
    "seasonal": true
   },
   {
-   "id": "Q987",
+   "id": "Q988",
    "kind": "faq",
    "title": "流感疫苗適合哪些人？兒童和成人都可以打嗎？",
    "questions": [
@@ -14532,7 +14546,7 @@
    "seasonal": false
   },
   {
-   "id": "Q988",
+   "id": "Q989",
    "kind": "faq",
    "title": "流感疫苗常見副作用有哪些？打完要注意什麼？",
    "questions": [
@@ -14546,7 +14560,7 @@
    "seasonal": false
   },
   {
-   "id": "Q989",
+   "id": "Q990",
    "kind": "faq",
    "title": "各款自費流感疫苗的費用怎麼查？",
    "questions": [
@@ -14560,7 +14574,7 @@
    "seasonal": false
   },
   {
-   "id": "Q990",
+   "id": "Q991",
    "kind": "faq",
    "title": "什麼情況不適合、或需要延後接種流感疫苗？",
    "questions": [
@@ -14574,7 +14588,7 @@
    "seasonal": false
   },
   {
-   "id": "Q991",
+   "id": "Q992",
    "kind": "faq",
    "title": "公費和自費流感疫苗有什麼不同？我適合打哪一種？",
    "questions": [
@@ -14588,7 +14602,7 @@
    "seasonal": false
   },
   {
-   "id": "Q992",
+   "id": "Q993",
    "kind": "faq",
    "title": "流感疫苗每年都要打嗎？什麼時候打比較好？",
    "questions": [
@@ -14602,7 +14616,7 @@
    "seasonal": false
   },
   {
-   "id": "Q993",
+   "id": "Q994",
    "kind": "faq",
    "title": "輔流威護的「細胞培養」是什麼意思？和一般流感疫苗差在哪裡？",
    "questions": [
@@ -14616,7 +14630,7 @@
    "seasonal": false
   },
   {
-   "id": "Q994",
+   "id": "Q995",
    "kind": "faq",
    "title": "輔流禦的「佐劑」是什麼？為什麼熟齡型流感疫苗要加佐劑？",
    "questions": [
@@ -14630,7 +14644,7 @@
    "seasonal": false
   },
   {
-   "id": "Q995",
+   "id": "Q996",
    "kind": "faq",
    "title": "公費有提供含佐劑或高劑量的「加強型」流感疫苗嗎？65 歲以上長輩都打得到嗎？",
    "questions": [
@@ -14644,7 +14658,7 @@
    "seasonal": false
   },
   {
-   "id": "Q996",
+   "id": "Q997",
    "kind": "faq",
    "title": "今年流感疫苗，孩子要打幾劑？",
    "questions": [
@@ -14658,7 +14672,7 @@
    "seasonal": true
   },
   {
-   "id": "Q997",
+   "id": "Q998",
    "kind": "faq",
    "title": "滿 6 個月至未滿 3 歲的幼兒，為什麼要看「過去累計接種幾劑」？",
    "questions": [
@@ -14672,7 +14686,7 @@
    "seasonal": false
   },
   {
-   "id": "Q998",
+   "id": "Q999",
    "kind": "faq",
    "title": "去年打過流感疫苗了，今年還要打 2 劑嗎？",
    "questions": [
@@ -14686,7 +14700,7 @@
    "seasonal": true
   },
   {
-   "id": "Q999",
+   "id": "Q1000",
    "kind": "faq",
    "title": "3 歲至未滿 9 歲的孩子今年要打幾劑？",
    "questions": [
@@ -14700,7 +14714,7 @@
    "seasonal": true
   },
   {
-   "id": "Q1000",
+   "id": "Q1001",
    "kind": "faq",
    "title": "9 歲以上還需要打 2 劑嗎？",
    "questions": [
@@ -14714,7 +14728,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1001",
+   "id": "Q1002",
    "kind": "faq",
    "title": "兩劑之間要間隔多久？",
    "questions": [
@@ -14728,7 +14742,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1002",
+   "id": "Q1003",
    "kind": "faq",
    "title": "第 2 劑可以打和第 1 劑不同廠牌的流感疫苗嗎？",
    "questions": [
@@ -14742,7 +14756,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1003",
+   "id": "Q1004",
    "kind": "faq",
    "title": "第 2 劑拖過 4 週才打，需要從第 1 劑重新打嗎？",
    "questions": [
@@ -14756,7 +14770,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1004",
+   "id": "Q1005",
    "kind": "faq",
    "title": "不確定孩子以前打過幾劑，可以怎麼查？",
    "questions": [
@@ -14770,7 +14784,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1005",
+   "id": "Q1006",
    "kind": "faq",
    "title": "幾個月大可以打流感疫苗？未滿 6 個月可以打嗎？",
    "questions": [
@@ -14784,7 +14798,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1006",
+   "id": "Q1007",
    "kind": "faq",
    "title": "台南北區想帶孩子打流感疫苗，立欣診所可以嗎？",
    "questions": [
@@ -14798,7 +14812,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1007",
+   "id": "Q1008",
    "kind": "faq",
    "title": "健康幣是什麼？",
    "questions": [
@@ -14812,7 +14826,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1008",
+   "id": "Q1009",
    "kind": "faq",
    "title": "孩子打疫苗可以累積健康幣嗎？",
    "questions": [
@@ -14826,7 +14840,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1009",
+   "id": "Q1010",
    "kind": "faq",
    "title": "打哪些疫苗可以累積健康幣？自費疫苗也算嗎？",
    "questions": [
@@ -14840,7 +14854,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1010",
+   "id": "Q1011",
    "kind": "faq",
    "title": "10 月 1 日以前打的疫苗、做的健檢算不算？",
    "questions": [
@@ -14854,7 +14868,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1011",
+   "id": "Q1012",
    "kind": "faq",
    "title": "打完疫苗多久會看到健康幣？需要自己上傳證明嗎？",
    "questions": [
@@ -14868,7 +14882,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1012",
+   "id": "Q1013",
    "kind": "faq",
    "title": "健康幣要怎麼登記／認證？",
    "questions": [
@@ -14882,7 +14896,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1013",
+   "id": "Q1014",
    "kind": "faq",
    "title": "健康幣什麼時候可以用？有使用期限嗎？",
    "questions": [
@@ -14896,7 +14910,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1014",
+   "id": "Q1015",
    "kind": "faq",
    "title": "在立欣診所打流感疫苗或做成人健檢，會累積健康幣嗎？",
    "questions": [
@@ -14910,7 +14924,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1015",
+   "id": "Q1016",
    "kind": "faq",
    "title": "日本現在的流感疫情如何？",
    "questions": [
@@ -14924,7 +14938,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1016",
+   "id": "Q1017",
    "kind": "faq",
    "title": "去日本旅遊，出發前多久要打好流感疫苗？",
    "questions": [
@@ -14938,7 +14952,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1017",
+   "id": "Q1018",
    "kind": "faq",
    "title": "帶孩子出國旅遊前，流感疫苗要打 1 劑還是 2 劑？",
    "questions": [
@@ -14952,7 +14966,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1018",
+   "id": "Q1019",
    "kind": "faq",
    "title": "出國前要打 2 劑的孩子，兩劑之間要間隔多久？",
    "questions": [
@@ -14966,7 +14980,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1019",
+   "id": "Q1020",
    "kind": "faq",
    "title": "出國前不確定孩子以前打過幾劑流感疫苗，可以怎麼查？",
    "questions": [
@@ -14980,7 +14994,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1020",
+   "id": "Q1021",
    "kind": "faq",
    "title": "在日本旅途中發燒、咳嗽，可以自己判斷是不是流感嗎？",
    "questions": [
@@ -14994,7 +15008,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1021",
+   "id": "Q1022",
    "kind": "faq",
    "title": "出國前想在台南北區幫孩子打流感疫苗，立欣診所可以嗎？",
    "questions": [
@@ -15008,7 +15022,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1022",
+   "id": "Q1023",
    "kind": "faq",
    "title": "小鹿醫師 3D 看診趣是什麼？需要下載嗎？",
    "questions": [
@@ -15022,7 +15036,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1023",
+   "id": "Q1024",
    "kind": "faq",
    "title": "適合幾歲的孩子玩？",
    "questions": [
@@ -15036,7 +15050,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1024",
+   "id": "Q1025",
    "kind": "faq",
    "title": "遊戲裡的六個步驟，和真的看診一樣嗎？",
    "questions": [
@@ -15050,7 +15064,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1025",
+   "id": "Q1026",
    "kind": "faq",
    "title": "孩子玩過就不會怕看醫生了嗎？",
    "questions": [
@@ -15064,7 +15078,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1026",
+   "id": "Q1027",
    "kind": "faq",
    "title": "要收費嗎？會蒐集孩子的資料嗎？",
    "questions": [
@@ -15078,7 +15092,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1027",
+   "id": "Q1028",
    "kind": "faq",
    "title": "可以加到手機主畫面，像 App 一樣打開嗎？",
    "questions": [
@@ -15092,7 +15106,7 @@
    "seasonal": false
   },
   {
-   "id": "Q1028",
+   "id": "Q1029",
    "kind": "faq",
    "title": "沒有聲音、聽不到小鹿醫師說話怎麼辦？",
    "questions": [
