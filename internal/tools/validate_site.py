@@ -73,6 +73,8 @@ validate_site.py — 立欣診所全站驗證器 v1.3（2026-10-14g；v1.0＝202
               定義 X（懸空引用＝author／reviewedBy 解析不到人）   ｜09-25j visit-guide 回退攔截
   W-LASTMOD   sitemap lastmod 不得早於該頁 dateModified（R4：跳了
               dateModified 就要同步 lastmod）                     ｜09-25j 稽核查獲 2 頁
+  W-PRODTYPE  ld+json 不得用繼承 Product 的型別（Drug／Vaccine／
+              DietarySupplement…）：GSC 會報產品摘要無效項目      ｜08-31c 規則，10-16 回退攔截
   W-FAQDUP    FAQPage 的 Question.name 全站不得逐字重複（一題只屬
               一頁；已裁示維持者列 FAQ_DUP_ALLOWLIST）             ｜10-14g 稽核查獲 9 組
 
@@ -361,6 +363,11 @@ class VisibleTextExtractor(HTMLParser):
             self.chunks.append(data)
 
 
+# 繼承 schema.org Product 的型別（08-31c：Drug 同時繼承 Substance 與 Product）
+PRODUCT_TYPES = {"Product", "Drug", "Vaccine", "DietarySupplement", "IndividualProduct",
+                 "ProductModel", "SomeProducts", "ProductGroup", "Vehicle", "Car", "Motorcycle"}
+
+
 def visible_text(html: str) -> str:
     p = VisibleTextExtractor()
     try:
@@ -520,6 +527,17 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
             json.loads(m.group(1))
         except Exception as e:
             rep.err(rel, "E-JSONLD", f"第 {i} 個 ld+json 解析失敗：{e}")
+
+    # W-PRODTYPE（2026-10-16：08-31c 規則回退攔截）
+    # 病徵：用了繼承 schema.org Product 的型別（Drug 同時繼承 Substance 與 Product），
+    # Google 商品解析器就要求 offers／review／aggregateRating，三條全撞 00 §4，
+    # GSC 報「產品摘要無效項目」。10-15u 的 OfferCatalog 以 20 個 Drug 重蹈 08-31c。
+    # 藥品／疫苗實體一律 Substance；放進 Offer.itemOffered 時用 Service。
+    for m in re.finditer(r'"@type"\s*:\s*(\[[^\]]*\]|"[^"]*")', raw):
+        hit = set(re.findall(r'"([^"]+)"', m.group(1))) & PRODUCT_TYPES
+        if hit:
+            rep.warn(rel, "W-PRODTYPE",
+                     f"ld+json 用了繼承 Product 的型別 {sorted(hit)}（GSC 產品摘要會要 offers/review/aggregateRating；改 Substance 或 Service）")
 
     # W-CITEDOC（2026-08-03：citation 退化攔截）
     # 病徵：citation 只寫「機構名＋機構首頁」＝宣稱參考了疾管署卻沒說參考哪份文件，
