@@ -4,7 +4,7 @@ import { todayStr, addDays, formatDateTw } from "@/lib/tw-time";
 import { getDayScheduleBlocks, SESSION_LABEL } from "@/lib/schedule";
 import { dateToDb } from "@/lib/tw-time";
 import { CLINIC } from "@/lib/clinic-info";
-import { WALK_IN_REGISTRATION } from "@/lib/clinic-notes";
+import { WALK_IN_REGISTRATION, AFTERNOON_REGISTRATION } from "@/lib/clinic-notes";
 import { Card, Alert } from "@/components/ui";
 import { isLineLoginConfigured } from "@/lib/line";
 
@@ -131,6 +131,16 @@ export default async function HomePage() {
         <h2 className="text-lg font-bold text-sage-700">🕗 {WALK_IN_REGISTRATION.title}</h2>
         <p className="text-lg sm:text-xl font-bold text-wood-700">{WALK_IN_REGISTRATION.times}</p>
         <p className="text-ink-700 text-sm leading-relaxed">{WALK_IN_REGISTRATION.note}</p>
+        <p className="text-ink-700 text-sm leading-relaxed">
+          {AFTERNOON_REGISTRATION.homeHint}
+          <Link
+            href="/rules#afternoon-registration"
+            className="text-sage-600 underline underline-offset-2"
+          >
+            〈{AFTERNOON_REGISTRATION.title}〉
+          </Link>
+          。
+        </p>
       </Card>
 
       {notices.length > 0 && (

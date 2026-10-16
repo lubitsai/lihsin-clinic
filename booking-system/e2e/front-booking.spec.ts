@@ -122,7 +122,27 @@ test.describe("前台：預約流程", () => {
     await expect(page.getByText("今日門診")).toBeVisible();
     await expect(page.getByRole("heading", { name: /各診次現場掛號開始時間/ })).toBeVisible();
     await expect(page.getByText("早診 08:00｜午診 14:30｜晚診 18:00")).toBeVisible();
+    // 「午診 14:30 可抽號」旁要看得到午診可能提前止掛（官網 2026-10-19 起實施）
+    await expect(page.getByRole("link", { name: "〈午診止掛與晚診掛號〉" })).toHaveAttribute(
+      "href",
+      "/rules#afternoon-registration",
+    );
     await expect(page.getByRole("link", { name: "預約規則與個資告知" })).toBeVisible();
+  });
+
+  test("規則頁說明午診可能提前止掛、平日午診暫離要 18:00 前回來", async ({ page }) => {
+    await page.goto("/rules");
+    await expect(page.getByRole("heading", { name: /午診止掛與晚診掛號/ })).toBeVisible();
+    await expect(page.getByText(/午診可能依現場看診情況提前停止掛號/)).toBeVisible();
+    await expect(page.getByText(/須於 18:00 前返回櫃檯報到/)).toBeVisible();
+    // 兩張卡互相連結（官網原文也是互連）
+    await expect(page.getByRole("link", { name: "〈過號了怎麼辦〉" })).toHaveAttribute("href", "#missed-number");
+    await expect(page.getByRole("link", { name: "〈午診止掛與晚診掛號〉" })).toHaveAttribute(
+      "href",
+      "#afternoon-registration",
+    );
+    // 官網 2026-10 改寫：現場號不足 5 組改為明確規則
+    await expect(page.getByText(/現場號不足 5 組時，排在最後一組看診/)).toBeVisible();
   });
 
   test("規則頁答得出「重新抽號後要等多久」與「初診帶什麼」", async ({ page }) => {

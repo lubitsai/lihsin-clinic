@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { Card } from "@/components/ui";
 import { CLINIC } from "@/lib/clinic-info";
-import { WALK_IN_REGISTRATION, MISSED_NUMBER, FIRST_VISIT_ITEMS } from "@/lib/clinic-notes";
+import {
+  WALK_IN_REGISTRATION,
+  AFTERNOON_REGISTRATION,
+  MISSED_NUMBER,
+  FIRST_VISIT_ITEMS,
+} from "@/lib/clinic-notes";
 import { getSetting } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
@@ -68,6 +73,23 @@ export default async function RulesPage() {
           <p className="text-ink-900 leading-relaxed">{WALK_IN_REGISTRATION.note}</p>
         </Card>
 
+        {/* 緊接現場掛號時間：「午診 14:30 可抽號」之後，家長要知道午診可能提前止掛（官網 2026-10-19 起實施） */}
+        <Card id="afternoon-registration" className="space-y-2 scroll-mt-4">
+          <h2 className="text-lg font-bold text-sage-700">🕕 {AFTERNOON_REGISTRATION.title}</h2>
+          <ul className="list-disc list-inside space-y-1.5 text-ink-900 leading-relaxed">
+            <li>{AFTERNOON_REGISTRATION.closing}</li>
+            <li>{AFTERNOON_REGISTRATION.weekdayStepAway}</li>
+            <li>
+              {AFTERNOON_REGISTRATION.missedNumber.before}
+              <a href="#missed-number" className="text-sage-600 underline underline-offset-2">
+                〈{MISSED_NUMBER.title}〉
+              </a>
+              {AFTERNOON_REGISTRATION.missedNumber.after}
+            </li>
+            <li>{AFTERNOON_REGISTRATION.saturday}</li>
+          </ul>
+        </Card>
+
         <Card className="space-y-2">
           <h2 className="text-lg font-bold text-sage-700">報到只保留 {grace} 分鐘</h2>
           <ul className="list-disc list-inside space-y-1.5 text-ink-900 leading-relaxed">
@@ -86,7 +108,7 @@ export default async function RulesPage() {
           逾時被取消、重新抽號之後要等多久，是這個頁面原本唯一沒回答的問題。
           官網 visit-guide.html#missed-number 寫得很完整，逐字沿用。
         */}
-        <Card className="space-y-2">
+        <Card id="missed-number" className="space-y-2 scroll-mt-4">
           <h2 className="text-lg font-bold text-sage-700">🔔 {MISSED_NUMBER.title}</h2>
           <p className="text-ink-900 leading-relaxed">{MISSED_NUMBER.lead}</p>
           <p className="font-bold text-wood-700 pt-1">{MISSED_NUMBER.orderTitle}</p>
@@ -95,6 +117,13 @@ export default async function RulesPage() {
               <li key={t}>{t}</li>
             ))}
           </ul>
+          <p className="text-ink-900 leading-relaxed">
+            {MISSED_NUMBER.stepAway}
+            <a href="#afternoon-registration" className="text-sage-600 underline underline-offset-2">
+              〈{AFTERNOON_REGISTRATION.title}〉
+            </a>
+            。
+          </p>
           <p className="text-ink-900 leading-relaxed">
             {MISSED_NUMBER.note}出發前可先查
             <a

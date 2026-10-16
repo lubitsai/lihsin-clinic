@@ -74,7 +74,11 @@
 ## 五、加好友連結（前台顯示用）
 
 LINE Official Account Manager → 取得加好友網址（形如 `https://lin.ee/xxxxx`）
-→ 填入 `NEXT_PUBLIC_LINE_OA_URL`，首頁才會顯示「加入好友接收看診提醒」。
+→ 填入 `NEXT_PUBLIC_LINE_OA_URL`。
+
+首頁「加入好友接收看診提醒」在 LINE Login 設定好之後就會出現；
+`NEXT_PUBLIC_LINE_OA_URL` 沒填（或留空字串）時，連結退回官網全站使用的
+`https://line.me/R/ti/p/@lhpedclinic`，不會變成壞連結。要用 `lin.ee` 短網址（可在 LINE 後台看點擊數）再填。
 
 ---
 

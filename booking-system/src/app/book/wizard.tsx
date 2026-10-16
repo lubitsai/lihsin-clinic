@@ -7,7 +7,12 @@ import { fetchOpenDates, fetchDaySlots, submitBooking } from "@/app/actions/port
 import { Card, StepProgress, Alert } from "@/components/ui";
 import { formatDateTw } from "@/lib/tw-time";
 import { SESSION_META, ID_TYPE_LABEL } from "@/lib/status-labels";
-import { clinicNoteOf, FIRST_VISIT_ITEMS } from "@/lib/clinic-notes";
+import {
+  clinicNoteOf,
+  FIRST_VISIT_ITEMS,
+  AFTERNOON_REGISTRATION,
+  isWeekdayAfternoon,
+} from "@/lib/clinic-notes";
 import { CLINIC } from "@/lib/clinic-info";
 
 interface ClinicTypeDto {
@@ -98,6 +103,12 @@ export function BookingWizard({
     if (doctorId === "any") return "不限醫師（系統安排）";
     return clinicType?.doctors.find((d) => d.id === doctorId)?.name ?? "";
   }, [doctorId, clinicType]);
+
+  // 平日（週一至週五）午診：完成頁加一條「18:00 前返回報到」（官網 2026-10-19 起實施）
+  const weekdayAfternoon = useMemo(
+    () => isWeekdayAfternoon(date, slots.find((s) => s.startTime === startTime)?.session),
+    [date, startTime, slots],
+  );
 
   const goto = useCallback((s: number) => {
     setError("");
@@ -656,11 +667,13 @@ export function BookingWizard({
                 <li>報到時請主動告知櫃檯您有預約並出示健保卡；系統不會自動跳出通知。</li>
                 <li>
                   逾時該筆預約即取消，需重新抽現場號依序候診（
-                  <Link href="/rules" target="_blank" className="underline underline-offset-2">
+                  <Link href="/rules#missed-number" target="_blank" className="underline underline-offset-2">
                     過號後的候診順位
                   </Link>
                   ）。
                 </li>
+                {/* 只有平日午診有 18:00 返回時限（官網 2026-10-19 起實施）；其他診次不顯示，免得家長誤會 */}
+                {weekdayAfternoon && <li>{AFTERNOON_REGISTRATION.weekdayStepAway}</li>}
                 <li>
                   出發前可先查
                   <a

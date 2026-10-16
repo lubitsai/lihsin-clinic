@@ -4,12 +4,15 @@ import { STATUS_META } from "@/lib/status-labels";
 export function Card({
   children,
   className = "",
+  id,
 }: {
   children: React.ReactNode;
   className?: string;
+  /** 頁內錨點（例：/rules#missed-number） */
+  id?: string;
 }) {
   return (
-    <div className={`rounded-2xl bg-white shadow-sm border border-sage-100 p-5 ${className}`}>
+    <div id={id} className={`rounded-2xl bg-white shadow-sm border border-sage-100 p-5 ${className}`}>
       {children}
     </div>
   );

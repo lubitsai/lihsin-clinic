@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getStaffContext } from "@/lib/auth/staff";
 import { PERMISSIONS } from "@/lib/auth/authz";
 import { getDayAppointments, type DayBoardFilters } from "@/lib/admin-service";
@@ -26,7 +27,10 @@ export default async function AdminDashboard({
 }: {
   searchParams: Promise<SearchParams>;
 }) {
-  const ctx = (await getStaffContext())!;
+  // layout 也會擋，但 Next 會把 layout 與 page 平行渲染——不在這裡自己擋，
+  // 未登入開 /admin 時 page 會先在 ctx.permissions 炸出 TypeError 寫進伺服器日誌
+  const ctx = await getStaffContext();
+  if (!ctx) redirect("/admin/login");
   const sp = await searchParams;
   const date = /^\d{4}-\d{2}-\d{2}$/.test(sp.date ?? "") ? sp.date! : todayStr();
 

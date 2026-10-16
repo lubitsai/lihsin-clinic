@@ -17,6 +17,8 @@ export const CLINIC = {
   bookingRulesUrl: "https://lhpedclinic.com.tw/visit-guide.html#booking-rules",
   // 過號後的候診順位規則（就診指南）
   missedNumberUrl: "https://lhpedclinic.com.tw/visit-guide.html#missed-number",
-  lineOfficialUrl: process.env.NEXT_PUBLIC_LINE_OA_URL ?? "https://lin.ee/xxxxx",
+  // 未設定（含 .env.example 的空字串）時退回官網全站使用的加好友網址；
+  // 原本的 `?? "https://lin.ee/xxxxx"` 遇到空字串不會退回，首頁連結會變成連回自己
+  lineOfficialUrl: process.env.NEXT_PUBLIC_LINE_OA_URL || "https://line.me/R/ti/p/@lhpedclinic",
   mascot: "小鹿醫師團隊",
 } as const;
