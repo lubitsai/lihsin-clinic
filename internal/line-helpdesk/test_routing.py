@@ -61,6 +61,15 @@ class RoutingTests(unittest.TestCase):
             self.assertEqual(msg['buttons'], [CAT.titles[T[second]]['title']], q)
         self.assertIn('兒童健康手冊', route('3歲小孩打公費流感要帶什麼')[1]['text'])
 
+    def test_nasal_sold_out(self):
+        # search.js 3-1a (2026-10-17): stock / still-available / pre-ordered 2nd dose -> the nasal sold-out FAQ
+        item = CAT.titles['鼻噴式流感疫苗還有嗎？能伏鼻售完了嗎？']
+        for q in ['鼻噴疫苗今年還打得到嗎', '預購的第二劑鼻噴還有嗎', '能伏鼻還有嗎', '鼻噴流感疫苗還有嗎', '能伏鼻賣完了嗎', 'FluMist現貨', '鼻噴流感疫苗有貨嗎']:
+            action, msg = route(q, date(2026, 10, 17))
+            self.assertEqual(action, 'answer', q)
+            self.assertEqual(msg['text'], item['answer'], q)
+        self.assertIn('1,600', route('能伏鼻多少錢', date(2026, 10, 17))[1]['text'])
+
     def test_follow_up_button_answers(self):
         # Tapping the button sends the full title, which must hit the exact-match answer.
         for fid in ('Q198', 'Q202', 'Q524'):
@@ -144,7 +153,7 @@ class TailRouteTests(unittest.TestCase):
         return decide(q, False, CAT, LEGACY, PASS, today)
 
     def test_stock_never_promises(self):
-        for q in ['鼻噴流感疫苗有現貨嗎', '水痘疫苗還有貨嗎']:
+        for q in ['流感疫苗有現貨嗎', '水痘疫苗還有貨嗎']:
             action, msg = self.ans(q)
             self.assertEqual(action, 'answer', q)
             self.assertIn('不代表今天有現貨', msg['text'])

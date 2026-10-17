@@ -251,4 +251,15 @@ for (const [q, re] of [['必思諾多少錢', /6,500 元/], ['Bexsero多少錢',
   ['M-M-R II多少錢', /1,000 元/], ['Beyfortus多少錢', /16,000 元/], ['Nirsevimab多少', /16,000 元/],
   ['補施追多少錢', /1,500 元/], ['安在時多少錢', /成人 B 型肝炎疫苗費用為 500 元/], ['肺恩賜多少錢', /15 價.*4,000 元/]]) price(q, re);
 kind('公費水痘疫苗多少錢', 'fee');
+// 3-1a 鼻噴售完（院長 2026-10-17）：現貨／還有嗎／預購第 2 劑 → 鼻噴頁售完題；費用、適合性、預購退費照舊
+const T_NASAL = '鼻噴式流感疫苗還有嗎？能伏鼻售完了嗎？';
+n++; assert(live.faqs.some((r) => r.title === T_NASAL), `3-1a 指定題目不存在：${T_NASAL}`);
+for (const q of ['鼻噴疫苗今年還打得到嗎', '預購的第二劑鼻噴還有嗎', '能伏鼻還有嗎', '鼻噴流感疫苗還有嗎', '能伏鼻賣完了嗎', 'FluMist現貨', '鼻噴流感疫苗有貨嗎']) {
+  const r = ask(q, '2026-10-17');
+  n++; assert.equal(first(r)?.title, T_NASAL, `「${q}」第一題應為〈${T_NASAL}〉`);
+  n++; assert.equal(first(r)?.open, true);
+}
+kind('能伏鼻多少錢', 'price_item');
+n++; assert(/^流感疫苗預購規則/.test(first(ask('預購鼻噴不適合可以退嗎', '2026-10-17'))?.title || ''));
+n++; assert.notEqual(first(ask('鼻噴流感疫苗有什麼副作用', '2026-10-17'))?.title, T_NASAL);
 console.log(`✓ ${n} assertions passed`);

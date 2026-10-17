@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.27）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.28）
 
-2026-10-15 第二版 2.27｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-10-17 第二版 2.28｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.28 鼻噴售完分流＋題庫更新（2026-10-17）
+
+程式有改（core.py，與官網 search.js 3-1a 逐字同步）：新增 `NASAL`／`NASAL_STOCK` 分流與 `PIN_NASAL_SOLDOUT`——問鼻噴（能伏鼻）「還有嗎／打得到嗎／現貨／售完／預購的第 2 劑還有嗎」直接回鼻噴頁新題「鼻噴式流感疫苗還有嗎？能伏鼻售完了嗎？」，先於現貨與預購分流；不含現貨字詞的鼻噴問題（費用、適合性、預購退費）照舊。下一季到貨時移除這三項。題庫（PR #418）：能伏鼻「本季已售完，不再進貨」、已預購第 2 劑已保留；首頁能伏鼻現貨公告下架；自費價目 F05／FLU_VAX 加註。緊急字詞同 2.27。2.28 取代 2.27 以前各版。
 
 ## 2.27 題庫更新（2026-10-15）
 
