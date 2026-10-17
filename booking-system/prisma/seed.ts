@@ -80,7 +80,7 @@ async function main() {
       doctorIds: [drTsai.id], // 僅蔡醫師
       description: "兒童過敏、氣喘評估與檢測",
       // 院長 2026-10-17 改為與官網過敏原檢測頁一致（原「請先電話詢問空腹等注意事項」與官網不符）
-      notice: "如需過敏原檢測，抽血一般不需特別空腹。",
+      notice: "如需過敏原檢測，抽血一般不需特別空腹，但若同時安排其他需空腹的抽血項目則另依醫師指示。",
       // 同減重：跟著蔡醫師的班表走、送出即成立
       requiresReview: false, allowedWeekdays: [] as number[], allowedSessions: [] as SessionPeriod[],
     },
