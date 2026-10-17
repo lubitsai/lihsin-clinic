@@ -1,3 +1,9 @@
+2026-10-17 第二版 2.28（鼻噴售完分流 NASAL／NASAL_STOCK＋題庫更新；取代未部署的 2.27）
+- sync_assistants.py：官網 298 項、一致性比對 284 句全部一致（parity_queries 新增 10 句鼻噴售完問法）；validate_site 通過。LINE unittest 90 項全部通過（pip 裝 requirements.lock.txt 後完整執行）。
+- test_routing.py：新增 test_nasal_sold_out；test_stock_never_promises 的例句「鼻噴流感疫苗有現貨嗎」改為「流感疫苗有現貨嗎」（鼻噴現貨問法改由售完題回答，同樣不承諾現貨）。
+- --ask：「鼻噴疫苗今年還打得到嗎」「預購的第二劑鼻噴還有嗎」「能伏鼻賣完了嗎」兩邊皆直接回售完題；「預購鼻噴不適合可以退嗎」仍回預購規則；「能伏鼻多少錢」仍回價目（含本季已售完，不再進貨）。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-14 第二版 2.25（地址分流排除「差在哪」類問法＋檢索同義詞三組＋FAQ 撞題修正後題庫；取代未部署的 2.24）
 - sync_assistants.py（venv 裝 requirements.lock.txt）：官網 280 項、LINE unittest 89 項全部通過；一致性比對 266 句全部一致（parity_queries 新增 6 句）；validate_site 通過。
 - --ask：「鼻噴流感疫苗跟打針差在哪」不再回地址，前 3 名含「鼻噴型（能伏鼻）和一般針劑有什麼不同」（第 1 名仍為另一題鼻噴問答）；「肺炎什麼情況要掛急診」「孩子肺炎什麼時候要送急診」首選為肺炎急症題；「診所在哪」「停車在哪」仍回地址；「流感和感冒差在哪」「克流感和紓伏效差別」首選不變。

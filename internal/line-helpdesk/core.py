@@ -195,6 +195,9 @@ ROUTE_SRC = {
     'CHECKUP': r'成人健檢|公費健檢|成人預防保健|成人.{0,4}健康檢查',
     'CHILD': r'兒童|小孩|孩子|寶寶|嬰兒|幼兒|小朋友',
     'MONEY': r'多少|錢|費|免費|收費|付',
+    # 鼻噴（能伏鼻）本季已售完（院長 2026-10-17; search.js 3-1a）：下一季到貨時移除這兩條與 PIN_NASAL_SOLDOUT
+    'NASAL': r'鼻噴|噴鼻|能伏鼻|flumist',
+    'NASAL_STOCK': r'現貨|庫存|有貨|沒貨|缺貨|剩幾|到貨|打得到|還有嗎|還有沒有|還有貨|售完|賣完|賣光|沒有了|補貨|進貨',
     # search.js 7–10 (ported 2026-10-08o): cross-session registration, late, stock, COVID, dates, holidays, hours, contact
     'LATE': r'遲到|沒趕上|來不及|趕不上',
     'CROSS': r'預掛|掛.{0,4}(?:下午|晚上|晚診|午診|早診|明天|明早|下一診)|(?:早上|下午|晚上|晚診|午診|早診|明天|明早)的號|跨診|當診次',
@@ -208,6 +211,7 @@ ROUTE_SRC = {
     'PHONE': r'電話|打電話|聯絡|聯繫',
 }
 PRICE, PUBLIC_FLU, BRAND_ASK, PUBLIC_BRAND, VAX_CUTOFF, FLU_DOCS, STUDENT, DOSE, SUITABLE, QUOTA, ACTION, FEE, PUBLIC_VAX, SELF_VAX, CHECKUP, CHILD, MONEY = (re.compile(ROUTE_SRC[n]) for n in ['PRICE', 'PUBLIC_FLU', 'BRAND_ASK', 'PUBLIC_BRAND', 'VAX_CUTOFF', 'FLU_DOCS', 'STUDENT', 'DOSE', 'SUITABLE', 'QUOTA', 'ACTION', 'FEE', 'PUBLIC_VAX', 'SELF_VAX', 'CHECKUP', 'CHILD', 'MONEY'])
+NASAL, NASAL_STOCK = (re.compile(ROUTE_SRC[n]) for n in ['NASAL', 'NASAL_STOCK'])
 LATE, CROSS, STOCK, COVID, HOLIDAY, SCHED_WORDS, HOURS_TOPIC, QUEUE, ADDRESS, PHONE = (re.compile(ROUTE_SRC[n]) for n in ['LATE', 'CROSS', 'STOCK', 'COVID', 'HOLIDAY', 'SCHED_WORDS', 'HOURS_TOPIC', 'QUEUE', 'ADDRESS', 'PHONE'])
 # search.js 7 clarify buttons (verbatim)
 LATE_BUTTONS = ['預約遲到怎麼辦', '現場號過號怎麼辦']
@@ -251,6 +255,7 @@ PINS = {
     'PIN_CUTOFF': ['週六、週日或夜診時段可以接種疫苗嗎？', '打疫苗需要預約嗎？要先確認有沒有貨嗎？'],
     'PIN_FLU_DOCS': ['打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？', '國小到高中職學生要打公費流感疫苗，需要帶什麼？'],
     'PIN_FLU_DOCS_STUDENT': ['國小到高中職學生要打公費流感疫苗，需要帶什麼？', '打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？'],
+    'PIN_NASAL_SOLDOUT': ['鼻噴式流感疫苗還有嗎？能伏鼻售完了嗎？'],
 }
 BRAND_BUTTON = '流感疫苗資訊'   # rich-menu keyword answered by the official account backend (passthrough)
 
@@ -291,6 +296,11 @@ class Catalog:
                       and is_valid(i, today)), None)
             if n:
                 return {'type': 'text', 'text': n['answer'], 'buttons': [BRAND_BUTTON] if BRAND_BUTTON in passthrough else []}
+        # search.js 3-1a: nasal vaccine sold out this season, before stock and pre-order questions
+        if NASAL.search(q) and NASAL_STOCK.search(q):
+            first = self.by_title(PINS['PIN_NASAL_SOLDOUT'][0], today)
+            if first:
+                return {'type': 'text', 'text': first['answer']}
         if DOSE.search(q) or SUITABLE.search(q):
             return {'type': 'text', 'text': r['clinical']}
         if QUOTA.search(q):

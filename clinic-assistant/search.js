@@ -79,6 +79,10 @@ const LATE = /遲到|沒趕上|來不及|趕不上/;
 const PUBLIC_FLU = /公費.{0,12}(?:流感|疫苗|打)|(?:流感|疫苗).{0,12}公費/;
 const BRAND_ASK = /品牌|牌子|廠牌|哪一?牌|哪[一個]?家|什麼疫苗|哪一?支|指定|選牌|挑|預約|預購|預定|預訂|保留|留(?:一|給|著)/;
 const PREORDER = /預購|預定|預訂|訂了.{0,6}疫苗|先付.{0,4}錢/;
+// 鼻噴（能伏鼻）本季已售完（院長 2026-10-17）：問還有沒有、打不打得到、預購的第 2 劑 → 直接回鼻噴頁售完題。
+// 先於預購規則與現貨分流；不含現貨字詞的鼻噴問題（費用、適合性、預購退費）照舊。下一季到貨時移除本條、NASAL_STOCK 與 PIN_NASAL_SOLDOUT。
+const NASAL = /鼻噴|噴鼻|能伏鼻|flumist/;
+const NASAL_STOCK = /現貨|庫存|有貨|沒貨|缺貨|剩幾|到貨|打得到|還有嗎|還有沒有|還有貨|售完|賣完|賣光|沒有了|補貨|進貨/;
 // 「今天公費哪一牌」沒講流感／疫苗，但公費＋牌子在流感季只會是公費流感疫苗
 const PUBLIC_BRAND = /公費.{0,8}(?:品牌|牌子|廠牌|哪一?牌)/;
 // 疫苗最後施打時間（每日最後一診結束前 1 小時停打）；「疫苗打到幾點」原本會配到夜診題
@@ -93,6 +97,7 @@ const VAX_CUTOFF_REPLY = '您好，因疫苗清點與申報作業，本院於每
 const PIN_CUTOFF = ['週六、週日或夜診時段可以接種疫苗嗎？', '打疫苗需要預約嗎？要先確認有沒有貨嗎？'];
 const PIN_FLU_DOCS = ['打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？', '國小到高中職學生要打公費流感疫苗，需要帶什麼？'];
 const PIN_FLU_DOCS_STUDENT = ['國小到高中職學生要打公費流感疫苗，需要帶什麼？', '打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？'];
+const PIN_NASAL_SOLDOUT = ['鼻噴式流感疫苗還有嗎？能伏鼻售完了嗎？'];
 // 預約額滿、電話預約（院長 2026-09-24）：只有網路系統一個管道，額滿不加號
 const QUOTA = /額滿|滿了|約滿|約不到|沒名額|沒有名額|加號|加掛|還有名額|有沒有名額|還有位子|電話.{0,4}(?:預約|掛號|約)|打電話.{0,6}(?:約|掛)/;
 // 現場掛號不能跨診次（院長 2026-09-24）：「早上先掛下午的號」「可以預掛晚診嗎」
@@ -340,6 +345,18 @@ export function createAssistant(kb) {
         return reply('results', '', [{ type: 'notice', title: n.title, text: n.answer }, factsBlock(['line', 'phone']), ...(hits.length ? [faqBlock(hits)] : [])]);
       }
     }
+    // 直接回官網既有題目（以標題指定，不新增答案文字）；標題找不到就回 null、交給後面的分流
+    const pinned = (titles) => {
+      const rows = titles.map((t) => kb.faqs.find((r) => r.title === t && valid(r, today))).filter(Boolean);
+      if (!rows.length) return null;
+      const fb = faqBlock(rows.map((row) => ({ row, score: 1 })));
+      return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
+    };
+    // 3-1a. 鼻噴售完：先於預購規則（「預購的第二劑鼻噴還有嗎」）與現貨分流（「鼻噴今年還打得到嗎」）
+    if (NASAL.test(q) && NASAL_STOCK.test(q)) {
+      const r = pinned(PIN_NASAL_SOLDOUT);
+      if (r) return r;
+    }
     // 3-1. 流感疫苗預購：先回預購規則卡（先於適合性與費用，「預購鼻噴不適合」「預購可以退費嗎」都走這裡）
     if (PREORDER.test(q)) {
       const rows = kb.faqs.filter((r) => /^流感疫苗預購規則/.test(r.title));
@@ -367,13 +384,7 @@ export function createAssistant(kb) {
     if (ACTION.test(q)) {
       return reply('action', '線上小幫手無法代為預約、改期、取消，也查不到個人的預約、號次或候診時間。', [factsBlock(['booking', 'queue', 'phone'])]);
     }
-    // 5-0a. 疫苗最後施打時間、打流感疫苗要帶什麼：直接回官網既有題目（不新增答案文字）
-    const pinned = (titles) => {
-      const rows = titles.map((t) => kb.faqs.find((r) => r.title === t && valid(r, today))).filter(Boolean);
-      if (!rows.length) return null;
-      const fb = faqBlock(rows.map((row) => ({ row, score: 1 })));
-      return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
-    };
+    // 5-0a. 疫苗最後施打時間、打流感疫苗要帶什麼：直接回官網既有題目（不新增答案文字；pinned 定義在 3-1a 前）
     if (VAX_CUTOFF.test(q) && !PRICE.test(q)) {
       const r = pinned(PIN_CUTOFF);
       return reply('results', [VAX_CUTOFF_REPLY, cutoffLine()].filter(Boolean).join('\n'), r ? r.blocks : []);
