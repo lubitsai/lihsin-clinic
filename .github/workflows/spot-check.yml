@@ -410,6 +410,7 @@ jobs:
           check /health/asthma-inhaler.html 200
           check /health/intussusception.html 200
           check /health/pertussis.html 200
+          check /health/stop-medicine.html 200
           check /images/rsv-infographic.jpg 200
           check /images/common-cold-infographic.jpg 200
           check /images/chickenpox-infographic.jpg 200
@@ -1283,4 +1284,7 @@ jobs:
           # 2026-10-15h：百日咳新頁的大人久咳提醒（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           pt1=$(curl -s --max-time 20 "$BASE/health/pertussis.html" | grep -c '家裡的大人咳嗽超過兩週' || true)
           if [ "$pt1" -ge 1 ]; then echo "OK    百日咳頁『大人久咳先就醫』已上線"; else echo "FAIL  百日咳頁未見『家裡的大人咳嗽超過兩週』——10-15h 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-10-17g：寵粉文「症狀好了能停藥嗎」新頁的回診預約段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          sm1=$(curl -s --max-time 20 "$BASE/health/stop-medicine.html" | grep -c '名額可以留給其他家庭' || true)
+          if [ "$sm1" -ge 1 ]; then echo "OK    停藥寵粉文『看完診先約回診』段已上線"; else echo "FAIL  停藥頁未見『名額可以留給其他家庭』——10-17g 新頁內文疑未上線或已回退"; fail=1; fi
           exit $fail
