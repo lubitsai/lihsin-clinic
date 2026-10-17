@@ -130,6 +130,15 @@ test.describe("前台：預約流程", () => {
     await expect(page.getByRole("link", { name: "預約規則與個資告知" })).toBeVisible();
   });
 
+  test("網址打錯時顯示中文的「找不到這個頁面」，不是 Next.js 內建英文頁", async ({ page }) => {
+    const res = await page.goto("/no-such-page");
+    expect(res?.status()).toBe(404);
+    await expect(page.getByRole("heading", { name: "找不到這個頁面" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "回預約首頁" })).toHaveAttribute("href", "/");
+    await expect(page.getByRole("link", { name: "06-2516086" })).toHaveAttribute("href", "tel:+88662516086");
+    await expect(page.getByText("This page could not be found")).toHaveCount(0);
+  });
+
   test("規則頁說明午診可能提前止掛、平日午診暫離要 18:00 前回來", async ({ page }) => {
     await page.goto("/rules");
     await expect(page.getByRole("heading", { name: /午診止掛與晚診掛號/ })).toBeVisible();

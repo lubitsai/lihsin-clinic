@@ -76,10 +76,18 @@ test.describe("後台：櫃檯日常", () => {
     // 綁定一律由櫃檯核對健保卡後執行，所以入口在後台而不是前台
     await expect(page.getByRole("heading", { name: "LINE 綁定" })).toBeVisible({ timeout: 15_000 });
     page.on("dialog", (d) => d.accept()); // 「已當面核對健保卡了嗎？」
-    await typeInto(page.getByPlaceholder("綁定代碼"), "ZZZZZZ");
-    await clickUntil(page.getByRole("button", { name: "確認綁定" }), async () => {
+    // 「確認綁定」要等 React state 有代碼才會啟用。若在 hydrate 前就填好，欄位看得到字、
+    // state 卻是空的，按鈕永遠 disabled——所以「填入＋點按」要一起重試，不能分開
+    // （冷啟動、.next 沒有快取時病歷頁第一次編譯較久，2026-10-17 因此連續失敗）。
+    const codeInput = page.getByPlaceholder("綁定代碼");
+    const bindButton = page.getByRole("button", { name: "確認綁定" });
+    await expect(async () => {
+      // 先清空再填：欄位已是同一個值時，再 fill 一次 React 不會觸發 onChange
+      await codeInput.fill("");
+      await codeInput.fill("ZZZZZZ");
+      await bindButton.click({ timeout: 3_000 });
       await expect(page.getByText(/無效或已過期/)).toBeVisible({ timeout: 8_000 });
-    });
+    }).toPass({ timeout: 45_000 });
   });
 
   test("排班頁預設停在「臨時異動」，看得到當天各診次與停診鈕", async ({ page }) => {
