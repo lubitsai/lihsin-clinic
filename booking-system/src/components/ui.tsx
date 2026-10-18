@@ -30,25 +30,13 @@ export function StatusBadge({ status }: { status: AppointmentStatus }) {
   );
 }
 
-/** 小鹿醫師：品牌吉祥物（內嵌 SVG 佔位；正式 LOGO 圖檔可替換 public/logo.png） */
+/**
+ * 立欣診所小鹿 LOGO（大鹿與小鹿，院長 2026-10-19 提供向量檔，與官網 images/logo.png 同一款）。
+ * 取代原本內嵌的卡通小鹿佔位圖。檔案在 public/logo.svg，由院長給的 PDF 轉出、裁到圓框邊緣。
+ * 一律放在診所名稱或標題旁，屬裝飾性圖片，故 alt 留空、不讓螢幕閱讀器重複唸。
+ */
 export function DeerMascot({ size = 56 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden className="shrink-0">
-      <circle cx="32" cy="34" r="26" fill="#f0f7ed" />
-      <path d="M18 14c-3-5-8-6-8-6s1 7 5 9" stroke="#8b6f3a" strokeWidth="3" fill="none" strokeLinecap="round" />
-      <path d="M46 14c3-5 8-6 8-6s-1 7-5 9" stroke="#8b6f3a" strokeWidth="3" fill="none" strokeLinecap="round" />
-      <ellipse cx="32" cy="36" rx="17" ry="16" fill="#d4b896" />
-      <ellipse cx="32" cy="42" rx="10" ry="8" fill="#fff8f0" />
-      <circle cx="25" cy="32" r="2.6" fill="#333" />
-      <circle cx="39" cy="32" r="2.6" fill="#333" />
-      <ellipse cx="32" cy="40" rx="3.4" ry="2.6" fill="#8b6f3a" />
-      <path d="M28 46c2.5 2 5.5 2 8 0" stroke="#8b6f3a" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-      <ellipse cx="20" cy="21" rx="4" ry="6" fill="#d4b896" transform="rotate(-20 20 21)" />
-      <ellipse cx="44" cy="21" rx="4" ry="6" fill="#d4b896" transform="rotate(20 44 21)" />
-      <rect x="26" y="52" width="12" height="8" rx="2" fill="#7C9A6E" />
-      <path d="M30 56h4M32 54v4" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  );
+  return <img src="/logo.svg" width={size} height={size} alt="" aria-hidden className="shrink-0" />;
 }
 
 export function StepProgress({ current, total, labels }: { current: number; total: number; labels: string[] }) {
