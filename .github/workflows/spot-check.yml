@@ -412,6 +412,7 @@ jobs:
           check /health/pertussis.html 200
           check /health/stop-medicine.html 200
           check /health/growing-pains.html 200
+          check /health/why-no-tests.html 200
           check /images/rsv-infographic.jpg 200
           check /images/common-cold-infographic.jpg 200
           check /images/chickenpox-infographic.jpg 200
@@ -1291,4 +1292,7 @@ jobs:
           # 2026-10-18：破圈文「生長痛」新頁的與長高無關段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           gp1=$(curl -s --max-time 20 "$BASE/health/growing-pains.html" | grep -c '骨頭長高的過程本身不會痛' || true)
           if [ "$gp1" -ge 1 ]; then echo "OK    生長痛頁『骨頭長高不會痛』已上線"; else echo "FAIL  生長痛頁未見『骨頭長高的過程本身不會痛』——10-18 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-10-18i：建立信任文「先不做的判斷」新頁（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          wn1=$(curl -s --max-time 20 "$BASE/health/why-no-tests.html" | grep -c '條件變了，決定就會跟著變' || true)
+          if [ "$wn1" -ge 1 ]; then echo "OK    先不做判斷頁已上線"; else echo "FAIL  先不做判斷頁未見『條件變了，決定就會跟著變』——10-18i 新頁內文疑未上線或已回退"; fail=1; fi
           exit $fail
