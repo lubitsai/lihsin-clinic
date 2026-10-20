@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW"><head><meta charset="utf-8"><title>認識異位性皮膚炎 衛教單張</title>
 <style>
-@page{size:A4;margin:13mm 15mm 11mm}
+@page{size:A4;margin:8mm 13mm 7mm}
 *{box-sizing:border-box}
-body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:10.8pt;line-height:1.48;color:#222;margin:0}
-h1{font-size:19pt;text-align:center;margin:0 0 1mm;letter-spacing:2pt}
-.by{text-align:right;font-weight:bold;margin:0 0 2.5mm}
-h2{font-size:12pt;margin:3mm 0 1mm;color:#7a4a1f;border-bottom:1.5px solid #A0662F;padding-bottom:0.5mm}
-h3{font-size:11pt;margin:1.5mm 0 0.5mm}
+body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:9.9pt;line-height:1.33;color:#222;margin:0}
+h1{font-size:17pt;text-align:center;margin:0 0 1mm;letter-spacing:2pt}
+.by{text-align:right;font-weight:bold;margin:-5mm 0 1mm}
+h2{font-size:11.3pt;margin:2mm 0 0.8mm;color:#7a4a1f;border-bottom:1.5px solid #A0662F;padding-bottom:0.5mm}
+h3{font-size:10.5pt;margin:1mm 0 0.3mm}
 p{margin:0 0 1mm;text-align:justify}
 b{color:#9b2c1f}
 ul,ol{margin:0.5mm 0 1mm;padding-left:6.5mm}
-li{margin:0 0 0.5mm}
-.note{background:#fbf3ea;border-left:4px solid #A0662F;padding:1.5mm 3mm;margin:1.5mm 0}
+li{margin:0}
+.note{background:#fbf3ea;border-left:4px solid #A0662F;padding:1mm 2.5mm;margin:1mm 0}
 table{border-collapse:collapse;width:100%;margin:1.5mm 0}
-td,th{border:1px solid #888;padding:1.2mm 2mm;vertical-align:middle;font-size:10.5pt}
+td,th{border:1px solid #888;padding:0.8mm 2mm;vertical-align:middle;font-size:10pt}
 th{background:#f1e6d8;text-align:left}
-.blank{color:#777;white-space:nowrap}
+.blank{color:#777;white-space:nowrap;font-size:9.5pt}
 .part{width:30mm;font-weight:bold;text-align:center}
-.page2{break-before:page}
-.slogan{text-align:center;font-weight:bold;margin:3mm 0 1.5mm;letter-spacing:0.5pt}
+.cols{display:flex;gap:5mm}.cols>div{flex:1}
+.two{columns:2;column-gap:6mm}
+.two li{break-inside:avoid}
+.slogan{text-align:center;font-weight:bold;margin:1.5mm 0 1mm;letter-spacing:0.5pt}
 .foot{font-size:8.5pt;color:#555;text-align:center;border-top:1px solid #ccc;padding-top:1.5mm}
 </style></head><body>
 <h1>認識異位性皮膚炎</h1>
@@ -27,84 +29,61 @@ th{background:#f1e6d8;text-align:left}
 
 <h2>1. 什麼是異位性皮膚炎（異膚）？是怎麼造成的？</h2>
 <p>異位性皮膚炎是一種<b>慢性且會反覆發作</b>的過敏性皮膚疾病，常與遺傳有關，是嬰幼兒最常見的皮膚疾病之一，約占小兒人口的 3～5%，其中 60% 的患者會在<b>一歲內發病</b>，隨著年紀漸增大多也隨之改善。除了皮膚會出現乾燥搔癢之外，有時會合併不同症狀，如紅疹、脫皮、滲出組織液、結痂或苔癬化等。異膚的成因與<b>基因遺傳、免疫反應、以及環境誘發</b>三大因素相互作用而導致皮膚屏障功能受損。</p>
-<p>健康的皮膚最外層有一層皮脂膜，底下的角質細胞排得很緊密，能擋住過敏原和細菌，也把水分鎖在皮膚裡。異膚孩子的角質層之間有縫隙，水分容易散失，皮膚就變乾；過敏原和微生物也比較容易鑽進去，引來免疫細胞發炎，刺激皮膚裡負責癢覺的神經，孩子就會一直抓，越抓皮膚越破。所以保濕要天天做，發炎的時候再用醫師開的藥膏控制。</p>
 
 <h2>2. 異位性皮膚炎要如何診斷？</h2>
 <p>異膚診斷以<b>臨床表現</b>為主。診斷標準依 Hanifin-Rajka 準則，符合<b>三項或以上</b>即可診斷。</p>
-<ul>
-<li>皮膚搔癢</li>
-<li>典型的皮膚症狀（濕疹樣皮膚炎或苔癬化皮膚炎）及位置</li>
-<li>慢性持續性或反覆發作皮膚炎超過 6 個月以上</li>
-<li>個人或家族成員有異位性體質，如過敏性鼻炎、氣喘、異位性皮膚炎或蕁麻疹等</li>
-</ul>
+<p>①皮膚搔癢　②典型的皮膚症狀（濕疹樣皮膚炎或苔癬化皮膚炎）及位置　③慢性持續性或反覆發作皮膚炎超過 6 個月以上　④個人或家族成員有異位性體質，如過敏性鼻炎、氣喘、異位性皮膚炎或蕁麻疹等</p>
 
 <h2>3. 異位性皮膚炎要如何保護？</h2>
 <p>異位性皮膚炎的預防及保護中，「<b>清潔</b>」及「<b>保濕</b>」是最重要的。</p>
 <ul>
 <li><b>清潔：一天一次</b>，不可只用清水洗（應選用「<b>非皂類</b>」清潔產品）。</li>
 <li><b>保濕：一天至少兩次</b>，其中一次建議在洗完澡稍微擦拭後，還殘留部分濕氣時進行。（應選用「<b>乳霜</b>」潤膚劑，可有效增加皮膚角質層的含水力，幫助修復皮膚屏障功能。規律使用潤膚劑能夠減低藥膏的使用量及症狀嚴重程度。）</li>
-</ul>
 
-<h2>4. 異位性皮膚炎注意事項</h2>
-<ul>
 <li>出門帶濕、乾毛巾，用濕毛巾隨時擦口水、汗水（汗水會刺激皮膚導致抓癢）；<b>不可用濕紙巾</b>。</li>
 <li>室溫維持 <b>22～24℃</b>、濕度維持 <b>50～60%</b>。</li>
 <li>洗澡時間<b>少於 15 分鐘</b>，水溫<b>低於 40℃</b>。</li>
 </ul>
 
-<h2>5. 沐浴乳、乳液、乳霜怎麼挑？</h2>
-<ol>
-<li>劑型越油，保濕越久。由強到弱是軟膏、乳霜、乳液；乳液含水多、很快就乾，異膚的孩子建議選乳霜。</li>
-<li>選無香料、無色素、不含酒精的產品。標示「無香味」不一定沒加香料，看成分表裡沒有「香料、香精、fragrance、parfum」比較準。</li>
-<li>含精油或植物萃取的產品，對皮膚屏障受損的孩子可能是刺激來源。</li>
-<li>含尿素、果酸、水楊酸的產品，擦在發炎或破皮的地方會刺痛，嬰幼兒先不要用。</li>
-<li>新產品先在手臂內側小範圍擦 2～3 天，沒有變紅、變癢再全身使用。</li>
-</ol>
-<p>擦了以後刺痛、變紅或更癢，先停用，回診時把產品帶來給醫師看。</p>
-
-<div class="page2"></div>
-<h2>6. 皮膚變粗、變紅時，在家怎麼處理？</h2>
+<h2>4. 皮膚變粗、變紅時，在家怎麼處理？</h2>
 <p class="note">以下做法適用於<b>已經由醫師看過、手邊有醫師開立藥膏</b>的孩子。還沒看過診、或不確定該用哪一支藥膏，請先回診。</p>
+<div class="cols"><div>
 <h3>整片皮膚變粗糙或紅紅的</h3>
 <ol>
 <li>先用濕毛巾擦掉口水和汗水，再擦乳液。</li>
 <li>悶熱流汗時，把室溫調低、除濕。</li>
 <li>這樣做 <b>3 天沒有改善</b>，或<b>第一天就開始抓</b>，請開始擦醫師開的藥膏，<b>每天早晚各一次</b>。</li>
 </ol>
+</div><div>
 <h3>單顆紅疹（蚊蟲咬或不明原因）</h3>
 <ul>
 <li>不用等，直接用棉棒沾醫師開的藥膏點在紅疹上，<b>一天 3 次</b>，臉上的紅疹也用同一支藥膏。</li>
 <li>這顆紅疹的位置不擦乳液，其他地方照常保濕。</li>
 </ul>
+</div></div>
 <p>類固醇藥膏擦了<b>兩週還沒有完全好，請提早回診</b>，不要自己一直擦下去。</p>
 
-<h2>7. 異位性皮膚炎要如何治療？類固醇藥膏怎麼擦、怎麼減量？</h2>
-<ul>
-<li><b>口服</b>：抗組織胺、抗生素、類固醇</li>
-<li><b>外用</b>：類固醇類藥膏（TCSs）、局部免疫調節藥膏（TCIs）（醫立妥：3 個月以上嬰兒）</li>
-</ul>
+<h2>5. 如何治療？類固醇藥膏怎麼擦、怎麼減量？</h2>
+<p><b>口服</b>：抗組織胺、抗生素、類固醇。<b>外用</b>：類固醇類藥膏（TCSs）、局部免疫調節藥膏（TCIs）（醫立妥：3 個月以上嬰兒）。</p>
 <p>【擦藥膏方式：藥膏應該<b>油油亮亮的覆蓋</b>上去（薄薄來回搓抹是錯誤擦法）】</p>
 <p>常用類固醇藥膏依等級分成 <b>7 級</b>，應依醫師評估皮膚狀況，決定適合的藥膏種類及使用期間，錯誤的使用方式不但達不到治療效果，更會增加不必要副作用產生。</p>
-<p>紅疹退了，藥膏不要一下子全停，突然停藥容易再發。醫師會依下表分階段往下調；每一階段擦多久、用哪一支藥膏，以醫師填寫的為準，回診時再由醫師決定要不要往下一階段。臉和身體的皮膚厚度不同，藥膏與時程分開排。<b>耳朵、頭皮、脖子請照「身體」那一支擦</b>，這幾處也最容易漏擦。</p>
+<p>紅疹退了，藥膏不要一下子全停，突然停藥容易再發；請依下表由醫師分階段往下調，回診時再決定要不要往下一階段。臉和身體藥膏與時程分開排，<b>耳朵、頭皮、脖子請照「身體」那一支擦</b>，這幾處最容易漏擦。</p>
 <table>
-<tr><th class="part">部位</th><th style="width:38mm">期間（醫師填寫）</th><th>擦法</th></tr>
-<tr><td class="part" rowspan="3">臉</td><td class="blank">＿＿/＿＿ ～ ＿＿/＿＿</td><td>每天早晚擦（＿＿＿＿＿＿）</td></tr>
-<tr><td class="blank">＿＿/＿＿ ～ ＿＿/＿＿</td><td>週二、四、六擦（＿＿＿＿＿＿）＋週一、三、五擦醫立妥</td></tr>
-<tr><td class="blank">＿＿/＿＿ ～ ＿＿/＿＿</td><td>週六、日擦（＿＿＿＿＿＿）＋週一、三、五擦醫立妥</td></tr>
-<tr><td class="part" rowspan="3">身體<br><span style="font-weight:normal;font-size:9pt">（含耳朵、頭皮、脖子）</span></td><td class="blank">＿＿/＿＿ ～ ＿＿/＿＿</td><td>每天早晚擦（＿＿＿＿＿＿）</td></tr>
-<tr><td class="blank">＿＿/＿＿ ～ ＿＿/＿＿</td><td>週二、四、六擦（＿＿＿＿＿＿）＋週一、三、五擦醫立妥</td></tr>
-<tr><td class="blank">＿＿/＿＿ ～ ＿＿/＿＿</td><td>週六、日擦（＿＿＿＿＿＿）＋週一、三、五擦醫立妥</td></tr>
+<tr><th style="width:40%">擦法（期間與藥膏由醫師填寫）</th><th>臉</th><th>身體（含耳朵、頭皮、脖子）</th></tr>
+<tr><td>① 每天早晚擦</td><td class="blank">＿＿/＿＿～＿＿/＿＿　（＿＿＿＿＿＿）</td><td class="blank">＿＿/＿＿～＿＿/＿＿　（＿＿＿＿＿＿）</td></tr>
+<tr><td>② 二、四、六擦類固醇＋一、三、五擦醫立妥</td><td class="blank">＿＿/＿＿～＿＿/＿＿　（＿＿＿＿＿＿）</td><td class="blank">＿＿/＿＿～＿＿/＿＿　（＿＿＿＿＿＿）</td></tr>
+<tr><td>③ 六、日擦類固醇＋一、三、五擦醫立妥</td><td class="blank">＿＿/＿＿～＿＿/＿＿　（＿＿＿＿＿＿）</td><td class="blank">＿＿/＿＿～＿＿/＿＿　（＿＿＿＿＿＿）</td></tr>
 </table>
 
-<h2>8. 什麼時候該回診或就醫？</h2>
-<ol>
+<h2>6. 什麼時候該回診或就醫？</h2>
+<ol class="two">
 <li><b>疑似皮膚感染</b>：患部流膿、滲液變多、結黃色痂皮、紅腫熱痛加劇，或突然冒出成群小水泡並快速擴散</li>
 <li><b>合併發燒</b>，或孩子活力明顯變差</li>
 <li><b>癢到明顯影響睡眠</b>或日常活動，做好保濕並依指示用藥後仍未改善</li>
 <li><b>疹子範圍快速擴大</b>或短期內反覆發作</li>
 </ol>
-<p>用藥的調整（換藥、停藥、增量）請回診與醫師討論，勿自行決定。本院為門診、非急診；高燒不退、意識不清等危急狀況請逕赴急診或撥 119。</p>
+<p>本院為門診、非急診；高燒不退、意識不清等危急狀況請逕赴急診或撥 119。</p>
 
 <p class="slogan">～～～早期預防，早期治療～別讓過敏誤了您的孩子～蔡宗儒醫師 關心您的健康～～～</p>
-<p class="foot">立欣診所｜台南市北區育德路467號｜06-2516086｜LINE @lhpedclinic<br>本單張為一般衛教參考，實際病情與用藥請依醫師面診評估。｜2026-10 版（正反兩面）</p>
+<p class="foot">立欣診所｜台南市北區育德路467號｜06-2516086｜LINE @lhpedclinic｜一般衛教參考，實際用藥依醫師評估｜2026-10 版</p>
 </body></html>
