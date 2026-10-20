@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW"><head><meta charset="utf-8"><title>認識異位性皮膚炎 衛教單張</title>
 <style>
-@page{size:A4;margin:13mm 15mm 11mm}
+@page{size:A4;margin:12mm 15mm 9mm}
 *{box-sizing:border-box}
 body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:10.8pt;line-height:1.48;color:#222;margin:0}
 h1{font-size:19pt;text-align:center;margin:0 0 1mm;letter-spacing:2pt}
@@ -14,7 +14,7 @@ ul,ol{margin:0.5mm 0 1mm;padding-left:6.5mm}
 li{margin:0 0 0.5mm}
 .note{background:#fbf3ea;border-left:4px solid #A0662F;padding:1.5mm 3mm;margin:1.5mm 0}
 table{border-collapse:collapse;width:100%;margin:1.5mm 0}
-td,th{border:1px solid #888;padding:1.2mm 2mm;vertical-align:middle;font-size:10.5pt}
+td,th{border:1px solid #888;padding:0.8mm 2mm;vertical-align:middle;font-size:10.5pt}
 th{background:#f1e6d8;text-align:left}
 .blank{color:#777;white-space:nowrap}
 .part{width:30mm;font-weight:bold;text-align:center}
@@ -69,4 +69,5 @@ th{background:#f1e6d8;text-align:left}
 </table>
 
 <p class="slogan">～～～早期預防，早期治療～別讓過敏誤了您的孩子～蔡宗儒醫師 關心您的健康～～～</p>
+<p class="foot">立欣診所　電話 06-2516086</p>
 </body></html>
