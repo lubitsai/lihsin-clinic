@@ -69,5 +69,5 @@ th{background:#f1e6d8;text-align:left}
 </table>
 
 <p class="slogan">～～～早期預防，早期治療～別讓過敏誤了您的孩子～蔡宗儒醫師 關心您的健康～～～</p>
-<p class="foot">立欣診所　電話 06-2516086</p>
+<p class="foot">立欣診所｜台南市北區育德路467號｜電話 06-2516086｜LINE @lhpedclinic</p>
 </body></html>
