@@ -1031,6 +1031,11 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫時要同批改本檢查，不可直接刪。
           ix=$(curl -s --max-time 20 "$BASE/" | grep -c '<strong>臺灣兒科醫學會</strong> 青少年醫學次專科醫師' || true)
           if [ "$ix" -ge 1 ]; then echo "OK    首頁蔡醫師小卡含青少年醫學次專科醫師"; else echo "FAIL  首頁未見『臺灣兒科醫學會 青少年醫學次專科醫師』——10-06v 更新未上線或已回退"; fail=1; fi
+          # 2026-10-21h 新增（PR #433 首頁 #about「本院聘有常年法律顧問。」）：比照 10-05zb，該 PR 合併時
+          # Netlify credits 不足、部署疑似失敗；盯這句才看得出「合併了但沒部署上去」。全站唯一（grep -rlF 實測 1 檔）。
+          # ⚠️ 防呆 17：日後院長核可改寫或續約更換措辭時要同批改本檢查，不可直接刪。
+          lc=$(curl -s --max-time 20 "$BASE/" | grep -c '本院聘有常年法律顧問。</p>' || true)
+          if [ "$lc" -ge 1 ]; then echo "OK    首頁 #about 常年法律顧問聲明已上線"; else echo "FAIL  首頁未見『本院聘有常年法律顧問。』——10-21g PR #433 未部署上線或已回退"; fail=1; fi
           # 2026-09-19d 新增（本批新頁〈傳染性紅斑（蘋果病）〉的可見層哨兵）：
           # 盯病程第 2 階段那句「蘋果臉」的描述。挑這句的理由是**全站唯一性**：
           # 實測 grep -rl 全站 HTML 僅 health/erythema-infectiosum.html 命中。
