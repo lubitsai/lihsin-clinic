@@ -2304,6 +2304,20 @@
  <h2 id="clinic-notice-heading" class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-3 font-chinese">最新門診異動</h2>
  </div>
 
+ <!-- 公告⑥：光復連假門診公告（院長 2026-10-21 貼圖）。10/24（六）、10/26（一）正常看診；10/25（日）早診正常、晚診休診。
+      院長 2026-10-21 指示移到「最新門診異動」最上面（優先於適用日期排序慣例）。EXCEPTIONS 加 2026-10-25 只留早診。 -->
+ <div class="notice-item max-w-3xl mx-auto fade-in-up mb-14" data-expires="2026-10-26">
+ <p class="text-gray-600 font-chinese text-center mb-4">適用日期：<time datetime="2026-10-24">2026 年 10 月 24 日（六）至 10 月 26 日（一）</time></p>
+ <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視光復連假門診公告圖（10 月 25 日（日）早診正常看診、晚診休診）" style="padding:0;cursor:zoom-in;">
+ <picture>
+ <source type="image/webp" srcset="/images/notice/clinic-notice-20261021.webp">
+ <img src="/images/notice/clinic-notice-20261021.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="立欣診所光復連假門診公告：10 月 24 日（星期六）正常看診；10 月 25 日（星期日）早診正常看診，晚診休診；10 月 26 日（星期一）正常看診。造成不便，敬請見諒。立欣診所小鹿醫師團隊關心您的健康。" class="w-full h-auto">
+ </picture>
+ </button>
+ <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
+ <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">光復連假門診時間：<strong>10 月 24 日（六）正常看診</strong>（早診 08:00–11:30、午診 14:30–18:00）；<strong>10 月 25 日（日）早診正常看診</strong>（08:00–11:30），<strong>晚診休診</strong>；<strong>10 月 26 日（一）正常看診</strong>（早診 08:00–12:00、午診 14:30–18:00、晚診 18:30–21:30）。造成不便，敬請見諒；洽詢電話 <strong>06-2516086</strong>。</p>
+ </div>
+
  <!-- 公告③：2026-10 流感疫苗特別門診加開時段（10/1 四 早診 蔡醫師；10/2、10/16、10/30 五 晚診 李醫師）。
       院長 2026-09-26 指定排在中秋公告之下；2026-09-28 中秋公告與蔡醫師代診公告下架後為唯一一則。
       加開＝醫師調度（該診次原本就有開），開診時段與 SCHEDULE 相同，故 EXCEPTIONS 不列特例。
@@ -2326,7 +2340,7 @@
       （build_chatbot_kb.py／check_visit_facts.py 都要求每則帶 data-expires，故不刪屬性）；區塊 backstop 同步 9999-12-31。
       ⚠️ 日後新增時效公告，區塊 backstop 維持 9999-12-31，不要改回較早的日期，否則會把這則常設公告一起藏掉。
       非門診時間異動（各診次起訖不變），EXCEPTIONS 不列特例。原圖 1492×1054 橫式，只轉檔不裁切。 -->
- <div class="notice-item max-w-3xl mx-auto fade-in-up mb-14" data-kb-title="午、晚診掛號提醒（10 月 19 日起實施）" data-show-from="2026-10-19" data-expires="9999-12-31">
+ <div class="notice-item max-w-3xl mx-auto fade-in-up" data-kb-title="午、晚診掛號提醒（10 月 19 日起實施）" data-show-from="2026-10-19" data-expires="9999-12-31">
  <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視午、晚診掛號提醒公告圖（午診可能提前止掛；晚診 18:00 開放現場掛號；午診暫離者 18:00 前返回報到）" style="padding:0;cursor:zoom-in;">
  <picture>
  <source type="image/webp" srcset="/images/notice/clinic-notice-20261019.webp">
@@ -2335,20 +2349,6 @@
  </button>
  <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
  <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">午、晚診掛號提醒：午診可能依現場看診情況<strong>提前停止掛號</strong>；晚診現場掛號 <strong>18:00 開放</strong>、<strong>18:30 開始看診</strong>，晚診重新從 1 號開始，依晚診現場掛號順序看診。午診已掛號、暫時離開者，<strong>須於 18:00 前返回櫃檯完成報到</strong>；未返回報到者，取消午診掛號，之後返回須重新排晚診現場掛號，不保留原號碼。週六無晚診、週日無午診，各診次時間請見下方門診時間表；洽詢電話 <strong>06-2516086</strong>。</p>
- </div>
-
- <!-- 公告⑥：光復連假門診公告（院長 2026-10-21 貼圖）。10/24（六）、10/26（一）正常看診；10/25（日）早診正常、晚診休診。
-      依「適用日期由近到遠」排在仍在效期的①⑤之後（10/24 才開始適用）。EXCEPTIONS 加 2026-10-25 只留早診。 -->
- <div class="notice-item max-w-3xl mx-auto fade-in-up" data-expires="2026-10-26">
- <p class="text-gray-600 font-chinese text-center mb-4">適用日期：<time datetime="2026-10-24">2026 年 10 月 24 日（六）至 10 月 26 日（一）</time></p>
- <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視光復連假門診公告圖（10 月 25 日（日）早診正常看診、晚診休診）" style="padding:0;cursor:zoom-in;">
- <picture>
- <source type="image/webp" srcset="/images/notice/clinic-notice-20261021.webp">
- <img src="/images/notice/clinic-notice-20261021.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="立欣診所光復連假門診公告：10 月 24 日（星期六）正常看診；10 月 25 日（星期日）早診正常看診，晚診休診；10 月 26 日（星期一）正常看診。造成不便，敬請見諒。立欣診所小鹿醫師團隊關心您的健康。" class="w-full h-auto">
- </picture>
- </button>
- <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
- <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">光復連假門診時間：<strong>10 月 24 日（六）正常看診</strong>（早診 08:00–11:30、午診 14:30–18:00）；<strong>10 月 25 日（日）早診正常看診</strong>（08:00–11:30），<strong>晚診休診</strong>；<strong>10 月 26 日（一）正常看診</strong>（早診 08:00–12:00、午診 14:30–18:00、晚診 18:30–21:30）。造成不便，敬請見諒；洽詢電話 <strong>06-2516086</strong>。</p>
  </div>
 
  <!-- ⚠️ 本區塊刻意保留外殼（heading／lightbox／JS）：SOP 以 #clinic-notice 存在為前提定位，
