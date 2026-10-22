@@ -2,9 +2,9 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "a8e5794b9bcd2ae2261b1f96aba2d4840b7f4afc89007ca8de0091181f010f20"
+   "kb_sha256": "af79a23f8db7f06b251a9fe861346b3d8b482906eb07771561b73fcd763e3f2e"
   },
-  "knowledge_sha256": "08f2a70c97bd4dedea61cb97d8970122be0c936e0a5e30d7f4ee3cf893a7f940",
+  "knowledge_sha256": "428164901e6d3cf22f39ea7b1888058698a9e8c123f34fb90c695d7d944f0fdc",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
@@ -3993,8 +3993,8 @@
    "questions": [
     "國定假日、颱風天有看診嗎？"
    ],
-   "answer": "每週一至週日均安排門診，但國定假日、颱風日、農曆春節等特殊日期門診可能調整或停診。出發前建議先查看診所LINE官方帳號或Facebook最新公告，或來電06-2516086確認。\n\n實際門診時間以官網 https://lhpedclinic.com.tw 公告為準，建議來電或 LINE 確認。",
-   "kb_answer": "每週一至週日均安排門診，但國定假日、颱風日、農曆春節等特殊日期門診可能調整或停診。出發前建議先查看診所LINE官方帳號或Facebook最新公告，或來電06-2516086確認。",
+   "answer": "每週一至週日均安排門診，但國定假日、颱風日、農曆春節等特殊日期門診可能調整或停診。政府宣布颱風假或豪雨假時，本院將視風雨情形決定正常開診或停診；不論開診與否，都會另行公告。出發前建議先查看診所LINE官方帳號或Facebook最新公告，或來電06-2516086確認。\n\n實際門診時間以官網 https://lhpedclinic.com.tw 公告為準，建議來電或 LINE 確認。",
+   "kb_answer": "每週一至週日均安排門診，但國定假日、颱風日、農曆春節等特殊日期門診可能調整或停診。政府宣布颱風假或豪雨假時，本院將視風雨情形決定正常開診或停診；不論開診與否，都會另行公告。出發前建議先查看診所LINE官方帳號或Facebook最新公告，或來電06-2516086確認。",
    "page": "台南假日小兒科・夜間門診",
    "source_url": "https://lhpedclinic.com.tw/services/weekend-pediatrics.html",
    "core": true,
