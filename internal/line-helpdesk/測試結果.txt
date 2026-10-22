@@ -1,3 +1,8 @@
+2026-10-22 第二版 2.29（檢索同義詞 27 組＋5 題 FAQ＋RSV 疫苗與英文診斷書價目；由 PR #398 移植；取代未部署的 2.28）
+- sync_assistants.py：官網 315 項、一致性比對 344 句全部一致（parity_queries 新增 59 句）；validate_site 通過。LINE 只跑題庫與價目測試 28 項（環境缺 Flask／Firestore）。
+- --ask：「可以刷卡嗎」「可以帶狗嗎」「有哺乳室嗎」「打完疫苗腫腫的」「被狗咬」「鏈球菌快篩」兩邊皆找到新題；「孕婦RSV疫苗多少錢」「英文診斷書多少錢」兩邊回同一價目。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-17 第二版 2.28（鼻噴售完分流 NASAL／NASAL_STOCK＋題庫更新；取代未部署的 2.27）
 - sync_assistants.py：官網 298 項、一致性比對 284 句全部一致（parity_queries 新增 10 句鼻噴售完問法）；validate_site 通過。LINE unittest 90 項全部通過（pip 裝 requirements.lock.txt 後完整執行）。
 - test_routing.py：新增 test_nasal_sold_out；test_stock_never_promises 的例句「鼻噴流感疫苗有現貨嗎」改為「流感疫苗有現貨嗎」（鼻噴現貨問法改由售完題回答，同樣不承諾現貨）。
