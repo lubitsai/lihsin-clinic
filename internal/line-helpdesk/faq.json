@@ -2,15 +2,15 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "af79a23f8db7f06b251a9fe861346b3d8b482906eb07771561b73fcd763e3f2e"
+   "kb_sha256": "6aa6d1bf9786544e18c94be670b86e273272a7a01637508a71e5c484cbb85747"
   },
-  "knowledge_sha256": "428164901e6d3cf22f39ea7b1888058698a9e8c123f34fb90c695d7d944f0fdc",
+  "knowledge_sha256": "1083e38dd9b5ceb22516d939b3d50b010e965d496bd1a493170772d64914518c",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
    "faq": 1078,
    "ops": 8,
-   "notice": 9,
+   "notice": 10,
    "navigation": 1
   }
  },
@@ -725,6 +725,13 @@
    ]
   },
   "exceptions": {
+   "2026-10-23": [
+    {
+     "session": "MORNING",
+     "start": "08:00",
+     "end": "12:00"
+    }
+   ],
    "2026-10-25": [
     {
      "session": "MORNING",
@@ -15931,6 +15938,18 @@
   {
    "id": "N1",
    "kind": "notice",
+   "title": "薔琵颱風門診臨時異動公告｜2026 年 10 月 23 日（五）",
+   "questions": [
+    "薔琵颱風門診臨時異動公告｜2026 年 10 月 23 日（五）",
+    "薔琵颱風門診臨時異動公告"
+   ],
+   "answer": "薔琵颱風來襲，門診臨時異動：10 月 23 日（五）早上正常門診（08:00–12:00），下午及晚上休診。造成不便，敬請見諒；颱風來襲，請注意自身安全。洽詢電話 06-2516086。",
+   "valid_until": "2026-10-23",
+   "schedule": true
+  },
+  {
+   "id": "N2",
+   "kind": "notice",
    "title": "光復連假門診公告｜2026 年 10 月 24 日（六）至 10 月 26 日（一）",
    "questions": [
     "光復連假門診公告｜2026 年 10 月 24 日（六）至 10 月 26 日（一）",
@@ -15941,7 +15960,7 @@
    "schedule": true
   },
   {
-   "id": "N2",
+   "id": "N3",
    "kind": "notice",
    "title": "10 月流感疫苗特別門診加開時段公告｜2026 年 10 月 1 日（四）至 10 月 30 日（五）",
    "questions": [
@@ -15953,7 +15972,7 @@
    "schedule": true
   },
   {
-   "id": "N3",
+   "id": "N4",
    "kind": "notice",
    "title": "午、晚診掛號提醒（10 月 19 日起實施）",
    "questions": [
@@ -15964,7 +15983,7 @@
    "schedule": true
   },
   {
-   "id": "N4",
+   "id": "N5",
    "kind": "notice",
    "title": "2026 自費流感疫苗資訊｜2026 年 9 月 24 日",
    "questions": [
@@ -15975,7 +15994,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N5",
+   "id": "N6",
    "kind": "notice",
    "title": "今日公費流感疫苗品牌查詢方式公告｜2026 年 10 月 3 日",
    "questions": [
@@ -15986,7 +16005,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N6",
+   "id": "N7",
    "kind": "notice",
    "title": "自費流感疫苗四款到貨公告｜2026 年 9 月 30 日",
    "questions": [
@@ -15997,7 +16016,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N7",
+   "id": "N8",
    "kind": "notice",
    "title": "流感疫苗 5 大問資訊｜2026 年 9 月 26 日",
    "questions": [
@@ -16008,7 +16027,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N8",
+   "id": "N9",
    "kind": "notice",
    "title": "自費流感疫苗 GSK 伏流感到貨公告｜2026 年 9 月 24 日",
    "questions": [
@@ -16019,7 +16038,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N9",
+   "id": "N10",
    "kind": "notice",
    "title": "自費流感疫苗東洋輔流威護到貨公告｜2026 年 9 月 21 日",
    "questions": [

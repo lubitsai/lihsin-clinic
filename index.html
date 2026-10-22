@@ -1987,7 +1987,7 @@
  "inLanguage": {"@type": "Language", "name": "Chinese", "alternateName": "zh-TW"},
  "isPartOf": {"@type": "WebSite", "@id": "https://lhpedclinic.com.tw/#website", "url": "https://lhpedclinic.com.tw/", "name": "立欣診所 LiHsin Clinic"},
  "datePublished": "2024-07-01",
- "dateModified": "2026-10-22T18:00:00+08:00",
+ "dateModified": "2026-10-22T23:30:00+08:00",
  "lastReviewed": "2026-10-20T00:15:00+08:00",
  "reviewedBy": {
   "@type": "Person",
@@ -2306,6 +2306,20 @@
  <div class="container mx-auto px-4">
  <div class="text-center mb-8 fade-in-up">
  <h2 id="clinic-notice-heading" class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-3 font-chinese">最新門診異動</h2>
+ </div>
+
+ <!-- 公告⑦：薔琵颱風門診臨時異動（院長 2026-10-22 貼圖）。10/23（五）早上正常門診（08:00–12:00），下午及晚上休診。
+      適用日期最近（10/23 早於⑥的 10/24），依日期由近到遠排在最上面。EXCEPTIONS 加 2026-10-23 只留早診。 -->
+ <div class="notice-item max-w-3xl mx-auto fade-in-up mb-14" data-expires="2026-10-23">
+ <p class="text-gray-600 font-chinese text-center mb-4">適用日期：<time datetime="2026-10-23">2026 年 10 月 23 日（五）</time></p>
+ <button type="button" class="notice-zoom block w-full rounded-3xl overflow-hidden shadow-md hover:shadow-lg border border-gray-100 hover:border-[#A8C69F] transition-all duration-300 bg-white" aria-label="放大檢視薔琵颱風門診臨時異動公告圖（10 月 23 日（五）早上正常門診，下午及晚上休診）" style="padding:0;cursor:zoom-in;">
+ <picture>
+ <source type="image/webp" srcset="/images/notice/clinic-notice-20261023.webp">
+ <img src="/images/notice/clinic-notice-20261023.jpg" width="1254" height="1254" loading="lazy" decoding="async" alt="立欣診所門診臨時異動：薔琵颱風來襲，10 月 23 日（星期五）早上正常門診，下午及晚上休診。造成不便，敬請見諒。颱風來襲，請注意自身安全。立欣診所小鹿醫師團隊關心您的健康。" class="w-full h-auto">
+ </picture>
+ </button>
+ <p class="text-xs text-gray-400 text-center mt-2 font-chinese">點擊圖片可放大檢視</p>
+ <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed text-center mt-3">薔琵颱風來襲，門診臨時異動：<strong>10 月 23 日（五）早上正常門診</strong>（08:00–12:00），<strong>下午及晚上休診</strong>。造成不便，敬請見諒；颱風來襲，請注意自身安全。洽詢電話 <strong>06-2516086</strong>。</p>
  </div>
 
  <!-- 公告⑥：光復連假門診公告（院長 2026-10-21 貼圖）。10/24（六）、10/26（一）正常看診；10/25（日）早診正常、晚診休診。
@@ -6102,6 +6116,8 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  // 單日特例表（鍵＝UTC+8 日期 YYYY-MM-DD，值＝當日完整時段表，整筆取代該日 SCHEDULE；
  // 整日休診給空陣列 []）。過期條目不影響運作，下次更新公告時順手清除即可。
  var EXCEPTIONS = {
+ // 薔琵颱風：10/23（五）早診 08:00–12:00 正常，午診、晚診休診，故只留早診一段。
+ '2026-10-23': [[480,720,'早診']],
  // 光復連假：10/25（日）早診 08:00–11:30 正常，晚診 18:30–21:00 休診，故只留早診一段。
  // 10/24（六）、10/26（一）正常看診＝與 SCHEDULE 相同，不列特例。（9/25–9/27 中秋特例已過期，本批清除。）
  '2026-10-25': [[480,690,'早診']]
