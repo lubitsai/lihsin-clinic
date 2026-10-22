@@ -26,10 +26,13 @@ class PriceTests(unittest.TestCase):
     def test_items(self):
         self.assertPrice('水痘疫苗多少錢', '2,400 元', '仿單')          # vaccines carry the four caveats
         self.assertPrice('肺炎疫苗多少錢', '4,000', '4,500', '哪一種')
-        self.assertPrice('RSV多少錢', '快篩', '單株抗體', '成人')
+        self.assertPrice('RSV多少錢', '快篩', '單株抗體', '孕婦或長者')
+        self.assertPrice('孕婦RSV疫苗多少錢', '艾沛兒', '7,800 元')
+        self.assertPrice('欣剋融多少錢', '欣剋融', '7,800 元')
         self.assertPrice('流感快篩多少錢', '250 元')
         self.assertPrice('我女兒A肝多少錢', '900 元', '需先預約')
         self.assertPrice('診斷書多少錢', '第 2 份起每份 50 元')
+        self.assertPrice('英文診斷書多少錢', '英文診斷證明書第 1 份為 200 元')
         self.assertPrice('打點滴多少錢', '850 元起')
 
     def test_flu_vaccines(self):

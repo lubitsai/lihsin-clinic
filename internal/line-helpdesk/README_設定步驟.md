@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.28）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.29）
 
-2026-10-17 第二版 2.28｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-10-22 第二版 2.29｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.29 檢索同義詞 27 組＋新增 5 題 FAQ＋RSV 疫苗與英文診斷書價目（2026-10-22）
+
+程式有改（core.py，與官網 search.js 逐字同步）：`TOPIC` 新增家長口語同義詞 27 組（只影響檢索、不改回覆文字），由未合併的 PR #398 移植。題庫新增就診指南 3 題（付款方式、遊戲區／尿布台／哺乳室、寵物）、疫苗頁 1 題（打完疫苗洗澡與紅腫）、外傷頁 1 題（擦傷燙傷貓狗咬傷）、快篩頁 schema 1 題。價目新增孕婦／長者 RSV 疫苗與英文診斷證明書。取代未部署的 2.28。
 
 ## 2.28 鼻噴售完分流＋題庫更新（2026-10-17）
 
