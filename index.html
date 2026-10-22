@@ -178,6 +178,11 @@
  }
  ],
  "paymentAccepted": "現金、信用卡、健保",
+ "amenityFeature": [
+ {"@type": "LocationFeatureSpecification", "name": "兒童遊戲區", "value": true},
+ {"@type": "LocationFeatureSpecification", "name": "院內肺功能檢查", "value": true},
+ {"@type": "LocationFeatureSpecification", "name": "即時看診進度查詢", "value": true}
+ ],
  "openingHoursSpecification": [
  {
  "@type": "OpeningHoursSpecification",
@@ -2194,13 +2199,12 @@
  
  <!-- 賣點清單（易讀格式） -->
  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6 font-chinese text-base md:text-lg text-gray-700">
- <li class="flex items-center gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 兒童過敏氣喘</li>
- <li class="flex items-center gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 公費＋自費疫苗齊全</li>
- <li class="flex items-center gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 平日晚診至 21:30</li>
- <li class="flex items-center gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 週六、週日皆有門診</li>
- <li class="flex items-center gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 新生兒照護</li>
- <li class="flex items-center gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 院內肺功能檢測儀</li>
- <li class="flex items-center gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> LINE 預約・進度查詢</li>
+ <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 久咳、夜咳？院內可做肺功能檢查</li>
+ <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 平日晚診到 21:30，週末也看診</li>
+ <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 手機查看診進度，快輪到再出門</li>
+ <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 新生兒照護門診</li>
+ <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 疫苗接種前醫師評估，現貨請先確認</li>
+ <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 候診區有兒童遊戲區</li>
  </ul>
  
  <!-- CTA Buttons -->
@@ -3301,50 +3305,50 @@
  <div class="container mx-auto px-4">
  <div class="text-center mb-16 fade-in-up visible">
  <h2 id="about-heading" class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#7C9A6E] mb-4 font-chinese" style="">為什麼選擇 立欣診所</h2>
- <p class="text-xl text-gray-600 font-chinese max-w-3xl mx-auto" style="">我們以專業、親切、便利為核心理念，致力於提供台南市民用心、用情的醫療服務</p>
+ <p class="text-xl text-gray-600 font-chinese max-w-3xl mx-auto" style="">帶孩子看病時，家長常擔心的幾件事，我們這樣安排。</p>
  </div>
 
  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
  <!-- Reason 1 -->
  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-lg card-hover fade-in-up border-t-4 border-[#7C9A6E] visible">
  <div class="text-5xl mb-4">🏥</div>
- <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">醫學中心訓練背景</h3>
- <p class="text-gray-600 leading-relaxed font-chinese" style="">由具醫學中心訓練背景的醫師團隊親自看診，結合細心親切的護理服務，為每一位孩子提供值得信賴的高品質醫療照護。</p>
+ <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">怕醫生講太快，聽不懂？</h3>
+ <p class="text-gray-600 leading-relaxed font-chinese" style="">看診時說明判斷的依據、回家要觀察什麼、出現哪些情況要再回診。蔡宗儒院長在馬偕醫院接受兒童過敏氣喘免疫風濕科訓練。</p>
  </div>
 
  <!-- Reason 2 -->
  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-lg card-hover fade-in-up border-t-4 border-[#7C9A6E] visible">
  <div class="text-5xl mb-4">💝</div>
- <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">暖心照護</h3>
- <p class="text-gray-600 leading-relaxed font-chinese" style="">以溫暖、耐心與同理心陪伴每位家長與孩子，仔細傾聽需求，提供安心且貼心的就醫體驗。</p>
+ <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">第一次當爸媽，不知道該不該擔心？</h3>
+ <p class="text-gray-600 leading-relaxed font-chinese" style="">新生兒照護門診從餵奶、吐奶到黃疸都能問。平時有疑問，也可以先加 LINE 詢問。</p>
  </div>
 
  <!-- Reason 3 -->
  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-lg card-hover fade-in-up border-t-4 border-[#7C9A6E] visible" style="">
  <div class="text-5xl mb-4">🎨</div>
- <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">溫馨友善候診環境</h3>
- <p class="text-gray-600 leading-relaxed font-chinese" style="outline: none;">診所融入卡通主題與童趣元素，營造輕鬆自在的看診氛圍，並設有專屬兒童遊戲區，讓孩子在等候時也能安心玩樂，降低就診緊張感。</p>
+ <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">孩子一進診所就緊張？</h3>
+ <p class="text-gray-600 leading-relaxed font-chinese" style="outline: none;">診所用卡通主題布置，設有兒童遊戲區，孩子可以先玩一下再進診間。</p>
  </div>
 
  <!-- Reason 4 -->
  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-lg card-hover fade-in-up border-t-4 border-[#7C9A6E] visible">
  <div class="text-5xl mb-4">⏰</div>
- <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">彈性看診時間</h3>
- <p class="text-gray-600 leading-relaxed font-chinese" style="">週一至週五晚間門診服務至 21:30，週六、週日及假日亦提供門診服務，方便上班族、學生及忙碌家庭彈性安排就診時間。</p>
+ <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">孩子傍晚才開始發燒？</h3>
+ <p class="text-gray-600 leading-relaxed font-chinese" style="">平日晚診看到 21:30，週六、週日及假日也有門診。症狀嚴重或呼吸困難，請直接到急診。</p>
  </div>
 
  <!-- Reason 5 -->
  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-lg card-hover fade-in-up border-t-4 border-[#7C9A6E] visible">
  <div class="text-5xl mb-4">📱</div>
- <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">多元預約管道</h3>
- <p class="text-gray-600 leading-relaxed font-chinese" style="">網路時段預約 24 小時都能操作，門診時間也可來電由櫃檯代訂，協助縮短候診時間。</p>
+ <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">不想在候診室待太久？</h3>
+ <p class="text-gray-600 leading-relaxed font-chinese" style="">網路預約 24 小時可操作，也可以在門診時間來電請櫃檯代訂。手機能查即時看診進度，快輪到再出門。</p>
  </div>
 
  <!-- Reason 6 -->
  <div class="bg-white p-5 md:p-8 rounded-3xl shadow-lg card-hover fade-in-up border-t-4 border-[#7C9A6E] visible">
  <div class="text-5xl mb-4">👨‍👩‍👧‍👦</div>
- <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">全家照護</h3>
- <p class="text-gray-600 leading-relaxed font-chinese" style="">從新生兒、兒童到成人與長輩，提供全方位的家庭健康照護，成為您值得長期信賴的家庭醫師與健康夥伴。</p>
+ <h3 class="text-2xl font-bold text-[#7C9A6E] mb-4 font-chinese">孩子看完，大人也不舒服？</h3>
+ <p class="text-gray-600 leading-relaxed font-chinese" style="">家庭醫學門診看成人與長輩的常見疾病，慢性病提供控制與追蹤，一家人可以在同一間診所看。</p>
  </div>
  </div>
  <p class="mt-10 text-center text-gray-600 leading-relaxed font-chinese max-w-3xl mx-auto">114 年參與衛生福利部疾病管制署「抗生素管理與感染管制卓越計畫」，擔任聯盟診所。</p>
