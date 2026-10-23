@@ -1206,6 +1206,23 @@
  margin-bottom: 0.5rem !important;
  }
  }
+ /* 桌機 Hero 收緊上下留白與按鈕高度，讓預約按鈕更早進入首屏（版面結構不變）*/
+ @media (min-width: 1024px) {
+ .hero-bg { padding-bottom: 1.5rem !important; }
+ .hero-cta-list { gap: 0.5rem; }
+ .hero-cta-list > a, .hero-cta-pair > a {
+ padding-top: 0.625rem;
+ padding-bottom: 0.625rem;
+ font-size: 1rem;
+ line-height: 1.5rem;
+ }
+ }
+ @media (min-width: 1280px) {
+ .hero-bg { padding-top: 128px !important; }
+ }
+ @media (min-width: 1536px) {
+ .hero-bg { padding-top: 104px !important; }
+ }
 
  /* Floating Animation */
  @keyframes float {
@@ -2208,7 +2225,7 @@
  </ul>
  
  <!-- CTA Buttons -->
- <div class="flex flex-col gap-3 mb-3">
+ <div class="hero-cta-list flex flex-col gap-3 mb-3">
  <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" onclick="trackCTA('LINE_Booking_Hero')" class="btn-primary px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center w-full">💬 立即加入 LINE 諮詢／預約</a>
  <a href="https://lhpedclinic.booknow.com.tw/" target="_blank" rel="noopener" onclick="trackCTA('Booking_Hero')" class="bg-[#D4B896] hover:bg-[#c2a785] text-white px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center transition-all duration-300 transform hover:-translate-y-1 shadow-md w-full">📅 網路預約掛號</a>
  <a href="#realtime-progress" onclick="trackCTA('Progress_Query_Hero')" class="bg-[#D4B896] hover:bg-[#c2a785] text-white px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center transition-all duration-300 transform hover:-translate-y-1 shadow-md w-full">⏱️ 免排隊・即時看診進度</a>
@@ -2216,7 +2233,7 @@
  <a href="/game/" onclick="trackCTA('DeerGame_Hero')" class="btn-outline px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center transition-all duration-300 transform hover:-translate-y-1 w-full">🦌 小鹿醫師 3D 看診趣（免費遊戲）</a>
  </div>
  <!-- 行動版：電話與導航併排（節省空間）-->
- <div class="grid grid-cols-2 gap-3 mb-6">
+ <div class="hero-cta-pair grid grid-cols-2 gap-3 mb-6">
  <a href="tel:062516086" onclick="trackCTA('Phone_Call_Hero')" class="btn-outline px-3 py-4 rounded-full font-chinese font-semibold text-base md:text-lg text-center">📞 撥打電話</a>
  <a href="https://www.google.com/maps/dir/?api=1&amp;destination=立欣診所+台南市北區育德路467號" target="_blank" rel="noopener" class="btn-outline px-3 py-4 rounded-full font-chinese font-semibold text-base md:text-lg text-center">📍 導航來院</a>
  </div>
