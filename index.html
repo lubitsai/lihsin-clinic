@@ -1206,6 +1206,43 @@
  margin-bottom: 0.5rem !important;
  }
  }
+ /* 桌機 Hero 一屏看完：左欄文字、右欄行動入口；高度依內容，不再撐滿 min-h-screen */
+ .hero-mascot { display: none; }
+ @media (max-width: 767px) {
+ .hero-grid { gap: 0; }
+ }
+ @media (min-width: 1024px) {
+ .hero-bg {
+ min-height: auto !important;
+ padding-bottom: 2rem !important;
+ }
+ .hero-grid { gap: 2.5rem; }
+ .hero-grid > div:first-child ul { margin-bottom: 0; }
+ .hero-mascot { display: block; width: 10rem; }
+ .hero-cta-list {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 0.625rem;
+ }
+ .hero-cta-list > a {
+ padding: 0.75rem 0.5rem;
+ font-size: 1rem;
+ }
+ .hero-cta-list > a:first-child {
+ grid-column: 1 / -1;
+ font-size: 1.125rem;
+ }
+ .hero-actions > .grid-cols-2 { margin-bottom: 1rem; }
+ .hero-actions > .grid-cols-2 > a { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+ .hero-actions > p { margin-bottom: 1rem; }
+ .hero-audience { margin-bottom: 0; }
+ .hero-audience > .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+ .hero-audience .audience-card { flex-direction: column; text-align: center; gap: 0.25rem; padding: 0.625rem 0.25rem; }
+ }
+ @media (min-width: 1536px) {
+ .hero-bg { padding-top: 112px !important; }
+ .hero-mascot { width: 12rem; }
+ }
 
  /* Floating Animation */
  @keyframes float {
@@ -2176,7 +2213,7 @@
  <!-- Hero Section -->
  <section class="hero-bg min-h-screen flex items-start pb-12" aria-label="診所介紹" style="padding-top:140px;">
  <div class="container mx-auto px-4" style="">
- <div class="grid md:grid-cols-2 gap-12 items-center">
+ <div class="hero-grid grid md:grid-cols-2 gap-12 items-center">
  <!-- Left Content -->
  <div class="fade-in-up visible">
  <!-- 今日開診狀態（動態標籤，由 JS 依門診時間自動判斷）-->
@@ -2190,9 +2227,17 @@
  </a>
  </div>
 
+ <div class="flex items-center justify-between gap-4">
+ <div>
  <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-[#7C9A6E] mb-2 font-chinese">立欣診所</h1>
  <p class="text-xl md:text-2xl font-bold text-[#7C9A6E] mb-2 font-chinese">🦌 小鹿醫師團隊</p>
  <p class="text-2xl md:text-3xl text-gray-700 mb-2 font-english" style="">LiHsin Clinic</p>
+ </div>
+ <!-- 小鹿主視覺：桌機（≥1024px）放標題旁縮小，讓整個 Hero 一屏看完；平板／手機隱藏 -->
+ <div class="hero-mascot flex-shrink-0">
+ <picture><source type="image/webp" srcset="images/hero-mascot.webp"><img src="images/hero-mascot.png" data-fallback="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQThDNjlGIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN0M5QTZFIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxjaXJjbGUgY3g9IjI1MCIgY3k9IjI1MCIgcj0iMjAwIiBmaWxsPSJ1cmwoI2JnKSIgb3BhY2l0eT0iMC4zIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1MCAyMzApIj48ZWxsaXBzZSBjeD0iMCIgY3k9IjQwIiByeD0iODAiIHJ5PSIxMDAiIGZpbGw9IiNENEI4OTYiLz48Y2lyY2xlIGN4PSIwIiBjeT0iLTMwIiByPSI2MCIgZmlsbD0iI0Q0Qjg5NiIvPjxlbGxpcHNlIGN4PSItMjUiIGN5PSItMzAiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiMzYTNhM2EiLz48ZWxsaXBzZSBjeD0iMjUiIGN5PSItMzAiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiMzYTNhM2EiLz48Y2lyY2xlIGN4PSItMjMiIGN5PSItMzIiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMjciIGN5PSItMzIiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGVsbGlwc2UgY3g9IjAiIGN5PSItMTAiIHJ4PSI2IiByeT0iNCIgZmlsbD0iIzljN2E1YyIvPjxwYXRoIGQ9Ik0gLTE1IDAgUSAwIDggMTUgMCIgc3Ryb2tlPSIjOWM3YTVjIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0gLTUwIC01MCBMIC01NSAtODUgTCAtNDUgLTc4IFoiIGZpbGw9IiM5YzdhNWMiLz48cGF0aCBkPSJNIDUwIC01MCBMIDU1IC04NSBMIDQ1IC03OCBaIiBmaWxsPSIjOWM3YTVjIi8+PGNpcmNsZSBjeD0iLTMwIiBjeT0iNjAiIHI9IjYiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjYiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjgwIiByPSI1IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC42Ii8+PC9nPgo8dGV4dCB4PSIyNTAiIHk9IjQ1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzdDOUE2RSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSJib2xkIj7nq4vmrKPoqLrmiYA8L3RleHQ+Cjwvc3ZnPg==" alt="立欣診所主視覺・台南北區小兒科診所｜小鹿醫師團隊" width="500" height="500" class="float-animation w-full drop-shadow-2xl" loading="eager" fetchpriority="high" decoding="async" style="filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 20px 30px);"></picture>
+ </div>
+ </div>
  <p class="text-base md:text-lg text-gray-600 mb-3 font-chinese">台南市北區｜小兒科・<a href="/services/weekend-pediatrics.html" onclick="trackCTA('Hero_Weekend')" class="text-[#7C9A6E] hover:underline">台南假日兒科</a>・兒童過敏氣喘・異位性皮膚炎・家庭醫學・疫苗接種・科學減重</p>
  <p class="text-base md:text-xl text-[#7C9A6E] font-bold mb-4 font-chinese">「醫學中心級的專業，家門口的暖心照護」</p>
  <p class="speakable-summary text-base md:text-lg text-gray-600 mb-6 font-chinese leading-relaxed">立欣診所位於<strong>台南市北區育德路 467 號</strong>，由<strong>馬偕兒童過敏氣喘免疫風濕科訓練</strong>背景的蔡宗儒院長領軍，服務台南北區、東區、中西區、永康區、安南區家庭，提供從新生兒、兒童到全家人的全方位醫療照護。</p>
@@ -2206,9 +2251,12 @@
  <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 疫苗接種前醫師評估，現貨請先確認</li>
  <li class="flex items-start gap-2"><span class="text-[#7C9A6E] font-bold">✓</span> 候診區有兒童遊戲區</li>
  </ul>
- 
+ </div>
+
+ <!-- Right Content - 行動入口（桌機與文字並排，行動版接在文字下方）-->
+ <div class="hero-actions">
  <!-- CTA Buttons -->
- <div class="flex flex-col gap-3 mb-3">
+ <div class="hero-cta-list flex flex-col gap-3 mb-3">
  <a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" onclick="trackCTA('LINE_Booking_Hero')" class="btn-primary px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center w-full">💬 立即加入 LINE 諮詢／預約</a>
  <a href="https://lhpedclinic.booknow.com.tw/" target="_blank" rel="noopener" onclick="trackCTA('Booking_Hero')" class="bg-[#D4B896] hover:bg-[#c2a785] text-white px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center transition-all duration-300 transform hover:-translate-y-1 shadow-md w-full">📅 網路預約掛號</a>
  <a href="#realtime-progress" onclick="trackCTA('Progress_Query_Hero')" class="bg-[#D4B896] hover:bg-[#c2a785] text-white px-6 md:px-8 py-4 rounded-full font-chinese font-semibold text-lg text-center transition-all duration-300 transform hover:-translate-y-1 shadow-md w-full">⏱️ 免排隊・即時看診進度</a>
@@ -2224,7 +2272,7 @@
  <p class="text-sm text-gray-500 font-chinese mb-6">夜間與假日門診人潮較多，建議先查詢即時看診進度，或提前線上預約。</p>
 
  <!-- ★ 分眾快速入口（新增）-->
- <div class="mb-8">
+ <div class="hero-audience mb-8">
  <p class="text-sm text-gray-500 font-chinese mb-3 font-semibold">您今天是為了什麼而來？</p>
  <div class="grid grid-cols-2 gap-2">
  <a href="#services" onclick="trackCTA('Audience_Baby')" class="audience-card flex items-center gap-2 bg-white border border-[#A8C69F] rounded-2xl px-3 py-3 hover:bg-[#f0f7ed] hover:border-[#7C9A6E] transition-all shadow-sm" style="text-decoration:none;">
@@ -2259,10 +2307,6 @@
  </div>
  </div>
 
- <!-- Right Content - Deer Mascot（行動版隱藏以縮短首屏滾動）-->
- <div class="hidden md:flex justify-center">
- <picture><source type="image/webp" srcset="images/hero-mascot.webp"><img src="images/hero-mascot.png" data-fallback="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgNTAwIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iYmciIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjQThDNjlGIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjN0M5QTZFIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+CjxjaXJjbGUgY3g9IjI1MCIgY3k9IjI1MCIgcj0iMjAwIiBmaWxsPSJ1cmwoI2JnKSIgb3BhY2l0eT0iMC4zIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI1MCAyMzApIj48ZWxsaXBzZSBjeD0iMCIgY3k9IjQwIiByeD0iODAiIHJ5PSIxMDAiIGZpbGw9IiNENEI4OTYiLz48Y2lyY2xlIGN4PSIwIiBjeT0iLTMwIiByPSI2MCIgZmlsbD0iI0Q0Qjg5NiIvPjxlbGxpcHNlIGN4PSItMjUiIGN5PSItMzAiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiMzYTNhM2EiLz48ZWxsaXBzZSBjeD0iMjUiIGN5PSItMzAiIHJ4PSI4IiByeT0iMTIiIGZpbGw9IiMzYTNhM2EiLz48Y2lyY2xlIGN4PSItMjMiIGN5PSItMzIiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGNpcmNsZSBjeD0iMjciIGN5PSItMzIiIHI9IjIiIGZpbGw9IndoaXRlIi8+PGVsbGlwc2UgY3g9IjAiIGN5PSItMTAiIHJ4PSI2IiByeT0iNCIgZmlsbD0iIzljN2E1YyIvPjxwYXRoIGQ9Ik0gLTE1IDAgUSAwIDggMTUgMCIgc3Ryb2tlPSIjOWM3YTVjIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0gLTUwIC01MCBMIC01NSAtODUgTCAtNDUgLTc4IFoiIGZpbGw9IiM5YzdhNWMiLz48cGF0aCBkPSJNIDUwIC01MCBMIDU1IC04NSBMIDQ1IC03OCBaIiBmaWxsPSIjOWM3YTVjIi8+PGNpcmNsZSBjeD0iLTMwIiBjeT0iNjAiIHI9IjYiIGZpbGw9IndoaXRlIiBvcGFjaXR5PSIwLjYiLz48Y2lyY2xlIGN4PSIyMCIgY3k9IjgwIiByPSI1IiBmaWxsPSJ3aGl0ZSIgb3BhY2l0eT0iMC42Ii8+PC9nPgo8dGV4dCB4PSIyNTAiIHk9IjQ1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzdDOUE2RSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSJib2xkIj7nq4vmrKPoqLrmiYA8L3RleHQ+Cjwvc3ZnPg==" alt="立欣診所主視覺・台南北區小兒科診所｜小鹿醫師團隊" width="500" height="500" class="float-animation w-full max-w-md drop-shadow-2xl" loading="eager" fetchpriority="high" decoding="async" style="filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 20px 30px);"></picture>
- </div>
  </div>
  </div>
 
