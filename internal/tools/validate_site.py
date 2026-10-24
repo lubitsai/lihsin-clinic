@@ -947,6 +947,36 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
                         rep.err("services/weekend-pediatrics.html", "E-SCHEDULE",
                                 f"週{'日一二三四五六'[int(day)]} {sess} 格寫「{got}」，首頁門診時間表為「{expect}」")
 
+            # 印有時段的圖（2026-10-24b 院長裁示「1，照原尺寸掛」）：圖是二進位、上面的字比對不到，
+            # 只能把「畫圖當下的班表」釘在這裡，首頁班表一變就擋 push＝ERROR。
+            # 圖上印的是週六／週日每診醫師＋起訖，與平日三診的最早開始～最晚結束（不分醫師）。
+            # 修法：①請院長交新圖 → 用新日期 slug 產檔換掉舊檔與所有引用（不可同名覆寫，快取）；
+            #       ②若班表的變動不在圖上（例如平日某診換醫師），確認圖仍正確後，把下方釘選值改成訊息裡的「現在」。
+            img_pins = {
+                "images/weekend-pediatrics-20261024-infographic.jpg":
+                    "六 MORNING 蔡08:00–11:30｜六 AFTERNOON 李14:30–18:00｜"
+                    "日 MORNING 蔡08:00–11:00 李08:00–11:30｜日 EVENING 蔡18:30–21:00｜"
+                    "平日 MORNING 08:00–12:00｜平日 AFTERNOON 14:30–18:00｜平日 EVENING 18:30–21:30",
+            }
+            parts = []
+            for day in ("6", "0"):
+                for sess in ("MORNING", "AFTERNOON", "EVENING"):
+                    slots = [s for s in sched["weekly"].get(day, []) if s["session"] == sess]
+                    if slots:
+                        parts.append(f"{'日一二三四五六'[int(day)]} {sess} "
+                                     + " ".join(f"{d}{s['start']}–{s['end']}" for s in slots for d in s["doctors"]))
+            for sess in ("MORNING", "AFTERNOON", "EVENING"):
+                slots = [s for d in "12345" for s in sched["weekly"].get(d, []) if s["session"] == sess]
+                if slots:
+                    parts.append(f"平日 {sess} {min(s['start'] for s in slots)}–{max(s['end'] for s in slots)}")
+            now = "｜".join(parts)
+            site = "\n".join(f.read_text(encoding="utf-8") for f in root.rglob("*.html") if "booking-system" not in f.parts)
+            for img, pinned in img_pins.items():
+                if ("/" + img) in site and now != pinned:
+                    rep.err(img, "E-SCHEDULE",
+                            f"這張圖印有門診時段，首頁班表已變更 → 請院長交新圖並以新檔名替換；"
+                            f"若圖上內容仍正確，把 validate_site.py 的釘選值改成現在值。釘選「{pinned}」｜現在「{now}」")
+
 
 def main():
     ap = argparse.ArgumentParser()
