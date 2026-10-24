@@ -530,6 +530,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/mmr-vaccine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/mmr-vaccine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -543,6 +544,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/rotavirus-vaccine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/rotavirus-vaccine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -563,6 +565,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/varicella-vaccine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/varicella-vaccine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
