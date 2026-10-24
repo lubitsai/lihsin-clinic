@@ -370,6 +370,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/family-medicine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/family-medicine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-09-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -513,18 +514,21 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/hypertension.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/hypertension-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/diabetes.html</loc>
-    <lastmod>2026-08-03</lastmod>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/diabetes-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/hyperlipidemia.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/hyperlipidemia-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

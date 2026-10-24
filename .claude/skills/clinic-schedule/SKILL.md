@@ -51,6 +51,8 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
   圖上印週六／週日每診醫師＋起訖與平日三診時段。`validate_site.py` 把畫圖當下的班表**釘選**起來，首頁班表一變就 `E-SCHEDULE` 擋 push。
   → 請院長交新圖，用**新日期 slug** 產檔（不可同名覆寫，快取），替換頁面 `<figure>`、`sitemap.xml` `image:loc`、`spot-check` 哨兵，`git rm` 舊檔並更新釘選值；
   變動不在圖上（例如平日某診換醫師）時，確認圖仍正確後只改釘選值。
+  🖼️ **`services/family-medicine.html` 衛教圖**（`images/family-medicine-infographic.*`，2026-10-24d）印有「平日早午晚三診、夜診至 21:30、週六週日皆有門診」，
+  同樣被釘選（粗粒度：只看平日幾診、夜診到幾點、週末有無門診）；這幾項變了就要換圖，流程同上。
 
 > **預約系統會跟著官網走（2026-08-05 起）**：`booking-system` 的班表以官網為唯一事實來源。
 > 情境 A、B 只要動到門診時間表或 `SCHEDULE`／`EXCEPTIONS`，都必須跑 `sync_schedule.py`（見〈共同尾段〉第 3 點），
