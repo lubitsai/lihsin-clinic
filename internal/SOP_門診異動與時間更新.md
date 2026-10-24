@@ -182,6 +182,7 @@ grep -rn '平日夜診至21:30\|夜診至 21:30\|週六週日皆有門診' --inc
 | `visit-guide.html` | JSON-LD description（約 784）、FAQ 答案（約 831）、meta desc（14/21/28） | 門診時間表與敘述 |
 | `services/weekend-pediatrics.html` | JSON-LD `openingHoursSpecification`（約 78+）、description（約 62）、meta desc（7/16） | 假日/夜間時段（此頁專講假日夜診，務必改） |
 | **`images/weekend-pediatrics-20261024-infographic.*`**（假日小兒科頁衛教圖，2026-10-24b 起） | 圖上印週六／週日每診醫師＋起訖、平日三診時段 | **圖是二進位，只能換圖**：請院長交新圖 → 新日期 slug 產檔（不可同名覆寫）→ 換 `<figure>`／sitemap `image:loc`／`spot-check` 哨兵、`git rm` 舊檔 → 改 `validate_site.py` 的釘選值。班表變了沒換，`E-SCHEDULE` 會擋 push |
+| **`images/family-medicine-infographic.*`**（家醫科頁衛教圖，2026-10-24d 起） | 圖上印「平日早、午、晚三診｜夜診至 21:30｜週六、週日皆有門診」 | 同上：只換圖不能改字。釘選為粗粒度，**平日診次、夜診結束時間或週末有無門診變動**才會擋 |
 | **其他 services/ 與 health/ 頁** | 探查指令列出的 meta desc | 多頁 desc 含「平日夜診至21:30」固定句 |
 | `llms.txt`／`llms-full.txt` | 搜門診時間相關條目 | 提供給 LLM 的摘要，須同步 |
 

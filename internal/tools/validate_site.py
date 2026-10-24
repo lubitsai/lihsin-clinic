@@ -947,16 +947,20 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
                         rep.err("services/weekend-pediatrics.html", "E-SCHEDULE",
                                 f"週{'日一二三四五六'[int(day)]} {sess} 格寫「{got}」，首頁門診時間表為「{expect}」")
 
-            # 印有時段的圖（2026-10-24b 院長裁示「1，照原尺寸掛」）：圖是二進位、上面的字比對不到，
+            # 印有時段的圖（2026-10-24b 院長裁示「1，照原尺寸掛」；10-24d 加 family-medicine）：圖是二進位、上面的字比對不到，
             # 只能把「畫圖當下的班表」釘在這裡，首頁班表一變就擋 push＝ERROR。
             # 圖上印的是週六／週日每診醫師＋起訖，與平日三診的最早開始～最晚結束（不分醫師）。
             # 修法：①請院長交新圖 → 用新日期 slug 產檔換掉舊檔與所有引用（不可同名覆寫，快取）；
             #       ②若班表的變動不在圖上（例如平日某診換醫師），確認圖仍正確後，把下方釘選值改成訊息裡的「現在」。
+            # 釘選分兩種粒度：full＝週末每診醫師＋起訖、平日三診時段（weekend-pediatrics 圖）；
+            # coarse＝只看「平日有幾診、夜診到幾點、週六／週日有沒有門診」（family-medicine 圖，2026-10-24d）。
             img_pins = {
-                "images/weekend-pediatrics-20261024-infographic.jpg":
+                "images/weekend-pediatrics-20261024-infographic.jpg": ("full",
                     "六 MORNING 蔡08:00–11:30｜六 AFTERNOON 李14:30–18:00｜"
                     "日 MORNING 蔡08:00–11:00 李08:00–11:30｜日 EVENING 蔡18:30–21:00｜"
-                    "平日 MORNING 08:00–12:00｜平日 AFTERNOON 14:30–18:00｜平日 EVENING 18:30–21:30",
+                    "平日 MORNING 08:00–12:00｜平日 AFTERNOON 14:30–18:00｜平日 EVENING 18:30–21:30"),
+                "images/family-medicine-infographic.jpg": ("coarse",
+                    "平日 MORNING/AFTERNOON/EVENING｜夜診至 21:30｜週六有門診｜週日有門診"),
             }
             parts = []
             for day in ("6", "0"):
@@ -969,9 +973,16 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
                 slots = [s for d in "12345" for s in sched["weekly"].get(d, []) if s["session"] == sess]
                 if slots:
                     parts.append(f"平日 {sess} {min(s['start'] for s in slots)}–{max(s['end'] for s in slots)}")
-            now = "｜".join(parts)
+            wk = [s for d in "12345" for s in sched["weekly"].get(d, [])]
+            sess_all = [x for x in ("MORNING", "AFTERNOON", "EVENING")
+                        if all(any(s["session"] == x for s in sched["weekly"].get(d, [])) for d in "12345")]
+            eve_end = max((s["end"] for s in wk if s["session"] == "EVENING"), default="無")
+            fp = {"full": "｜".join(parts),
+                  "coarse": f"平日 {'/'.join(sess_all)}｜夜診至 {eve_end}｜"
+                            f"週六{'有' if sched['weekly'].get('6') else '無'}門診｜週日{'有' if sched['weekly'].get('0') else '無'}門診"}
             site = "\n".join(f.read_text(encoding="utf-8") for f in root.rglob("*.html") if "booking-system" not in f.parts)
-            for img, pinned in img_pins.items():
+            for img, (kind, pinned) in img_pins.items():
+                now = fp[kind]
                 if ("/" + img) in site and now != pinned:
                     rep.err(img, "E-SCHEDULE",
                             f"這張圖印有門診時段，首頁班表已變更 → 請院長交新圖並以新檔名替換；"
