@@ -421,6 +421,7 @@ jobs:
           check /images/varicella-vaccine-infographic.jpg 200
           check /images/mmr-vaccine-infographic.jpg 200
           check /images/rotavirus-vaccine-infographic.jpg 200
+          check /images/weekend-pediatrics-20261024-infographic.jpg 200
           check /images/child-pneumonia-20261012-infographic.jpg 200
           check /images/newborn-jaundice-infographic.jpg 200
           check /images/asthma-inhaler-infographic.jpg 200
