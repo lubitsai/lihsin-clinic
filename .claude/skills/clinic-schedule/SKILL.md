@@ -78,7 +78,7 @@ description: 立欣診所官網「門診時間相關變更」的標準流程。�
    python3 internal/tools/sync_schedule.py          # 重產 booking-system/prisma/schedule.json ＋ notices/schedule.json
    python3 internal/tools/sync_schedule.py --check  # push 前確認，非 0 就是還沒同步
    ```
-   產生的 JSON 要一併 commit。**已上線的預約系統另需在主機執行** `npx tsx scripts/sync-schedule.ts`
+   產生的 JSON 要一併 commit。**已上線的預約系統另需在主機執行** `npx tsx scripts/sync-schedule.ts`（**自建系統切換前免跑、也不要交代院長跑**；現況見上方 ⑤）
    （可先 `--dry-run` 看會改什麼）。此工具同時逐格比對可見表與 `SCHEDULE` 常數，
    只改一邊會直接報錯——等於順手把官網自己的兩份副本也對過一次。
    ➕ **`notices/schedule.json`（2026-09-28 起）**：同內容的公開副本，假日兒科頁頂端「今天、本週六、本週日有沒有門診？」卡讀它
