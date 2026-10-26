@@ -123,7 +123,7 @@
      猜錯就是徽章對家長說謊。同時把「幾點公布、補哪一條」寫進 `00` 第六節待辦，別靠記憶。
    - 過期條目不影響運作，下次更新公告時順手清掉舊的即可
 5. **收尾**（見 §三 共同尾段）：dateModified 跳 + sitemap 首頁 lastmod + 驗證 + Chromium 實測 + 部署。**臨時公告不進 llms**（時效資訊，過期即誤導 AI 引用）。
-6. **🧹 順手清掉已過期那幾則的檔案**（院長 2026-08-25 指示，入制）：公告下架後，**該則的公告圖 `images/notice/clinic-notice-YYYYMMDD[b].{jpg,webp}` 與門口 A4 PDF `internal/print/clinic-notice-YYYYMMDD[b]-A4.pdf` 一併刪掉，只留當期那一組**。`data-expires` 只隱藏 DOM、檔案還在 repo 積著，同日改版的 `b`／`c` 版更會越積越多。
+6. **🧹 順手清掉已過期那幾則的檔案**（院長 2026-08-25 指示，入制）：**🔒 範圍（院長 2026-10-26h 裁示）：只有「門診時間異動」公告（休診、時段變更、颱風、連假、代診等）下架後才從首頁原始碼移除並刪檔；其他公告（流感疫苗加開、掛號制度提醒、疫苗到貨等）下架後只靠 `data-expires` 隱藏，原始碼與圖檔保留。**公告下架後，**該則的公告圖 `images/notice/clinic-notice-YYYYMMDD[b].{jpg,webp}` 與門口 A4 PDF `internal/print/clinic-notice-YYYYMMDD[b]-A4.pdf` 一併刪掉，只留當期那一組**。`data-expires` 只隱藏 DOM、檔案還在 repo 積著，同日改版的 `b`／`c` 版更會越積越多。
    **刪前一定要 grep 全樹確認零引用**（公告卡移除 ≠ 圖沒被別處引用）：
    ```bash
    grep -rn 'clinic-notice-YYYYMMDD' --include='*.html' --include='*.txt' \
