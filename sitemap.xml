@@ -820,6 +820,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/bppv.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/bppv-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

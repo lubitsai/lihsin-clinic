@@ -451,6 +451,8 @@ jobs:
           check /health/flu-vaccine-egg-cell.html 200
           check /health/travel-medications.html 200
           check /images/travel-medications-infographic.jpg 200
+          check /health/bppv.html 200
+          check /images/bppv-infographic.jpg 200
           check /images/flu-vaccine-egg-cell-infographic.jpg 200
           check /images/umbilical-granuloma-infographic.jpg 200
           check /images/infant-sleep-regression-infographic.jpg 200
