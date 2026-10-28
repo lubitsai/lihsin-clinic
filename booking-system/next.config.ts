@@ -37,6 +37,8 @@ const nextConfig: NextConfig = {
   // 注意：本機若要用 next start 驗證，需暫時註解掉這行（standalone 產物要用
   // node .next/standalone/server.js 啟動，直接 next start 會找不到 CSS 與 chunks）。
   output: "standalone",
+  // 全站沒有用 next/image；關掉 /_next/image 接口，圖片最佳化器的漏洞就打不到這台主機
+  images: { unoptimized: true },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

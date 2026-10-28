@@ -7,9 +7,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// 連線網址：Migrate 讀 prisma.config.ts，程式端由 src/lib/db.ts 經 driver adapter 傳入（Prisma 7 起）
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 // ── 列舉 ────────────────────────────────────────────────

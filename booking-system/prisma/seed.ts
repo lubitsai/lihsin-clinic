@@ -3,7 +3,8 @@
  * 班表不寫在這裡——以官網門診時間表為準，見 prisma/schedule.json 與 scripts/sync-schedule.ts。
  * 正式環境請改用 scripts/create-admin.ts 建立管理員。
  */
-import { PrismaClient, type SessionPeriod } from "@prisma/client";
+import type { SessionPeriod } from "@prisma/client";
+import { createPrismaClient } from "../src/lib/db";
 import bcrypt from "bcryptjs";
 // 權限矩陣單一來源：authz.ts（此檔與 create-admin 腳本皆由此匯入，避免三份副本漂移）
 import { ROLE_PERMISSIONS } from "../src/lib/auth/authz";
@@ -11,7 +12,7 @@ import { applySchedule, loadScheduleSource } from "../src/lib/schedule-source";
 import { importBundledHolidays } from "../src/lib/holidays";
 import { todayStr } from "../src/lib/tw-time";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function main() {
   // 醫師

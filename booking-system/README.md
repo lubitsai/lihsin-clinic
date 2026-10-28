@@ -10,7 +10,7 @@
 
 ## 技術架構
 
-Next.js 15（App Router）＋ TypeScript ＋ Tailwind CSS 4 ＋ PostgreSQL 16 ＋ Prisma ＋ Zod ＋ Vitest ＋ Docker。
+Next.js 15（App Router）＋ TypeScript ＋ Tailwind CSS 4 ＋ PostgreSQL 16 ＋ Prisma 7（pg driver adapter，連線設定在 `prisma.config.ts`）＋ Zod 4 ＋ Vitest ＋ Docker。
 時區固定 Asia/Taipei；全站繁體中文。
 
 ## 快速開始
@@ -21,7 +21,7 @@ cp .env.example .env          # 填 DATABASE_URL 與密鑰
 npx prisma migrate deploy
 npm run db:seed               # 預設醫師/門診/班表 + admin/counter1 測試帳號
 npm run dev                   # 前台 http://localhost:3000，後台 /admin
-npm test                      # 31 項自動化測試（涵蓋 18 項驗收條件的後端部分）
+npm test                      # 規則測試（Vitest）；端對端測試見 docs/10
 ```
 
 ## 文件索引（docs/）

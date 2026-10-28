@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { type Tx } from "./db";
 import { encryptPii, hashIdNumber } from "./crypto";
 import { maskIdNumber } from "./masking";
@@ -60,51 +59,57 @@ export async function upsertPatientForBooking(
   opts: { trusted?: boolean } = {},
 ): Promise<{ patient: Patient; created: boolean }> {
   const existing = await findPatientByIdentity(tx, input.idType, input.idNumber, input.birthDate);
-  if (existing) {
-    // 櫃檯代約（trusted）：人員已當面或電話確認身分，可更新聯絡資料。
-    if (opts.trusted) {
-      const updated = await tx.patient.update({
-        where: { id: existing.id },
-        data: {
-          name: input.name,
-          phone: input.phone,
-          gender: input.gender ?? existing.gender,
-        },
-      });
-      return { patient: updated, created: false };
-    }
-    // 前台預約：證件號＋生日不足以證明是本人（家屬、學校、外流名單都可能知道），
-    // 若允許覆寫姓名／電話，知道這兩項的人即可把病歷聯絡方式改成自己的，
-    // 進而攔截所有通知，並用「證件＋生日＋手機」查詢該病人的完整預約紀錄。
-    // 因此一律不覆寫；填寫的新電話只記錄成待確認聯絡方式，由櫃檯人工核對後更新。
-    if (input.phone !== existing.phone) {
-      await recordPendingContact(tx, existing.id, input.phone);
-    }
-    return { patient: existing, created: false };
-  }
-  try {
-    const patient = await tx.patient.create({
+  if (existing) return { patient: await applyBookingInput(tx, existing, input, opts), created: false };
+
+  // 用 INSERT … ON CONFLICT DO NOTHING，不用 create＋攔 P2002：PostgreSQL 交易內一旦撞
+  // unique 就整筆交易作廢，之後連查詢都會被拒（25P02），根本補救不了。
+  // 併發時另一交易剛建立同一病人：這裡會等它提交後略過，再讀取既有列（仍核對生日）。
+  // 這種情況**不算這次建立的**——建立者是另一個交易，綁定權也在那邊。
+  const { count } = await tx.patient.createMany({
+    data: {
+      name: input.name,
+      phone: input.phone,
+      birthDate: dateToDb(input.birthDate),
+      gender: input.gender,
+      idType: input.idType,
+      idNumberEncrypted: encryptPii(input.idNumber.trim().toUpperCase()),
+      idNumberHash: hashIdNumber(input.idNumber),
+      idNumberMasked: maskIdNumber(input.idNumber),
+    },
+    skipDuplicates: true,
+  });
+  const patient = await findPatientByIdentity(tx, input.idType, input.idNumber, input.birthDate);
+  if (!patient) throw new Error("patient row missing right after insert");
+  if (count === 1) return { patient, created: true };
+  return { patient: await applyBookingInput(tx, patient, input, opts), created: false };
+}
+
+/** 病歷已存在時，依來源決定能不能用這次填寫的資料更新聯絡方式。 */
+async function applyBookingInput(
+  tx: Tx,
+  existing: Patient,
+  input: PatientInput,
+  opts: { trusted?: boolean },
+): Promise<Patient> {
+  // 櫃檯代約（trusted）：人員已當面或電話確認身分，可更新聯絡資料。
+  if (opts.trusted) {
+    return tx.patient.update({
+      where: { id: existing.id },
       data: {
         name: input.name,
         phone: input.phone,
-        birthDate: dateToDb(input.birthDate),
-        gender: input.gender,
-        idType: input.idType,
-        idNumberEncrypted: encryptPii(input.idNumber.trim().toUpperCase()),
-        idNumberHash: hashIdNumber(input.idNumber),
-        idNumberMasked: maskIdNumber(input.idNumber),
+        gender: input.gender ?? existing.gender,
       },
     });
-    return { patient, created: true };
-  } catch (e) {
-    // 併發時另一交易剛建立同一病人：改為讀取既有列（仍核對生日）。
-    // 這種情況**不算這次建立的**——建立者是另一個交易，綁定權也在那邊。
-    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
-      const found = await findPatientByIdentity(tx, input.idType, input.idNumber, input.birthDate);
-      if (found) return { patient: found, created: false };
-    }
-    throw e;
   }
+  // 前台預約：證件號＋生日不足以證明是本人（家屬、學校、外流名單都可能知道），
+  // 若允許覆寫姓名／電話，知道這兩項的人即可把病歷聯絡方式改成自己的，
+  // 進而攔截所有通知，並用「證件＋生日＋手機」查詢該病人的完整預約紀錄。
+  // 因此一律不覆寫；填寫的新電話只記錄成待確認聯絡方式，由櫃檯人工核對後更新。
+  if (input.phone !== existing.phone) {
+    await recordPendingContact(tx, existing.id, input.phone);
+  }
+  return existing;
 }
 
 /**

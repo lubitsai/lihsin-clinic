@@ -10,12 +10,12 @@
  *
  *     npm run db:seed && npm run db:seed:demo
  */
-import { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from "../src/lib/db";
 import { createAppointment, updateAppointmentStatus } from "../src/lib/booking";
 import { addDays, todayStr, dateToDb, slotTimes } from "../src/lib/tw-time";
 import { getDayScheduleBlocks } from "../src/lib/schedule";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 const STAFF = { type: "STAFF" as const, id: "demo-seed", name: "示範資料" };
 
 /**

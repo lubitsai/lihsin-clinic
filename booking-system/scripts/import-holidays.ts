@@ -15,11 +15,11 @@
  *
  * `--replace-year` 會先清掉該年度既有資料再匯入，用於官方修訂假期時重來一次。
  */
-import { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from "../src/lib/db";
 import { readFileSync } from "node:fs";
 import { parseHolidayFile, upsertHolidays } from "../src/lib/holidays";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 function parse(text: string) {
   const { rows, skippedWorkdays, skippedWeekends } = parseHolidayFile(text);

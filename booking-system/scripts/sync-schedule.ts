@@ -16,10 +16,11 @@
  * 櫃檯到後台逐筆改期後再跑一次，或確認要一併取消時加 --cancel-affected。
  */
 import { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from "../src/lib/db";
 import { applySchedule, loadScheduleSource, type ApplyResult } from "../src/lib/schedule-source";
 import { dbToDate, todayStr } from "../src/lib/tw-time";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 async function main() {
   const dryRun = process.argv.includes("--dry-run");

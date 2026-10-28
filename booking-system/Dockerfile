@@ -27,6 +27,8 @@ COPY --from=builder --chown=app:app /app/public ./public
 # 完整 node_modules（含 prisma CLI、tsx、產生的 client）供 migrate/seed/提醒腳本使用
 COPY --from=builder --chown=app:app /app/node_modules ./node_modules
 COPY --from=builder --chown=app:app /app/prisma ./prisma
+# Prisma 7 起 migrate 的連線設定在 prisma.config.ts（schema 內不再寫 url）
+COPY --from=builder --chown=app:app /app/prisma.config.ts ./
 COPY --from=builder --chown=app:app /app/scripts ./scripts
 COPY --from=builder --chown=app:app /app/src ./src
 COPY --from=builder --chown=app:app /app/package.json /app/tsconfig.json ./

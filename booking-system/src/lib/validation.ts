@@ -97,7 +97,7 @@ export const patientInputSchema = z
   .superRefine((val, ctx) => {
     if (!isValidIdNumber(val.idType, val.idNumber)) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ["idNumber"],
         message:
           val.idType === "NATIONAL_ID"
@@ -107,7 +107,7 @@ export const patientInputSchema = z
     }
     const birth = new Date(`${val.birthDate}T00:00:00Z`).getTime();
     if (Number.isNaN(birth) || birth > Date.now()) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["birthDate"], message: "出生日期不正確" });
+      ctx.addIssue({ code: "custom", path: ["birthDate"], message: "出生日期不正確" });
     }
   });
 

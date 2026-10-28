@@ -4,11 +4,11 @@
  *   ADMIN_USERNAME=admin ADMIN_PASSWORD='安全密碼' npm run create-admin
  * 或：npm run create-admin -- <username> <password>
  */
-import { PrismaClient } from "@prisma/client";
+import { createPrismaClient } from "../src/lib/db";
 import bcrypt from "bcryptjs";
 import { ROLE_PERMISSIONS } from "../src/lib/auth/authz";
 
-const prisma = new PrismaClient();
+const prisma = createPrismaClient();
 
 const ADMIN_PERMISSIONS = ROLE_PERMISSIONS.ADMIN;
 

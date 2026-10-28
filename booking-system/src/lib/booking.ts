@@ -6,7 +6,7 @@
  *   3. partial unique index 為第二道防線（見 migrations）
  */
 import { randomUUID } from "node:crypto";
-import { Prisma, type Appointment, type AppointmentSource, type Patient } from "@prisma/client";
+import { type Appointment, type AppointmentSource, type Patient } from "@prisma/client";
 import { prisma, type Tx } from "./db";
 import {
   addDays,
@@ -121,12 +121,10 @@ export async function createAppointment(
   try {
     return await runCreateTransaction(params);
   } catch (e) {
-    // 冪等第二道防線：並發重複送出撞 requestId unique
-    if (
-      e instanceof Prisma.PrismaClientKnownRequestError &&
-      e.code === "P2002" &&
-      params.requestId
-    ) {
+    // 冪等第二道防線：並發重複送出。後到的那筆可能撞 requestId unique（P2002），
+    // 也可能排在病人列鎖後面、等先到的提交後被同日／名額規則擋下——
+    // 不論哪種，只要同一 requestId 已成立，就回傳那一筆，不讓家長看到錯誤訊息。
+    if (params.requestId) {
       const existing = await prisma.appointment.findUnique({
         where: { requestId: params.requestId },
         include: { patient: true },
