@@ -453,6 +453,17 @@ jobs:
           check /images/travel-medications-infographic.jpg 200
           check /health/bppv.html 200
           check /images/bppv-infographic.jpg 200
+          check /health/six-food-groups.html 200
+          check /health/food-portion-plate.html 200
+          check /health/calorie-protein-needs.html 200
+          check /health/whole-food-habits.html 200
+          check /health/eating-out-balanced.html 200
+          check /health/home-cooking-balanced.html 200
+          check /health/exercise-nutrition-plateau.html 200
+          check /health/weight-loss-medication-nutrition.html 200
+          check /images/six-food-groups-infographic.jpg 200
+          check /team/dietitian-du.html 200
+          check /images/dietitian-du-portrait.jpg 200
           check /images/flu-vaccine-egg-cell-infographic.jpg 200
           check /images/umbilical-granuloma-infographic.jpg 200
           check /images/infant-sleep-regression-infographic.jpg 200
