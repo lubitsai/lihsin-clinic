@@ -56,6 +56,9 @@ class PriceTests(unittest.TestCase):
         self.assertPrice('HPV多少錢', '優惠價為 16,500')
         self.assertPrice('減重8週多少錢', '原價 36,800', '推廣價為 32,800')
         self.assertPrice('減重續加四週多少錢', '續加四週', '14,000 元', '不含抽血')
+        # 減重營養問法（熱量、蛋白質）不是問價
+        for q in ('減重一天吃多少熱量', '減重熱量要吃多少', '減重要吃多少蛋白質'):
+            self.assertIsNone(CAT.prices.match(q), q)
 
     def test_no_drug_names(self):
         for q in ['瘦瘦筆一支多少錢', '猛健樂多少錢', '減重多少錢']:
