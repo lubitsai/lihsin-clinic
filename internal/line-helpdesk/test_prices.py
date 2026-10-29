@@ -54,7 +54,8 @@ class PriceTests(unittest.TestCase):
         self.assertPrice('帶狀皰疹疫苗多少', '16,500', '每人可折 500 元')
         self.assertPrice('皮蛇疫苗兩個人一起打多少', '同行優惠與兩劑付清的併用')
         self.assertPrice('HPV多少錢', '優惠價為 16,500')
-        self.assertPrice('減重8週多少錢', '原價 36,800', '推廣價為 30,800')
+        self.assertPrice('減重8週多少錢', '原價 36,800', '推廣價為 32,800')
+        self.assertPrice('減重續加四週多少錢', '續加四週', '14,000 元', '不含抽血')
 
     def test_no_drug_names(self):
         for q in ['瘦瘦筆一支多少錢', '猛健樂多少錢', '減重多少錢']:
