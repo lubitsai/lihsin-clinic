@@ -566,10 +566,8 @@ export async function adminMergePatients(
       for (const id of [keepId, mergeId].sort()) {
         await tx.$queryRaw`SELECT id FROM patients WHERE id = ${id} FOR UPDATE`;
       }
-      const [keep, merge] = await Promise.all([
-        tx.patient.findUnique({ where: { id: keepId } }),
-        tx.patient.findUnique({ where: { id: mergeId } }),
-      ]);
+      const keep = await tx.patient.findUnique({ where: { id: keepId } });
+      const merge = await tx.patient.findUnique({ where: { id: mergeId } });
       if (!keep || !merge) throw new BookingError("NOT_FOUND", "查無病歷");
 
       // 兩筆病歷同一天各有有效預約時，合併會違反「同日僅一筆」不變量——先擋下請櫃檯處理

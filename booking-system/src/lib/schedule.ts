@@ -170,12 +170,11 @@ export function isSlotCovered(
 export async function getDayScheduleBlocks(date: string, tx?: Tx): Promise<WorkingBlock[]> {
   const db = tx ?? prisma;
   const weekday = weekdayOf(date);
-  const [templates, exceptions] = await Promise.all([
-    db.weeklyScheduleTemplate.findMany({
-      where: { weekday, isActive: true, doctor: { isActive: true } },
-    }),
-    db.scheduleException.findMany({ where: { date: dateToDb(date) } }),
-  ]);
+  // 依序查：交易只有一條連線，不能同時送查詢（見 db.ts）
+  const templates = await db.weeklyScheduleTemplate.findMany({
+    where: { weekday, isActive: true, doctor: { isActive: true } },
+  });
+  const exceptions = await db.scheduleException.findMany({ where: { date: dateToDb(date) } });
 
   return applyExceptions(blocksFromTemplates(templates, weekday), exceptions);
 }
@@ -282,10 +281,8 @@ export async function getSuspendedClinicTypes(date: string, tx?: Tx): Promise<Se
 
 /** 展開某日期所有（醫師 × 30 分鐘時段），含線上開放註記 */
 export async function expandDaySlots(date: string, tx?: Tx) {
-  const [blocks, blocked] = await Promise.all([
-    getDayScheduleBlocks(date, tx),
-    getBlockedSlotKeys(date, tx),
-  ]);
+  const blocks = await getDayScheduleBlocks(date, tx);
+  const blocked = await getBlockedSlotKeys(date, tx);
   return blocks.flatMap((b) =>
     slotTimes(b.startTime, b.endTime).map((t) => ({
       doctorId: b.doctorId,

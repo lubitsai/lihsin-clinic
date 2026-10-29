@@ -56,10 +56,8 @@ export async function applyRestrictionExpiry(tx: Tx, patientId: string): Promise
  * 限制帶到期日，期滿由 applyRestrictionExpiry 自動恢復並歸零。
  */
 export async function maybeAutoRestrict(tx: Tx, patientId: string, noShowCount: number) {
-  const [threshold, suspensionDays] = await Promise.all([
-    getSetting("booking.no_show_threshold", tx),
-    getSetting("booking.no_show_suspension_days", tx),
-  ]);
+  const threshold = await getSetting("booking.no_show_threshold", tx);
+  const suspensionDays = await getSetting("booking.no_show_suspension_days", tx);
   if (noShowCount < threshold) return null;
   const existing = await tx.bookingRestriction.findFirst({
     where: { patientId, status: { in: ["ACTIVE", "SUSPENDED"] } },

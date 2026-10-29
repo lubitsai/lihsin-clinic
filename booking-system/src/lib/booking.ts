@@ -428,12 +428,10 @@ async function assertCancelCutoff(tx: Tx, date: string, startTime: string) {
 
 /** 開放日期檢查：滾動開放 N 天（最新一天於 open_time 才開放）＋當日截止 */
 async function assertDateOpen(tx: Tx, date: string, startTime: string) {
-  const [openDays, openTime, allowSameDay, cutoffMin] = await Promise.all([
-    getSetting("booking.open_days", tx),
-    getSetting("booking.open_time", tx),
-    getSetting("booking.allow_same_day", tx),
-    getSetting("booking.same_day_cutoff_minutes", tx),
-  ]);
+  const openDays = await getSetting("booking.open_days", tx);
+  const openTime = await getSetting("booking.open_time", tx);
+  const allowSameDay = await getSetting("booking.allow_same_day", tx);
+  const cutoffMin = await getSetting("booking.same_day_cutoff_minutes", tx);
   const today = todayStr();
   const lastOpen = addDays(today, openDays - 1);
   if (date < today || date > lastOpen) throw new BookingError("DATE_NOT_OPEN", MSG.dateNotOpen);
@@ -479,10 +477,10 @@ async function assertNoSameDay(tx: Tx, patientId: string, date: string, excludeI
     status: { in: [...ACTIVE_STATUSES] },
     ...(excludeId ? { id: { not: excludeId } } : {}),
   };
-  const [own, asCompanion] = await Promise.all([
-    tx.appointment.count({ where: { patientId, ...where } }),
-    tx.appointmentCompanion.count({ where: { patientId, appointment: where } }),
-  ]);
+  const own = await tx.appointment.count({ where: { patientId, ...where } });
+  const asCompanion = await tx.appointmentCompanion.count({
+    where: { patientId, appointment: where },
+  });
   if (own + asCompanion > 0) throw new BookingError("DUPLICATE_SAME_DAY", MSG.duplicateSameDay);
 }
 
@@ -542,10 +540,8 @@ interface SlotCandidate {
  * - 「不限醫師」時優先分配當日預約數較少的醫師以平衡人數
  */
 async function allocateSlot(tx: Tx, p: AllocateParams) {
-  const [blocks, blocked] = await Promise.all([
-    getDayScheduleBlocks(p.date, tx),
-    getBlockedSlotKeys(p.date, tx),
-  ]);
+  const blocks = await getDayScheduleBlocks(p.date, tx);
+  const blocked = await getBlockedSlotKeys(p.date, tx);
 
   const allowedDoctor = (id: string) =>
     (p.clinicTypeDoctorIds.length === 0 || p.clinicTypeDoctorIds.includes(id)) &&
@@ -611,18 +607,16 @@ async function allocateSlot(tx: Tx, p: AllocateParams) {
   let ordered = candidates;
   if (p.doctorId === "any" && candidates.length > 1) {
     const doctorIds = candidates.map((c) => c.doctorId);
-    const [counts, doctors] = await Promise.all([
-      tx.appointment.groupBy({
-        by: ["doctorId"],
-        where: {
-          appointmentDate: dateToDb(p.date),
-          doctorId: { in: doctorIds },
-          status: { in: [...OCCUPYING_STATUSES] },
-        },
-        _count: { id: true },
-      }),
-      tx.doctor.findMany({ where: { id: { in: doctorIds } } }),
-    ]);
+    const counts = await tx.appointment.groupBy({
+      by: ["doctorId"],
+      where: {
+        appointmentDate: dateToDb(p.date),
+        doctorId: { in: doctorIds },
+        status: { in: [...OCCUPYING_STATUSES] },
+      },
+      _count: { id: true },
+    });
+    const doctors = await tx.doctor.findMany({ where: { id: { in: doctorIds } } });
     const countMap = new Map(counts.map((c) => [c.doctorId, c._count.id]));
     const orderMap = new Map(doctors.map((d) => [d.id, d.displayOrder]));
     ordered = [...candidates].sort(

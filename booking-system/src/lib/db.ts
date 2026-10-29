@@ -22,5 +22,9 @@ export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 
-/** 交易客戶端型別（$transaction callback 內使用） */
+/**
+ * 交易客戶端型別（$transaction callback 內使用）。
+ * 交易只占一條連線：同一個 tx 的查詢要依序 await，不要包進 Promise.all——
+ * pg 8 會排隊並發出棄用警告，pg 9 起直接不支援。
+ */
 export type Tx = Parameters<Parameters<PrismaClient["$transaction"]>[0]>[0];

@@ -78,16 +78,14 @@ export async function enqueueAppointmentNotification(
   appt: Appointment,
   patient: Patient,
 ) {
-  const [doctor, clinicType, lineLink, grace] = await Promise.all([
-    tx.doctor.findUnique({ where: { id: appt.doctorId } }),
-    tx.clinicType.findUnique({ where: { id: appt.clinicTypeId } }),
-    tx.linePatientLink.findFirst({
-      where: { patientId: patient.id, lineAccount: { isFollowing: true } },
-      include: { lineAccount: true },
-      orderBy: { createdAt: "desc" },
-    }),
-    getSetting("booking.checkin_grace_minutes", tx),
-  ]);
+  const doctor = await tx.doctor.findUnique({ where: { id: appt.doctorId } });
+  const clinicType = await tx.clinicType.findUnique({ where: { id: appt.clinicTypeId } });
+  const lineLink = await tx.linePatientLink.findFirst({
+    where: { patientId: patient.id, lineAccount: { isFollowing: true } },
+    include: { lineAccount: true },
+    orderBy: { createdAt: "desc" },
+  });
+  const grace = await getSetting("booking.checkin_grace_minutes", tx);
   if (clinicType && !clinicType.notifyLine && type !== "CANCELLED") return;
 
   // 沒有 LINE 綁定（或 LINE 未設定）就沒有送得出去的管道，直接不排入。
