@@ -1,13 +1,4 @@
 {
   "_comment": "門診異動公告的共用資料（2026-09-25g 起）。服務頁與就診指南的頂部橫幅、首頁門診時間表上方的提示行都讀這一份；由 /notices/notice-banner.js 顯示，end 當日（含）仍顯示、翌日起自動隱藏（以 UTC+8 判斷）。每一則必須對應首頁 #clinic-notice 一則 .notice-item，end＝該則 data-expires（internal/tools/check_visit_facts.py 會比對）。summary 是可見文字，上架前要院長核可，原則上取首頁公告說明段的濃縮句。",
-  "notices": [
-    {
-      "id": "clinic-notice-20261019",
-      "start": "2026-10-19",
-      "show_from": "2026-10-19",
-      "end": "9999-12-31",
-      "dates": "午、晚診掛號提醒",
-      "summary": "午、晚診掛號提醒：午診可能依現場看診情況提前停止掛號；晚診現場掛號 18:00 開放、18:30 開始看診；午診已掛號、暫時離開者須於 18:00 前返回櫃檯報到，未返回者取消午診掛號。"
-    }
-  ]
+  "notices": []
 }
