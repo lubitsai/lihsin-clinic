@@ -129,7 +129,7 @@ class WebsiteRulesV26Tests(unittest.TestCase):
             action, msg = self.ans(q)
             self.assertEqual(action, 'answer', q)
             self.assertIn('線上小幫手無法代為預約', msg['text'])
-            self.assertIn('booknow', msg['text'])
+            self.assertIn('booking.lhpedclinic.com.tw', msg['text'])
 
     def test_quota(self):
         action, msg = self.ans('預約額滿怎麼辦')

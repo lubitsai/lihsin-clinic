@@ -11,7 +11,7 @@
       NotoSansTC_400Regular.ttf／NotoSansTC_700Bold.ttf 改名使用（字面一致）。
 
 2026-08 更新（事實層對齊官網 2026-08-12 版本）：
-  ① 網路時段預約系統（lhpedclinic.booknow.com.tw）全面納入：釋出/截止、報到 10 分鐘、
+  ① 網路時段預約系統（booking.lhpedclinic.com.tw）全面納入：釋出/截止、報到 10 分鐘、
      取消改期與未到計次、同時 2 筆額度、家庭預約、疫苗施打截止時間
   ② 各診次現場掛號開始時間（早診 08:00／午診 14:30／晚診 18:00）與完整過號規則
   ③ 醫療團隊補兒科專科醫師資格、李醫師國泰完整資歷；師承補客觀陳述但書
@@ -108,7 +108,7 @@ sub_h = S('sub_h', fontName='TCB', fontSize=10, textColor=GREEN, spaceAfter=3, s
 
 DOC_VERSION = '2026年9月'
 SITE = 'https://lhpedclinic.com.tw'
-BOOKING = 'https://lhpedclinic.booknow.com.tw/'
+BOOKING = 'https://booking.lhpedclinic.com.tw/'
 PROGRESS = 'https://www.mainpi.com/query?i=2935'
 
 HEADER = "立欣診所 LiHsin Clinic ｜ 台南市北區小兒科・家庭醫學　%s" % SITE
@@ -331,7 +331,7 @@ def build_story():
         ['電　話', '06-2516086'],
         ['L I N E', '@lhpedclinic'],
         ['官　網', url(SITE)],
-        ['網路預約', url(BOOKING, 'lhpedclinic.booknow.com.tw')],
+        ['網路預約', url(BOOKING, 'booking.lhpedclinic.com.tw')],
         ['看診進度', url(PROGRESS, 'mainpi.com/query?i=2935')],
         ['開業日期', '2024年7月1日'],
         ['Google 評價', '★ 5.0 星（衛福部健保特約醫療機構）'],
@@ -934,7 +934,7 @@ def build_story():
          "科學減重門診與 InBody 分析）費用另計。"),
         ("Q2: 立欣診所怎麼預約掛號？",
          "採網路時段預約，每 30 分鐘一個時段、每個時段一組名額。可至網路預約系統 "
-         "lhpedclinic.booknow.com.tw 預約（LINE 選單與看診進度頁的預約按鈕都連到同一個系統），"
+         "booking.lhpedclinic.com.tw 預約（LINE 選單與看診進度頁的預約按鈕都連到同一個系統），"
          "或在門診時間來電 06-2516086 由櫃檯人員代為操作。看診日前 14 天開放預約，"
          "請於時段開始 4 小時前完成；完成預約後仍須到櫃檯報到才算正式掛號。"),
         ("Q3: 幾點開始現場掛號？早診、午診、晚診的掛號時間？",
