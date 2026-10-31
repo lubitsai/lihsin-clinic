@@ -426,6 +426,7 @@ jobs:
           check /images/diabetes-infographic.jpg 200
           check /images/hyperlipidemia-infographic.jpg 200
           check /images/hypertension-infographic.jpg 200
+          check /images/why-no-tests-infographic.jpg 200
           check /images/child-pneumonia-20261012-infographic.jpg 200
           check /images/newborn-jaundice-infographic.jpg 200
           check /images/asthma-inhaler-infographic.jpg 200
