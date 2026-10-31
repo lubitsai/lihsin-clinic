@@ -926,6 +926,22 @@
   },
   {
    "@type": "Question",
+   "name": "立欣診所的網路預約網址是什麼？要用 LINE 登入嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "網路預約網址是 https://booking.lhpedclinic.com.tw/ ，官網、LINE 選單與看診進度頁的預約按鈕都連到這個系統。線上預約與查詢預約請先以 LINE 登入；沒有使用 LINE 也能看診：直接到診所櫃檯抽號（現場掛號），或致電 06-2516086，由櫃檯協助登記。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "網路預約一次可以約幾個時段？超過 2 筆會怎樣？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "每個預約帳號同時最多保留 2 筆尚未完成的預約，當日的預約不計入。已達上限時系統會在送出當下擋下並說明，不會自動取消您已經約好的預約；請先取消或完成既有預約後再約。同一家庭同一診次由 1 位代表預約 1 個時段即可（兒童發展篩檢門診除外，一個時段限 1 位兒童）。"
+   }
+  },
+  {
+   "@type": "Question",
    "name": "什麼情況不要等門診、應該直接去急診？",
    "acceptedAnswer": {
     "@type": "Answer",
@@ -1117,7 +1133,7 @@
  <!-- 預約規則 -->
  <section class="mt-10" id="booking-rules">
   <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-4">📅 網路預約規則</h2>
-  <p class="text-sm text-gray-600 leading-relaxed mb-4">本院採網路時段預約，每 30 分鐘為一個時段、每個時段一組名額。網路上完成預約是先保留該時段的名額，<strong>到診所櫃檯完成報到後才算正式掛號</strong>。看診時預約號與現場號交錯叫號，預約號會在該時段內依序安排，遇特殊狀況可能順延。預約請至<a href="https://booking.lhpedclinic.com.tw/" target="_blank" rel="noopener" onclick="trackCTA('VG_BookingRules')" class="underline text-[#7C9A6E]">網路預約系統</a>；LINE 選單與看診進度頁的預約按鈕，都是連到同一個系統。也可在門診時間來電 <a href="tel:062516086" class="underline text-[#7C9A6E]">06-2516086</a>，由櫃檯人員代您操作同一套系統，名額、時段與規則完全相同。</p>
+  <p class="text-sm text-gray-600 leading-relaxed mb-4">本院採網路時段預約，每 30 分鐘為一個時段、每個時段一組名額。網路上完成預約是先保留該時段的名額，<strong>到診所櫃檯完成報到後才算正式掛號</strong>。看診時預約號與現場號交錯叫號，預約號會在該時段內依序安排，遇特殊狀況可能順延。預約請至<a href="https://booking.lhpedclinic.com.tw/" target="_blank" rel="noopener" onclick="trackCTA('VG_BookingRules')" class="underline text-[#7C9A6E]">網路預約系統</a>；LINE 選單與看診進度頁的預約按鈕，都是連到同一個系統。也可在門診時間來電 <a href="tel:062516086" class="underline text-[#7C9A6E]">06-2516086</a>，由櫃檯人員代您操作同一套系統，名額、時段與規則完全相同。線上預約與查詢預約請先以 LINE 登入；沒有使用 LINE 也能看診：直接到診所櫃檯抽號（現場掛號），或致電 06-2516086，由櫃檯協助登記。</p>
   <div class="bg-white border border-[#A8C69F] rounded-2xl p-5 shadow-sm">
    <p class="font-semibold text-gray-800 mb-3">什麼時候可以約</p>
    <ul class="list-disc pl-4 space-y-2 text-sm text-gray-700 leading-relaxed">
@@ -1264,6 +1280,14 @@
    <details class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
     <summary class="font-semibold text-gray-800 cursor-pointer">網路預約幾天前可以約？可以取消嗎？沒到會怎樣？</summary>
     <p class="mt-3 text-sm text-gray-600 leading-relaxed">每日 00:00 釋出第 14 天的時段；網路預約請在該時段開始的 4 小時前完成，不足 4 小時請在該診次開診前來電 06-2516086 由櫃檯協助。開診前都可在系統自行取消或改期；開診後無法取消當診預約，當天沒有到診會列為 1 次未到（逾時報到但當天仍有看診由櫃檯註記、不算未到），累計 3 次未到將暫停網路預約資格 3 個月、3 個月後歸零。每個預約帳號同時最多 2 筆未完成的預約（當日不計入）。完整規則見<a href="#booking-rules" class="underline text-[#7C9A6E]">網路預約規則</a>。</p>
+   </details>
+   <details class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+    <summary class="font-semibold text-gray-800 cursor-pointer">網路預約網址是什麼？要用 LINE 登入嗎？</summary>
+    <p class="mt-3 text-sm text-gray-600 leading-relaxed">網路預約網址是 <a href="https://booking.lhpedclinic.com.tw/" target="_blank" rel="noopener" class="underline text-[#7C9A6E]">booking.lhpedclinic.com.tw</a>，官網、LINE 選單與看診進度頁的預約按鈕都連到這個系統。線上預約與查詢預約請先以 LINE 登入；沒有使用 LINE 也能看診：直接到診所櫃檯抽號（現場掛號），或致電 <a href="tel:062516086" class="underline text-[#7C9A6E]">06-2516086</a>，由櫃檯協助登記。</p>
+   </details>
+   <details class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+    <summary class="font-semibold text-gray-800 cursor-pointer">網路預約一次可以約幾個時段？超過 2 筆會怎樣？</summary>
+    <p class="mt-3 text-sm text-gray-600 leading-relaxed">每個預約帳號同時最多保留 2 筆尚未完成的預約，當日的預約不計入。已達上限時系統會在送出當下擋下並說明，不會自動取消您已經約好的預約；請先取消或完成既有預約後再約。同一家庭同一診次由 1 位代表預約 1 個時段即可（兒童發展篩檢門診除外，一個時段限 1 位兒童）。</p>
    </details>
    <details class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
     <summary class="font-semibold text-gray-800 cursor-pointer">怎麼查現場看診進度、避免久候？</summary>
