@@ -891,13 +891,14 @@ jobs:
           # 頁面照樣 200、版面不破（CTA 盒本來就有電話與 LINE 兩顆，少第三顆看不出來）、
           # validate_site.py 全綠——**沒有任何既有機制會叫**，而掉的是轉換入口本身，
           # 且 cta-track.js 的 booking_click 會一起靜默歸零（GA4 只會看到數字變少，不會報錯）。
-          # 挑 `booknow.com.tw` 而非可見文字「📅 前往網路預約」的理由：盯的是**轉換機制**，
+          # 2026-10-31：網路預約由 BookNow 切換到自有系統，比對字串改為 `booking.lhpedclinic.com.tw`。
+          # 挑網域而非可見文字「📅 前往網路預約」的理由：盯的是**轉換機制**，
           # 日後若只潤飾鈕的文案、連結還在，哨兵不該誤報 FAIL。
           # 舊版計數 0、新版各 1（2026-09-08 程式化確認）＝乾淨的注入式負向測試（防呆 14）。
           # ⚠️ 若日後刻意移除或改寫這三頁的預約入口，請連同本檢查一起改，不要直接刪掉（防呆 17）。
           for pg in allergy-testing family-medicine weight-management; do
-            bn=$(curl -s --max-time 20 "$BASE/services/$pg.html" | grep -c 'booknow.com.tw' || true)
-            if [ "$bn" -ge 1 ]; then echo "OK    services/$pg 網路預約入口已上線"; else echo "FAIL  services/$pg 未見 booknow.com.tw——網路預約入口疑遭 9/8 前舊版覆蓋（轉換入口與 booking_click 一併靜默失效）"; fail=1; fi
+            bn=$(curl -s --max-time 20 "$BASE/services/$pg.html" | grep -c 'booking.lhpedclinic.com.tw' || true)
+            if [ "$bn" -ge 1 ]; then echo "OK    services/$pg 網路預約入口已上線"; else echo "FAIL  services/$pg 未見 booking.lhpedclinic.com.tw——網路預約入口疑遭 9/8 前舊版覆蓋（轉換入口與 booking_click 一併靜默失效）"; fail=1; fi
           done
           # 2026-09-13：流感／快篩的 A流B流 口語詞路四層補強（PR #207）。
           # ⚠️ 這兩條防的失效模式，上面的 200 檢查與既有 3 條 rapid-tests 可見層哨兵都抓不到：

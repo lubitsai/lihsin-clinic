@@ -11,7 +11,7 @@
 import { createAssistant, looksPersonal } from './search.js';
 
 const BASE = new URL('.', import.meta.url);
-const SAFE_LINK = /^(https:\/\/(lhpedclinic\.com\.tw|lhpedclinic\.booknow\.com\.tw|www\.mainpi\.com|line\.me|www\.google\.com\/maps)\b|tel:|mailto:)/;
+const SAFE_LINK = /^(https:\/\/(lhpedclinic\.com\.tw|booking\.lhpedclinic\.com\.tw|www\.mainpi\.com|line\.me|www\.google\.com\/maps)\b|tel:|mailto:)/;
 const URL_IN_TEXT = /(https:\/\/[^\s）)」，。；、]+)/g;
 
 const CSS = `
@@ -136,7 +136,7 @@ if (!document.querySelector('lh-assistant')) {
     el('header', {}, el('div', {}, el('strong', {}, '立欣診所・線上小幫手'), el('small', {}, '依官網公開資料回答常見問題')), close),
     log, form,
     el('nav', { class: 'links', 'aria-label': '聯絡診所' },
-      link('tel:062516086', '撥打電話'), link('https://line.me/R/ti/p/@lhpedclinic', 'LINE 詢問'), link('https://lhpedclinic.booknow.com.tw/', '網路預約')));
+      link('tel:062516086', '撥打電話'), link('https://line.me/R/ti/p/@lhpedclinic', 'LINE 詢問'), link('https://booking.lhpedclinic.com.tw/', '網路預約')));
   root.append(launch, panel);
 
   let assistant = null, loading = null, greeted = false;
@@ -246,7 +246,7 @@ if (!document.querySelector('lh-assistant')) {
     if (!a) return;
     const h = a.getAttribute('href') || '';
     const name = h.startsWith('tel:') ? 'call_click' : h.includes('line.me') ? 'line_click'
-      : h.includes('mainpi.com') ? 'queue_click' : h.includes('booknow.com.tw') ? 'booking_click'
+      : h.includes('mainpi.com') ? 'queue_click' : h.includes('booking.lhpedclinic.com.tw') ? 'booking_click'
         : h.includes('google.com/maps') ? 'directions_click' : null;
     if (name) track(name, { link_url: h, via: 'assistant' });
   });

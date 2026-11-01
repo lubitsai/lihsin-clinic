@@ -1,10 +1,10 @@
 /* cta-track.js — 立欣診所 GA4 轉換事件共用腳本 v1.2（2026-09-05）
    v1.0（2026-07-10）來源：00 §6「GA4 轉換事件重掛」提案，院長 2026-07-10 核可（全站掛載、growth 例外納入）。
    事件定義（03 §7）：call_click（電話）／line_click（LINE）／queue_click（看診進度）
-                     ／booking_click（網路預約 BookNow）／directions_click（Google 地圖導航／查看位置）
+                     ／booking_click（網路預約，診所自有系統 booking.lhpedclinic.com.tw）／directions_click（Google 地圖導航／查看位置）
                      ／growth_open（生長工具開啟，於 growth 頁載入時計一次）。
    v1.2 補上兩個一直缺席的事件：booking_click 與 directions_click。**這不是新功能、是補漏**——
-        02 §1-2 把「轉換事件追蹤」列為本站最痛的缺口，而掛號（BookNow）正是整條漏斗的終點、
+        02 §1-2 把「轉換事件追蹤」列為本站最痛的缺口，而掛號（網路預約）正是整條漏斗的終點、
         導航是家長到院前的最後一步，兩者過去都只落在首頁 trackCTA() 的泛用 `click` 事件裡，
         GA4 報表分不出來，且服務頁／衛教頁上的同類連結完全沒有事件。既有事件名一律不動。
         ⚠️ 事件送出後仍須院長在 GA4 後台「管理 → 事件」把 booking_click／directions_click
@@ -175,7 +175,7 @@
     var name = h.indexOf('tel:') === 0 ? 'call_click'
       : (h.indexOf('line.me') !== -1 || h.indexOf('lin.ee') !== -1) ? 'line_click'
         : h.indexOf('mainpi.com') !== -1 ? 'queue_click'
-          : h.indexOf('booknow.com.tw') !== -1 ? 'booking_click'
+          : h.indexOf('booking.lhpedclinic.com.tw') !== -1 ? 'booking_click'
             : (h.indexOf('google.com/maps') !== -1 || h.indexOf('maps.google.com') !== -1
                || h.indexOf('maps.app.goo.gl') !== -1) ? 'directions_click' : null;
     if (name) window.gtag('event', name, withAi({ link_url: h, from_path: location.pathname }));
