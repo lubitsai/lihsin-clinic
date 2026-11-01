@@ -866,7 +866,8 @@ jobs:
           #    另有載體，會讓哨兵靜默通過——09-01b 的教訓）。
           # 負向測試（2026-09-12k 實跑）：兩條字串在本批之前於各自頁面的計數皆為 0、本批後為 1。
           # ⚠️ 日後若刻意重整這兩頁的延伸閱讀卡，請連同本檢查一起改，不要直接刪（防呆 17）。
-          dmt=$(curl -s --max-time 20 "$BASE/health/dust-mite.html" | grep -c '台南過敏原檢測（急性 IgE／慢性 IgG，醫師評估）' || true)
+          # 2026-11-01f：卡標題經院長核可改為「台南過敏原檢測・過敏原檢驗（…）」（PR #499），哨兵字串同步。
+          dmt=$(curl -s --max-time 20 "$BASE/health/dust-mite.html" | grep -c '台南過敏原檢測・過敏原檢驗（急性 IgE／慢性 IgG，醫師評估）' || true)
           if [ "$dmt" -ge 1 ]; then echo "OK    塵蟎頁已連向過敏原檢測服務頁"; else echo "FAIL  dust-mite.html 未見過敏原檢測卡——本頁疑遭 9/12 前舊版覆蓋"; fail=1; fi
           atr2=$(curl -s --max-time 20 "$BASE/health/allergy.html" | grep -c '過敏原檢測報告怎麼看？IgE／IgG 數值判讀' || true)
           if [ "$atr2" -ge 1 ]; then echo "OK    過敏 pillar 已連向過敏原報告判讀文"; else echo "FAIL  allergy.html 未見過敏原報告判讀卡——本頁疑遭 9/12 前舊版覆蓋"; fail=1; fi
