@@ -43,7 +43,7 @@ validate_site.py — 立欣診所全站驗證器 v1.3（2026-10-14g；v1.0＝202
   E-DOCTYPE   HTML 檔首為 <!DOCTYPE html>                    ｜歷批驗證協議
   E-H1        H1 唯一                                        ｜歷批驗證協議
   E-CANON     canonical 存在、https、非 www                   ｜歷批驗證協議
-  E-JSONLD    所有 ld+json 區塊 json.loads 通過               ｜00 §4-8
+  E-JSONLD    所有 ld+json 區塊 json.loads 通過、同物件無重複鍵 ｜00 §4-8
   E-TAGBAL    結構性標籤開閉平衡                              ｜00 §4-8
   E-FORBID    可見區禁語掃描（剝除 head/script/隱藏層）        ｜00 §4-1（白名單=歷批核可）
   E-AGGRT     全檔禁出現 aggregateRating                      ｜00 §4-3
@@ -523,10 +523,24 @@ def check_html(path: Path, rel: str, root: Path, rep: Report, stage: str,
     for i, m in enumerate(re.finditer(
             r'<script[^>]*type\s*=\s*["\']application/ld\+json["\'][^>]*>(.*?)</script\s*>',
             raw, re.S | re.I), 1):
+        dup_keys = []
+
+        def _pairs(pairs, _dup=dup_keys):
+            obj = {}
+            for k, v in pairs:
+                if k in obj:
+                    _dup.append(k)
+                obj[k] = v
+            return obj
         try:
-            json.loads(m.group(1))
+            json.loads(m.group(1), object_pairs_hook=_pairs)
         except Exception as e:
             rep.err(rel, "E-JSONLD", f"第 {i} 個 ld+json 解析失敗：{e}")
+            continue
+        # 2026-11-02：同一物件重複鍵 json.loads 會靜默取後者，但 Google 判
+        # 「無法剖析的結構化資料：有不應重複的資源」（GSC 11/1 通知，why-no-tests 兩個 "image"）。
+        if dup_keys:
+            rep.err(rel, "E-JSONLD", f"第 {i} 個 ld+json 同一物件有重複鍵：{'、'.join(sorted(set(dup_keys)))}")
 
     # W-PRODTYPE（2026-10-16：08-31c 規則回退攔截）
     # 病徵：用了繼承 schema.org Product 的型別（Drug 同時繼承 Substance 與 Product），
