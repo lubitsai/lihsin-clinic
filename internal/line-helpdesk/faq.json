@@ -2,15 +2,15 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "b3e78c70cb203cae7e572d0d6a4c4f70e2607a7c26fc886dace9c88da47207c1"
+   "kb_sha256": "76c6c1becb78815dc6fcc7592cfd0d7c217b5eacbfb08034b88a21fade6a7b4e"
   },
-  "knowledge_sha256": "aaa1e4b36f57f1aeb2297fdcf6fcb6516ccab2c7f960006c2b312200c4b82607",
+  "knowledge_sha256": "5bc23bf28da1d9039472dd29003965de3c11f5293dfe05de8c1c6ff84305cd4e",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
    "faq": 1190,
    "ops": 8,
-   "notice": 7,
+   "notice": 8,
    "navigation": 1
   }
  },
@@ -17512,6 +17512,16 @@
   {
    "id": "N2",
    "kind": "notice",
+   "title": "公費流感疫苗第二階段 11/2 起開打",
+   "questions": [
+    "公費流感疫苗第二階段 11/2 起開打"
+   ],
+   "answer": "依疾病管制署 115 年度計畫，50 至 64 歲、沒有高風險慢性病的成人，自 11 月 2 日起可以接種公費流感疫苗，接種至疫苗用罄為止。接種當天請攜帶健保卡。公費疫苗品牌由政府配發，每天到貨的品牌與數量可能不同，無法指定廠牌。是否適合接種依原廠仿單並由醫師評估，發燒或急性生病時宜暫緩；來院前請先來電 06-2516086 或在此聊天室輸入「專人服務」確認。",
+   "valid_until": "2026-11-30"
+  },
+  {
+   "id": "N3",
+   "kind": "notice",
    "title": "自費流感疫苗賽諾菲菲流達到貨公告｜2026 年 10 月 30 日",
    "questions": [
     "自費流感疫苗賽諾菲菲流達到貨公告｜2026 年 10 月 30 日",
@@ -17521,7 +17531,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N3",
+   "id": "N4",
    "kind": "notice",
    "title": "今日公費流感疫苗品牌查詢方式公告｜2026 年 10 月 3 日",
    "questions": [
@@ -17532,7 +17542,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N4",
+   "id": "N5",
    "kind": "notice",
    "title": "自費流感疫苗四款到貨公告｜2026 年 9 月 30 日",
    "questions": [
@@ -17543,7 +17553,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N5",
+   "id": "N6",
    "kind": "notice",
    "title": "流感疫苗 5 大問資訊｜2026 年 9 月 26 日",
    "questions": [
@@ -17554,7 +17564,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N6",
+   "id": "N7",
    "kind": "notice",
    "title": "自費流感疫苗 GSK 伏流感到貨公告｜2026 年 9 月 24 日",
    "questions": [
@@ -17565,7 +17575,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N7",
+   "id": "N8",
    "kind": "notice",
    "title": "自費流感疫苗東洋輔流威護到貨公告｜2026 年 9 月 21 日",
    "questions": [
