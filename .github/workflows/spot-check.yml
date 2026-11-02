@@ -447,6 +447,7 @@ jobs:
           check /images/dust-mite-infographic.jpg 200
           check /health/umbilical-granuloma.html 200
           check /health/infant-sleep-regression.html 200
+          check /health/parent-child-reading.html 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
@@ -1172,6 +1173,10 @@ jobs:
           # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           sr=$(curl -s --max-time 20 "$BASE/health/infant-sleep-regression.html" | grep -c '從睡前那一次開始練習' || true)
           if [ "$sr" -ge 1 ]; then echo "OK    睡眠倒退期頁正文已上線"; else echo "FAIL  睡眠倒退期頁未見『從睡前那一次開始練習』——10-27c 新頁疑已回退"; fail=1; fi
+          # 2026-11-02：新增衛教頁〈親子共讀〉的可見層哨兵（取字沿 09-26t：本句只在本頁可見層，全站 1 檔 1 處）。
+          # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
+          pcr=$(curl -s --max-time 20 "$BASE/health/parent-child-reading.html" | grep -c '一頁停很久、跳著翻' || true)
+          if [ "$pcr" -ge 1 ]; then echo "OK    親子共讀頁正文已上線"; else echo "FAIL  親子共讀頁未見『一頁停很久、跳著翻』——11-02 新頁疑已回退"; fail=1; fi
           # 2026-10-01y：新增衛教頁〈成人胃食道逆流〉的可見層哨兵（取字沿 09-26t：本句只在本頁可見層，全站 1 檔 1 處）。
           # ⚠️ 防呆 17：日後院長核可改寫這段內文時要同批改本檢查，不可為了讓 CI 過而直接刪掉。
           gerd=$(curl -s --max-time 20 "$BASE/health/adult-gerd.html" | grep -c '只疊枕頭容易彎到肚子' || true)

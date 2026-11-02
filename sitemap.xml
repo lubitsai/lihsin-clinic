@@ -109,7 +109,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-lee.html</loc>
-    <lastmod>2026-10-27</lastmod>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -239,6 +239,12 @@
     <loc>https://lhpedclinic.com.tw/health/infant-sleep-regression.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/infant-sleep-regression-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/parent-child-reading.html</loc>
+    <lastmod>2026-11-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
