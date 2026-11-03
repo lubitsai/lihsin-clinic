@@ -2,9 +2,9 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "990b25443a8d11046565fa1b3d1311c2d485810dcee5304cee9e9db1c3501673"
+   "kb_sha256": "2abe3baa3b03f65b1e6842c6ffd112b699ffebf8f0a3a0d0d3faee1d13a7d9d1"
   },
-  "knowledge_sha256": "29e1c4cc2b58bff56d999dfb4156f00bb1f5e1435d3909c781878168b7a448f2",
+  "knowledge_sha256": "208023ea2c93914592f02e56eef54fad8436f6058f6c572ae5bc10861ffcd8b9",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
@@ -9918,8 +9918,8 @@
    "questions": [
     "吃完藥吐出來，要再補一次嗎？"
    ],
-   "answer": "吃藥後 30 分鐘內吐、看得到藥，門診時間來電問醫師要不要補；超過 30 分鐘才吐，照下一次的時間吃。退燒藥吐出來不要自己馬上再補。",
-   "kb_answer": "吃藥後 30 分鐘內吐、看得到藥，門診時間來電問醫師要不要補；超過 30 分鐘才吐，照下一次的時間吃。退燒藥吐出來不要自己馬上再補。",
+   "answer": "吃藥後 30 分鐘內吐、看得到藥，記下藥名和吃藥、吐的時間，門診時間來電問醫師或藥師要不要補；超過 30 分鐘才吐，照下一次的時間吃。退燒藥吐出來不要自己馬上再補。",
+   "kb_answer": "吃藥後 30 分鐘內吐、看得到藥，記下藥名和吃藥、吐的時間，門診時間來電問醫師或藥師要不要補；超過 30 分鐘才吐，照下一次的時間吃。退燒藥吐出來不要自己馬上再補。",
    "page": "小孩不吃藥、吃藥吐出來怎麼辦？兒童餵藥方法",
    "source_url": "https://lhpedclinic.com.tw/health/giving-medicine.html",
    "core": false,
