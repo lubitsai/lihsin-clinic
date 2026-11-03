@@ -483,6 +483,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/picky-eating.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/picky-eating-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
