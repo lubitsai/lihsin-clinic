@@ -482,6 +482,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/giving-medicine.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/giving-medicine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
