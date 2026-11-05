@@ -217,7 +217,8 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/newborn-feeding.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/newborn-feeding-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -265,7 +266,8 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/baby-spitting-up.html</loc>
-    <lastmod>2026-09-10</lastmod>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/baby-spitting-up-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -327,6 +329,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/services/newborn-care.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/newborn-care-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
