@@ -573,6 +573,8 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/gout.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/gout-infographic.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/gout-uric-acid-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
