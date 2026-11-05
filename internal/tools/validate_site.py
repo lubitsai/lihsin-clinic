@@ -967,7 +967,8 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
             # 修法：①請院長交新圖 → 用新日期 slug 產檔換掉舊檔與所有引用（不可同名覆寫，快取）；
             #       ②若班表的變動不在圖上（例如平日某診換醫師），確認圖仍正確後，把下方釘選值改成訊息裡的「現在」。
             # 釘選分兩種粒度：full＝週末每診醫師＋起訖、平日三診時段（weekend-pediatrics 圖）；
-            # coarse＝只看「平日有幾診、夜診到幾點、週六／週日有沒有門診」（family-medicine 圖，2026-10-24d）。
+            # coarse＝只看「平日有幾診、夜診到幾點、週六／週日有沒有門診」（family-medicine 圖，2026-10-24d）；
+            # weekend＝只看週六／週日有沒有門診（newborn-care 圖，2026-11-05）。
             img_pins = {
                 "images/weekend-pediatrics-20261024-infographic.jpg": ("full",
                     "六 MORNING 蔡08:00–11:30｜六 AFTERNOON 李14:30–18:00｜"
@@ -975,6 +976,7 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
                     "平日 MORNING 08:00–12:00｜平日 AFTERNOON 14:30–18:00｜平日 EVENING 18:30–21:30"),
                 "images/family-medicine-infographic.jpg": ("coarse",
                     "平日 MORNING/AFTERNOON/EVENING｜夜診至 21:30｜週六有門診｜週日有門診"),
+                "images/newborn-care-infographic.jpg": ("weekend", "週六有門診｜週日有門診"),
             }
             parts = []
             for day in ("6", "0"):
@@ -991,7 +993,8 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
             sess_all = [x for x in ("MORNING", "AFTERNOON", "EVENING")
                         if all(any(s["session"] == x for s in sched["weekly"].get(d, [])) for d in "12345")]
             eve_end = max((s["end"] for s in wk if s["session"] == "EVENING"), default="無")
-            fp = {"full": "｜".join(parts),
+            wkend = f"週六{'有' if sched['weekly'].get('6') else '無'}門診｜週日{'有' if sched['weekly'].get('0') else '無'}門診"
+            fp = {"full": "｜".join(parts), "weekend": wkend,
                   "coarse": f"平日 {'/'.join(sess_all)}｜夜診至 {eve_end}｜"
                             f"週六{'有' if sched['weekly'].get('6') else '無'}門診｜週日{'有' if sched['weekly'].get('0') else '無'}門診"}
             site = "\n".join(f.read_text(encoding="utf-8") for f in root.rglob("*.html") if "booking-system" not in f.parts)
