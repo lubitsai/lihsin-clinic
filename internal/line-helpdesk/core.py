@@ -372,6 +372,10 @@ class Catalog:
             row = next((i for i in self.items if i.get('kind') == 'faq' and '本院最多開 28 天' in i.get('kb_answer', '')), None)
             if row:
                 return row['answer']
+        if re.search('慢性處方|慢箋|連續處方', q) and not MONEY.search(q):   # 院長 2026-11-05：問能不能開慢箋，答慢箋題
+            row = next((i for i in self.items if i.get('kind') == 'faq' and re.search('慢性處方箋|慢箋', i.get('title', ''))), None)
+            if row:
+                return row['answer']
         if FEE.search(q):
             return r['fee_table']
         if PRICE.search(q):
