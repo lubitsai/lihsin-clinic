@@ -430,6 +430,7 @@ jobs:
           check /images/hyperlipidemia-infographic.jpg 200
           check /images/hypertension-infographic.jpg 200
           check /images/why-no-tests-infographic.jpg 200
+          check /images/newborn-feeding-infographic.jpg 200
           check /images/phimosis-infographic.jpg 200
           check /images/giving-medicine-infographic.jpg 200
           check /images/stop-medicine-infographic.jpg 200
