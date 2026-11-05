@@ -794,6 +794,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/growth-curve.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/growth-curve-infographic.jpg</image:loc></image:image>
     <lastmod>2026-08-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
