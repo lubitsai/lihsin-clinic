@@ -413,6 +413,7 @@ jobs:
           check /health/stop-medicine.html 200
           check /health/giving-medicine.html 200
           check /health/picky-eating.html 200
+          check /health/gout.html 200
           check /health/growing-pains.html 200
           check /health/why-no-tests.html 200
           check /images/rsv-infographic.jpg 200
@@ -1340,6 +1341,9 @@ jobs:
           # 2026-11-03：寵粉文「兒童餵藥」新頁的針筒餵法段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           gm1=$(curl -s --max-time 20 "$BASE/health/giving-medicine.html" | grep -c '對著臉頰內側推一點' || true)
           if [ "$gm1" -ge 1 ]; then echo "OK    餵藥寵粉文『針筒餵法』段已上線"; else echo "FAIL  餵藥頁未見『對著臉頰內側推一點』——11-03 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-05：破圈文「痛風高尿酸」新頁的快速重點段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          go1=$(curl -s --max-time 20 "$BASE/health/gout.html" | grep -c '痛退了，尿酸還在' || true)
+          if [ "$go1" -ge 1 ]; then echo "OK    痛風破圈文『快速重點』段已上線"; else echo "FAIL  痛風頁未見『痛退了，尿酸還在』——11-05 新頁內文疑未上線或已回退"; fail=1; fi
           # 2026-11-03：破圈文「挑食」新頁的新食物段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           pe1=$(curl -s --max-time 20 "$BASE/health/picky-eating.html" | grep -c '願意碰一下、聞一下都算進步' || true)
           if [ "$pe1" -ge 1 ]; then echo "OK    挑食破圈文『新食物一小口』段已上線"; else echo "FAIL  挑食頁未見『願意碰一下、聞一下都算進步』——11-03 新頁內文疑未上線或已回退"; fail=1; fi

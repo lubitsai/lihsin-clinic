@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -103,7 +103,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -572,6 +572,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lhpedclinic.com.tw/health/gout.html</loc>
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://lhpedclinic.com.tw/health/mmr-vaccine.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/mmr-vaccine-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-24</lastmod>
@@ -941,7 +947,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/</loc>
-    <lastmod>2026-11-03</lastmod>
+    <lastmod>2026-11-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
