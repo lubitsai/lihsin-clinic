@@ -1,3 +1,9 @@
+2026-11-06 第二版 2.34（題庫重產：腸病毒重症前兆改 5 項＋預防、停課 2 題；程式未改；取代未部署的 2.33）
+- sync_assistants.py：官網 333 項通過、一致性比對 405 句全部一致（parity_queries 新增 3 句腸病毒問法）；validate_site 通過。
+- LINE unittest：容器缺 Flask／Firestore，只跑題庫與價目 28 項，全過。
+- --ask：「腸病毒重症前兆有哪些」「腸病毒怎麼預防」「台南幼兒園腸病毒會停課嗎」兩邊皆命中對應新題。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-11-05 第二版 2.33（慢箋問法分流：沒問費用回慢箋題、有問費用回收費表；題庫新增痛風 8 題＋慢箋 1 題；取代未部署的 2.32）
 - sync_assistants.py：官網 333 項（新增 9 項慢箋分流）、一致性比對 400 句全部一致（parity_queries 新增 8 句：痛風 4、慢箋 4）；validate_site 通過。
 - LINE unittest：裝 requirements.lock.txt 後完整執行 91 項，90 過、1 失敗＝test_schedule_exception（main 上同樣失敗，與門診異動資料日期有關，非本批造成）；新增 test_chronic_prescription_faq 通過。
