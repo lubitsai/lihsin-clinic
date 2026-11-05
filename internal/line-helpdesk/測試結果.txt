@@ -1,5 +1,5 @@
 2026-11-06 第二版 2.34（題庫重產：腸病毒重症前兆改 5 項＋預防、停課 2 題；程式未改；取代未部署的 2.33）
-- sync_assistants.py：官網 333 項通過、一致性比對 405 句全部一致（parity_queries 新增 3 句腸病毒問法）；validate_site 通過。
+- sync_assistants.py：官網 333 項通過、一致性比對 401 句全部一致（parity_queries 新增 3 句腸病毒問法）；validate_site 通過。
 - LINE unittest：容器缺 Flask／Firestore，只跑題庫與價目 28 項，全過。
 - --ask：「腸病毒重症前兆有哪些」「腸病毒怎麼預防」「台南幼兒園腸病毒會停課嗎」兩邊皆命中對應新題。
 - 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
