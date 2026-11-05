@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.32）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.33）
 
-2026-10-30 第二版 2.32｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-05 第二版 2.33｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.33 慢箋問法分流＋痛風 8 題、慢箋 1 題（2026-11-05）
+
+程式有改（core.py `money_route`，與官網 search.js 逐字同步）：問「慢性處方／慢箋／連續處方」且句中沒有費用字詞（`MONEY`：多少｜錢｜費｜免費｜收費｜付）→ 回家醫頁「台南哪裡可以開慢性處方箋（慢箋）？」題，不再回門診收費表；有問費用（「慢箋要多少錢」）照舊回收費表；過敏用藥問慢箋仍先回 28 天題。題庫新增痛風衛教頁 8 題與家醫頁慢箋 1 題。2.33 取代未部署的 2.32。
 
 ## 2.32 減重營養問法分流修正＋2 題 FAQ（2026-10-30）
 

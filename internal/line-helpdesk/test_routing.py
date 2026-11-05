@@ -120,6 +120,15 @@ class WebsiteRulesV26Tests(unittest.TestCase):
             self.assertEqual(action, 'answer', q)
             self.assertIn('押單費', msg['text'])
 
+    def test_chronic_prescription_faq(self):   # 院長 2026-11-05
+        for q in ['台南哪裡可以開慢箋', '慢性處方箋可以在你們這裡開嗎', '可以開連續處方箋嗎']:
+            action, msg = self.ans(q)
+            self.assertEqual(action, 'answer', q)
+            self.assertIn('病情穩定後可開立慢性病連續處方箋', msg['text'], q)
+            self.assertNotIn('押單費', msg['text'], q)
+        action, msg = self.ans('慢箋要多少錢')
+        self.assertIn('押單費', msg['text'])
+
     def test_checkup_fee(self):
         action, msg = self.ans('成人健檢要掛號費嗎')
         self.assertIn('不另外收掛號費', msg['text'])

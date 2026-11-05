@@ -121,6 +121,12 @@ for (const q of ['氣喘藥可以開慢性處方箋嗎', '鼻過敏噴劑可以�
   n++; assert(/本院最多開 28 天/.test(texts(ask(q))), `「${q}」要帶出 28 天說明`);
 }
 kind('慢性處方箋領藥要掛號費嗎', 'fee');
+// 問能不能開慢箋（沒問費用）：展開家醫頁慢箋題，不給收費表（院長 2026-11-05）
+for (const q of ['台南哪裡可以開慢箋', '慢性處方箋可以在你們這裡開嗎', '可以開連續處方箋嗎', '慢箋']) {
+  kind(q, 'results');
+  n++; assert(/慢性處方箋（慢箋）/.test(ask(q).blocks.filter((b) => b.type === 'faq').flatMap((b) => b.items.filter((i) => i.open).map((i) => i.title)).join()), `「${q}」應展開慢箋題`);
+}
+kind('慢箋要多少錢', 'fee');
 // ── 流感疫苗預購規則（院長 2026-09-27；官網可見層不寫） ──
 const opened = (r) => r.blocks.filter((b) => b.type === 'faq').flatMap((b) => b.items.filter((i) => i.open).map((i) => i.title));
 for (const [q, want] of [

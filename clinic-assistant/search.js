@@ -447,6 +447,14 @@ export function createAssistant(kb) {
         return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
       }
     }
+    // 問能不能開慢箋（沒問費用）：答家醫頁慢箋題，不給收費表（院長 2026-11-05）；有問費用照舊走收費表
+    if (/慢性處方|慢箋|連續處方/.test(q) && !MONEY.test(q)) {
+      const rows = kb.faqs.filter((r) => /慢性處方箋|慢箋/.test(r.title)).slice(0, 3);
+      if (rows.length) {
+        const fb = faqBlock(rows.map((row) => ({ row, score: 1 })));
+        return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
+      }
+    }
     // 6-0. 門診收費標準（第 5 條例外）
     if (FEE.test(q) && kb.fees) {
       return reply('fee', '', [{ type: 'fees', title: '門診收費標準', ...kb.fees }, { type: 'text', text: OTHER_FEES }]);

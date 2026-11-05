@@ -1,3 +1,9 @@
+2026-11-05 第二版 2.33（慢箋問法分流：沒問費用回慢箋題、有問費用回收費表；題庫新增痛風 8 題＋慢箋 1 題；取代未部署的 2.32）
+- sync_assistants.py：官網 333 項（新增 9 項慢箋分流）、一致性比對 400 句全部一致（parity_queries 新增 8 句：痛風 4、慢箋 4）；validate_site 通過。
+- LINE unittest：裝 requirements.lock.txt 後完整執行 91 項，90 過、1 失敗＝test_schedule_exception（main 上同樣失敗，與門診異動資料日期有關，非本批造成）；新增 test_chronic_prescription_faq 通過。
+- --ask：「台南哪裡可以開慢箋」「慢箋」兩邊皆回慢箋題；「慢箋要多少錢」兩邊回收費表；「氣喘藥可以開慢箋嗎」仍走 28 天分流。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-10-30 第二版 2.32（DOSE「吃多少」排除熱量／蛋白質、WEIGHT 價目排除營養問法、新增 2 題減重營養 FAQ；取代未部署的 2.31）
 - sync_assistants.py：官網 324 項（新增 4 項營養／藥量分流）、一致性比對全部一致（parity_queries 新增 5 句）；validate_site 通過。LINE 只跑題庫與價目測試 28 項（環境缺 Flask／Firestore）。
 - --ask：「外食怎麼吃才能減重」「減重一天吃多少熱量」「減重熱量要吃多少」「減重要吃多少蛋白質」兩邊皆找到營養題；「減重多少錢」「減重課程費用」仍回價目；「退燒藥要吃多少」仍回醫師評估。
