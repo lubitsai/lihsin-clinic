@@ -4,7 +4,7 @@
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
    "kb_sha256": "15ea16c8fac36823d86b163404920f85076daa198ac57af654951886a41cd7d0"
   },
-  "knowledge_sha256": "9ec5b6f7ea138280f484659c75d23e3cebe29c3f10d63338d263029462ab98f7",
+  "knowledge_sha256": "52d3dcc14af67c02c0d1e1c929fcdd6a8809973de7260bf788505ddd7c047801",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
@@ -17867,7 +17867,8 @@
    ],
    "answer": "11 月 8 日（日）晚診照常看診，時間不變（18:30–21:00，18:00 開始現場掛號），當晚改由李佳玲醫師代診，原排班的蔡宗儒醫師當晚不看診。有疑問請來電 06-2516086 或在此聊天室輸入「專人服務」。",
    "valid_until": "2026-11-08",
-   "schedule": true
+   "schedule": true,
+   "start": "2026-11-08"
   },
   {
    "id": "N2",
