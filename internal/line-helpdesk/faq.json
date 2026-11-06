@@ -2,15 +2,15 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "79f7fa281d510d02cf6fe973287bb690ee5842df0d4d76668d9fa61496a098fa"
+   "kb_sha256": "15ea16c8fac36823d86b163404920f85076daa198ac57af654951886a41cd7d0"
   },
-  "knowledge_sha256": "95a6dcafcd4a14d406df53653397fe1196375871a5d12dcf489f2f51fecd02a8",
+  "knowledge_sha256": "9ec5b6f7ea138280f484659c75d23e3cebe29c3f10d63338d263029462ab98f7",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
    "faq": 1215,
    "ops": 8,
-   "notice": 8,
+   "notice": 9,
    "navigation": 1
   }
  },
@@ -17851,6 +17851,18 @@
   {
    "id": "N1",
    "kind": "notice",
+   "title": "門診異動公告｜2026 年 11 月 8 日（日）晚診",
+   "questions": [
+    "門診異動公告｜2026 年 11 月 8 日（日）晚診",
+    "門診異動公告"
+   ],
+   "answer": "11 月 8 日（日）晚診照常看診，時間不變（18:30–21:00，18:00 開始現場掛號），當晚改由李佳玲醫師代診，原排班的蔡宗儒醫師當晚不看診。有疑問請來電 06-2516086 或在此聊天室輸入「專人服務」。",
+   "valid_until": "2026-11-08",
+   "schedule": true
+  },
+  {
+   "id": "N2",
+   "kind": "notice",
    "title": "2026 自費流感疫苗資訊｜2026 年 9 月 24 日",
    "questions": [
     "2026 自費流感疫苗資訊｜2026 年 9 月 24 日",
@@ -17860,7 +17872,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N2",
+   "id": "N3",
    "kind": "notice",
    "title": "公費流感疫苗第二階段 11/2 起開打",
    "questions": [
@@ -17870,7 +17882,7 @@
    "valid_until": "2026-11-30"
   },
   {
-   "id": "N3",
+   "id": "N4",
    "kind": "notice",
    "title": "自費流感疫苗賽諾菲菲流達到貨公告｜2026 年 10 月 30 日",
    "questions": [
@@ -17881,7 +17893,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N4",
+   "id": "N5",
    "kind": "notice",
    "title": "今日公費流感疫苗品牌查詢方式公告｜2026 年 10 月 3 日",
    "questions": [
@@ -17892,7 +17904,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N5",
+   "id": "N6",
    "kind": "notice",
    "title": "自費流感疫苗四款到貨公告｜2026 年 9 月 30 日",
    "questions": [
@@ -17903,7 +17915,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N6",
+   "id": "N7",
    "kind": "notice",
    "title": "流感疫苗 5 大問資訊｜2026 年 9 月 26 日",
    "questions": [
@@ -17914,7 +17926,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N7",
+   "id": "N8",
    "kind": "notice",
    "title": "自費流感疫苗 GSK 伏流感到貨公告｜2026 年 9 月 24 日",
    "questions": [
@@ -17925,7 +17937,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N8",
+   "id": "N9",
    "kind": "notice",
    "title": "自費流感疫苗東洋輔流威護到貨公告｜2026 年 9 月 21 日",
    "questions": [
