@@ -171,6 +171,16 @@ class UnknownQuestionTests(unittest.TestCase):
             self.assertIn('立欣診所門診時間', msg['text'])
         self.assertNotIn('目前沒有門診異動', decide('門診時間', False, CAT, LEGACY, PASS, after)[1]['text'])
 
+    def test_date_ask_shows_covering_notice(self):
+        # 代診（時段不變、無 EXCEPTIONS）：問那一天要附上公告（與官網 search.js noticesOn 同步）
+        for n in [i for i in DATA['items'] if i['kind'] == 'notice' and i.get('schedule') and i.get('start')]:
+            d = date.fromisoformat(n['start'])
+            text = decide(f'{d.month}/{d.day}有看診嗎', False, CAT, LEGACY, PASS, d - timedelta(days=1))[1]['text']
+            self.assertIn(n['answer'], text)
+            self.assertIn('門診異動', text)
+            later = date.fromisoformat(n['valid_until']) + timedelta(days=1)
+            self.assertNotIn(n['answer'], decide(f'{later.month}/{later.day}有看診嗎', False, CAT, LEGACY, PASS, d - timedelta(days=1))[1]['text'])
+
     def test_clinic_card_buttons_never_open_a_case(self):
         # 「診所資訊」卡片上的按鈕文字：不可落到 unknown（會自動轉專人、開案件）
         default = re.search(r"OA_PASSTHROUGH_KEYWORDS', '(\[.*?\])'", (ROOT / 'main.py').read_text(encoding='utf-8'))

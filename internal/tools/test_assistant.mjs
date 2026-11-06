@@ -58,6 +58,15 @@ n++; assert(!texts(ask('9月26日有看診嗎', '2026-09-29')).includes('中秋�
 n++; assert(ask('今天有看診嗎？門診時間是幾點到幾點？').blocks.some((b) => b.type === 'schedule'));
 n++; assert(texts(ask('今天有看診嗎')).includes('實際門診時間以官網'), '第 15 條提醒');
 n++; assert.equal(parseDate('10/10有開嗎', DAY), '2026-10-10');
+{ // 代診：時段不變、EXCEPTIONS 無條目，靠公告 start～valid_until 在當天附上（院長 2026-11-06 裁示官網與 LINE 一起改）
+  const k2 = structuredClone(kb);
+  k2.notices.push({ id: 'N8', title: '門診異動公告｜代診測試', answer: '9 月 30 日（三）晚診改由李佳玲醫師代診。', valid_until: '2026-09-30', start: '2026-09-30', schedule: true });
+  const B = createAssistant(k2);
+  const on = JSON.stringify(B.ask('9月30日有看診嗎', DAY));
+  n++; assert(on.includes('代診測試') && on.includes('門診異動') && on.includes('當日依門診異動公告調整'), '代診當天要附公告');
+  n++; assert(!JSON.stringify(B.ask('10月1日有看診嗎', DAY)).includes('代診測試'), '公告只附在涵蓋的日期');
+  n++; assert(!JSON.stringify(B.ask('9月29日有看診嗎', DAY)).includes('代診測試'), '起日之前不附');
+}
 n++; assert.equal(parseDate('下週三晚上', DAY), '2026-09-30');
 n++; assert.equal(parseDate('1月5日', DAY), '2027-01-05');
 n++; assert.equal(parseDate('孩子3個月大發燒', DAY), null);

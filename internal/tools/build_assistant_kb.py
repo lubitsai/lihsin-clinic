@@ -230,6 +230,15 @@ def build(root: Path, kb_path: Path) -> dict:
                         'valid_until': until.group(0),
                         'schedule': kind == '門診異動' if kind else '門診' in cells[0]})
 
+    # 門診公告涵蓋的起日：取自 notices/notices.json（與首頁 #clinic-notice 一一對應，check_visit_facts 比對），
+    # 依 end＝下架日配對；日期查詢據此在「該日」附上公告（代診時段不變、EXCEPTIONS 無條目時也看得到）。
+    nj = root / 'notices' / 'notices.json'
+    spans = json.loads(nj.read_text(encoding='utf-8')).get('notices', []) if nj.exists() else []
+    for r in notices:
+        starts = [x['start'] for x in spans if r['schedule'] and x.get('end') == r['valid_until'] and x.get('start')]
+        if starts:
+            r['start'] = min(starts)
+
     # ── 五、Q&A 本體 ──
     faqs = extract_qa(section(kb, '<!-- KB:QA:BEGIN -->', '<!-- KB:QA:END -->'), 'Q')
     stats = re.search(r'題目總數[^|]*\|\s*\**(\d+)', section(kb, '<!-- KB:STATS:BEGIN -->', '<!-- KB:STATS:END -->'))

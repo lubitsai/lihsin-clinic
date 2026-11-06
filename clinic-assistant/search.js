@@ -292,6 +292,9 @@ export function createAssistant(kb) {
   const legend = () => Object.entries(doctors).map(([k, v]) => `${k}＝${v}`).join('，');
   const scheduleNotices = (today) => kb.notices.filter((n) => n.schedule && valid(n, today))
     .map((n) => ({ type: 'notice', title: n.title, text: n.answer }));
+  // 涵蓋某一天的門診公告（start～valid_until）：代診等時段不變的異動沒有 EXCEPTIONS 條目，靠這個在當天附上公告
+  const noticesOn = (date, today) => kb.notices.filter((n) => n.schedule && valid(n, today) && n.start && n.start <= date && date <= n.valid_until)
+    .map((n) => ({ type: 'notice', title: n.title, text: n.answer }));
 
   // 各日最後施打時間：最後一診結束前 1 小時，連續同時間的日子合併（週一至週五 20:30、週六 17:00、週日 20:00）
   function cutoffLine() {
@@ -318,16 +321,18 @@ export function createAssistant(kb) {
     const blocks = [];
     if (date < today) return { kind: 'dynamic', text: '這一天已經過去了，請輸入今天以後的日期。', blocks };
     const { special, rows } = sessionsOn(date);
+    const covering = special ? [] : noticesOn(date, today);
     const head = date === today ? `今天 ${label(date)}` : label(date);
     blocks.push({
-      type: 'schedule', title: head + (special ? '｜門診異動' : ''),
+      type: 'schedule', title: head + (special || covering.length ? '｜門診異動' : ''),
       days: [{ day: '', rows: rows.length ? rows : [['', '全日休診']] }],
-      note: special ? '當日依門診異動公告調整。' : legend(),
+      note: special ? '當日依門診異動公告調整。' : covering.length ? '當日依門診異動公告調整。' + legend() : legend(),
     });
     if (special) {
       blocks.push({ type: 'schedule', title: `常態週${DAY[weekday(date)]}門診`, days: [{ day: '', rows: weeklyRows(weekday(date)) }], note: legend() });
     }
     if (special || HOLIDAY.test(q)) blocks.push(...scheduleNotices(today));
+    else blocks.push(...covering);
     if (HOURS_TOPIC.test(q)) blocks.push(weekTable());
     const tail = [HOURS_NOTE];
     if (!special) tail.unshift(HOLIDAY_NOTE);

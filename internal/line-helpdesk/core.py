@@ -420,6 +420,10 @@ class Catalog:
             return {'type': 'text', 'text': '\n\n'.join(n['title'] + '\n' + n['answer'] for n in notices)}
         return {'type': 'text', 'text': self.replies['no_notice'] + '\n\n' + self.titles_by_id['KEY01']['answer']}
 
+    def _notices_on(self, d, today):
+        iso = d.isoformat()
+        return [n for n in self._schedule_notices(today) if n.get('start') and n['start'] <= iso <= n['valid_until']]
+
     def _schedule_notices(self, today):
         return [i for i in self.items if i.get('kind') == 'notice' and i.get('schedule') and is_valid(i, today)]
 
@@ -429,15 +433,19 @@ class Catalog:
             return {'type': 'text', 'text': r['past_date']}
         ex = self.schedule['exceptions'].get(d.isoformat())
         special = ex is not None
+        covering = [] if special else self._notices_on(d, today)   # search.js noticesOn(): same-hours changes (代診) have no exception
         rows = [(SESSION[x['session']], f"{x['start']}–{x['end']}") for x in ex] if special else self._weekly_rows(_weekday(d))
-        head = (f'今天 {date_label(d)}' if d == today else date_label(d)) + ('｜門診異動' if special else '')
-        parts = [head + '\n' + ('\n'.join(f'{a} {b}' for a, b in rows) if rows else '全日休診')
-                 + '\n' + ('當日依門診異動公告調整。' if special else self.schedule['legend'])]
+        head = (f'今天 {date_label(d)}' if d == today else date_label(d)) + ('｜門診異動' if special or covering else '')
+        note = ('當日依門診異動公告調整。' if special else
+                '當日依門診異動公告調整。' + self.schedule['legend'] if covering else self.schedule['legend'])
+        parts = [head + '\n' + ('\n'.join(f'{a} {b}' for a, b in rows) if rows else '全日休診') + '\n' + note]
         if special:
             parts.append(f'常態週{DAY[_weekday(d)]}門診\n' + '\n'.join(f'{a} {b}' for a, b in self._weekly_rows(_weekday(d)))
                          + '\n' + self.schedule['legend'])
         if special or HOLIDAY.search(q):
             parts += [n['title'] + '\n' + n['answer'] for n in self._schedule_notices(today)]
+        else:
+            parts += [n['title'] + '\n' + n['answer'] for n in covering]
         if HOURS_TOPIC.search(q):
             parts.append(self.titles_by_id['KEY01']['answer'])
         tail = [r['hours_note']]

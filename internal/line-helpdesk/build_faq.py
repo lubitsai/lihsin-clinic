@@ -196,7 +196,7 @@ def build(kb_bytes, aliases, overrides=None):
         qs = list(dict.fromkeys([n['title'], n['title'].split('｜')[0].strip()]))
         items.append({'id': n['id'], 'kind': 'notice', 'title': n['title'], 'questions': qs,
                       'answer': add_line(n['id'], n['answer']), 'valid_until': n['valid_until'],
-                      **({'schedule': True} if n.get('schedule') else {})})
+                      **({'schedule': True} if n.get('schedule') else {}), **({'start': n['start']} if n.get('start') else {})})
     items.append({'id': 'NAV_WEBSITE', 'kind': 'navigation', 'questions': [], 'answer': kb['site'] + '/'})
     by_id = {i['id']: i for i in items}
     for item_id, extra in aliases.items():
