@@ -34,3 +34,12 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 5. `weight-5-team.png` 蔡醫師×杜昀憬營養師（官網本人照片）
 
 減重營養課衛教影片只提供給付費學員，素材與回覆一律不得連結或提及。
+
+## `archive/`：參考與舊版（不在後台使用）
+
+| 檔案 | 說明 |
+|---|---|
+| `screenshot-chat-latest-notice-reply.png` | 2026-11-06 院長手機截圖：點「最新門診異動」仍回 10/23 颱風舊圖（2.37 起改由程式回答的起因） |
+| `screenshot-oa-profile.png` | 2026-11-06 官方帳號主頁截圖（好友 7,847、常見問題門診時間，已核對與官網一致） |
+| `allergy-v1-banner.png`／`allergy-v1-conditions.png`／`allergy-v1-test-prices.png` | 「過敏氣喘諮詢」第一版（順序：價目→專診內容→哪些問題→主視覺），已被上方第二版取代；第一版的專診內容與第二版同檔，未重複存 |
+| `allergy-4-test-prices_candidate-A.png`／`_candidate-B.png` | session 改字候選（「最完整」→ A「項目最多」／B「合檢」）；**院長 2026-11-06 裁示維持原圖，未採用** |
