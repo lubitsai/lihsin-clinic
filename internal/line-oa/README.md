@@ -8,7 +8,7 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 `rich-menu-8grid.jpg`
 
 現行選單由 Messaging API 建立（2026-10-01，`current/line_menu_clinic_ready.py` Colab 腳本），ID `richmenu-1f2a660df1cff1005a040f94d5c3bab7`，帳號 `@179tddtf`；設定備份 `current/line_menu_backup.json`（不含 Token）。OA Manager 原後台選單保留未刪。
-⚠️ 可點區只有上排（y 0–610）與下排（y 1140–1686）；**中間品牌帶（y 610–1140）沒有設動作**，點了沒反應。若要讓它連到官網首頁，需改腳本 `areas` 加一格後重新發布（會產生新選單 ID）。
+⚠️ 上述 10-01 版可點區只有上排（y 0–610）與下排（y 1140–1686），中間品牌帶（y 610–1140）點了沒反應。**院長 2026-11-07 核可加第 9 區**：`current/line_menu_clinic_ready.py` 已改為九區（中間品牌帶 x 0／y 610／2500×530 → `https://lhpedclinic.com.tw/`），圖不用換（沿用 `rich-menu-8grid.jpg`，919 KB＜1 MB）。**⏳ 待院長在 Colab 執行發布**；發布後把新下載的 `line_menu_backup.json` 交回覆蓋本資料夾那份，並把上面的選單 ID 改成新 ID。
 
 | 位置 | 按鈕 | 類型 | 動作 |
 |---|---|---|---|
@@ -52,5 +52,5 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 | 檔案 | 說明 |
 |---|---|
 | `old-webhook-main.py` | LINE 客服 2.x 上線前的原 Cloud Run webhook（關鍵字：立欣診所／過敏減重諮詢／醫師介紹／診療項目／診所資訊）。Token／secret 為空字串。卡片內容已移入 `line-helpdesk/legacy_messages.json`，比對結果一致，唯一差異是 2.x 把門診時間改成 24 小時制（02:30 → 14:30 等） |
-| `line_menu_clinic_ready.py` | 發布圖文選單的 Colab 腳本（Token 執行時隱藏輸入，不入檔） |
+| `line_menu_clinic_ready.py` | 發布圖文選單的 Colab 腳本（Token 執行時隱藏輸入，不入檔）；2026-11-07 起為九區版（加中間品牌帶 → 官網首頁） |
 | `line_menu_backup.json` | 2026-10-01 發布時下載的選單設定與新舊選單 ID |

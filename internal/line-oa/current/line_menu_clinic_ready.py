@@ -48,7 +48,7 @@ def main():
             'https://www.facebook.com/lhpedclinic/'
         ]
         areas = []
-        print('已填入截圖中的原有設定。')
+        print('已填入原有八格設定，並加上中間品牌帶 → 官網首頁。')
         print('「過敏門診」傳送「過敏氣喘諮詢」；「減重門診」傳送「減重營養諮詢」，沿用後台自動回應。')
         for i, (label, value) in enumerate(zip(labels, values)):
             action = ({'type': 'uri', 'label': label, 'uri': value}
@@ -57,9 +57,13 @@ def main():
             areas.append({'bounds': {'x': (i % 4)*625,
                 'y': 0 if i < 4 else 1140, 'width': 625,
                 'height': 610 if i < 4 else 546}, 'action': action})
+        # 2026-11-07 院長核可：中間品牌帶（y 610–1140）原本沒有動作，改為開啟官網首頁（首頁有最新門診異動公告）
+        labels.append('官網首頁（中間品牌帶）')
+        areas.append({'bounds': {'x': 0, 'y': 610, 'width': 2500, 'height': 530},
+                      'action': {'type': 'uri', 'label': '官網首頁', 'uri': 'https://lhpedclinic.com.tw/'}})
 
         menu = {'size': {'width': 2500, 'height': 1686}, 'selected': True,
-                'name': '立欣診所八格選單-' + datetime.now().strftime('%Y%m%d-%H%M%S'),
+                'name': '立欣診所九區選單-' + datetime.now().strftime('%Y%m%d-%H%M%S'),
                 'chatBarText': '診所服務選單', 'areas': areas}
         call('POST', base + '/richmenu/validate', json=menu)
         old = session.get(base + '/user/all/richmenu', timeout=60)
@@ -79,7 +83,7 @@ def main():
             detail = old.text.replace(token, '[已隱藏]')
             raise RuntimeError(f'無法確認舊選單，HTTP {old.status_code}：{detail}，尚未發布。')
 
-        print('\n請核對帳號與八格設定：', bot.get('displayName'), bot.get('basicId'))
+        print('\n請核對帳號與九區設定：', bot.get('displayName'), bot.get('basicId'))
         for label, area in zip(labels, areas):
             a = area['action']
             print(label, '→', a.get('uri', '傳送文字：' + a.get('text', '')))
