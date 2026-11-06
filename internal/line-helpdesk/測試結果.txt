@@ -1,3 +1,8 @@
+2026-11-07 第二版 2.46（題庫重產：醫師資格 FAQ；程式未改；取代未部署的 2.45）
+- sync_assistants.py：官網 336 項、一致性比對 405 句全部一致；validate_site 通過（ERROR 0／WARN 0）。
+- LINE unittest：題庫與價目 35 項全過。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-07 第二版 2.45（診療項目文字、醫師學經歷對齊官網，院長逐字核可；取代未部署的 2.44）
 - LINE unittest 完整版：100 項全過（新增 test_card_wording_matches_website：必備但書、改名、醫師資格逐項、李醫師無糖尿病共照）。
 - 預覽：preview_flex.py 渲染 8 卡＋2 位醫師卡，長行自動換行無截斷。
