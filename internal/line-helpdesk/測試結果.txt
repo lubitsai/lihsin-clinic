@@ -1,3 +1,8 @@
+2026-11-07 第二版 2.42（「診療項目」8 卡：耳鼻喉相關症狀／公費及自費疫苗／InBody＋每卡「了解更多」；取代未部署的 2.41）
+- LINE unittest 完整版：98 項全過（新增 test_service_cards：禁字不再出現、8 卡按鈕連 /services/ 且頁面在 repo 存在、carousel 9.2 KB＜50 KB）。
+- sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-07 第二版 2.41（診所資訊卡片：班表圖點擊改開官網 #schedule、「周」→「週」；取代未部署的 2.40）
 - LINE unittest 完整版：97 項全過（新增 test_clinic_card_links_and_wording）。
 - sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。

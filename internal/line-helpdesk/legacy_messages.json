@@ -778,7 +778,24 @@
               }
             ]
           },
-          "direction": "ltr"
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ]
+          }
         },
         {
           "type": "bubble",
@@ -814,7 +831,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "耳鼻喉治療",
+                    "text": "耳鼻喉相關症狀",
                     "size": "xl",
                     "margin": "md",
                     "weight": "bold",
@@ -852,6 +869,23 @@
                 "type": "text",
                 "text": "喉嚨痛、聲音沙啞、魚刺、口腔潰瘍",
                 "margin": "xs"
+              }
+            ]
+          },
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/ent-care.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
               }
             ]
           }
@@ -920,7 +954,24 @@
               }
             ]
           },
-          "direction": "ltr"
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/pediatric-allergy-asthma.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ]
+          }
         },
         {
           "type": "bubble",
@@ -986,7 +1037,24 @@
               }
             ]
           },
-          "direction": "ltr"
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/skin-conditions.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ]
+          }
         },
         {
           "type": "bubble",
@@ -1052,7 +1120,24 @@
               }
             ]
           },
-          "direction": "ltr"
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/family-medicine.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ]
+          }
         },
         {
           "type": "bubble",
@@ -1118,7 +1203,24 @@
               }
             ]
           },
-          "direction": "ltr"
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/wound-care.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ]
+          }
         },
         {
           "type": "bubble",
@@ -1172,14 +1274,31 @@
                   },
                   {
                     "type": "text",
-                    "text": "成人健檢、各項公自費疫苗接種",
+                    "text": "成人健檢、公費及自費疫苗接種",
                     "margin": "xxl"
                   }
                 ]
               }
             ]
           },
-          "direction": "ltr"
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/vaccination.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
+              }
+            ]
+          }
         },
         {
           "type": "bubble",
@@ -1238,10 +1357,27 @@
                   },
                   {
                     "type": "text",
-                    "text": "Inbody測量",
+                    "text": "InBody測量",
                     "margin": "xs"
                   }
                 ]
+              }
+            ]
+          },
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/weight-management.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#C47451"
               }
             ]
           }

@@ -190,6 +190,23 @@ class UnknownQuestionTests(unittest.TestCase):
         for key in ('診所資訊', '立欣診所'):
             self.assertEqual(LEGACY[key]['contents']['hero']['action']['uri'], 'https://lhpedclinic.com.tw/#schedule')
 
+    def test_service_cards(self):
+        # 院長 2026-11-07：耳鼻喉不宣稱專科（00 §4-5）、疫苗不寫「各項」（本院不提供卡介苗）、InBody 大小寫；每卡「了解更多」連官網服務頁
+        raw = json.dumps(LEGACY['診療項目'], ensure_ascii=False)
+        for bad in ('耳鼻喉治療', '各項公自費', 'Inbody'):
+            self.assertNotIn(bad, raw)
+        bubbles = LEGACY['診療項目']['contents']['contents']
+        self.assertEqual(len(bubbles), 8)
+        site = Path(__file__).resolve().parents[2]
+        for b in bubbles:
+            act = b['footer']['contents'][0]['action']
+            self.assertEqual((act['type'], act['label']), ('uri', '了解更多'))
+            self.assertTrue(act['uri'].startswith('https://lhpedclinic.com.tw/services/'))
+            page = act['uri'].split('lhpedclinic.com.tw/', 1)[1]
+            if (site / 'services').exists():   # inside the website repo: the page must exist
+                self.assertTrue((site / (page + 'index.html' if page.endswith('/') else page)).exists(), page)
+        self.assertLess(len(raw.encode()), 50000)   # LINE carousel limit
+
     def test_clinic_card_buttons_never_open_a_case(self):
         # 「診所資訊」卡片上的按鈕文字：不可落到 unknown（會自動轉專人、開案件）
         default = re.search(r"^DEFAULT_PASSTHROUGH = (\(.*?\))$", (ROOT / 'main.py').read_text(encoding='utf-8'), re.M)
