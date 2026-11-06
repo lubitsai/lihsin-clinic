@@ -1,3 +1,10 @@
+2026-11-07 第二版 2.43（卡片配色與版型對齊官網；醫療文字不變；取代未部署的 2.42）
+- LINE unittest 完整版：99 項全過（新增 test_cards_use_website_palette：舊色不得出現、所有顏色屬官網色票、8 卡有膠囊標籤與署名、altText 已修正）。
+- 文字比對：改版前後各卡文字逐字相同，僅新增「門診服務」×8、署名×10，「醫師介紹」由大標移為膠囊標籤。
+- 預覽：preview_flex.py 渲染前後對照，按鈕、圖框、文字均正常；卡片最大 12.6 KB（上限 50 KB）。
+- sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-07 第二版 2.42（「診療項目」8 卡：耳鼻喉相關症狀／公費及自費疫苗／InBody＋每卡「了解更多」；取代未部署的 2.41）
 - LINE unittest 完整版：98 項全過（新增 test_service_cards：禁字不再出現、8 卡按鈕連 /services/ 且頁面在 repo 存在、carousel 9.2 KB＜50 KB）。
 - sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。

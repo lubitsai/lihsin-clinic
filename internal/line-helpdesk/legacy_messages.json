@@ -23,7 +23,7 @@
             "type": "text",
             "text": "◆ 診所資訊",
             "weight": "bold",
-            "color": "#3D0C02",
+            "color": "#4d6b43",
             "size": "lg"
           },
           {
@@ -203,6 +203,13 @@
               }
             ],
             "spacing": "2px"
+          },
+          {
+            "type": "text",
+            "text": "立欣診所｜小鹿醫師團隊",
+            "size": "xxs",
+            "color": "#7C9A6E",
+            "margin": "lg"
           }
         ]
       },
@@ -223,7 +230,7 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451",
+                "color": "#7C9A6E",
                 "margin": "none"
               },
               {
@@ -235,7 +242,7 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ],
             "spacing": "lg"
@@ -255,7 +262,7 @@
             "style": "primary",
             "height": "sm",
             "margin": "md",
-            "color": "#E74C3C"
+            "color": "#c66060"
           },
           {
             "type": "box",
@@ -269,10 +276,10 @@
               "label": "診療項目",
               "text": "診療項目"
             },
-            "style": "primary",
+            "style": "secondary",
             "height": "sm",
             "margin": "md",
-            "color": "#F89880"
+            "color": "#f0f7ed"
           }
         ],
         "action": {
@@ -285,7 +292,7 @@
   },
   "過敏減重諮詢": {
     "type": "flex",
-    "altText": "醫師介紹",
+    "altText": "特別門診諮詢",
     "contents": {
       "type": "bubble",
       "size": "mega",
@@ -305,7 +312,7 @@
           }
         ],
         "height": "60px",
-        "backgroundColor": "#A52A2A"
+        "backgroundColor": "#7C9A6E"
       },
       "body": {
         "type": "box",
@@ -324,7 +331,7 @@
               "text": "過敏氣喘諮詢"
             },
             "style": "primary",
-            "color": "#F89880",
+            "color": "#7C9A6E",
             "gravity": "center"
           },
           {
@@ -335,7 +342,7 @@
               "text": "減重營養諮詢"
             },
             "style": "primary",
-            "color": "#008080",
+            "color": "#7C9A6E",
             "offsetTop": "xl"
           }
         ],
@@ -353,31 +360,45 @@
       "contents": [
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "醫師介紹",
-                "color": "#FFFFFF",
-                "align": "center",
-                "weight": "bold",
-                "size": "lg"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/doctor.png",
-                "margin": "xs",
-                "size": "3xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/doctor.png",
+                    "margin": "xs",
+                    "size": "3xl"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "醫師介紹",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
               },
               {
                 "type": "box",
@@ -388,14 +409,16 @@
                     "text": "蔡宗儒  院長",
                     "weight": "bold",
                     "size": "xl",
-                    "margin": "none"
+                    "margin": "none",
+                    "color": "#4d6b43"
                   }
                 ],
                 "alignItems": "center"
               },
               {
                 "type": "separator",
-                "margin": "md"
+                "margin": "md",
+                "color": "#e8f4e8"
               },
               {
                 "type": "box",
@@ -406,50 +429,58 @@
                     "text": "■  中國醫藥大學 醫學士暨公共衛生碩士",
                     "size": "sm",
                     "margin": "none",
-                    "offsetTop": "none"
+                    "offsetTop": "none",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  中國醫藥大學 醫學士",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  天主教輔仁醫院 兒科主治醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  台北馬偕醫院  兒童過敏氣喘免疫",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "風濕科研究醫師",
                     "size": "sm",
                     "margin": "md",
-                    "offsetStart": "lg"
+                    "offsetStart": "lg",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  日本順天堂大學醫院 兒科臨床進修",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  新光醫院  兒科總醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  成大醫院  兒科住院醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   }
                 ]
               },
@@ -467,43 +498,50 @@
                     "text": "■  中華民國小兒科專科醫師",
                     "size": "sm",
                     "margin": "none",
-                    "offsetTop": "none"
+                    "offsetTop": "none",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  青少年醫學專科醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  氣喘慢性照護醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  台灣肥胖醫學會醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  糖尿病共同照護網認證",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  成人預防保健服務醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  兒童發展與健康篩檢服務醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   }
                 ]
               }
@@ -522,7 +560,7 @@
                   "label": "點我>>小鹿醫師粉絲專頁",
                   "uri": "https://www.facebook.com/drdeertsai2024/"
                 },
-                "color": "#C47451",
+                "color": "#7C9A6E",
                 "height": "sm",
                 "style": "primary"
               },
@@ -533,41 +571,55 @@
                   "label": "診療項目",
                   "text": "診療項目"
                 },
-                "style": "primary",
+                "style": "secondary",
                 "margin": "lg",
                 "height": "sm",
-                "color": "#F89880"
+                "color": "#f0f7ed"
               }
             ]
           }
         },
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "醫師介紹",
-                "color": "#FFFFFF",
-                "align": "center",
-                "weight": "bold",
-                "size": "lg"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/DrLee2.png",
-                "margin": "xs",
-                "size": "3xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/DrLee2.png",
+                    "margin": "xs",
+                    "size": "3xl"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "醫師介紹",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
               },
               {
                 "type": "box",
@@ -578,14 +630,16 @@
                     "text": "李佳玲  醫師",
                     "weight": "bold",
                     "size": "xl",
-                    "margin": "none"
+                    "margin": "none",
+                    "color": "#4d6b43"
                   }
                 ],
                 "alignItems": "center"
               },
               {
                 "type": "separator",
-                "margin": "md"
+                "margin": "md",
+                "color": "#e8f4e8"
               },
               {
                 "type": "box",
@@ -596,31 +650,36 @@
                     "text": "■  國防醫學院 醫學士",
                     "size": "sm",
                     "margin": "none",
-                    "offsetTop": "none"
+                    "offsetTop": "none",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  台北禾馨民權婦幼診所 兒科主治醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  台北國泰綜合醫院 兒科主治醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  台北國泰綜合醫院 新生兒次專科研究醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  國泰醫院兒科總醫師 兒科住院醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   }
                 ]
               },
@@ -638,31 +697,36 @@
                     "text": "■  中華民國小兒科專科醫師",
                     "size": "sm",
                     "margin": "none",
-                    "offsetTop": "none"
+                    "offsetTop": "none",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  兒童發展與健康篩檢服務醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  青少年醫學專科醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  糖尿病共同照護網認證",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "■  成人預防保健服務醫師",
                     "size": "sm",
-                    "margin": "md"
+                    "margin": "md",
+                    "color": "#4b5563"
                   }
                 ]
               }
@@ -681,7 +745,7 @@
                   "label": "點我>>小鹿醫師粉絲專頁",
                   "uri": "https://www.facebook.com/drdeertsai2024/"
                 },
-                "color": "#C47451",
+                "color": "#7C9A6E",
                 "height": "sm",
                 "style": "primary"
               },
@@ -692,10 +756,10 @@
                   "label": "診療項目",
                   "text": "診療項目"
                 },
-                "style": "primary",
+                "style": "secondary",
                 "margin": "lg",
                 "height": "sm",
-                "color": "#F89880"
+                "color": "#f0f7ed"
               }
             ]
           }
@@ -711,42 +775,41 @@
       "contents": [
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/Baby.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/Baby.png",
+                    "size": "xl"
+                  }
+                ]
               },
               {
                 "type": "box",
                 "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
                 "contents": [
                   {
                     "type": "text",
-                    "text": "小 兒 專 科",
-                    "size": "xl",
-                    "margin": "md",
-                    "weight": "bold",
-                    "style": "normal",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
                     "align": "center"
                   }
                 ]
@@ -756,25 +819,52 @@
                 "layout": "vertical",
                 "contents": [
                   {
+                    "type": "text",
+                    "text": "小兒專科",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "兒童感染病症、感冒發燒、呼吸道",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "疾病、泌尿道疾病、腸病毒、兒童",
-                    "margin": "xs"
+                    "margin": "xs",
+                    "color": "#4b5563"
                   }
                 ]
               },
               {
                 "type": "text",
                 "text": "健康檢查、生長發育評估、育嬰指導",
-                "margin": "xs"
+                "margin": "xs",
+                "color": "#4b5563"
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -792,7 +882,7 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
@@ -800,30 +890,44 @@
         {
           "type": "bubble",
           "direction": "ltr",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/ENT.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/ENT.png",
+                    "size": "xl"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
               },
               {
                 "type": "box",
@@ -836,7 +940,8 @@
                     "margin": "md",
                     "weight": "bold",
                     "style": "normal",
-                    "align": "center"
+                    "align": "start",
+                    "color": "#4d6b43"
                   }
                 ]
               },
@@ -846,29 +951,41 @@
                 "contents": [
                   {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "感冒、頭痛、發燒、久咳不癒、耳痛",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "margin": "xs",
-                    "text": "耳鳴、眩暈、中耳炎、耳垢清理、"
+                    "text": "耳鳴、眩暈、中耳炎、耳垢清理、",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "鼻塞、鼻竇炎、流鼻血、鼻涕倒流",
-                    "margin": "xs"
+                    "margin": "xs",
+                    "color": "#4b5563"
                   }
                 ]
               },
               {
                 "type": "text",
                 "text": "喉嚨痛、聲音沙啞、魚刺、口腔潰瘍",
-                "margin": "xs"
+                "margin": "xs",
+                "color": "#4b5563"
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -885,49 +1002,48 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
         },
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/Sneeze.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/Sneeze.png",
+                    "size": "xl"
+                  }
+                ]
               },
               {
                 "type": "box",
                 "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
                 "contents": [
                   {
                     "type": "text",
-                    "text": "過 敏 氣 喘",
-                    "size": "xl",
-                    "margin": "md",
-                    "weight": "bold",
-                    "style": "normal",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
                     "align": "center"
                   }
                 ]
@@ -937,20 +1053,46 @@
                 "layout": "vertical",
                 "contents": [
                   {
+                    "type": "text",
+                    "text": "過敏氣喘",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "各種過敏疾病、過敏性鼻炎、氣喘控",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "制及照護、異位性皮膚炎照護",
-                    "margin": "xs"
+                    "margin": "xs",
+                    "color": "#4b5563"
                   }
                 ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -968,49 +1110,48 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
         },
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/Iche.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/Iche.png",
+                    "size": "xl"
+                  }
+                ]
               },
               {
                 "type": "box",
                 "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
                 "contents": [
                   {
                     "type": "text",
-                    "text": "皮 膚 疾 病",
-                    "size": "xl",
-                    "margin": "md",
-                    "weight": "bold",
-                    "style": "normal",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
                     "align": "center"
                   }
                 ]
@@ -1020,20 +1161,46 @@
                 "layout": "vertical",
                 "contents": [
                   {
+                    "type": "text",
+                    "text": "皮膚疾病",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "皮膚過敏、濕疹、蕁麻疹、黴菌感染",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "皰疹",
-                    "margin": "xs"
+                    "margin": "xs",
+                    "color": "#4b5563"
                   }
                 ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -1051,37 +1218,51 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
         },
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/high_pressure.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/high_pressure.png",
+                    "size": "xl"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
               },
               {
                 "type": "box",
@@ -1094,7 +1275,8 @@
                     "margin": "md",
                     "weight": "bold",
                     "style": "normal",
-                    "align": "center"
+                    "align": "start",
+                    "color": "#4d6b43"
                   }
                 ]
               },
@@ -1104,19 +1286,29 @@
                 "contents": [
                   {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "成人慢性病控制、高血壓、高血脂、",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "糖尿病、腎臟病、痛風、失眠",
-                    "margin": "xs"
+                    "margin": "xs",
+                    "color": "#4b5563"
                   }
                 ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -1134,49 +1326,48 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
         },
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/injury.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/injury.png",
+                    "size": "xl"
+                  }
+                ]
               },
               {
                 "type": "box",
                 "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
                 "contents": [
                   {
                     "type": "text",
-                    "text": "外 傷 處 理",
-                    "size": "xl",
-                    "margin": "md",
-                    "weight": "bold",
-                    "style": "normal",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
                     "align": "center"
                   }
                 ]
@@ -1186,20 +1377,46 @@
                 "layout": "vertical",
                 "contents": [
                   {
+                    "type": "text",
+                    "text": "外傷處理",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "外傷及膿瘍處理、蜂窩性組織炎、",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "傷口縫合、傷口拆線",
-                    "margin": "xs"
+                    "margin": "xs",
+                    "color": "#4b5563"
                   }
                 ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -1217,49 +1434,48 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
         },
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/vacacine.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/vacacine.png",
+                    "size": "xl"
+                  }
+                ]
               },
               {
                 "type": "box",
                 "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
                 "contents": [
                   {
                     "type": "text",
-                    "text": "預 防 保 健",
-                    "size": "xl",
-                    "margin": "md",
-                    "weight": "bold",
-                    "style": "normal",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
                     "align": "center"
                   }
                 ]
@@ -1269,15 +1485,40 @@
                 "layout": "vertical",
                 "contents": [
                   {
+                    "type": "text",
+                    "text": "預防保健",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "成人健檢、公費及自費疫苗接種",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   }
                 ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -1295,49 +1536,48 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
         },
         {
           "type": "bubble",
-          "header": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "診療項目",
-                "weight": "bold",
-                "align": "center",
-                "size": "lg",
-                "color": "#FFFFFF"
-              }
-            ],
-            "height": "60px",
-            "backgroundColor": "#A52A2A"
-          },
           "body": {
             "type": "box",
             "layout": "vertical",
             "contents": [
               {
-                "type": "image",
-                "url": "https://storage.googleapis.com/ls_clinic/weight.png",
-                "size": "xl"
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "md",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://storage.googleapis.com/ls_clinic/weight.png",
+                    "size": "xl"
+                  }
+                ]
               },
               {
                 "type": "box",
                 "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
                 "contents": [
                   {
                     "type": "text",
-                    "text": "體 重 管 理",
-                    "size": "xl",
-                    "margin": "md",
-                    "weight": "bold",
-                    "style": "normal",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
                     "align": "center"
                   }
                 ]
@@ -1347,20 +1587,46 @@
                 "layout": "vertical",
                 "contents": [
                   {
+                    "type": "text",
+                    "text": "體重管理",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
                     "type": "separator",
-                    "margin": "xl"
+                    "margin": "xl",
+                    "color": "#e8f4e8"
                   },
                   {
                     "type": "text",
                     "text": "減重門診、體態分析、飲食評估指導",
-                    "margin": "xxl"
+                    "margin": "xxl",
+                    "color": "#4b5563"
                   },
                   {
                     "type": "text",
                     "text": "InBody測量",
-                    "margin": "xs"
+                    "margin": "xs",
+                    "color": "#4b5563"
                   }
                 ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
               }
             ]
           },
@@ -1377,7 +1643,7 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ]
           }
@@ -1409,7 +1675,7 @@
             "type": "text",
             "text": "◆ 診所資訊",
             "weight": "bold",
-            "color": "#3D0C02",
+            "color": "#4d6b43",
             "size": "lg"
           },
           {
@@ -1589,6 +1855,13 @@
               }
             ],
             "spacing": "2px"
+          },
+          {
+            "type": "text",
+            "text": "立欣診所｜小鹿醫師團隊",
+            "size": "xxs",
+            "color": "#7C9A6E",
+            "margin": "lg"
           }
         ]
       },
@@ -1609,7 +1882,7 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451",
+                "color": "#7C9A6E",
                 "margin": "none"
               },
               {
@@ -1621,7 +1894,7 @@
                 },
                 "style": "primary",
                 "height": "sm",
-                "color": "#C47451"
+                "color": "#7C9A6E"
               }
             ],
             "spacing": "lg"
@@ -1641,7 +1914,7 @@
             "style": "primary",
             "height": "sm",
             "margin": "md",
-            "color": "#E74C3C"
+            "color": "#c66060"
           },
           {
             "type": "box",
@@ -1655,10 +1928,10 @@
               "label": "診療項目",
               "text": "診療項目"
             },
-            "style": "primary",
+            "style": "secondary",
             "height": "sm",
             "margin": "md",
-            "color": "#F89880"
+            "color": "#f0f7ed"
           }
         ],
         "action": {

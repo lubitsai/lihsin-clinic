@@ -190,6 +190,20 @@ class UnknownQuestionTests(unittest.TestCase):
         for key in ('診所資訊', '立欣診所'):
             self.assertEqual(LEGACY[key]['contents']['hero']['action']['uri'], 'https://lhpedclinic.com.tw/#schedule')
 
+    def test_cards_use_website_palette(self):
+        # 院長 2026-11-07 第一層：LINE 卡片配色對齊官網（tailwind 主色 #7C9A6E 系），舊紅棕色系不得再出現
+        raw = json.dumps(LEGACY, ensure_ascii=False)
+        for old in ('#A52A2A', '#C47451', '#F89880', '#E74C3C', '#008080', '#3D0C02'):
+            self.assertNotIn(old, raw)
+        palette = {'#7C9A6E', '#f0f7ed', '#A8C69F', '#4d6b43', '#4b5563', '#c66060', '#e8f4e8', '#5f7d52', '#FFFFFF'}
+        self.assertTrue(set(re.findall(r'"(?:color|backgroundColor|borderColor)": "(#[0-9A-Fa-f]{6})"', raw)) <= palette)
+        for b in LEGACY['診療項目']['contents']['contents']:
+            self.assertNotIn('header', b)
+            texts = json.dumps(b['body'], ensure_ascii=False)
+            self.assertIn('"門診服務"', texts)
+            self.assertIn('立欣診所｜小鹿醫師團隊', texts)
+        self.assertEqual(LEGACY['過敏減重諮詢']['altText'], '特別門診諮詢')
+
     def test_service_cards(self):
         # 院長 2026-11-07：耳鼻喉不宣稱專科（00 §4-5）、疫苗不寫「各項」（本院不提供卡介苗）、InBody 大小寫；每卡「了解更多」連官網服務頁
         raw = json.dumps(LEGACY['診療項目'], ensure_ascii=False)
