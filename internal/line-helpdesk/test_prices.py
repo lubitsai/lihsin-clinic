@@ -59,6 +59,18 @@ class PriceTests(unittest.TestCase):
         # 減重營養問法（熱量、蛋白質）不是問價
         for q in ('減重一天吃多少熱量', '減重熱量要吃多少', '減重要吃多少蛋白質'):
             self.assertIsNone(CAT.prices.match(q), q)
+        # 過敏原檢測四套組：LINE 限定價目（院長 2026-11-06），官網照舊不報
+        for q in ('過敏原檢測多少錢', '驗過敏要多少錢', 'IgE檢測費用', '224項過敏原價格', '食物IgG多少錢'):
+            self.assertPrice(q, '4,000 元', '5,000 元', '7,000 元', '10,000 元', '勿僅依數值自行忌口')
+        _, text = reply('過敏原檢測多少錢')
+        self.assertNotIn('最完整', text)
+        self.assertNotIn('仿單', text)
+        for q in ('過敏鼻噴劑多少錢', '過敏藥多少錢', '過敏原檢測是什麼'):
+            self.assertNotEqual((CAT.prices.match(q) or {}).get('id'), 'ALLERGY_TEST', q)
+        site_kb = ROOT.parent.parent / 'clinic-assistant' / 'knowledge.json'   # only inside the website repo
+        if site_kb.exists():
+            web = json.loads(site_kb.read_text(encoding='utf-8'))
+            self.assertNotIn('ALLERGY_TEST', {r['id'] for r in web['prices']['rules']})
 
     def test_no_drug_names(self):
         for q in ['瘦瘦筆一支多少錢', '猛健樂多少錢', '減重多少錢']:

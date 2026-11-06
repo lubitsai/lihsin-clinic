@@ -1,9 +1,13 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.34）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.35）
 
-2026-11-06 第二版 2.34｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-06 第二版 2.35｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.35 過敏原檢測四套組價目（LINE 限定，2026-11-06）
+
+程式沒改，只改 `prices_line.json`：院長 2026-11-06 裁示把過敏原檢測四套組價目加進 LINE 客服（官網照舊不報價，`knowledge.json` 不含這條）。新增 LINE 專用規則 `ALLERGY_TEST`（插在 T03 前），問「過敏原檢測／驗過敏／IgE／IgG 多少錢」回四套組價目：急性 66 項 4,000 元、急慢性 110 項 5,000 元、慢性 101 項 7,000 元、急慢性 224 項 10,000 元，附「IgE 陽性僅代表致敏」「食物 IgG 勿僅依數值自行忌口」但書，文字取自院長核定的 LINE「過敏氣喘諮詢」多頁訊息價目圖。`test_prices.py` 新增對應測試。2.35 取代未部署的 2.34。
 
 ## 2.34 腸病毒重症前兆改 5 項＋預防、停課 2 題（2026-11-06）
 
