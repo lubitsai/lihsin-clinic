@@ -784,12 +784,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/Baby.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-pediatrics.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
@@ -899,12 +901,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/ENT.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-ent.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
@@ -1018,12 +1022,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/Sneeze.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-allergy-asthma.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
@@ -1126,12 +1132,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/Iche.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-skin.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
@@ -1234,12 +1242,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/high_pressure.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-chronic-disease.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
@@ -1342,12 +1352,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/injury.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-wound-care.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
@@ -1450,12 +1462,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/vacacine.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-vaccination.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
@@ -1552,12 +1566,14 @@
                 "layout": "vertical",
                 "backgroundColor": "#f0f7ed",
                 "cornerRadius": "lg",
-                "paddingAll": "md",
+                "paddingAll": "none",
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/weight.png",
-                    "size": "xl"
+                    "url": "https://lhpedclinic.com.tw/images/line/service-weight-management.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
                   }
                 ]
               },
