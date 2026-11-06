@@ -182,6 +182,14 @@ class UnknownQuestionTests(unittest.TestCase):
             later = date.fromisoformat(n['valid_until']) + timedelta(days=1)
             self.assertNotIn(n['answer'], decide(f'{later.month}/{later.day}有看診嗎', False, CAT, LEGACY, PASS, d - timedelta(days=1))[1]['text'])
 
+    def test_clinic_card_links_and_wording(self):
+        # 院長 2026-11-07：班表圖點擊改開官網門診時間區塊（原為範本預設 line.me）；「周」統一為「週」
+        raw = json.dumps(LEGACY, ensure_ascii=False)
+        self.assertNotIn('https://line.me/', raw)
+        self.assertNotIn('周', raw)
+        for key in ('診所資訊', '立欣診所'):
+            self.assertEqual(LEGACY[key]['contents']['hero']['action']['uri'], 'https://lhpedclinic.com.tw/#schedule')
+
     def test_clinic_card_buttons_never_open_a_case(self):
         # 「診所資訊」卡片上的按鈕文字：不可落到 unknown（會自動轉專人、開案件）
         default = re.search(r"^DEFAULT_PASSTHROUGH = (\(.*?\))$", (ROOT / 'main.py').read_text(encoding='utf-8'), re.M)

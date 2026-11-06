@@ -12,7 +12,7 @@
         "aspectMode": "cover",
         "action": {
           "type": "uri",
-          "uri": "https://line.me/"
+          "uri": "https://lhpedclinic.com.tw/#schedule"
         }
       },
       "body": {
@@ -191,7 +191,7 @@
                     "contents": [
                       {
                         "type": "text",
-                        "text": "週六晚上及周日下午休診",
+                        "text": "週六晚上及週日下午休診",
                         "weight": "regular",
                         "size": "sm",
                         "contents": [],
@@ -1262,7 +1262,7 @@
         "aspectMode": "cover",
         "action": {
           "type": "uri",
-          "uri": "https://line.me/"
+          "uri": "https://lhpedclinic.com.tw/#schedule"
         }
       },
       "body": {
@@ -1441,7 +1441,7 @@
                     "contents": [
                       {
                         "type": "text",
-                        "text": "週六晚上及周日下午休診",
+                        "text": "週六晚上及週日下午休診",
                         "weight": "regular",
                         "size": "sm",
                         "contents": [],

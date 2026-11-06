@@ -1,3 +1,8 @@
+2026-11-07 第二版 2.41（診所資訊卡片：班表圖點擊改開官網 #schedule、「周」→「週」；取代未部署的 2.40）
+- LINE unittest 完整版：97 項全過（新增 test_clinic_card_links_and_wording）。
+- sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-07 第二版 2.40（部署前審查：pilot／off 期間「最新門診異動」也有回應；passthrough 環境變數容錯；取代未部署的 2.39）
 - LINE unittest 完整版（requirements.lock.txt）：96 項全過（新增 test_latest_notice_button_answered_for_everyone、test_bad_passthrough_env_falls_back）。
 - sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。
