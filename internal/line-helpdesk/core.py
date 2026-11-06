@@ -410,6 +410,16 @@ class Catalog:
                          else '／'.join(f"{'、'.join(x['doctors'])} {x['start']}–{x['end']}" for x in lst)))
         return rows
 
+    def notice_answer(self, text, today):
+        """LINE only (院長 2026-11-06「先 A 後 B」之 B): 「最新門診異動」button and similar asks → the website's
+        schedule notices that are still valid; none → approved no-notice line + opening hours. Dated asks go to the date route."""
+        if not NOTICE_ASK.search(norm(text)) or parse_date(text, today):
+            return None
+        notices = self._schedule_notices(today)
+        if notices:
+            return {'type': 'text', 'text': '\n\n'.join(n['title'] + '\n' + n['answer'] for n in notices)}
+        return {'type': 'text', 'text': self.replies['no_notice'] + '\n\n' + self.titles_by_id['KEY01']['answer']}
+
     def _schedule_notices(self, today):
         return [i for i in self.items if i.get('kind') == 'notice' and i.get('schedule') and is_valid(i, today)]
 
@@ -482,6 +492,11 @@ class Catalog:
     def related(self, text, today, limit=3):
         return self.searcher.search(text, today, limit)
 
+# LINE only: asks for the current schedule-change notice (whole message, normalized; not in search.js)
+NOTICE_ASK = re.compile(r'^(?:請問|想問|查詢?)?(?:最新|最近|目前|近期)?的?(?:門診|看診)?(?:異動|休診|停診|代診|調整)(?:公告|資訊|消息|通知)?(?:嗎|呢)?$'
+                        r'|^(?:最新|最近|目前|近期)?(?:門診|看診)公告$'
+                        r'|^(?:最近|近期|這幾天|這週|本週)(?:有沒有|有)?(?:休診|停診|代診|門診異動)(?:嗎|呢)?$')
+
 def decide(text, pending, catalog, legacy, passthrough, today):
     """Returns (action, payload).
 
@@ -518,6 +533,9 @@ def decide(text, pending, catalog, legacy, passthrough, today):
         if item.get('legacy_key'):
             return 'answer', legacy[item['legacy_key']]
         return 'answer', {'type': 'text', 'text': item['answer']}
+    notice = catalog.notice_answer(text, today)   # after exact titles, so a notice's own title still returns just that notice
+    if notice:
+        return 'answer', notice
     if level == 'soon':   # website order: secondary red flags before every front route
         return 'soon', catalog.replies['soon']
     routed = catalog.route(text, today, passthrough)

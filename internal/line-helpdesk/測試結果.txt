@@ -1,3 +1,9 @@
+2026-11-06 第二版 2.37（「最新門診異動」改由程式讀官網公告回答；core.py／build_faq.py／main.py；取代未部署的 2.36）
+- sync_assistants.py：官網 333 項通過、一致性比對 401 句全部一致；validate_site 通過。
+- LINE unittest：容器缺 Flask／Firestore，只跑題庫與價目 30 項，全過（新增 test_latest_notice_button）。
+- 實測：11/7「最新門診異動」「門診異動」「最近有休診嗎」「門診公告」「代診」→ 11/8 代診公告全文；11/9（公告到期）→ 院長核可句＋門診時間表；「門診時間」「今天有休診嗎」「11/8有看診嗎」行為不變。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-11-06 第二版 2.36（「最新門診異動」加入略過清單；main.py 一行；取代未部署的 2.35）
 - sync_assistants.py：官網 333 項通過、一致性比對 401 句全部一致；validate_site 通過。
 - LINE unittest：容器缺 Flask／Firestore，只跑題庫與價目 29 項，全過（新增 test_clinic_card_buttons_never_open_a_case）。

@@ -136,6 +136,8 @@ STOCK_HEAD = '公告中的「已到貨」不代表今天有現貨。'
 HOLIDAY_NOTE = '國定假日、連假、颱風天門診可能調整，請以診所最新公告或 LINE @lhpedclinic 為準。'
 HOLIDAY_TAIL = '客服不會主動通知門診異動；已預約的時段若受影響，請在預約系統查看，或透過 LINE、來電與櫃檯聯繫。'
 PAST_DATE = '這一天已經過去了，請輸入今天以後的日期。'
+# LINE only; 院長 2026-11-06 逐字核可（沒有有效門診異動公告時的回覆，後面接門診時間表 KEY01）
+NO_NOTICE = '目前沒有門診異動，各診次依常態門診時間看診。最新公告以官網首頁為準：https://lhpedclinic.com.tw/#clinic-notice'
 VAX_CUTOFF_REPLY = '您好，因疫苗清點與申報作業，本院於每日最後一診結束前一小時暫停疫苗施打。若需接種疫苗，請於打烊前一小時前到院，謝謝您的配合！'
 BUTTONS = (("quick: ['預約遲到怎麼辦', '現場號過號怎麼辦']", core.LATE_BUTTONS), ("quick: ['網路預約怎麼約', '現場掛號幾點開始']", core.REGISTER_BUTTONS))
 
@@ -240,6 +242,7 @@ def build(kb_bytes, aliases, overrides=None):
         'holiday_tail': HOLIDAY_TAIL,
         'hours_note': HOURS_NOTE,
         'past_date': PAST_DATE,
+        'no_notice': NO_NOTICE,
         'vax_cutoff': VAX_CUTOFF_REPLY,
         'facts': {'address': f"地址：{fx['地址']}", 'phone': f"電話：{fx['電話']}", 'email': f"Email：{fx['Email']}",
                   'queue': f"看診進度查詢：{fx['看診進度查詢']}"},

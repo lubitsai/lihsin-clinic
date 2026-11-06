@@ -14,7 +14,7 @@ ROOT = Path(__file__).parent
 DATA = json.loads((ROOT / 'faq.json').read_text(encoding='utf-8'))
 CAT = Catalog(DATA)
 LEGACY = json.loads((ROOT / 'legacy_messages.json').read_text(encoding='utf-8'))
-PASS = {'流感疫苗資訊', '過敏氣喘諮詢', '減重營養諮詢', '最新門診異動'}
+PASS = {'流感疫苗資訊', '過敏氣喘諮詢', '減重營養諮詢'}
 TODAY = date(2026, 10, 3)
 
 def _actions(o):
@@ -155,6 +155,21 @@ class UnknownQuestionTests(unittest.TestCase):
         self.assertEqual(route('流感疫苗資訊')[0], 'passthrough')
         self.assertEqual(route('醫師介紹')[1], LEGACY['醫師介紹'])
         self.assertEqual(route('立欣診所')[1], LEGACY['診所資訊'])
+
+    def test_latest_notice_button(self):
+        # 院長 2026-11-06「先 A 後 B」之 B：程式讀官網門診異動公告回答，到期自動改回核可句＋門診時間表
+        live = [i for i in DATA['items'] if i['kind'] == 'notice' and i.get('schedule')]
+        if live:
+            n = live[0]
+            text = decide('最新門診異動', False, CAT, LEGACY, PASS, date.fromisoformat(n['valid_until']))[1]['text']
+            self.assertIn(n['answer'], text)
+        after = date.fromisoformat(max([i['valid_until'] for i in live] or ['2026-01-01'])) + timedelta(days=1)
+        for q in ('最新門診異動', '門診異動', '最近有休診嗎', '門診公告'):
+            action, msg = decide(q, False, CAT, LEGACY, PASS, after)
+            self.assertEqual(action, 'answer', q)
+            self.assertTrue(msg['text'].startswith('目前沒有門診異動，各診次依常態門診時間看診。最新公告以官網首頁為準：https://lhpedclinic.com.tw/#clinic-notice'), q)
+            self.assertIn('立欣診所門診時間', msg['text'])
+        self.assertNotIn('目前沒有門診異動', decide('門診時間', False, CAT, LEGACY, PASS, after)[1]['text'])
 
     def test_clinic_card_buttons_never_open_a_case(self):
         # 「診所資訊」卡片上的按鈕文字：不可落到 unknown（會自動轉專人、開案件）
