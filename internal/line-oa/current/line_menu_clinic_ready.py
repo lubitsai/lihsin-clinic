@@ -103,7 +103,7 @@ def main():
         current = call('GET', base + '/user/all/richmenu')['richMenuId']
         if current != new_id:
             raise RuntimeError('發布後查核不一致，請用手機確認。')
-        print('發布成功！請重新開啟手機 LINE 聊天室並測試八格。')
+        print('發布成功！請重新開啟手機 LINE 聊天室並測試九區（含中間品牌帶）。')
         print('舊選單未刪除；個別用戶綁定的選單可能仍會優先顯示。')
         print('請保留下載的 line_menu_backup.json，內含新舊選單 ID，不含 Token。')
     finally:
