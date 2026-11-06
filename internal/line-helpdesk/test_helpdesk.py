@@ -31,6 +31,29 @@ class RoutingTests(unittest.TestCase):
         with patch.dict(os.environ,{'BOT_MODE':'pilot','ADMIN_USER_IDS':'owner','PILOT_USER_IDS':'tester'}):
             self.assertTrue(main.enabled_for('tester'))
             self.assertFalse(main.enabled_for('patient'))
+    def test_latest_notice_button_answered_for_everyone(self):
+        # pilot／off：一般民眾點「最新門診異動」也要有公告（後台該組關鍵字回應已關），且不碰 Firestore
+        ev = {'type':'message','source':{'type':'user','userId':'Upatient'},'message':{'type':'text','text':'最新門診異動'},'replyToken':'t'}
+        for mode in ('pilot', 'off'):
+            with patch('main.database') as db, patch('main.reply') as rep, patch.dict(os.environ,{'BOT_MODE':mode,'ADMIN_USER_IDS':'owner'}):
+                main.process_event(ev)
+                db.assert_not_called()
+                text = rep.call_args.args[1][0]['text']
+                self.assertTrue(text.startswith('目前沒有門診異動') or '門診異動公告' in text, mode)
+        # 若仍設為後台回答（passthrough），程式不重複回
+        with patch('main.database'), patch('main.reply') as rep, patch.dict(os.environ,{'BOT_MODE':'pilot','OA_PASSTHROUGH_KEYWORDS':'["最新門診異動"]'}):
+            main.process_event(ev)
+            rep.assert_not_called()
+        # 其他文字在 pilot 對一般民眾維持不回（原行為）
+        with patch('main.database'), patch('main.reply') as rep, patch.dict(os.environ,{'BOT_MODE':'pilot'}):
+            main.process_event(dict(ev, message={'type':'text','text':'診所電話'}))
+            rep.assert_not_called()
+    def test_bad_passthrough_env_falls_back(self):
+        for raw in ('流感疫苗資訊', '{"a":1}', '[1,2]'):
+            with patch.dict(os.environ,{'OA_PASSTHROUGH_KEYWORDS':raw}):
+                self.assertEqual(main.passthrough_keywords(), set(main.DEFAULT_PASSTHROUGH))
+        with patch.dict(os.environ,{'OA_PASSTHROUGH_KEYWORDS':'["流感疫苗資訊"]'}):
+            self.assertEqual(main.passthrough_keywords(), {'流感疫苗資訊'})
     def test_suggestion_buttons_fit_line_limits(self):
         hits=self.route('有流感疫苗嗎')[1]
         msg=main.suggestion_message(hits)

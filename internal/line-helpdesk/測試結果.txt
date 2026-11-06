@@ -1,3 +1,9 @@
+2026-11-07 第二版 2.40（部署前審查：pilot／off 期間「最新門診異動」也有回應；passthrough 環境變數容錯；取代未部署的 2.39）
+- LINE unittest 完整版（requirements.lock.txt）：96 項全過（新增 test_latest_notice_button_answered_for_everyone、test_bad_passthrough_env_falls_back）。
+- sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。
+- 長度檢查：題庫答案最長 982 字、動態回覆最長 663 字（門診時間）、legacy 卡片最大 7.2 KB，皆低於 LINE 上限。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-07 第二版 2.39（部署流程優化：deploy_cloudrun.sh＋部署操作步驟.md；回答與 2.38 相同；取代未部署的 2.38）
 - LINE unittest **完整版**（裝 requirements.lock.txt）：94 項全過（含 Flask／Firestore mock、官網 knowledge.json／search.js 比對）；test_schedule_exception 改固定夾具後不再失敗。
 - sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。

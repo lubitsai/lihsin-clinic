@@ -22,6 +22,8 @@ LEGACY = json.loads((ROOT / 'legacy_messages.json').read_text(encoding='utf-8'))
 REPLIES = CATALOG.replies
 TAIPEI = ZoneInfo('Asia/Taipei')
 STAFF_BUTTON = {'type':'action','action':{'type':'message','label':'請專人協助','text':'專人服務'}}
+DEFAULT_PASSTHROUGH = ('流感疫苗資訊', '過敏氣喘諮詢', '減重營養諮詢')
+LATEST_NOTICE_BUTTON = '最新門診異動'   # 「診所資訊」卡片按鈕；2.37 起由程式回答，後台該組關鍵字回應關閉
 DB = None
 
 def database():
@@ -93,6 +95,20 @@ def pending_active(state):
         since = since.replace(tzinfo=timezone.utc)
     return now() - since < timedelta(hours=hours)
 
+def passthrough_keywords():
+    """Rich-menu keywords answered by the LINE backend. A malformed env value must not break every message."""
+    raw = os.getenv('OA_PASSTHROUGH_KEYWORDS')
+    if not raw:
+        return set(DEFAULT_PASSTHROUGH)
+    try:
+        value = json.loads(raw)
+        if isinstance(value, list) and all(isinstance(x, str) for x in value):
+            return set(value)
+    except ValueError:
+        pass
+    logging.error('helpdesk_bad_passthrough_env')
+    return set(DEFAULT_PASSTHROUGH)
+
 def admin_ids():
     return {x.strip() for x in os.getenv('ADMIN_USER_IDS','').split(',') if x.strip()}
 
@@ -120,7 +136,7 @@ def plan_event(tx, event_ref, session_ref, uid, text, event):
             tx.update(event_ref, {'done':True,'messages':[], 'delivery':'suppressed_during_human'})
             return []
         return old.get('messages', [])
-    passthrough = set(json.loads(os.getenv('OA_PASSTHROUGH_KEYWORDS', '["流感疫苗資訊","過敏氣喘諮詢","減重營養諮詢"]')))
+    passthrough = passthrough_keywords()
     pending = pending_active(state)
     if text == '我的案件編號' and state.get('status') == 'pending':
         action, answer = 'answer', message('您的待處理案件編號：' + state['case_id'])
@@ -235,6 +251,9 @@ def process_event(event):
         # Pilot/off preserve original menu behavior for non-pilot users.
         if text in LEGACY:
             reply(token, [LEGACY[text]])
+        elif text == LATEST_NOTICE_BUTTON and text not in passthrough_keywords():
+            # 後台「最新門診異動」關鍵字回應關掉後，pilot／off 期間一般民眾點卡片按鈕也要看得到公告（唯讀，不碰 Firestore）
+            reply(token, [message(CATALOG.notice_answer(text, now().astimezone(TAIPEI).date())['text'])])
         return
     eid = event.get('webhookEventId')
     if not eid:

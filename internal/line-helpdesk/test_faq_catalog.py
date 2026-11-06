@@ -1,4 +1,5 @@
 """Content and routing checks; no network or Cloud credentials needed."""
+import ast
 import json
 import os
 import re
@@ -183,8 +184,8 @@ class UnknownQuestionTests(unittest.TestCase):
 
     def test_clinic_card_buttons_never_open_a_case(self):
         # 「診所資訊」卡片上的按鈕文字：不可落到 unknown（會自動轉專人、開案件）
-        default = re.search(r"OA_PASSTHROUGH_KEYWORDS', '(\[.*?\])'", (ROOT / 'main.py').read_text(encoding='utf-8'))
-        self.assertEqual(set(json.loads(default.group(1))), PASS)   # main.py default == the set tested here
+        default = re.search(r"^DEFAULT_PASSTHROUGH = (\(.*?\))$", (ROOT / 'main.py').read_text(encoding='utf-8'), re.M)
+        self.assertEqual(set(ast.literal_eval(default.group(1))), PASS)   # main.py default == the set tested here
         labels = {a['text'] for a in _actions(LEGACY['診所資訊']) if a.get('type') == 'message'}
         self.assertIn('最新門診異動', labels)
         for text in labels:
