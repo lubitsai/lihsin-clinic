@@ -216,6 +216,10 @@ class UnknownQuestionTests(unittest.TestCase):
             act = b['footer']['contents'][0]['action']
             self.assertEqual((act['type'], act['label']), ('uri', '了解更多'))
             self.assertTrue(act['uri'].startswith('https://lhpedclinic.com.tw/services/'))
+            img = b['body']['contents'][0]['contents'][0]   # 院長 2026-11-07「小鹿醫師」情境插圖，放官網 images/line/
+            self.assertTrue(img['url'].startswith('https://lhpedclinic.com.tw/images/line/service-'), img['url'])
+            if (site / 'images').exists():
+                self.assertTrue((site / img['url'].split('lhpedclinic.com.tw/', 1)[1]).exists(), img['url'])
             page = act['uri'].split('lhpedclinic.com.tw/', 1)[1]
             if (site / 'services').exists():   # inside the website repo: the page must exist
                 self.assertTrue((site / (page + 'index.html' if page.endswith('/') else page)).exists(), page)
