@@ -1,3 +1,9 @@
+2026-11-07 第二版 2.39（部署流程優化：deploy_cloudrun.sh＋部署操作步驟.md；回答與 2.38 相同；取代未部署的 2.38）
+- LINE unittest **完整版**（裝 requirements.lock.txt）：94 項全過（含 Flask／Firestore mock、官網 knowledge.json／search.js 比對）；test_schedule_exception 改固定夾具後不再失敗。
+- sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。
+- deploy_cloudrun.sh：bash -n 通過；假 gcloud 模擬「試跑」（零變更指令）、「全部 y」（Firestore 建立→IAM→TTL→兩個 Secret 建立與授權→部署只上傳五檔）、「拒絕建 Firestore」（停止不部署）；輸出與記錄皆不含輸入的 Token。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-07 第二版 2.38（日期查詢附上當天的門診異動公告；core.py／build_faq.py，與官網 search.js 同批 PR；取代未部署的 2.37）
 - sync_assistants.py：官網 336 項通過（新增 3 項代診夾具）、一致性比對 403 句全部一致（parity_queries +2）；validate_site 通過。
 - LINE unittest：容器缺 Flask／Firestore，只跑題庫與價目 31 項，全過（新增 test_date_ask_shows_covering_notice）。

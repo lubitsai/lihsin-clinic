@@ -192,7 +192,11 @@ class TailRouteTests(unittest.TestCase):
         self.assertEqual(self.ans('9/26有看診嗎')[1]['text'], '這一天已經過去了，請輸入今天以後的日期。')
 
     def test_schedule_exception(self):
-        msg = self.ans('9/26有看診嗎', today=date(2026, 9, 20))[1]
+        # 固定夾具（同官網 test_assistant.mjs 的中秋夾具）：首頁 EXCEPTIONS 過期清掉後不再失敗
+        data = json.loads((ROOT / 'faq.json').read_text(encoding='utf-8'))
+        data['schedule']['exceptions'] = {'2026-09-26': []}
+        cat = Catalog(data)
+        msg = decide('9/26有看診嗎', False, cat, LEGACY, PASS, date(2026, 9, 20))[1]
         self.assertIn('｜門診異動', msg['text'])
         self.assertIn('全日休診', msg['text'])
         self.assertIn('常態週六門診', msg['text'])
