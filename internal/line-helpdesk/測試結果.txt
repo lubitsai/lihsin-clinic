@@ -1,3 +1,9 @@
+2026-11-07 第二版 2.45（診療項目文字、醫師學經歷對齊官網，院長逐字核可；取代未部署的 2.44）
+- LINE unittest 完整版：100 項全過（新增 test_card_wording_matches_website：必備但書、改名、醫師資格逐項、李醫師無糖尿病共照）。
+- 預覽：preview_flex.py 渲染 8 卡＋2 位醫師卡，長行自動換行無截斷。
+- sync_assistants.py：官網 336 項、一致性比對 403 句全部一致；validate_site 通過。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-07 第二版 2.44（「診療項目」8 卡換小鹿醫師插圖，圖放官網 images/line/；取代未部署的 2.43）
 - 圖檔：8 張去背 PNG 合成 #f0f7ed 底、1024² JPEG q86，76–99 KB；淺綠底上去背邊緣無殘留雜點（目視放大檢查）。
 - LINE unittest 完整版：99 項全過（test_service_cards 加驗 8 個圖片網址指向 repo 內存在的檔案；舊 storage.googleapis.com 8 張已全數移除）。

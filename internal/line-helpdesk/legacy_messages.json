@@ -430,32 +430,28 @@
                     "size": "sm",
                     "margin": "none",
                     "offsetTop": "none",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
-                    "text": "■  中國醫藥大學 醫學士",
+                    "text": "■  天主教輔仁大學醫院 兒科主治醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
-                    "text": "■  天主教輔仁醫院 兒科主治醫師",
+                    "text": "■  馬偕兒童醫院 兒童過敏氣喘免疫",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
-                    "text": "■  台北馬偕醫院  兒童過敏氣喘免疫",
-                    "size": "sm",
-                    "margin": "md",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "風濕科研究醫師",
+                    "text": "風濕科研究醫師（次專科訓練）",
                     "size": "sm",
                     "margin": "md",
                     "offsetStart": "lg",
@@ -466,21 +462,24 @@
                     "text": "■  日本順天堂大學醫院 兒科臨床進修",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
-                    "text": "■  新光醫院  兒科總醫師",
+                    "text": "■  新光吳火獅紀念醫院 兒科總醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  成大醫院  兒科住院醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   }
                 ]
               },
@@ -495,53 +494,68 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "■  中華民國小兒科專科醫師",
+                    "text": "■  兒科專科醫師（臺灣兒科醫學會）",
                     "size": "sm",
                     "margin": "none",
                     "offsetTop": "none",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
-                    "text": "■  青少年醫學專科醫師",
+                    "text": "■  青少年醫學次專科醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  氣喘慢性照護醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
-                    "text": "■  台灣肥胖醫學會醫師",
+                    "text": "■  肥胖症專科醫師（中華民國肥胖研究學會）",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  台灣肥胖醫學會會員",
+                    "size": "sm",
+                    "margin": "md",
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  糖尿病共同照護網認證",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  成人預防保健服務醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  兒童發展與健康篩檢服務醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   }
                 ]
               }
@@ -651,35 +665,40 @@
                     "size": "sm",
                     "margin": "none",
                     "offsetTop": "none",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  台北禾馨民權婦幼診所 兒科主治醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  台北國泰綜合醫院 兒科主治醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  台北國泰綜合醫院 新生兒次專科研究醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  國泰醫院兒科總醫師 兒科住院醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   }
                 ]
               },
@@ -694,39 +713,44 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "■  中華民國小兒科專科醫師",
+                    "text": "■  兒科專科醫師（臺灣兒科醫學會）",
                     "size": "sm",
                     "margin": "none",
                     "offsetTop": "none",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "■  新生兒科專科醫師（台灣新生兒科醫學會）",
+                    "size": "sm",
+                    "margin": "md",
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  兒童發展與健康篩檢服務醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
-                    "text": "■  青少年醫學專科醫師",
+                    "text": "■  青少年醫學次專科醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "■  糖尿病共同照護網認證",
-                    "size": "sm",
-                    "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   },
                   {
                     "type": "text",
                     "text": "■  成人預防保健服務醫師",
                     "size": "sm",
                     "margin": "md",
-                    "color": "#4b5563"
+                    "color": "#4b5563",
+                    "wrap": true
                   }
                 ]
               }
@@ -843,23 +867,13 @@
                   },
                   {
                     "type": "text",
-                    "text": "兒童感染病症、感冒發燒、呼吸道",
-                    "margin": "xxl",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "疾病、泌尿道疾病、腸病毒、兒童",
-                    "margin": "xs",
-                    "color": "#4b5563"
+                    "text": "感冒發燒、呼吸道與腸胃感染、腸病毒、泌尿道感染、新生兒黃疸追蹤、兒童健康檢查與發展篩檢、生長評估、育嬰指導",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
-              },
-              {
-                "type": "text",
-                "text": "健康檢查、生長發育評估、育嬰指導",
-                "margin": "xs",
-                "color": "#4b5563"
               },
               {
                 "type": "text",
@@ -960,29 +974,13 @@
                   },
                   {
                     "type": "text",
-                    "text": "感冒、頭痛、發燒、久咳不癒、耳痛",
-                    "margin": "xxl",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "margin": "xs",
-                    "text": "耳鳴、眩暈、中耳炎、耳垢清理、",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "鼻塞、鼻竇炎、流鼻血、鼻涕倒流",
-                    "margin": "xs",
-                    "color": "#4b5563"
+                    "text": "鼻塞、鼻竇炎、鼻涕倒流、流鼻血、耳痛與中耳炎、耳垢清理、耳鳴與眩暈評估、喉嚨痛、聲音沙啞、口腔潰瘍、淺層魚刺；非耳鼻喉專科，需專科處置時協助轉介",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
-              },
-              {
-                "type": "text",
-                "text": "喉嚨痛、聲音沙啞、魚刺、口腔潰瘍",
-                "margin": "xs",
-                "color": "#4b5563"
               },
               {
                 "type": "text",
@@ -1081,15 +1079,11 @@
                   },
                   {
                     "type": "text",
-                    "text": "各種過敏疾病、過敏性鼻炎、氣喘控",
-                    "margin": "xxl",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "制及照護、異位性皮膚炎照護",
-                    "margin": "xs",
-                    "color": "#4b5563"
+                    "text": "兒童氣喘、慢性久咳、過敏性鼻炎、異位性皮膚炎；院內肺功能檢查、自費過敏原檢測，擬定個人化控制計畫",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
               },
@@ -1191,15 +1185,11 @@
                   },
                   {
                     "type": "text",
-                    "text": "皮膚過敏、濕疹、蕁麻疹、黴菌感染",
-                    "margin": "xxl",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "皰疹",
-                    "margin": "xs",
-                    "color": "#4b5563"
+                    "text": "濕疹與異位性皮膚炎、蕁麻疹、皮膚過敏、黴菌感染（癬）、單純疱疹；非皮膚專科，需專科處置時協助轉介",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
               },
@@ -1280,7 +1270,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "text": "三高慢性病",
+                    "text": "家庭醫學・慢性病",
                     "size": "xl",
                     "margin": "md",
                     "weight": "bold",
@@ -1301,15 +1291,11 @@
                   },
                   {
                     "type": "text",
-                    "text": "成人慢性病控制、高血壓、高血脂、",
-                    "margin": "xxl",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "糖尿病、腎臟病、痛風、失眠",
-                    "margin": "xs",
-                    "color": "#4b5563"
+                    "text": "成人感冒、腸胃炎等一般診療；高血壓、糖尿病、高血脂、痛風、腎臟病穩定控制與長期追蹤；成人公費健檢",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
               },
@@ -1411,15 +1397,11 @@
                   },
                   {
                     "type": "text",
-                    "text": "外傷及膿瘍處理、蜂窩性組織炎、",
-                    "margin": "xxl",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "傷口縫合、傷口拆線",
-                    "margin": "xs",
-                    "color": "#4b5563"
+                    "text": "傷口清創換藥、縫合與拆線、膿瘍與蜂窩性組織炎評估、依接種史評估破傷風；大量出血或深部傷口請直接前往急診",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
               },
@@ -1521,9 +1503,11 @@
                   },
                   {
                     "type": "text",
-                    "text": "成人健檢、公費及自費疫苗接種",
-                    "margin": "xxl",
-                    "color": "#4b5563"
+                    "text": "兒童公費常規疫苗（卡介苗除外）、自費疫苗、成人公費健檢；接種前由醫師評估，現貨請先來電或在此聊天室詢問",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
               },
@@ -1625,15 +1609,11 @@
                   },
                   {
                     "type": "text",
-                    "text": "減重門診、體態分析、飲食評估指導",
-                    "margin": "xxl",
-                    "color": "#4b5563"
-                  },
-                  {
-                    "type": "text",
-                    "text": "InBody測量",
-                    "margin": "xs",
-                    "color": "#4b5563"
+                    "text": "InBody 身體組成分析、醫師評估、營養師飲食諮詢；擬定飲食、運動與生活型態計畫，必要時依醫師評估用藥，效果因人而異",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
                   }
                 ]
               },

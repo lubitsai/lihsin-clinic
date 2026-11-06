@@ -204,6 +204,28 @@ class UnknownQuestionTests(unittest.TestCase):
             self.assertIn('立欣診所｜小鹿醫師團隊', texts)
         self.assertEqual(LEGACY['過敏減重諮詢']['altText'], '特別門診諮詢')
 
+    def test_card_wording_matches_website(self):
+        # 院長 2026-11-07 逐字核可：診療項目文字照官網服務頁、醫師學經歷照官網醫師頁、資格由院長確認
+        cards = json.dumps(LEGACY['診療項目'], ensure_ascii=False)
+        for must in ('家庭醫學・慢性病', '非耳鼻喉專科，需專科處置時協助轉介', '非皮膚專科，需專科處置時協助轉介',
+                     '接種前由醫師評估，現貨請先來電或在此聊天室詢問', '必要時依醫師評估用藥，效果因人而異',
+                     '大量出血或深部傷口請直接前往急診'):
+            self.assertIn(must, cards)
+        self.assertNotIn('三高慢性病', cards)
+        tsai, lee = (json.dumps(b, ensure_ascii=False) for b in LEGACY['醫師介紹']['contents']['contents'])
+        for t in (tsai, lee):
+            self.assertNotIn('中華民國小兒科專科醫師', t)
+            self.assertIn('兒科專科醫師（臺灣兒科醫學會）', t)
+            self.assertIn('青少年醫學次專科醫師', t)
+            self.assertIn('成人預防保健服務醫師', t)
+            self.assertIn('兒童發展與健康篩檢服務醫師', t)
+        self.assertNotIn('"■  中國醫藥大學 醫學士"', tsai)
+        for must in ('天主教輔仁大學醫院', '馬偕兒童醫院', '新光吳火獅紀念醫院', '肥胖症專科醫師（中華民國肥胖研究學會）',
+                     '氣喘慢性照護醫師', '糖尿病共同照護網認證'):
+            self.assertIn(must, tsai)
+        self.assertIn('新生兒科專科醫師（台灣新生兒科醫學會）', lee)
+        self.assertNotIn('糖尿病共同照護網', lee)   # 院長確認：只有蔡醫師有
+
     def test_service_cards(self):
         # 院長 2026-11-07：耳鼻喉不宣稱專科（00 §4-5）、疫苗不寫「各項」（本院不提供卡介苗）、InBody 大小寫；每卡「了解更多」連官網服務頁
         raw = json.dumps(LEGACY['診療項目'], ensure_ascii=False)
