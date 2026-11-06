@@ -10,7 +10,7 @@ from core import Catalog, decide
 ROOT = Path(__file__).parent
 CAT = Catalog(json.loads((ROOT / 'faq.json').read_text(encoding='utf-8')))
 LEGACY = json.loads((ROOT / 'legacy_messages.json').read_text(encoding='utf-8'))
-PASS = {'流感疫苗資訊', '過敏氣喘諮詢', '減重營養諮詢'}
+PASS = {'流感疫苗資訊', '過敏氣喘諮詢', '減重營養諮詢', '最新門診異動'}
 DAY = date(2026, 10, 5)
 
 def route(q, today=DAY, passthrough=PASS):

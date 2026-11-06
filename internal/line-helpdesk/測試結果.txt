@@ -1,3 +1,9 @@
+2026-11-06 第二版 2.36（「最新門診異動」加入略過清單；main.py 一行；取代未部署的 2.35）
+- sync_assistants.py：官網 333 項通過、一致性比對 401 句全部一致；validate_site 通過。
+- LINE unittest：容器缺 Flask／Firestore，只跑題庫與價目 29 項，全過（新增 test_clinic_card_buttons_never_open_a_case）。
+- 實測 legacy 卡片全部按鈕：最新門診異動／過敏氣喘諮詢／減重營養諮詢 → passthrough，診療項目 → 原版卡片；無任何一顆落到 unknown。
+- 未執行真實 LINE 與 Firestore 整合測試；尚未部署。
+
 2026-11-06 第二版 2.35（LINE 限定價目：過敏原檢測四套組；程式未改；取代未部署的 2.34）
 - sync_assistants.py：官網 333 項通過、一致性比對 401 句全部一致；validate_site 通過。
 - LINE unittest：容器缺 Flask／Firestore，只跑題庫與價目 28 項，全過（test_line_promotions 新增過敏原檢測 5 句問法、不誤中「過敏鼻噴劑／過敏藥」、官網 knowledge.json 不含此規則）。

@@ -1,6 +1,7 @@
 """Content and routing checks; no network or Cloud credentials needed."""
 import json
 import os
+import re
 import unittest
 from datetime import date, timedelta
 from pathlib import Path
@@ -13,8 +14,18 @@ ROOT = Path(__file__).parent
 DATA = json.loads((ROOT / 'faq.json').read_text(encoding='utf-8'))
 CAT = Catalog(DATA)
 LEGACY = json.loads((ROOT / 'legacy_messages.json').read_text(encoding='utf-8'))
-PASS = {'流感疫苗資訊', '過敏氣喘諮詢', '減重營養諮詢'}
+PASS = {'流感疫苗資訊', '過敏氣喘諮詢', '減重營養諮詢', '最新門診異動'}
 TODAY = date(2026, 10, 3)
+
+def _actions(o):
+    if isinstance(o, dict):
+        if isinstance(o.get('action'), dict):
+            yield o['action']
+        for v in o.values():
+            yield from _actions(v)
+    elif isinstance(o, list):
+        for x in o:
+            yield from _actions(x)
 
 def route(text, pending=False, today=TODAY):
     return decide(text, pending, CAT, LEGACY, PASS, today)
@@ -144,6 +155,15 @@ class UnknownQuestionTests(unittest.TestCase):
         self.assertEqual(route('流感疫苗資訊')[0], 'passthrough')
         self.assertEqual(route('醫師介紹')[1], LEGACY['醫師介紹'])
         self.assertEqual(route('立欣診所')[1], LEGACY['診所資訊'])
+
+    def test_clinic_card_buttons_never_open_a_case(self):
+        # 「診所資訊」卡片上的按鈕文字：不可落到 unknown（會自動轉專人、開案件）
+        default = re.search(r"OA_PASSTHROUGH_KEYWORDS', '(\[.*?\])'", (ROOT / 'main.py').read_text(encoding='utf-8'))
+        self.assertEqual(set(json.loads(default.group(1))), PASS)   # main.py default == the set tested here
+        labels = {a['text'] for a in _actions(LEGACY['診所資訊']) if a.get('type') == 'message'}
+        self.assertIn('最新門診異動', labels)
+        for text in labels:
+            self.assertNotEqual(route(text)[0], 'unknown', text)
 
 class BuildTests(unittest.TestCase):
     def test_faq_json_is_up_to_date_with_knowledge(self):

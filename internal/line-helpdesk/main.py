@@ -120,7 +120,7 @@ def plan_event(tx, event_ref, session_ref, uid, text, event):
             tx.update(event_ref, {'done':True,'messages':[], 'delivery':'suppressed_during_human'})
             return []
         return old.get('messages', [])
-    passthrough = set(json.loads(os.getenv('OA_PASSTHROUGH_KEYWORDS', '["流感疫苗資訊","過敏氣喘諮詢","減重營養諮詢"]')))
+    passthrough = set(json.loads(os.getenv('OA_PASSTHROUGH_KEYWORDS', '["流感疫苗資訊","過敏氣喘諮詢","減重營養諮詢","最新門診異動"]')))
     pending = pending_active(state)
     if text == '我的案件編號' and state.get('status') == 'pending':
         action, answer = 'answer', message('您的待處理案件編號：' + state['case_id'])
