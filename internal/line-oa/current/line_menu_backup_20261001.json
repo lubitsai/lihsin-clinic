@@ -1,0 +1,116 @@
+{
+  "account": "@179tddtf",
+  "previous_api_default": null,
+  "previous_default_source": "other_channel_or_oa_manager",
+  "new_rich_menu_id": "richmenu-1f2a660df1cff1005a040f94d5c3bab7",
+  "menu": {
+    "size": {
+      "width": 2500,
+      "height": 1686
+    },
+    "selected": true,
+    "name": "立欣診所八格選單-20261001-174610",
+    "chatBarText": "診所服務選單",
+    "areas": [
+      {
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 625,
+          "height": 610
+        },
+        "action": {
+          "type": "uri",
+          "label": "線上掛號",
+          "uri": "https://liff.line.me/2005432137-reYdg0y3"
+        }
+      },
+      {
+        "bounds": {
+          "x": 625,
+          "y": 0,
+          "width": 625,
+          "height": 610
+        },
+        "action": {
+          "type": "uri",
+          "label": "看診進度",
+          "uri": "https://www.mainpi.com/query?i=2935"
+        }
+      },
+      {
+        "bounds": {
+          "x": 1250,
+          "y": 0,
+          "width": 625,
+          "height": 610
+        },
+        "action": {
+          "type": "message",
+          "text": "醫師介紹"
+        }
+      },
+      {
+        "bounds": {
+          "x": 1875,
+          "y": 0,
+          "width": 625,
+          "height": 610
+        },
+        "action": {
+          "type": "message",
+          "text": "診所資訊"
+        }
+      },
+      {
+        "bounds": {
+          "x": 0,
+          "y": 1140,
+          "width": 625,
+          "height": 546
+        },
+        "action": {
+          "type": "message",
+          "text": "流感疫苗資訊"
+        }
+      },
+      {
+        "bounds": {
+          "x": 625,
+          "y": 1140,
+          "width": 625,
+          "height": 546
+        },
+        "action": {
+          "type": "message",
+          "text": "過敏氣喘諮詢"
+        }
+      },
+      {
+        "bounds": {
+          "x": 1250,
+          "y": 1140,
+          "width": 625,
+          "height": 546
+        },
+        "action": {
+          "type": "message",
+          "text": "減重營養諮詢"
+        }
+      },
+      {
+        "bounds": {
+          "x": 1875,
+          "y": 1140,
+          "width": 625,
+          "height": 546
+        },
+        "action": {
+          "type": "uri",
+          "label": "粉絲專頁",
+          "uri": "https://www.facebook.com/lhpedclinic/"
+        }
+      }
+    ]
+  }
+}

@@ -1,15 +1,15 @@
 {
   "account": "@179tddtf",
-  "previous_api_default": null,
-  "previous_default_source": "other_channel_or_oa_manager",
-  "new_rich_menu_id": "richmenu-1f2a660df1cff1005a040f94d5c3bab7",
+  "previous_api_default": "richmenu-1f2a660df1cff1005a040f94d5c3bab7",
+  "previous_default_source": "messaging_api",
+  "new_rich_menu_id": "richmenu-3a2fe334a0d45980122a6648dfdcec4e",
   "menu": {
     "size": {
       "width": 2500,
       "height": 1686
     },
     "selected": true,
-    "name": "立欣診所八格選單-20261001-174610",
+    "name": "立欣診所九區選單-20261106-165938",
     "chatBarText": "診所服務選單",
     "areas": [
       {
@@ -109,6 +109,19 @@
           "type": "uri",
           "label": "粉絲專頁",
           "uri": "https://www.facebook.com/lhpedclinic/"
+        }
+      },
+      {
+        "bounds": {
+          "x": 0,
+          "y": 610,
+          "width": 2500,
+          "height": 530
+        },
+        "action": {
+          "type": "uri",
+          "label": "官網首頁",
+          "uri": "https://lhpedclinic.com.tw/"
         }
       }
     ]
