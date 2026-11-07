@@ -212,7 +212,7 @@ class UnknownQuestionTests(unittest.TestCase):
                      '大量出血或深部傷口請直接前往急診'):
             self.assertIn(must, cards)
         self.assertNotIn('三高慢性病', cards)
-        tsai, lee, du = (json.dumps(b, ensure_ascii=False) for b in LEGACY['醫師介紹']['contents']['contents'])
+        tsai, lee = (json.dumps(b, ensure_ascii=False) for b in LEGACY['醫師介紹']['contents']['contents'])
         for t in (tsai, lee):
             self.assertNotIn('中華民國小兒科專科醫師', t)
             self.assertIn('兒科專科醫師（臺灣兒科醫學會）', t)
@@ -225,13 +225,11 @@ class UnknownQuestionTests(unittest.TestCase):
             self.assertIn(must, tsai)
         self.assertIn('新生兒科專科醫師（台灣新生兒科醫學會）', lee)
         self.assertNotIn('糖尿病共同照護網', lee)   # 院長確認：只有蔡醫師有
-        # 院長 2026-11-07：醫師卡加「完整介紹」連官網醫師頁、粉專按鈕去掉「點我>>」；新增營養師卡（照官網、不提 Cofit）
-        for t, page in ((tsai, 'dr-tsai'), (lee, 'dr-lee'), (du, 'dietitian-du')):
+        # 院長 2026-11-07：醫師卡加「完整介紹」連官網醫師頁、粉專按鈕去掉「點我>>」；營養師卡院長裁示先刪除（只留兩位醫師）
+        self.assertEqual(len(LEGACY['醫師介紹']['contents']['contents']), 2)
+        for t, page in ((tsai, 'dr-tsai'), (lee, 'dr-lee')):
             self.assertIn(f'"label": "完整介紹", "uri": "https://lhpedclinic.com.tw/team/{page}.html"', t)
             self.assertNotIn('點我>>', t)
-        for must in ('杜昀憬  營養師', '高考營養師', '糖尿病衛教師（CDE）', '腎臟專科營養師'):
-            self.assertIn(must, du)
-        self.assertNotIn('Cofit', du)
         info = json.dumps(LEGACY['診所資訊'], ensure_ascii=False)
         for must in ('上午 08:00 - 12:00', '夜間 18:30 - 21:30', '週六夜間及週日下午休診', '現場掛號：早診 08:00、午診 14:30、晚診 18:00 開始'):
             self.assertIn(must, info)
