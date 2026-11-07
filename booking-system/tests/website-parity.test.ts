@@ -19,12 +19,15 @@ import {
   AFTERNOON_REGISTRATION,
   MISSED_NUMBER,
   FIRST_VISIT_ITEMS,
+  CLINIC_TYPE_NOTES,
   isWeekdayAfternoon,
 } from "@/lib/clinic-notes";
+import { SETTING_DEFAULTS } from "@/lib/settings";
 
 const SITE_ROOT = join(process.cwd(), "..");
 const VISIT_GUIDE = join(SITE_ROOT, "visit-guide.html");
 const INDEX = join(SITE_ROOT, "index.html");
+const SMOKING = join(SITE_ROOT, "health", "smoking-cessation.html");
 const siteAvailable = existsSync(VISIT_GUIDE) && existsSync(INDEX);
 
 function plain(html: string): string {
@@ -72,6 +75,46 @@ describe.skipIf(!siteAvailable)("與官網原文一致（逐字沿用的段落�
     expect(index).toContain(squash(WALK_IN_REGISTRATION.title));
     expect(index).toContain(squash(WALK_IN_REGISTRATION.times));
     expect(index).toContain(squash(WALK_IN_REGISTRATION.note));
+  });
+  // 以下幾段不是逐字沿用（官網是條列、這裡是一句話），改比對「事實」：
+  // 官網改了時間或數字，這裡就紅，提醒同步 clinic-notes.ts／系統設定預設值。
+
+  it("疫苗停打時間（visit-guide.html#booking-rules〈要打預防針的話〉）", () => {
+    const note = squash(CLINIC_TYPE_NOTES.GENERAL.items.join(""));
+    expect(visitGuide).toContain(squash("每日最後一診結束前 1 小時停止施打疫苗（清點申報作業）"));
+    expect(note).toContain(squash("每日最後一診結束前 1 小時停止施打疫苗（清點申報作業）"));
+    for (const [days, time] of [["週一至週五", "20:30"], ["週六", "17:00"], ["週日", "20:00"]]) {
+      expect(visitGuide, `${days} ${time}`).toContain(`${days}：${time}前`);
+      expect(note, `${days} ${time}`).toContain(`${days}${time}前`);
+    }
+    const caveat = CLINIC_TYPE_NOTES.GENERAL.items[1];
+    expect(visitGuide, caveat).toContain(squash(caveat));
+  });
+
+  it("兒童發展篩檢施測規則（visit-guide.html〈兒童發展篩檢門診〉）", () => {
+    const [bring, onePerSlot, hours] = CLINIC_TYPE_NOTES.DEVELOPMENT.items;
+    expect(visitGuide, bring).toContain(squash(bring));
+    expect(visitGuide, onePerSlot).toContain(squash(onePerSlot));
+    // 官網寫「施測時間：…」，這裡寫「施測時間為…」，比對冒號後的時段本身
+    const times = squash(hours.replace(/^施測時間為/, ""));
+    expect(visitGuide, hours).toContain(times);
+  });
+
+  it("預約規則的數字與系統設定預設值一致（visit-guide.html#booking-rules）", () => {
+    const d = SETTING_DEFAULTS;
+    const checks = [
+      `每日${d["booking.open_time"]}釋出第${d["booking.open_days"]}天的時段`,
+      `該時段開始的${d["booking.same_day_cutoff_minutes"] / 60}小時前`,
+      `預約時段開始後${d["booking.checkin_grace_minutes"]}分鐘內`,
+      `同時最多保留${d["booking.active_max"]}筆`,
+      `累計${d["booking.no_show_threshold"]}次未到，將暫停網路預約資格${d["booking.no_show_suspension_days"] / 30}個月`,
+    ];
+    for (const c of checks) expect(visitGuide, c).toContain(c);
+  });
+
+  it("戒菸門診由蔡宗儒院長看診（一般門診說明引用，health/smoking-cessation.html）", () => {
+    const smoking = plain(readFileSync(SMOKING, "utf-8"));
+    expect(smoking).toContain("戒菸門診由蔡宗儒院長看診");
   });
 });
 
