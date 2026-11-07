@@ -226,6 +226,15 @@ class UnknownQuestionTests(unittest.TestCase):
         self.assertIn('新生兒科專科醫師（台灣新生兒科醫學會）', lee)
         self.assertNotIn('糖尿病共同照護網', lee)   # 院長確認：只有蔡醫師有
 
+    def test_card_images_hosted_on_website(self):
+        # 2026-11-07：卡片圖一律讀官網（班表圖 LH_Time2_s.jpg 與官網同一張，官網換圖 LINE 自動跟上）
+        raw = json.dumps(LEGACY, ensure_ascii=False)
+        self.assertNotIn('storage.googleapis.com', raw)
+        site = Path(__file__).resolve().parents[2]
+        for url in set(re.findall(r'"url": "(https://lhpedclinic\.com\.tw/images/[^"]+)"', raw)):
+            if (site / 'images').exists():
+                self.assertTrue((site / url.split('lhpedclinic.com.tw/', 1)[1]).exists(), url)
+
     def test_service_cards(self):
         # 院長 2026-11-07：耳鼻喉不宣稱專科（00 §4-5）、疫苗不寫「各項」（本院不提供卡介苗）、InBody 大小寫；每卡「了解更多」連官網服務頁
         raw = json.dumps(LEGACY['診療項目'], ensure_ascii=False)

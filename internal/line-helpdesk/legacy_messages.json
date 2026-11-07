@@ -6,7 +6,7 @@
       "type": "bubble",
       "hero": {
         "type": "image",
-        "url": "https://storage.googleapis.com/ls_clinic/LH_Time3.png",
+        "url": "https://lhpedclinic.com.tw/images/LH_Time2_s.jpg",
         "size": "full",
         "aspectRatio": "20:13",
         "aspectMode": "cover",
@@ -373,7 +373,7 @@
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/doctor.png",
+                    "url": "https://lhpedclinic.com.tw/images/dr-tsai-portrait.jpg",
                     "margin": "xs",
                     "size": "3xl"
                   }
@@ -608,7 +608,7 @@
                 "contents": [
                   {
                     "type": "image",
-                    "url": "https://storage.googleapis.com/ls_clinic/DrLee2.png",
+                    "url": "https://lhpedclinic.com.tw/images/dr-li-portrait.jpg",
                     "margin": "xs",
                     "size": "3xl"
                   }
@@ -1654,7 +1654,7 @@
       "type": "bubble",
       "hero": {
         "type": "image",
-        "url": "https://storage.googleapis.com/ls_clinic/LH_Time3.png",
+        "url": "https://lhpedclinic.com.tw/images/LH_Time2_s.jpg",
         "size": "full",
         "aspectRatio": "20:13",
         "aspectMode": "cover",
