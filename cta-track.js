@@ -175,7 +175,8 @@
     var name = h.indexOf('tel:') === 0 ? 'call_click'
       : (h.indexOf('line.me') !== -1 || h.indexOf('lin.ee') !== -1) ? 'line_click'
         : h.indexOf('mainpi.com') !== -1 ? 'queue_click'
-          : h.indexOf('booknow.com.tw') !== -1 ? 'booking_click'
+          /* 自建預約系統（booking.lhpedclinic.com.tw）切換前先一併認得，切換當天不必動這支（booking-system/docs/11） */
+          : (h.indexOf('booknow.com.tw') !== -1 || h.indexOf('booking.lhpedclinic.com.tw') !== -1) ? 'booking_click'
             : (h.indexOf('google.com/maps') !== -1 || h.indexOf('maps.google.com') !== -1
                || h.indexOf('maps.app.goo.gl') !== -1) ? 'directions_click' : null;
     if (name) window.gtag('event', name, withAi({ link_url: h, from_path: location.pathname }));
