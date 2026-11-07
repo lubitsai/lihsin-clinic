@@ -35,7 +35,7 @@ async function main() {
     {
       code: "GENERAL", name: "一般門診", color: "#2F5D3A", icon: "stethoscope", displayOrder: 1,
       doctorIds: bothDoctors,
-      // 院長 2026-11-07：戒菸門診不另設門診類型，併入一般門診（說明文字待逐字核可，見 docs/08 7-5-8a）
+      // 院長 2026-11-07：戒菸門診不另設門診類型，併入一般門診（說明文字院長 2026-11-07 逐字核可，docs/08 7-5-8a）
       description: "兒科、家庭醫學一般看診、疫苗接種與戒菸門診（戒菸門診由蔡宗儒院長看診）",
       // 疫苗停打時間與但書不放這裡——notice 是櫃檯可自行編輯的欄位，
       // 合規文字（00 §4-2）改由程式碼固定顯示，見 src/lib/clinic-notes.ts
