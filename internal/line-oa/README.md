@@ -56,3 +56,8 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 | `line_menu_clinic_ready.py` | 發布圖文選單的 Colab 腳本（Token 執行時隱藏輸入，不入檔）；2026-11-07 起為九區版（加中間品牌帶 → 官網首頁） |
 | `line_menu_backup.json` | 2026-11-07 九區版發布時下載的選單設定與新舊選單 ID |
 | `line_menu_backup_20261001.json` | 2026-10-01 八格版發布備份（退回用） |
+
+## 上線執行包
+
+`LINE上線執行包_先讀我.md`：給院長照做的 A（部署 LINE 客服到 Cloud Run）＋B（LINE 後台設定）總步驟，搭配 `../line-helpdesk/部署操作步驟.md`。
+執行包 zip 不入庫（可重產）：部署包用 `python3 internal/tools/sync_assistants.py --zip <資料夾>` 產生，後台 4 張圖即本資料夾 `allergy-1～4`。
