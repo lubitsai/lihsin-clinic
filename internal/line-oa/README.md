@@ -33,7 +33,7 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 
 1. `weight-1-banner.png` 減重特別門診（1254×1254）
 2. `weight-2-steps.png` 體重管理三步驟
-3. `weight-3-course.png` 科學減重課程（4／8 週方案，無金額）
+3. `weight-3-course.png` 科學減重課程（4／8 週方案，無金額）；圖上「Cofit 營養師」未帶「本院與 Cofit 並無合作關係」但書，院長 2026-11-07 裁示先維持原圖
 4. `weight-4-consult.png` 諮詢費 390 元（＝價目 W01）
 5. `weight-5-team.png` 蔡醫師×杜昀憬營養師（官網本人照片）
 
