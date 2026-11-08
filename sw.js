@@ -17,6 +17,9 @@
    5. /notices/（門診異動橫幅，2026-09-25 起）→ 完全不攔截：
       notices.json 是有期限的公告，理由同第 4 條；notice-banner.js 同目錄一併放行，
       日後改這兩個檔都不必 bump。v6 即為此 bump。
+   6. /videos/（宣傳短片，2026-11-08 起）→ 完全不攔截：
+      <video> 用 Range 請求分段抓，206 回應進不了 Cache Storage，
+      走第 2 條還會把 10 MB 影片整支塞進快取；交給瀏覽器原生處理。v12 即為此 bump。
    ------------------------------------------------------------
    更新方式：改動本檔任一位元組（例如把 VERSION 尾碼 +1）即觸發
    瀏覽器重新安裝並清除舊版快取。
@@ -59,7 +62,7 @@
    ============================================================ */
 'use strict';
 
-const VERSION = 'lhpc-pwa-v11';
+const VERSION = 'lhpc-pwa-v12';
 const PRECACHE = [
   '/offline.html',
   '/tailwind.css',
@@ -99,6 +102,8 @@ self.addEventListener('fetch', (event) => {
   if (url.pathname.startsWith('/clinic-assistant/')) return;
   // 門診異動公告資料與橫幅腳本一律走網路（見檔頭第 5 條）
   if (url.pathname.startsWith('/notices/')) return;
+  // 宣傳短片一律走網路（見檔頭第 6 條）
+  if (url.pathname.startsWith('/videos/')) return;
 
   // ── 1) HTML 導航：network-first ──
   if (req.mode === 'navigate') {
