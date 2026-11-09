@@ -1,3 +1,9 @@
+2026-11-09 第二版 2.50（題庫自動更新：cloudbuild.yaml＋deploy_cloudrun.sh 寫程式指紋；回答未改；取代未部署的 2.49）
+- LINE unittest 完整版：102 項全過（新增 AutoDeployTests：兩邊部署檔案清單與指紋算法一致、自動部署不碰 BOT_MODE／Secret）。
+- 閘門以假 gcloud 實跑三情境：無指紋→停、指紋不同→停、指紋相同→部署（帶 lh_code／lh_faq 標籤）。
+- sync_assistants.py、validate_site 通過。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-09 第二版 2.49（題庫重產：移除已過期的 11/8 代診公告；程式未改；取代未部署的 2.48）
 - sync_assistants.py：官網 336 項、一致性比對 405 句全部一致；validate_site 通過（ERROR 0／WARN 0）。
 - LINE unittest：題庫與價目 36 項全過。

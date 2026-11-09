@@ -40,7 +40,7 @@ internal/line-helpdesk/aliases.json、prices_line.json ── build_faq.py ─�
    - **⚠️ 每打包一次就升一次版本編號（院長 2026-11-06 裁示）**：不論程式有沒有改、只重產題庫也一樣，打包前先把版本 +0.01（例：2.33 → 2.34），同批改三處：`README_設定步驟.md` 第 1 行標題「（第二版 X.XX）」與第 3 行日期版本行、README 新增「## X.XX …（日期）」一節（寫改了什麼、「取代未部署的上一版」）、`測試結果.txt` 最上方新增一筆。zip 檔名的版本取自 README 第 1 行，沒升版就會產出與上一包同名的檔案，院長分不出哪包是新的。
    - `--check`：只檢查不寫檔（push 前把關）；結束碼 0＝全過、1＝有 ✗
 3. 新增常見問法時，把句子加進 `parity_queries.json`，比對範圍就跟著變大。
-4. 每次打包都更新 `line-helpdesk/測試結果.txt` 與 README 版本行（見上方 `--zip` 升版規則，程式沒改也要升）；部署步驟見 `line-helpdesk/README_設定步驟.md`（LINE 跑在 Cloud Run，repo 內的 faq.json 不會自己上線）。
+4. 每次打包都更新 `line-helpdesk/測試結果.txt` 與 README 版本行（見上方 `--zip` 升版規則，程式沒改也要升）；部署步驟見 `line-helpdesk/部署操作步驟.md`。**題庫自動更新（2.50 起，院長 2026-11-09 裁示「只限題庫」）**：院長完成第九步 Cloud Build 觸發器後，`main` 上 `faq.json`／`legacy_messages.json` 一變就自動部署，**只重產題庫的批次不必再打包 zip**（交付說明改寫「merge 後約 5～10 分鐘自動上線，請到 Cloud Build 記錄確認綠燈」）；程式（`main.py`／`core.py`／`requirements.txt`）有改時閘門會擋，照舊升版打包、走 pilot。觸發器是否已設好以 `00` 最新紀錄為準，未設好前一律照舊打包。`cloudbuild.yaml` 與 `deploy_cloudrun.sh` 的檔案清單、指紋算法要一致（`test_regressions.AutoDeployTests` 把關）。
 5. **PR 判準**（CLAUDE.md）：只重產衍生檔、沒改頁面 → 跟著改動來源的那一批走；只動 `internal/**` → 直推 main；改了 FAQ／search.js（小幫手的回答）→ 判準① 開 PR。00／01 照 §8 先備份再登錄。
 
 ### 已知的設計差異（`--ask` 會看到，不算失敗）

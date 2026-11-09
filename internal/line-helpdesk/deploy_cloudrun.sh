@@ -120,8 +120,10 @@ fi
 say "4. 部署新版本（函式入口 linebot、Python 3.12；只上傳五個必要檔案）"
 STAGE="$(mktemp -d)"; trap 'rm -rf "$STAGE"' EXIT
 cp "${FILES[@]}" "$STAGE"/
+# 程式指紋寫進服務標籤 lh_code：Cloud Build 題庫自動部署（cloudbuild.yaml）靠它判斷「程式沒改、只換題庫」
+CODE_HASH="$(cat main.py core.py requirements.txt | sha256sum | cut -c1-40)"
 ARGS=(run deploy "$SERVICE" --source "$STAGE" --function linebot --base-image python312
-      --region "$REGION" --update-env-vars "BOT_MODE=$MODE")
+      --region "$REGION" --update-env-vars "BOT_MODE=$MODE" --update-labels "lh_code=$CODE_HASH")
 [ -n "$SECRET_FLAG" ] && ARGS+=(--update-secrets "$SECRET_FLAG")
 if [ "$MODE" = live ]; then
   warn "live＝所有民眾立即使用新問答。請確認 pilot 實測（部署操作步驟 第四步）已全部通過。"

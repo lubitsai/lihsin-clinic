@@ -72,4 +72,20 @@ class RegressionTests(unittest.TestCase):
         for code in [429,503]:
             with self.assertRaises(HTTPError):self.delivery(code)
 
+class AutoDeployTests(unittest.TestCase):
+    """cloudbuild.yaml (題庫自動部署) must ship the same files and code fingerprint as deploy_cloudrun.sh."""
+    def test_same_files_and_fingerprint(self):
+        import re
+        from pathlib import Path
+        root = Path(__file__).parent
+        sh = (root / 'deploy_cloudrun.sh').read_text(encoding='utf-8')
+        cb = (root / 'cloudbuild.yaml').read_text(encoding='utf-8')
+        files = re.search(r'^FILES=\((.*?)\)$', sh, re.M).group(1).split()
+        self.assertEqual(re.search(r'cp ((?:\S+ )+)"\$\$STAGE"', cb).group(1).split(), files)
+        fp = 'cat main.py core.py requirements.txt | sha256sum | cut -c1-40'
+        self.assertIn(fp, sh); self.assertIn(fp, cb)
+        self.assertIn('--update-labels "lh_code=$CODE_HASH"', sh)
+        self.assertNotIn('BOT_MODE', cb.split('steps:')[1])
+        self.assertNotIn('--update-secrets', cb)
+
 if __name__=='__main__':unittest.main()

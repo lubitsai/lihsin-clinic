@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.49）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.50）
 
-2026-11-09 第二版 2.49｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-09 第二版 2.50｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.50 題庫自動更新（Cloud Build；2026-11-09）
+
+回答與 2.49 相同。新增 `cloudbuild.yaml`：`main` 上 `faq.json`／`legacy_messages.json` 一變就由 Cloud Build 跑完整 unittest 後自動部署，**只限題庫**——程式指紋（`main.py`＋`core.py`＋`requirements.txt` 的 sha256 前 40 碼，存在服務標籤 `lh_code`）與線上不同就停下，程式改動仍走 zip＋pilot。`deploy_cloudrun.sh` 部署時同步寫入 `lh_code`。不傳 `BOT_MODE`、不碰 Token。設定步驟見《部署操作步驟》第九步。取代未部署的 2.49。
 
 ## 2.49 題庫重產：移除已過期的 11/8 代診公告（2026-11-09）
 

@@ -1,0 +1,56 @@
+# 立欣診所 LINE 客服：題庫自動部署（Cloud Build 觸發器用；院長 2026-11-09 裁示「A，只限題庫改動自動部署」）
+#
+# 觸發器設定見《部署操作步驟》第九步：main 分支、檔案篩選只放
+#   internal/line-helpdesk/faq.json、internal/line-helpdesk/legacy_messages.json
+# 替代變數 _SERVICE（Cloud Run 服務名稱）、_REGION（區域）必填。
+#
+# 安全閘門：只有「程式沒變、只有題庫變」才部署。
+#   程式指紋＝main.py＋core.py＋requirements.txt 的 sha256 前 40 碼，
+#   每次部署（deploy_cloudrun.sh 或本檔）都寫進服務標籤 lh_code。
+#   repo 的指紋 ≠ 線上的指紋 → 程式有改 → 停下，改用 zip＋deploy_cloudrun.sh 走 pilot 實測。
+# 不傳 BOT_MODE、不碰 Token／Secret：沿用線上服務原本的設定。
+
+substitutions:
+  _SERVICE: ''
+  _REGION: ''
+
+steps:
+  - id: test
+    name: python:3.12-slim
+    dir: internal/line-helpdesk
+    entrypoint: bash
+    args:
+      - -euo
+      - pipefail
+      - -c
+      - |
+        pip install -q --no-cache-dir -r requirements.lock.txt
+        python -m unittest
+
+  - id: gate-and-deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    dir: internal/line-helpdesk
+    entrypoint: bash
+    args:
+      - -euo
+      - pipefail
+      - -c
+      - |
+        [ -n "${_SERVICE}" ] && [ -n "${_REGION}" ] || { echo "✗ 觸發器未設 _SERVICE／_REGION"; exit 1; }
+        CODE="$$(cat main.py core.py requirements.txt | sha256sum | cut -c1-40)"
+        LIVE="$$(gcloud run services describe "${_SERVICE}" --region "${_REGION}" --format='value(metadata.labels.lh_code)')"
+        if [ -z "$$LIVE" ]; then
+          echo "✗ 線上服務沒有程式指紋（lh_code）：請先用 2.50 以後的 zip＋deploy_cloudrun.sh 手動部署一次"; exit 1
+        fi
+        if [ "$$LIVE" != "$$CODE" ]; then
+          echo "✗ 程式有改（線上 $$LIVE ≠ repo $$CODE），不自動部署。請打包 zip，用 deploy_cloudrun.sh 走 pilot 實測後上線"; exit 1
+        fi
+        echo "✓ 程式未改，只更新題庫"
+        STAGE="$$(mktemp -d)"
+        cp main.py core.py faq.json legacy_messages.json requirements.txt "$$STAGE"/
+        gcloud run deploy "${_SERVICE}" --source "$$STAGE" --function linebot --base-image python312 \
+          --region "${_REGION}" --update-labels "lh_code=$$CODE,lh_faq=${SHORT_SHA}" --quiet
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: 1200s
