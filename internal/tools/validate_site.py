@@ -257,6 +257,8 @@ HIDDEN_SELF_PROMO_PATTERNS = [
 # 現況：`game/index.html` 已是完整官網頁面（growth 式頁首頁尾、H1、canonical、
 #   og/twitter、3 Schema、進 sitemap），**三項豁免全部撤除、回歸與其他頁相同的完整檢查**。
 #   `EXEMPT["h1"]` 因此回到空集合（接線保留，見 E-H1 處註解）。
+# 2026-11-09 新增 `members/nutrition/index.html`＝減重營養課學員專區（密碼頁，noindex、不進 sitemap、
+#   公開頁不連結）：豁免 twcard、pwa 兩項，理由同下方 game.html；樣式自包含（同 offline.html）。
 # 仍豁免的只剩 `game/game.html`＝被 index 嵌入的遊戲本體（noindex、不進 sitemap）：
 #   • pwa    ：它自帶 manifest.webmanifest ＋ /game/sw.js（scope=/game/）。外框頁已依政策
 #              掛 /pwa-register.js；內框再掛一次會重複註冊，且 patch_pwa.py 不處理本目錄。
@@ -266,12 +268,14 @@ EXEMPT = {
     # 不再豁免，回歸與其他頁相同的完整檢查。
     "lang":       {"404.html", "privacy.html", "offline.html"},
     "twcard":     {"404.html", "privacy.html", "offline.html",
-                   "game/game.html"},
+                   "game/game.html",
+                   "members/nutrition/index.html"},  # 學員專區：noindex、不分享
     "desc":       {"404.html", "offline.html"},
     "ogsync":     {"growth.html", "404.html", "privacy.html", "offline.html"},  # growth og 68字維持=07-06裁定
     "canonical":  {"offline.html", "404.html"},
     "pwa":        {"offline.html", "404.html",
-                   "game/game.html"},   # patch_pwa.py 排除頁；growth 是否納入以 patch_pwa.py 為準
+                   "game/game.html",
+                   "members/nutrition/index.html"},  # 學員專區：自包含頁，不掛 PWA（SW 不攔截 /members/）   # patch_pwa.py 排除頁；growth 是否納入以 patch_pwa.py 為準
     "forbidden":  set(),
     "h1":         set(),
 }

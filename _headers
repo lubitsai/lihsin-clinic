@@ -20,6 +20,10 @@
 /docs/*
   Cache-Control: public, max-age=2592000
 
+# ── 減重營養課學員專區（2026-11-09）：不給搜尋引擎收錄 ──
+/members/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
 # ── IndexNow 金鑰檔：確保純文字、可被搜尋引擎讀取 ──
 /631da727697dc88a64a8f0b76042c891.txt
   Content-Type: text/plain; charset=utf-8
