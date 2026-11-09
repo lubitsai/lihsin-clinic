@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>減重營養課學員專區｜立欣診所</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#7C9A6E">
+<link rel="icon" href="/favicon.ico">
+<!--
+  學員專區（院長 2026-11-09 裁示）：只給參加八堂課付費減重課程的學員。
+  不進 sitemap／llms、不給搜尋引擎收錄，官網任何公開頁面都不連到這裡。
+  影片 ID 與教材金鑰都在下方 vault 的密文裡；改密碼、填影片一律用
+  internal/tools/build_members.py，不要手改 vault。
+  樣式自包含（同 offline.html），不依賴 tailwind.css。
+-->
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    background: #f8faf7; color: #333; line-height: 1.7; min-height: 100vh;
+  }
+  header { background: #fff; border-bottom: 1px solid #eef2ec; padding: .9rem 1rem; }
+  header a { color: #5f7a52; font-weight: 700; text-decoration: none; font-size: 1.05rem; }
+  main { max-width: 56rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+  h1 { color: #5f7a52; font-size: 1.5rem; margin-bottom: .5rem; }
+  .lead { color: #555; margin-bottom: 1.25rem; }
+  .card { background: #fff; border: 1px solid #eef2ec; border-radius: 1rem; box-shadow: 0 4px 16px rgba(124,154,110,.08); padding: 1.25rem; }
+  #gate { max-width: 26rem; }
+  label { display: block; font-weight: 700; margin-bottom: .4rem; }
+  input[type=password] { width: 100%; font-size: 1rem; padding: .7rem .8rem; border: 1px solid #cfdcc8; border-radius: .6rem; }
+  input[type=password]:focus { outline: 2px solid #A8C69F; border-color: #7C9A6E; }
+  .btn { display: inline-block; background: #7C9A6E; color: #fff; border: 0; border-radius: 999px; padding: .6rem 1.4rem; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; font-family: inherit; }
+  .btn:disabled { opacity: .6; cursor: wait; }
+  .btn-line { background: #fff; color: #5f7a52; border: 1px solid #A8C69F; font-size: .92rem; padding: .45rem 1rem; }
+  .row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .9rem; }
+  .msg { margin-top: .8rem; font-size: .95rem; min-height: 1.5em; }
+  .err { color: #b04a4a; }
+  .note { color: #666; font-size: .9rem; margin-top: 1rem; }
+  #lessons { display: grid; gap: 1.25rem; }
+  .lesson h2 { font-size: 1.15rem; color: #333; margin-bottom: .75rem; }
+  .video { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #eef2ec; border-radius: .75rem; overflow: hidden; }
+  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video .pending { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #6b7d63; font-weight: 700; }
+  .lesson-body { display: grid; gap: 1rem; margin-top: 1rem; grid-template-columns: 1fr; }
+  .lesson-body img { width: 100%; max-width: 14rem; border-radius: .75rem; border: 1px solid #eef2ec; display: block; }
+  .links a { color: #5f7a52; }
+  .links p { margin-bottom: .35rem; }
+  .topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  footer { text-align: center; color: #999; font-size: .8rem; padding: 1.5rem 1rem; }
+  footer a { color: inherit; }
+  @media (min-width: 640px) { .lesson-body { grid-template-columns: 14rem 1fr; } }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header><a href="/">立欣診所</a></header>
+<main>
+  <h1>減重營養課學員專區</h1>
+  <p class="lead">參加立欣診所八堂減重營養課的學員，可以在這裡觀看課程影片、開啟教材。</p>
+
+  <form id="gate" class="card" autocomplete="off">
+    <label for="pw">課程密碼</label>
+    <input id="pw" type="password" required autocomplete="current-password">
+    <div class="row"><button class="btn" id="go" type="submit">進入</button></div>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    <p class="note">忘記密碼請洽診所櫃檯，或在 LINE（@lhpedclinic）詢問。</p>
+  </form>
+
+  <section id="zone" hidden>
+    <div class="topbar">
+      <p class="lead" style="margin:0">影片與教材僅供學員個人學習使用，請勿轉傳或公開分享。</p>
+      <button class="btn btn-line" id="logout" type="button">登出</button>
+    </div>
+    <div id="lessons"></div>
+    <p class="note">課程內容是一般營養衛教，個人的熱量、份量與用藥，請依醫師和營養師的評估調整。</p>
+  </section>
+</main>
+<footer>© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086</footer>
+
+<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "7VU0x3+UASeuBU9Wl69+wQ==", "iv": "LT354xo3zjIUrRih", "ct": "ZmXVK+slLvNhVkDS0DetnKQwi9Wl0ko4Lol1B+Q3KcupALWv/TLZiro4palZ6Kzt/7uHNl4RTrovjbdQ7SDQxMMzkQpK5WPvIfQC"}</script>
+<script>
+(() => {
+  const LESSONS = [
+    ['第1堂｜認識每天吃的食物', 'six-food-groups', '六大類食物有哪些？'],
+    ['第2堂｜看懂份量，組出均衡餐盤', 'food-portion-plate', '一份是多少？211 餐盤與食物份量'],
+    ['第3堂｜了解自己的飲食需求', 'calorie-protein-needs', '減重一天要吃多少？熱量與蛋白質'],
+    ['第4堂｜建立做得到的飲食習慣', 'whole-food-habits', '原型食物與減重飲食習慣'],
+    ['第5堂｜外食也能練習均衡搭配', 'eating-out-balanced', '外食怎麼吃才均衡？'],
+    ['第6堂｜在家煮出均衡的一餐', 'home-cooking-balanced', '在家煮一餐怎麼搭配？'],
+    ['第7堂｜運動飲食與停滯期調整', 'exercise-nutrition-plateau', '運動前後吃什麼？停滯期怎麼調整'],
+    ['第8堂｜用藥期間的營養照護', 'weight-loss-medication-nutrition', '使用減重藥物期間怎麼吃？'],
+  ];
+  const KEY = 'lh-members-nutrition';
+  const $ = (id) => document.getElementById(id);
+  const unb64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const store = {
+    get() { try { return sessionStorage.getItem(KEY); } catch (e) { return null; } },
+    set(v) { try { sessionStorage.setItem(KEY, v); } catch (e) {} },
+    clear() { try { sessionStorage.removeItem(KEY); } catch (e) {} },
+  };
+  let contentKey = null;
+
+  async function openVault(password) {
+    const v = JSON.parse($('vault').textContent);
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
+    const key = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', hash: 'SHA-256', salt: unb64(v.salt), iterations: v.iter },
+      base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(v.iv) }, key, unb64(v.ct));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+
+  function el(tag, attrs = {}, ...kids) {
+    const e = document.createElement(tag);
+    for (const [k, val] of Object.entries(attrs)) e.setAttribute(k, val);
+    for (const k of kids) e.append(k);
+    return e;
+  }
+
+  async function openPdf(n, btn) {
+    btn.disabled = true;
+    btn.textContent = '教材解密中…';
+    try {
+      const res = await fetch(`files/${String(n).padStart(2, '0')}.bin`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      const raw = new Uint8Array(await res.arrayBuffer());
+      const pdf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: raw.slice(0, 12) }, contentKey, raw.slice(12));
+      const url = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }));
+      const a = el('a', { href: url, target: '_blank', rel: 'noopener', class: 'btn btn-line', download: `第${n}堂教材.pdf` }, `下載第${n}堂教材 PDF`);
+      btn.replaceWith(a);
+    } catch (e) {
+      btn.disabled = false;
+      btn.textContent = '教材開啟失敗，請再試一次';
+    }
+  }
+
+  function render(data) {
+    const box = $('lessons');
+    box.textContent = '';
+    LESSONS.forEach(([title, slug, read], i) => {
+      const n = i + 1;
+      const id = data.v[String(n)];
+      const video = el('div', { class: 'video' });
+      if (id) {
+        video.append(el('iframe', {
+          src: `https://www.youtube-nocookie.com/embed/${id}?rel=0`,
+          title: title, loading: 'lazy',
+          allow: 'accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen',
+          allowfullscreen: '', referrerpolicy: 'strict-origin-when-cross-origin',
+        }));
+      } else {
+        video.append(el('div', { class: 'pending' }, '影片準備中'));
+      }
+      const pdfBtn = el('button', { class: 'btn btn-line', type: 'button' }, `開啟第${n}堂教材 PDF`);
+      pdfBtn.addEventListener('click', () => openPdf(n, pdfBtn));
+      const card = el('a', { href: `/images/${slug}-infographic.jpg`, target: '_blank', rel: 'noopener' },
+        el('img', { src: `/images/${slug}-infographic-768.webp`, alt: `${title} 課程重點圖卡`, width: '768', height: '768', loading: 'lazy' }));
+      const links = el('div', { class: 'links' },
+        el('p', {}, '課程重點圖卡：點圖片看大圖'),
+        el('p', {}, '延伸閱讀：', el('a', { href: `/health/${slug}.html` }, read)),
+        el('div', { class: 'row' }, pdfBtn));
+      box.append(el('article', { class: 'card lesson' },
+        el('h2', {}, title), video, el('div', { class: 'lesson-body' }, card, links)));
+    });
+  }
+
+  async function unlock(password, quiet) {
+    const data = await openVault(password);
+    contentKey = await crypto.subtle.importKey('raw', unb64(data.k), 'AES-GCM', false, ['decrypt']);
+    store.set(password);
+    render(data);
+    $('gate').hidden = true;
+    $('zone').hidden = false;
+  }
+
+  $('gate').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const go = $('go'), msg = $('msg');
+    go.disabled = true;
+    msg.className = 'msg';
+    msg.textContent = '確認中…';
+    try {
+      await unlock($('pw').value);
+      msg.textContent = '';
+    } catch (e) {
+      msg.className = 'msg err';
+      msg.textContent = window.crypto && crypto.subtle
+        ? '密碼不正確，請再確認一次。'
+        : '這個瀏覽器無法開啟專區，請改用新版的 Chrome、Safari 或 Edge。';
+    } finally {
+      go.disabled = false;
+    }
+  });
+
+  $('logout').addEventListener('click', () => {
+    store.clear();
+    location.reload();
+  });
+
+  const saved = store.get();
+  if (saved) unlock(saved).catch(() => store.clear());
+})();
+</script>
+</body>
+</html>
