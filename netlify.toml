@@ -1,0 +1,6 @@
+# Netlify 建置設定（院長 2026-11-10 裁示「加 netlify.toml，內部檔案跳過建置」）
+# 只設定 ignore；發布目錄、建置指令等其餘設定沿用 Netlify 後台，不在此覆寫。
+# 判斷邏輯與跳過範圍見 internal/tools/netlify_ignore.sh（exit 0＝跳過、exit 1＝建置）。
+# 本檔已由 _redirects §5 攔成 404，不對外提供。
+[build]
+  ignore = "bash internal/tools/netlify_ignore.sh"

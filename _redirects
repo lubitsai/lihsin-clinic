@@ -101,6 +101,9 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 #    /gitignore 與 /_gitignore(網頁上傳副產物與已停用的舊版),獨缺帶點
 #    的正式版;本批新增極簡 .gitignore(只排除 __pycache__/ 與 *.pyc)
 #    故一併補上攔截。純開發用設定檔、不對外提供。
+#    netlify.toml 批（2026-11-10）：新增 /netlify.toml（Netlify 建置設定，只含
+#    ignore 指令）。純部署設定、不對外提供；其跳過建置的範圍＝本節攔截清單，
+#    兩邊同步維護（見 internal/tools/netlify_ignore.sh）。
 # ------------------------------------------------------------
 /internal/*    /404.html  404!
 /archive/*     /404.html  404!
@@ -117,6 +120,7 @@ https://www.lhpedclinic.com.tw/*  https://lhpedclinic.com.tw/:splat  301!
 /.gitignore    /404.html  404!
 /README.md     /404.html  404!
 /.github/*     /404.html  404!
+/netlify.toml  /404.html  404!
 /workflow/*    /404.html  404!
 # 註：各子目錄空 README.md 佔位檔已於 2026-07-10 直接刪除
 #（實測 /:dir/README.md 佔位符規則不生效——隱含檔案服務優先；
