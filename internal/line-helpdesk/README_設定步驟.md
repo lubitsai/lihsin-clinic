@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.50）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.51）
 
-2026-11-09 第二版 2.50｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-10 第二版 2.51｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.51 題庫重產：11/10 官網衛教新增內容（2026-11-10）
+
+程式未改（與 2.50 相同，含題庫自動更新設定）。官網 11/10 各批新增或補強的 FAQ 全部收進 `faq.json`：新衛教頁〈孩子燙到了怎麼辦？〉9 題、〈新生兒睡覺安全指南〉天冷穿衣、〈異位性皮膚炎〉冬季保濕、鼻涕倒流（早上打噴嚏）、高血壓（回診血壓紀錄）、高血脂、代謝症候群、健康檢查（甲狀腺健檢）、營養專欄 8 篇與近期新文 4 篇各 1 題。取代未部署的 2.50。
 
 ## 2.50 題庫自動更新（Cloud Build；2026-11-09）
 
