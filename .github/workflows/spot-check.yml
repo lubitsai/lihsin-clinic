@@ -441,6 +441,7 @@ jobs:
           check /images/stop-medicine-infographic.jpg 200
           check /images/picky-eating-20261103-infographic.jpg 200
           check /images/picky-eating-signs-infographic.jpg 200
+          check /images/child-burns-infographic.jpg 200
           check /images/gout-infographic.jpg 200
           check /images/gout-uric-acid-infographic.jpg 200
           check /images/child-pneumonia-20261012-infographic.jpg 200
