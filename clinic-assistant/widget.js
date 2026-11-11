@@ -160,6 +160,7 @@ if (!document.querySelector('lh-assistant')) {
     botSay(richText(kb.greeting));
     log.append(el('div', { class: 'chips' }, kb.suggestions.map((s) => el('button', { type: 'button', onclick: () => submit(s) }, s))));
     log.append(el('p', { class: 'hint' }, `資料依官網內容整理（${kb.reviewed_at} 版），不提供個別醫療判斷。`));
+    if (navigator.onLine === false) log.append(el('p', { class: 'hint' }, '目前離線中：回答來自上次連線時存下的官網資料，門診異動與公告可能不是最新，請連上網路後再確認或來電詢問。'));
   }
 
   function renderBlock(b) {
