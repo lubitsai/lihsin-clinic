@@ -70,6 +70,8 @@
 
 ## 三、醫療團隊（詳細背景）
 
+資格查證：兩位醫師的執業登記資料，可在衛生福利部醫事查詢系統依姓名查詢：https://ma.mohw.gov.tw/masearch/
+
 ### 蔡宗儒 院長
   蔡宗儒醫師完整學經歷與衛教文章：https://lhpedclinic.com.tw/team/dr-tsai.html
 - 專長：兒童過敏、氣喘、一般兒科、肥胖醫學
