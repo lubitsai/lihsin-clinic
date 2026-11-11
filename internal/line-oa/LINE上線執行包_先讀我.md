@@ -1,10 +1,10 @@
-# 立欣診所 LINE 上線執行包（2026-11-11，LINE 客服 2.52）
+# 立欣診所 LINE 上線執行包（2026-11-11，LINE 客服 2.53）
 
-共三件事：**A 和 B 要在同一個時段一起完成**；C 等正式上線後再找時間設定（一次性）。（圖文選單九區已於 2026-11-07 發布並手機確認 OK，本包不再附。）
+共三件事：**A 和 B 要在同一個時段一起完成**；C 等正式上線後再找時間設定（一次性）。（圖文選單另有一件 D：右下格改成「衛教專區」，可另外找時間做，見文末。）
 
 | 資料夾 | 做什麼 | 誰做 | 時間 |
 |---|---|---|---|
-| `1_部署LINE客服/` | A. 把 LINE 客服 2.52 部署到 Google Cloud Run | 院長（要用 Google Cloud 帳號） | 約 40 分鐘 |
+| `1_部署LINE客服/` | A. 把 LINE 客服 2.53 部署到 Google Cloud Run | 院長（要用 Google Cloud 帳號） | 約 40 分鐘 |
 | `2_LINE後台_過敏氣喘諮詢/` | B. LINE 後台換圖、關掉兩組自動回應 | 院長或櫃檯 | 約 10 分鐘 |
 | `1_部署LINE客服/部署操作步驟.md` 第九步 | C. 設定題庫自動更新（Cloud Build） | 院長（Google Cloud 帳號） | 約 15 分鐘，一次性 |
 
@@ -77,3 +77,16 @@ bash deploy_cloudrun.sh <服務名稱> <區域>
 
 - 新回答怪怪的，但服務還正常 → `部署操作步驟.md` 第六步：改成 `BOT_MODE=off`，原本的卡片照常回覆。
 - LINE 完全沒有回應 → 在 Cloud Shell 執行 `bash -c "$(cat rollback_command.txt)"`，流量會切回部署前的版本；**退回後請把後台「最新門診異動」關鍵字回應重新打開**（營業時間外通用回應也可視需要打開）。
+
+---
+
+## D. 圖文選單右下格改成「衛教專區」（可另外找時間，約 10 分鐘）
+
+資料夾 `3_圖文選單衛教專區/` 有兩個檔案：`line_menu_clinic_ready.py`（Colab 腳本）、`rich-menu-9area-health.jpg`（新選單圖）。
+
+1. 打開 https://colab.research.google.com → 新增筆記本 → 貼上腳本全文 → 執行。
+2. 貼上 Channel access token（畫面不顯示）→ 上傳 `rich-menu-9area-health.jpg`。
+3. 核對 9 個區域：右下應為「衛教專區 → https://lhpedclinic.com.tw/health/」，中間品牌帶為「官網首頁」。輸入 `發布`。
+4. 手機重開 LINE，點右下「衛教專區」確認開到官網衛教頁；把下載的 `line_menu_backup.json` 傳回來。
+
+粉絲專頁改放在「診所資訊」卡片底下的按鈕（A 部署 2.53 後生效）。

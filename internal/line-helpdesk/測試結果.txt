@@ -1,3 +1,9 @@
+2026-11-11 第二版 2.53（官方 LINE 依現行官網優化：12 卡、醫師卡「這些狀況可以找我」、找醫師 FAQ、診所資訊卡粉專按鈕；取代未部署的 2.52）
+- LINE unittest 完整版：103 項全過（新增 test_line_follows_website_1111；12 卡圖片檔皆存在）。
+- sync_assistants.py：官網 336 項、一致性比對 414 句全部一致；validate_site 通過。
+- --ask「過敏要掛哪位醫師」「新生兒黃疸要找哪位醫師」「不知道要掛哪個醫師」兩邊皆首推新 FAQ。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-11 第二版 2.52（重新打包；程式與題庫同 2.51；取代未部署的 2.51）
 - LINE unittest 完整版（requirements.lock.txt）：102 項全過。
 - sync_assistants.py：官網 336 項、一致性比對全部一致；validate_site 通過。

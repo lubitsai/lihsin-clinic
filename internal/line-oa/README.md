@@ -19,7 +19,7 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 | 下排① | 流感疫苗資訊 | 文字 | 流感疫苗資訊（後台關鍵字回應） |
 | 下排② | 過敏門診 | 文字 | 過敏氣喘諮詢（後台關鍵字回應） |
 | 下排③ | 減重門診 | 文字 | 減重營養諮詢（後台關鍵字回應） |
-| 下排④ | 粉絲專頁 | 網址 | https://www.facebook.com/lhpedclinic/ |
+| 下排④ | 粉絲專頁 → **衛教專區**（2026-11-11 改，待 Colab 發布） | 網址 | https://www.facebook.com/lhpedclinic/ → https://lhpedclinic.com.tw/health/ |
 | 中間品牌帶 | （立欣診所 小兒專科、家庭醫學） | 網址 | https://lhpedclinic.com.tw/（2026-11-07 起） |
 
 ## 「過敏氣喘諮詢」多頁訊息（900×900，上下留白供多頁訊息使用，依序）
@@ -61,3 +61,9 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 
 `LINE上線執行包_先讀我.md`：給院長照做的 A（部署 LINE 客服到 Cloud Run）＋B（LINE 後台設定）總步驟，搭配 `../line-helpdesk/部署操作步驟.md`。
 執行包 zip 不入庫（可重產）：部署包用 `python3 internal/tools/sync_assistants.py --zip <資料夾>` 產生，後台 4 張圖即本資料夾 `allergy-1～4`。
+
+## 2026-11-11 官方 LINE 優化
+
+- `rich-menu-9area-health.jpg`：右下格「粉絲專頁」改為「衛教專區」（翻開的書圖示＋jf open 粉圓字型，其餘 8 格不變）；Colab 腳本 `current/line_menu_clinic_ready.py` 已同步，**待院長發布**。粉絲專頁改放「診所資訊」卡片按鈕。
+- `推播稿_202611.md`：11 月 LINE 群發稿（主推燙傷、備選冬季保濕），待院長逐字核可後在 OA Manager 群發。
+- 「診療項目」新增 4 卡的圖片暫用小鹿吉祥物：院長做好正式插圖後，直接覆蓋官網 `images/line/service-{newborn,weekend,development-screening,designated-physician}.jpg`（1:1、淺綠底 `#f0f7ed`、無字），LINE 不必重新部署。
