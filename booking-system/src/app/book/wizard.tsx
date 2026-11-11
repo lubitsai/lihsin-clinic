@@ -9,6 +9,7 @@ import { formatDateTw } from "@/lib/tw-time";
 import { SESSION_META, ID_TYPE_LABEL } from "@/lib/status-labels";
 import {
   clinicNoteOf,
+  DOCTOR_GUIDE,
   FIRST_VISIT_ITEMS,
   AFTERNOON_REGISTRATION,
   isWeekdayAfternoon,
@@ -288,6 +289,7 @@ export function BookingWizard({
             >
               <span className="text-lg font-bold text-sage-700">不限醫師</span>
               <span className="block text-sm text-ink-700">由系統安排當時段仍有名額的醫師</span>
+              <span className="block text-sm text-ink-700 mt-1">{DOCTOR_GUIDE.anyDoctor}</span>
             </button>
           )}
           {clinicType.doctors.map((d) => (
@@ -299,6 +301,12 @@ export function BookingWizard({
             >
               <span className="text-lg font-bold text-sage-700">{d.name}醫師</span>
               {d.title && <span className="block text-sm text-ink-700">{d.title}</span>}
+              {DOCTOR_GUIDE.byName[d.name] && (
+                <span className="block text-sm text-ink-700 mt-1">
+                  <span className="font-bold text-sage-700">{DOCTOR_GUIDE.label}：</span>
+                  {DOCTOR_GUIDE.byName[d.name]}
+                </span>
+              )}
             </button>
           ))}
           <BackButton onClick={() => goto(1)} />

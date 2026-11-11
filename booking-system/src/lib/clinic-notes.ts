@@ -40,6 +40,21 @@ export const CLINIC_TYPE_NOTES: Record<string, ClinicNote> = {
   },
 };
 
+/**
+ * 選擇醫師時的「這些狀況可以找我」（院長 2026-11-11，對應 LINE 醫師卡同名欄位）。
+ * 逐字取自官網門診服務總覽〈不確定要找哪一位？〉（services/index.html），
+ * 以醫師姓名對應；後台新增的醫師沒有對應就不顯示。website-parity 測試盯官網原文。
+ */
+export const DOCTOR_GUIDE = {
+  label: "這些狀況可以找我",
+  byName: {
+    蔡宗儒: "孩子過敏、氣喘、久咳，或大人想科學減重",
+    李佳玲: "寶寶黃疸、餵奶、生長發育的問題",
+  } as Record<string, string>,
+  /** 「不限醫師」選項下方 */
+  anyDoctor: "兩位醫師都是兒科專科醫師，一般發燒、咳嗽等門診都可以看。",
+};
+
 export function clinicNoteOf(code: string): ClinicNote | undefined {
   return CLINIC_TYPE_NOTES[code];
 }

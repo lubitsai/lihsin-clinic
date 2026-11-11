@@ -20,6 +20,7 @@ import {
   MISSED_NUMBER,
   FIRST_VISIT_ITEMS,
   CLINIC_TYPE_NOTES,
+  DOCTOR_GUIDE,
   isWeekdayAfternoon,
 } from "@/lib/clinic-notes";
 import { SETTING_DEFAULTS } from "@/lib/settings";
@@ -28,6 +29,7 @@ const SITE_ROOT = join(process.cwd(), "..");
 const VISIT_GUIDE = join(SITE_ROOT, "visit-guide.html");
 const INDEX = join(SITE_ROOT, "index.html");
 const SMOKING = join(SITE_ROOT, "health", "smoking-cessation.html");
+const SERVICES = join(SITE_ROOT, "services", "index.html");
 const siteAvailable = existsSync(VISIT_GUIDE) && existsSync(INDEX);
 
 function plain(html: string): string {
@@ -110,6 +112,14 @@ describe.skipIf(!siteAvailable)("與官網原文一致（逐字沿用的段落�
       `累計${d["booking.no_show_threshold"]}次未到，將暫停網路預約資格${d["booking.no_show_suspension_days"] / 30}個月`,
     ];
     for (const c of checks) expect(visitGuide, c).toContain(c);
+  });
+
+  it("選擇醫師的「這些狀況可以找我」（services/index.html〈不確定要找哪一位？〉）", () => {
+    const services = plain(readFileSync(SERVICES, "utf-8"));
+    expect(services).toContain("不確定要找哪一位？");
+    expect(services).toContain(`${DOCTOR_GUIDE.byName["蔡宗儒"]}，可以找蔡宗儒院長。`);
+    expect(services).toContain(`${DOCTOR_GUIDE.byName["李佳玲"]}，可以找李佳玲醫師。`);
+    expect(services).toContain(squash(DOCTOR_GUIDE.anyDoctor).replace(/。$/, "；"));
   });
 
   it("戒菸門診由蔡宗儒院長看診（一般門診說明引用，health/smoking-cessation.html）", () => {
