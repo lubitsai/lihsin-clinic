@@ -11,6 +11,7 @@ import {
   WEBSITE_SYNC_ACTOR,
   type ScheduleSource,
 } from "@/lib/schedule-source";
+import { getDayScheduleBlocks } from "@/lib/schedule";
 import { dateToDb } from "@/lib/tw-time";
 import { resetDb } from "./helpers";
 
@@ -255,6 +256,65 @@ describe("單日特例以官網為準", () => {
       },
       TODAY,
     );
+    expect(await prisma.scheduleException.count({ where: { date: dateToDb(monday) } })).toBe(0);
+  });
+
+  it("特例寫了當日醫師：沒列到的醫師當診休診，診所時段沒變也看得出來（11/15 李醫師進修）", async () => {
+    // 週日早診常態 蔡 08:00–11:00／李 08:00–11:30；11/15 只有蔡醫師、看到 11:30。
+    // 診所級聯集仍是 08:00–11:30，舊邏輯一筆例外都不會建，李醫師的時段照樣開放預約。
+    const { tsai, lee } = await seedDoctors();
+    const sundayWeekly: ScheduleSource["weekly"] = {
+      ...WEEKLY_ONLY_MONDAY,
+      "0": [
+        { session: "MORNING", start: "08:00", end: "11:00", doctors: ["蔡"] },
+        { session: "MORNING", start: "08:00", end: "11:30", doctors: ["李"] },
+        { session: "EVENING", start: "18:30", end: "21:00", doctors: ["蔡"] },
+      ],
+    };
+    const sunday = "2026-08-09";
+    const r = await applySchedule(
+      prisma,
+      {
+        weekly: sundayWeekly,
+        exceptions: {
+          [sunday]: [
+            { session: "MORNING", start: "08:00", end: "11:30", doctors: ["蔡"] },
+            { session: "EVENING", start: "18:30", end: "21:00", doctors: ["蔡"] },
+          ],
+        },
+      },
+      TODAY,
+    );
+    expect(r.warnings).toEqual([]);
+    const rows = await prisma.scheduleException.findMany({ where: { date: dateToDb(sunday) } });
+    expect(rows.map((x) => `${x.type}|${x.session}|${x.doctorId}|${x.endTime ?? ""}`).sort()).toEqual(
+      [`DOCTOR_OFF|MORNING|${lee.id}|`, `SPECIAL_HOURS|MORNING|${tsai.id}|11:30`].sort(),
+    );
+
+    // 套到當日班表：早診只剩蔡醫師到 11:30，晚診不變
+    const blocks = await getDayScheduleBlocks(sunday);
+    expect(blocks.map((b) => `${b.session}|${b.doctorId}|${b.startTime}-${b.endTime}`).sort()).toEqual(
+      [`MORNING|${tsai.id}|08:00-11:30`, `EVENING|${tsai.id}|18:30-21:00`].sort(),
+    );
+  });
+
+  it("特例寫的醫師平常該診次沒有班：只回報、不自動加診", async () => {
+    await seedDoctors();
+    const r = await applySchedule(
+      prisma,
+      {
+        ...base,
+        exceptions: {
+          [monday]: [
+            { session: "MORNING", start: "08:00", end: "12:00", doctors: ["蔡", "李"] },
+            { session: "AFTERNOON", start: "14:30", end: "18:00" },
+            { session: "EVENING", start: "18:30", end: "21:30" },
+          ],
+        },
+      },
+      TODAY,
+    );
+    expect(r.warnings.some((w) => w.includes("李佳玲") && w.includes("未自動建立"))).toBe(true);
     expect(await prisma.scheduleException.count({ where: { date: dateToDb(monday) } })).toBe(0);
   });
 

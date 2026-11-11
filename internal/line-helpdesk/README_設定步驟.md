@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.53）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.54）
 
-2026-11-11 第二版 2.53｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-11 第二版 2.54｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.54 單日醫師異動：問某一天，只列當天有看診的醫師（2026-11-11）
+
+院長「LINE、iOS App、預約系統統整性更新」→ 四項提案 →「全部」之①。問題：11/15（日）早診李佳玲醫師進修、只有蔡宗儒醫師一診，但問「11/15 李醫師有看診嗎」時，2.53 仍列出常態的「蔡 08:00–11:00／李 08:00–11:30」，與公告矛盾（診所時段沒變，官網單日特例原本沒有醫師欄）。改法：官網首頁 `EXCEPTIONS` 可寫當日醫師 → `schedule.json`／題庫的特例時段帶 `doctors` → `core.py` `_date_answer` 在特例日列出當日醫師並附姓氏對照（與官網 `search.js` `sessionsOn` 同步，特例沒寫醫師時維持只列時間）。新增 `test_schedule_exception_names_doctors`。**程式有改（`core.py`）**，照程式變更流程：測試模式部署 → 實測 → 切正式。取代未部署的 2.53（2.53 的內容全數包含）。
 
 ## 2.53 官方 LINE 依現行官網優化（2026-11-11）
 

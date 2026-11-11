@@ -208,18 +208,26 @@ def merge_same_span(slots: list[dict]) -> list[dict]:
 
 
 def parse_js_ranges(block: str) -> list[dict]:
-    """[[480,720,'早診'],…] → [{session,start,end}]"""
+    """[[480,720,'早診'],…] → [{session,start,end}]
+
+    EXCEPTIONS 的時段可帶第 4 個元素＝當日該診次看診的醫師（姓氏，多位用「、」隔開），
+    例：[480,690,'早診','蔡'] → {…, doctors: ['蔡']}。沒寫就沒有 doctors 欄（＝公告沒指明醫師）。
+    """
     out = []
-    for start, end, name in re.findall(r"\[\s*(\d+)\s*,\s*(\d+)\s*,\s*'([^']+)'\s*\]", block):
+    for start, end, name, who in re.findall(
+        r"\[\s*(\d+)\s*,\s*(\d+)\s*,\s*'([^']+)'\s*(?:,\s*'([^']*)'\s*)?\]", block
+    ):
         if name not in SESSION_BY_NAME:
             raise ScheduleError(f"SCHEDULE 出現未知診次名稱：{name!r}")
-        out.append(
-            {
-                "session": SESSION_BY_NAME[name],
-                "start": minutes_to_time(int(start)),
-                "end": minutes_to_time(int(end)),
-            }
-        )
+        slot = {
+            "session": SESSION_BY_NAME[name],
+            "start": minutes_to_time(int(start)),
+            "end": minutes_to_time(int(end)),
+        }
+        doctors = [re.sub(r"醫師$", "", d.strip()) for d in re.split(r"[/／、,，]", who) if d.strip()]
+        if doctors:
+            slot["doctors"] = doctors
+        out.append(slot)
     out.sort(key=lambda s: SESSION_ORDER[s["session"]])
     return out
 
@@ -287,16 +295,37 @@ def cross_check(table: dict[int, list[dict]], js: dict[int, list[dict]]) -> list
     return problems
 
 
+def check_exception_doctors(table: dict[int, list[dict]], js: dict[int, list[dict]], exceptions: dict[str, list[dict]]) -> None:
+    """醫師欄的防呆：SCHEDULE 週班表不帶醫師；特例的醫師必須是門診時間表上出現過的姓氏；
+    同一天同診次只能一筆（徽章以診次為單位）。打錯字若默默放行，下游會把整個診次當成沒有醫師。"""
+    for weekday, slots in js.items():
+        if any("doctors" in s for s in slots):
+            raise ScheduleError(f"SCHEDULE 週{weekday} 不該帶醫師欄：常態醫師以可見的門診時間表為準，醫師欄只用在 EXCEPTIONS")
+    known = {d for slots in table.values() for s in slots for d in s["doctors"]}
+    for date, slots in exceptions.items():
+        sessions = [s["session"] for s in slots]
+        if len(sessions) != len(set(sessions)):
+            raise ScheduleError(f"EXCEPTIONS {date} 同一診次出現兩筆；每個診次只寫一筆（兩位醫師寫成 '蔡、李'）")
+        for s in slots:
+            unknown = [d for d in s.get("doctors", []) if d not in known]
+            if unknown:
+                raise ScheduleError(
+                    f"EXCEPTIONS {date} 的醫師「{'、'.join(unknown)}」不在門診時間表上（現有：{'、'.join(sorted(known))}）"
+                )
+
+
 def build(html: str) -> dict:
     table = parse_visible_table(html)
     js = parse_js_schedule(html)
     problems = cross_check(table, js)
     if problems:
         raise ScheduleError("官網內部不一致：\n  - " + "\n  - ".join(problems))
+    exceptions = parse_js_exceptions(html)
+    check_exception_doctors(table, js, exceptions)
     return {
         "_comment": "由 internal/tools/sync_schedule.py 從 index.html 產生，請勿手動編輯",
         "weekly": {str(w): table[w] for w in sorted(table)},
-        "exceptions": parse_js_exceptions(html),
+        "exceptions": exceptions,
     }
 
 
@@ -383,6 +412,34 @@ def selftest() -> int:
     # 診所級聯集必須仍等於 SCHEDULE（週一晚診 18:30–21:30、週日早診 08:00–11:30）
     problems = cross_check(table, parse_js_schedule(html))
     failures.extend(problems)
+
+    # 單日特例的醫師欄（2026-11-11）：有寫才有 doctors；多位用「、」；未知姓氏與同診次兩筆要報錯
+    ex_html = html.replace(
+        "var EXCEPTIONS = {\n};",
+        "var EXCEPTIONS = {\n '2026-11-15': [[480,690,'早診','蔡'],[1110,1260,'晚診','蔡、李']],\n"
+        " '2026-11-16': [[480,720,'早診']],\n '2026-11-17': []\n};",
+    )
+    got_ex = build(ex_html)["exceptions"]
+    want_ex = {
+        "2026-11-15": [
+            {"session": "MORNING", "start": "08:00", "end": "11:30", "doctors": ["蔡"]},
+            {"session": "EVENING", "start": "18:30", "end": "21:00", "doctors": ["蔡", "李"]},
+        ],
+        "2026-11-16": [{"session": "MORNING", "start": "08:00", "end": "12:00"}],
+        "2026-11-17": [],
+    }
+    if got_ex != want_ex:
+        failures.append(f"特例醫師欄：得到 {got_ex}\n           期望 {want_ex}")
+    for bad, why in (
+        ("[[480,690,'早診','王']]", "未知姓氏"),
+        ("[[480,660,'早診','蔡'],[480,690,'早診','李']]", "同診次兩筆"),
+    ):
+        try:
+            build(html.replace("var EXCEPTIONS = {\n};", f"var EXCEPTIONS = {{\n '2026-11-15': {bad}\n}};"))
+        except ScheduleError:
+            pass
+        else:
+            failures.append(f"負向測試失敗：特例醫師欄「{why}」沒有報錯")
 
     # 負向：時間沒有對應的醫師標籤要報錯，不能默默吞掉
     try:

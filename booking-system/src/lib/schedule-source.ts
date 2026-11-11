@@ -27,6 +27,11 @@ export interface ScheduleException {
   session: SessionPeriod;
   start: string;
   end: string;
+  /**
+   * 當日該診次看診的醫師（姓氏標籤）。官網 EXCEPTIONS 有寫才有（2026-11-11 起）；
+   * 沒有這一欄＝公告沒指明醫師，照舊只處理診所級時間。
+   */
+  doctors?: string[];
 }
 export interface ScheduleSource {
   weekly: Record<string, ScheduleSlot[]>;
@@ -88,8 +93,10 @@ interface DesiredTemplate {
 }
 interface DesiredException {
   date: string;
-  type: "CLINIC_CLOSED_DAY" | "SESSION_CLOSED" | "SPECIAL_HOURS";
+  type: "CLINIC_CLOSED_DAY" | "SESSION_CLOSED" | "SPECIAL_HOURS" | "DOCTOR_OFF";
   session?: SessionPeriod;
+  /** 有值＝只影響這位醫師（DOCTOR_OFF 一定有；SPECIAL_HOURS 有值時只改這位醫師的時間） */
+  doctorId?: string;
   startTime?: string;
   endTime?: string;
 }
@@ -157,10 +164,45 @@ function planSchedule(
       exceptions.push({ date, type: "CLINIC_CLOSED_DAY" });
       continue;
     }
+    const weeklySlots = source.weekly[String(dayOfWeek)] ?? [];
     for (const base of baseline) {
       const match = actual.find((a) => a.session === base.session);
       if (!match) {
         exceptions.push({ date, type: "SESSION_CLOSED", session: base.session });
+      } else if (match.doctors) {
+        // 官網寫明當日由誰看診：逐位醫師比對，而不是只比診所級時間。
+        // 「診所時段沒變、只是少一位醫師」（2026-11-15 李醫師進修）用診所級比對完全看不出來，
+        // 沒上班的醫師時段會照樣開放預約。
+        const present = new Set(resolveDoctors(doctors, match.doctors));
+        const usual = new Map<string, { start: string; end: string }>();
+        for (const slot of weeklySlots.filter((x) => x.session === base.session)) {
+          for (const id of resolveDoctors(doctors, slot.doctors)) {
+            usual.set(id, { start: slot.start, end: slot.end });
+          }
+        }
+        for (const [doctorId, span] of usual) {
+          if (!present.has(doctorId)) {
+            exceptions.push({ date, type: "DOCTOR_OFF", session: base.session, doctorId });
+          } else if (span.start !== match.start || span.end !== match.end) {
+            exceptions.push({
+              date,
+              type: "SPECIAL_HOURS",
+              session: base.session,
+              doctorId,
+              startTime: match.start,
+              endTime: match.end,
+            });
+          }
+        }
+        for (const doctorId of present) {
+          if (!usual.has(doctorId)) {
+            const name = doctors.find((d) => d.id === doctorId)?.name ?? doctorId;
+            warnings.push(
+              `${date} ${sessionLabel(base.session)}官網寫由${name}醫師看診，但這位醫師平常這個診次沒有班，` +
+                `未自動建立。請於後台「排班管理」手動加診。`,
+            );
+          }
+        }
       } else if (match.start !== base.start || match.end !== base.end) {
         exceptions.push({
           date,
@@ -194,6 +236,7 @@ function planSchedule(
  *   - 空陣列          → 整日休診
  *   - 當日少了某診次   → 該診次停診
  *   - 時間與平常不同   → 該診次特殊時間
+ *   - 該診次寫了醫師   → 逐位比對：沒列到的醫師當診休診（DOCTOR_OFF）、列到但時間不同的只改那位醫師
  *   - 多出平常沒有的診次 → **不自動建立**（官網沒寫由哪位醫師看，猜錯比不做更糟），只回報
  * 只處理今天以後的日期；過期條目官網說可留著，這裡略過。
  */
@@ -246,6 +289,7 @@ export async function applySchedule(
         .map((e) => ({
           type: e.type,
           session: e.session ?? null,
+          doctorId: e.doctorId ?? null,
           startTime: e.startTime ?? null,
           endTime: e.endTime ?? null,
         })),
@@ -321,6 +365,7 @@ export async function applySchedule(
         date: new Date(`${e.date}T00:00:00.000Z`),
         type: e.type,
         session: e.session,
+        doctorId: e.doctorId,
         startTime: e.startTime,
         endTime: e.endTime,
         reason,
@@ -330,12 +375,16 @@ export async function applySchedule(
     result.exceptionsApplied++;
   }
 
-  // 官網單日公告只寫得出「哪一診次、幾點到幾點」，寫不出「由誰看」——
-  // 代診與加開雙診都落在這個缺口裡，同步一定漏掉，只能提醒櫃檯另外建。
-  if (Object.keys(source.exceptions).some((d) => d >= today)) {
+  // 官網單日特例沒寫醫師的診次，只知道「哪一診次、幾點到幾點」，不知道「由誰看」——
+  // 代診與加開雙診落在這個缺口裡，同步一定漏掉，只能提醒櫃檯另外建。
+  // 有寫醫師的診次（2026-11-11 起）已逐位比對，不必提醒。
+  const unnamed = Object.entries(source.exceptions).some(
+    ([d, slots]) => d >= today && slots.some((x) => !x.doctors),
+  );
+  if (unnamed) {
     result.warnings.push(
       "提醒：官網單日公告若包含「由某醫師代診」或「加開雙診」，本同步無法得知" +
-        "（官網的單日資料只有時間、沒有醫師），請於後台「排班管理 → 臨時異動」另行建立：" +
+        "（這幾筆官網單日資料只有時間、沒有寫醫師），請於後台「排班管理 → 臨時異動」另行建立：" +
         "代診用日期例外，雙診用該診次的「加開醫師（雙診）」。",
     );
   }

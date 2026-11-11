@@ -434,9 +434,11 @@ class Catalog:
         ex = self.schedule['exceptions'].get(d.isoformat())
         special = ex is not None
         covering = [] if special else self._notices_on(d, today)   # search.js noticesOn(): same-hours changes (代診) have no exception
-        rows = [(SESSION[x['session']], f"{x['start']}–{x['end']}") for x in ex] if special else self._weekly_rows(_weekday(d))
+        named = special and any(x.get('doctors') for x in ex)   # search.js sessionsOn(): exception slots list doctors only when the homepage names them
+        rows = [(SESSION[x['session']], f"{x['start']}–{x['end']}" + (f"　{'、'.join(x['doctors'])}" if x.get('doctors') else ''))
+                for x in ex] if special else self._weekly_rows(_weekday(d))
         head = (f'今天 {date_label(d)}' if d == today else date_label(d)) + ('｜門診異動' if special or covering else '')
-        note = ('當日依門診異動公告調整。' if special else
+        note = ('當日依門診異動公告調整。' + (self.schedule['legend'] if named else '') if special else
                 '當日依門診異動公告調整。' + self.schedule['legend'] if covering else self.schedule['legend'])
         parts = [head + '\n' + ('\n'.join(f'{a} {b}' for a, b in rows) if rows else '全日休診') + '\n' + note]
         if special:
