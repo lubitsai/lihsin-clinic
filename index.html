@@ -6054,7 +6054,7 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  function run(el) {
  var target = parseInt(el.getAttribute('data-countup'), 10) || 0;
  var suffix = el.getAttribute('data-countup-suffix') || '';
- var dur = 1400, start = null;
+ var dur = 800, start = null;
  function tick(ts) {
  if (start === null) start = ts;
  var p = Math.min((ts - start) / dur, 1);
