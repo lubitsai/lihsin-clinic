@@ -295,6 +295,18 @@
             "height": "sm",
             "margin": "md",
             "color": "#f0f7ed"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "粉絲專頁",
+              "uri": "https://www.facebook.com/lhpedclinic/"
+            },
+            "style": "secondary",
+            "height": "sm",
+            "margin": "md",
+            "color": "#f0f7ed"
           }
         ],
         "action": {
@@ -429,6 +441,31 @@
                   }
                 ],
                 "alignItems": "center"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "md",
+                "paddingAll": "md",
+                "margin": "md",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "這些狀況可以找我",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "weight": "bold"
+                  },
+                  {
+                    "type": "text",
+                    "text": "孩子過敏、氣喘、久咳，或大人想科學減重",
+                    "size": "sm",
+                    "color": "#4d6b43",
+                    "wrap": true,
+                    "margin": "xs"
+                  }
+                ]
               },
               {
                 "type": "separator",
@@ -676,6 +713,31 @@
                   }
                 ],
                 "alignItems": "center"
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "md",
+                "paddingAll": "md",
+                "margin": "md",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "這些狀況可以找我",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "weight": "bold"
+                  },
+                  {
+                    "type": "text",
+                    "text": "寶寶黃疸、餵奶、生長發育的問題",
+                    "size": "sm",
+                    "color": "#4d6b43",
+                    "wrap": true,
+                    "margin": "xs"
+                  }
+                ]
               },
               {
                 "type": "separator",
@@ -934,6 +996,218 @@
                   "type": "uri",
                   "label": "了解更多",
                   "uri": "https://lhpedclinic.com.tw/services/"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#7C9A6E"
+              }
+            ]
+          }
+        },
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "none",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://lhpedclinic.com.tw/images/line/service-newborn.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "新生兒照護",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl",
+                    "color": "#e8f4e8"
+                  },
+                  {
+                    "type": "text",
+                    "text": "黃疸追蹤、餵食與體重評估、生長曲線與發展追蹤；李佳玲醫師（新生兒科專科醫師）看診，週六、週日皆有門診",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
+              }
+            ]
+          },
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/newborn-care.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#7C9A6E"
+              }
+            ]
+          }
+        },
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "none",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://lhpedclinic.com.tw/images/line/service-weekend.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "假日與夜間兒科",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl",
+                    "color": "#e8f4e8"
+                  },
+                  {
+                    "type": "text",
+                    "text": "週六上午與下午、週日上午與夜間皆有門診，平日夜診至 21:30；本院為門診，非急診",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
+              }
+            ]
+          },
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/weekend-pediatrics.html"
                 },
                 "style": "primary",
                 "height": "sm",
@@ -1593,6 +1867,218 @@
                 "contents": [
                   {
                     "type": "image",
+                    "url": "https://lhpedclinic.com.tw/images/line/service-development-screening.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "兒童發展篩檢",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl",
+                    "color": "#e8f4e8"
+                  },
+                  {
+                    "type": "text",
+                    "text": "未滿 7 歲兒童 6 次公費發展篩檢，約 10–15 分鐘，請帶健保卡與兒童健康手冊；異常時協助轉介聯合評估中心",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
+              }
+            ]
+          },
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/child-development-screening.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#7C9A6E"
+              }
+            ]
+          }
+        },
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "none",
+                "contents": [
+                  {
+                    "type": "image",
+                    "url": "https://lhpedclinic.com.tw/images/line/service-designated-physician.jpg",
+                    "size": "full",
+                    "aspectRatio": "4:3",
+                    "aspectMode": "fit"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "width": "84px",
+                "backgroundColor": "#f0f7ed",
+                "borderColor": "#A8C69F",
+                "borderWidth": "1px",
+                "cornerRadius": "xxl",
+                "paddingTop": "2px",
+                "paddingBottom": "2px",
+                "margin": "lg",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "門診服務",
+                    "size": "xs",
+                    "color": "#5f7d52",
+                    "align": "center"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "幼兒專責醫師",
+                    "size": "xl",
+                    "margin": "md",
+                    "weight": "bold",
+                    "style": "normal",
+                    "align": "start",
+                    "color": "#4d6b43"
+                  }
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "separator",
+                    "margin": "xl",
+                    "color": "#e8f4e8"
+                  },
+                  {
+                    "type": "text",
+                    "text": "未滿 3 歲幼兒由固定醫師追蹤健檢、疫苗與發展時程；門診填同意書即可加入，制度本身不另收費",
+                    "wrap": true,
+                    "color": "#4b5563",
+                    "margin": "xl",
+                    "lineSpacing": "4px"
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "立欣診所｜小鹿醫師團隊",
+                "size": "xxs",
+                "color": "#7C9A6E",
+                "margin": "lg"
+              }
+            ]
+          },
+          "direction": "ltr",
+          "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "button",
+                "action": {
+                  "type": "uri",
+                  "label": "了解更多",
+                  "uri": "https://lhpedclinic.com.tw/services/child-designated-physician.html"
+                },
+                "style": "primary",
+                "height": "sm",
+                "color": "#7C9A6E"
+              }
+            ]
+          }
+        },
+        {
+          "type": "bubble",
+          "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "backgroundColor": "#f0f7ed",
+                "cornerRadius": "lg",
+                "paddingAll": "none",
+                "contents": [
+                  {
+                    "type": "image",
                     "url": "https://lhpedclinic.com.tw/images/line/service-weight-management.jpg",
                     "size": "full",
                     "aspectRatio": "4:3",
@@ -1977,6 +2463,18 @@
               "type": "message",
               "label": "診療項目",
               "text": "診療項目"
+            },
+            "style": "secondary",
+            "height": "sm",
+            "margin": "md",
+            "color": "#f0f7ed"
+          },
+          {
+            "type": "button",
+            "action": {
+              "type": "uri",
+              "label": "粉絲專頁",
+              "uri": "https://www.facebook.com/lhpedclinic/"
             },
             "style": "secondary",
             "height": "sm",

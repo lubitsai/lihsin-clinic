@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.52）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.53）
 
-2026-11-11 第二版 2.52｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-11 第二版 2.53｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.53 官方 LINE 依現行官網優化（2026-11-11）
+
+院長「依現行網站進行官方LINE優化」→ 五項提案 →「全部」。①「診療項目」8 卡→12 卡，與官網 12 項門診一致：新增新生兒照護、假日與夜間兒科、兒童發展篩檢、幼兒專責醫師（文字取自各服務頁摘要；圖片 `images/line/service-{newborn,weekend,development-screening,designated-physician}.jpg` 暫用官網小鹿吉祥物，院長正式插圖完成後同檔名覆蓋即可）。②醫師卡加「這些狀況可以找我」（官網「不確定要找哪一位？」逐字）。③題庫：官網服務總覽頁新增 1 題 FAQ「不確定要找哪一位醫師？過敏氣喘、寶寶黃疸要掛哪位醫師？」（答案逐句取自頁面可見段落），兩邊小幫手問「過敏要掛哪位醫師」改為首推此題。④診所資訊卡加「粉絲專頁」按鈕（圖文選單右下格改為「衛教專區」，選單圖與 Colab 腳本見 `internal/line-oa/`）。完整 unittest 103 項全過。2.53 取代未部署的 2.52。
 
 ## 2.52 重新打包（2026-11-11）
 

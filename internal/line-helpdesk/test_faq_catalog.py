@@ -244,13 +244,24 @@ class UnknownQuestionTests(unittest.TestCase):
             if (site / 'images').exists():
                 self.assertTrue((site / url.split('lhpedclinic.com.tw/', 1)[1]).exists(), url)
 
+    def test_line_follows_website_1111(self):
+        # 院長 2026-11-11「全部」：12 卡、醫師卡「這些狀況可以找我」、診所資訊卡粉專按鈕（圖文選單該格改衛教專區）
+        titles = [b['body']['contents'][2]['contents'][0]['text'] for b in LEGACY['診療項目']['contents']['contents']]
+        for t in ('新生兒照護', '假日與夜間兒科', '兒童發展篩檢', '幼兒專責醫師'):
+            self.assertIn(t, titles)
+        self.assertIn('本院為門診，非急診', json.dumps(LEGACY['診療項目'], ensure_ascii=False))
+        tsai, lee = (json.dumps(b, ensure_ascii=False) for b in LEGACY['醫師介紹']['contents']['contents'])
+        self.assertIn('孩子過敏、氣喘、久咳，或大人想科學減重', tsai)
+        self.assertIn('寶寶黃疸、餵奶、生長發育的問題', lee)
+        self.assertIn('https://www.facebook.com/lhpedclinic/', json.dumps(LEGACY['診所資訊'], ensure_ascii=False))
+
     def test_service_cards(self):
         # 院長 2026-11-07：耳鼻喉不宣稱專科（00 §4-5）、疫苗不寫「各項」（本院不提供卡介苗）、InBody 大小寫；每卡「了解更多」連官網服務頁
         raw = json.dumps(LEGACY['診療項目'], ensure_ascii=False)
         for bad in ('耳鼻喉治療', '各項公自費', 'Inbody'):
             self.assertNotIn(bad, raw)
         bubbles = LEGACY['診療項目']['contents']['contents']
-        self.assertEqual(len(bubbles), 8)
+        self.assertEqual(len(bubbles), 12)   # 院長 2026-11-11：與官網 12 項門診一致（LINE 輪播上限 12）
         site = Path(__file__).resolve().parents[2]
         for b in bubbles:
             act = b['footer']['contents'][0]['action']

@@ -25,7 +25,7 @@ def main():
     try:
         bot = call('GET', base + '/info')
         print('連線帳號：', bot.get('displayName'), bot.get('basicId'))
-        print('請上傳新版 2500 × 1686、1 MB 以下的選單圖（僅選一張）。')
+        print('請上傳 rich-menu-9area-health.jpg（2500 × 1686、1 MB 以下；右下格為「衛教專區」）。')
         uploaded = files.upload()
         if len(uploaded) != 1:
             raise ValueError('請只上傳一張圖片')
@@ -39,13 +39,13 @@ def main():
         display(im.resize((750, 506)))
 
         labels = ['線上掛號', '看診進度', '醫師介紹', '診所資訊',
-                  '流感疫苗資訊', '過敏門診', '減重門診', '粉絲專頁']
+                  '流感疫苗資訊', '過敏門診', '減重門診', '衛教專區']
         values = [
             'https://liff.line.me/2005432137-reYdg0y3',
             'https://www.mainpi.com/query?i=2935',
             '醫師介紹', '診所資訊', '流感疫苗資訊',
             '過敏氣喘諮詢', '減重營養諮詢',
-            'https://www.facebook.com/lhpedclinic/'
+            'https://lhpedclinic.com.tw/health/'   # 2026-11-11 院長裁示：粉絲專頁改衛教專區（粉專移到「診所資訊」卡片按鈕）
         ]
         areas = []
         print('已填入原有八格設定，並加上中間品牌帶 → 官網首頁。')
