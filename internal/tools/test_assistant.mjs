@@ -67,6 +67,17 @@ n++; assert.equal(parseDate('10/10有開嗎', DAY), '2026-10-10');
   n++; assert(!JSON.stringify(B.ask('10月1日有看診嗎', DAY)).includes('代診測試'), '公告只附在涵蓋的日期');
   n++; assert(!JSON.stringify(B.ask('9月29日有看診嗎', DAY)).includes('代診測試'), '起日之前不附');
 }
+{ // 單日醫師異動：EXCEPTIONS 第 4 個元素寫了醫師，當日只列那位醫師（2026-11-11；11/15 李醫師進修、蔡醫師單診）
+  const k3 = structuredClone(kb);
+  k3.schedule.exceptions['2026-10-04'] = [{ session: 'MORNING', start: '08:00', end: '11:30', doctors: ['蔡'] }, { session: 'EVENING', start: '18:30', end: '21:00', doctors: ['蔡'] }];
+  const day = B3block(createAssistant(k3).ask('10月4日有看診嗎', DAY));
+  n++; assert.deepEqual(day.days[0].rows, [['上午', '08:00–11:30　蔡'], ['晚上', '18:30–21:00　蔡']], '特例日列出當日醫師');
+  n++; assert(day.note.includes('當日依門診異動公告調整') && day.note.includes('蔡＝'), '有列醫師就附姓氏對照');
+  n++; assert(!day.days[0].rows.some((r) => r[1].includes('李')), '進修的醫師不該出現在當日');
+  const plain = B3block(ask('明天有開嗎'));
+  n++; assert(!plain.note.includes('＝'), '特例沒寫醫師時維持只列時間');
+}
+function B3block(r) { return r.blocks.find((b) => b.type === 'schedule'); }
 n++; assert.equal(parseDate('下週三晚上', DAY), '2026-09-30');
 n++; assert.equal(parseDate('1月5日', DAY), '2027-01-05');
 n++; assert.equal(parseDate('孩子3個月大發燒', DAY), null);

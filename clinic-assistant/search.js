@@ -286,7 +286,8 @@ export function createAssistant(kb) {
   }
   function sessionsOn(date) {
     const ex = kb.schedule.exceptions[date];
-    if (ex) return { special: true, rows: ex.map((s) => [SESSION[s.session], `${s.start}–${s.end}`]) };
+    // 特例時段有 doctors 欄（首頁 EXCEPTIONS 第 4 個元素）才列醫師；沒寫＝公告沒指明，只列時間
+    if (ex) return { special: true, named: ex.some((s) => s.doctors), rows: ex.map((s) => [SESSION[s.session], s.doctors ? `${s.start}–${s.end}　${s.doctors.join('、')}` : `${s.start}–${s.end}`]) };
     return { special: false, rows: weeklyRows(weekday(date)) };
   }
   const legend = () => Object.entries(doctors).map(([k, v]) => `${k}＝${v}`).join('，');
@@ -320,13 +321,13 @@ export function createAssistant(kb) {
   function dateAnswer(date, today, q) {
     const blocks = [];
     if (date < today) return { kind: 'dynamic', text: '這一天已經過去了，請輸入今天以後的日期。', blocks };
-    const { special, rows } = sessionsOn(date);
+    const { special, named, rows } = sessionsOn(date);
     const covering = special ? [] : noticesOn(date, today);
     const head = date === today ? `今天 ${label(date)}` : label(date);
     blocks.push({
       type: 'schedule', title: head + (special || covering.length ? '｜門診異動' : ''),
       days: [{ day: '', rows: rows.length ? rows : [['', '全日休診']] }],
-      note: special ? '當日依門診異動公告調整。' : covering.length ? '當日依門診異動公告調整。' + legend() : legend(),
+      note: special ? '當日依門診異動公告調整。' + (named ? legend() : '') : covering.length ? '當日依門診異動公告調整。' + legend() : legend(),
     });
     if (special) {
       blocks.push({ type: 'schedule', title: `常態週${DAY[weekday(date)]}門診`, days: [{ day: '', rows: weeklyRows(weekday(date)) }], note: legend() });

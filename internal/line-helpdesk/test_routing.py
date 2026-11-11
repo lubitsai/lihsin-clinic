@@ -201,6 +201,21 @@ class TailRouteTests(unittest.TestCase):
         self.assertIn('全日休診', msg['text'])
         self.assertIn('常態週六門診', msg['text'])
 
+    def test_schedule_exception_names_doctors(self):
+        # 單日醫師異動（2026-11-11）：首頁 EXCEPTIONS 寫了當日醫師 → 只列那位醫師＋姓氏對照；沒寫維持只列時間
+        data = json.loads((ROOT / 'faq.json').read_text(encoding='utf-8'))
+        data['schedule']['exceptions'] = {
+            '2026-10-04': [{'session': 'MORNING', 'start': '08:00', 'end': '11:30', 'doctors': ['蔡']},
+                           {'session': 'EVENING', 'start': '18:30', 'end': '21:00', 'doctors': ['蔡']}],
+            '2026-10-03': [{'session': 'MORNING', 'start': '08:00', 'end': '11:30'}]}
+        cat = Catalog(data)
+        day = decide('10/4有看診嗎', False, cat, LEGACY, PASS, date(2026, 9, 20))[1]['text'].split('\n\n')[0]
+        self.assertIn('上午 08:00–11:30　蔡\n晚上 18:30–21:00　蔡\n當日依門診異動公告調整。', day)
+        self.assertIn('蔡＝蔡宗儒院長', day)
+        self.assertNotIn('／李', day)
+        plain = decide('10/3有看診嗎', False, cat, LEGACY, PASS, date(2026, 9, 20))[1]['text'].split('\n\n')[0]
+        self.assertTrue(plain.endswith('上午 08:00–11:30\n當日依門診異動公告調整。'))
+
     def test_holiday(self):
         action, msg = self.ans('中秋節有看診嗎')
         self.assertTrue(msg['text'].startswith('國定假日、連假、颱風天門診可能調整，請以診所最新公告為準。'))

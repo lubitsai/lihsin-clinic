@@ -62,3 +62,21 @@ internal/line-helpdesk/aliases.json、prices_line.json ── build_faq.py ─�
 ## 審查別人交來的 LINE 新版本
 
 逐檔 diff 對照 `internal/line-helpdesk/`；覆蓋進 repo 後跑 `sync_assistants.py --check`（外部版本常因手上沒有官網檔而略過比對測試）；特別看：緊急判斷有沒有被放寬、分流順序是否仍與 search.js 一致（SOON 先於前置規則）、有沒有用 Q 編號、有沒有新文字未經核可。採用後覆蓋進 `internal/line-helpdesk/` 並登錄 00。
+
+## 跨系統對照表（官網 ↔ LINE ↔ iOS App ↔ 預約系統）
+
+官網是唯一事實來源。**交付前跑 `python3 internal/tools/check_channels.py`**（只檢查、不寫檔；App repo 預設找 `../lihsin-app`，沒 clone 就略過並在交付說明寫明；`--booking-tests` 加跑預約系統 Vitest）。哪一項 ✗ 就照下表處理：
+
+| 官網改了什麼 | LINE | iOS App（`lubitsai/lihsin-app`） | 預約系統（`booking-system/`） |
+|---|---|---|---|
+| 門診時間表、`SCHEDULE`／`EXCEPTIONS`（含當日醫師） | `sync_assistants.py` 重產題庫 | 連線時自動讀新的 `schedule.json`；內附副本上架前照 App README 同步指令更新 | `sync_schedule.py` 產 `prisma/schedule.json`；已上線另跑 `npx tsx scripts/sync-schedule.ts` |
+| 門診異動公告（`notices.json`） | 同上（公告進題庫） | 自動讀；內附副本同上 | 不讀公告；醫師或時段有變要靠 `EXCEPTIONS` |
+| 各頁 FAQ、自費價目 | `sync_assistants.py` | 不受影響 | 不受影響 |
+| `services/index.html`〈不確定要找哪一位？〉 | 醫師卡「這些狀況可以找我」手改 `legacy_messages.json`（程式變更 → 升版打包） | 不受影響 | `clinic-notes.ts` `DOCTOR_GUIDE`（`website-parity` 會紅） |
+| `team/index.html` 卡片第一句、`/health/`／`/services/`／`/news/` 總覽 | 不受影響 | 重跑 `build_site_index.py` | 不受影響 |
+| 急症三篇、`growth.html`、`game/`、PWA PRECACHE 衛教頁增減 | 不適用 | 重跑 `build_offline_site.py` | 不受影響 |
+| `visit-guide.html` 掛號／過號／預防針規則 | FAQ 有改就重產 | `Resources/visit-guide.json` 逐字同步（可見文字） | `clinic-notes.ts`（`website-parity` 會紅） |
+| 電話、地址、LINE 帳號、看診進度網址 | `legacy_messages.json` | `ClinicLinks.swift` | `clinic-info.ts` |
+| 掛號入口（BookNow → 自建） | 圖文選單腳本重新發布 | 合併分支 `claude/charming-knuth-66v6lv` | 照 `booking-system/docs/11` 切換清單，三邊同一天 |
+
+App 上架後官網「有 App 嗎」的說法要改，待改處與擬稿在 App repo `docs/AppStore上架指南.md` §七。
