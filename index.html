@@ -3638,28 +3638,28 @@
  <div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
  <!-- 信任點 1：醫學中心訓練 -->
  <div class="bg-white rounded-2xl p-5 md:p-6 text-center shadow-md card-hover border-t-4 border-[#7C9A6E]">
- <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2">5+</div>
+ <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2" data-countup="5" data-countup-suffix="+" aria-label="5+">5+</div>
  <p class="text-sm md:text-base font-bold text-gray-800 font-chinese mb-1">醫學中心訓練機構</p>
  <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed">馬偕、成大、新光、國泰、日本順天堂大學</p>
  </div>
 
  <!-- 信任點 2：學會專科會員 -->
  <div class="bg-white rounded-2xl p-5 md:p-6 text-center shadow-md card-hover border-t-4 border-[#7C9A6E]">
- <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2">4</div>
+ <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2" data-countup="4" data-countup-suffix="" aria-label="4">4</div>
  <p class="text-sm md:text-base font-bold text-gray-800 font-chinese mb-1">學會會員資歷</p>
  <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed">兒科醫學會、肥胖醫學會、兒童過敏氣喘免疫及風濕病醫學會、新生兒科醫學會</p>
  </div>
 
  <!-- 信任點 3：營業時段 -->
  <div class="bg-white rounded-2xl p-5 md:p-6 text-center shadow-md card-hover border-t-4 border-[#7C9A6E]">
- <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2">7</div>
+ <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2" data-countup="7" data-countup-suffix="" aria-label="7">7</div>
  <p class="text-sm md:text-base font-bold text-gray-800 font-chinese mb-1">天門診（不打烊）</p>
  <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed">週一至週日皆有門診，晚間至 21:30</p>
  </div>
 
  <!-- 信任點 4：院內設備 -->
  <div class="bg-white rounded-2xl p-5 md:p-6 text-center shadow-md card-hover border-t-4 border-[#7C9A6E]">
- <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2">6</div>
+ <div class="text-4xl md:text-5xl font-bold text-[#7C9A6E] font-chinese mb-2" data-countup="6" data-countup-suffix="" aria-label="6">6</div>
  <p class="text-sm md:text-base font-bold text-gray-800 font-chinese mb-1">院內醫療設備</p>
  <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed">肺功能檢測儀、InBody 270 身體組成分析儀、全自動尿液分析儀、超音波噴霧治療器、專業耳鼻喉治療台、24 小時溫度監控恆溫疫苗專用冰箱</p>
  <p class="text-xs md:text-sm text-gray-600 font-chinese leading-relaxed mt-2">就診環境：院內設有 Dyson 戴森 Purifier Big+Quiet Formaldehyde、Vorwerk 福維克 Aura、Vorwerk 福維克 Ventus 空氣清淨機，維持診所空氣品質</p>
@@ -6046,6 +6046,32 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  }
  }
 
+ // 信任區數字由 0 往上加（2026-11-12；HTML 內仍寫最終值，無 JS／減少動態偏好時直接顯示）
+ (function() {
+ var els = document.querySelectorAll('[data-countup]');
+ if (!els.length || !('IntersectionObserver' in window)) return;
+ if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+ function run(el) {
+ var target = parseInt(el.getAttribute('data-countup'), 10) || 0;
+ var suffix = el.getAttribute('data-countup-suffix') || '';
+ var dur = 1400, start = null;
+ function tick(ts) {
+ if (start === null) start = ts;
+ var p = Math.min((ts - start) / dur, 1);
+ var eased = 1 - Math.pow(1 - p, 3);
+ el.textContent = Math.round(target * eased) + (p === 1 ? suffix : '');
+ if (p < 1) requestAnimationFrame(tick);
+ }
+ el.textContent = '0';
+ requestAnimationFrame(tick);
+ }
+ var io = new IntersectionObserver(function(entries) {
+ entries.forEach(function(e) {
+ if (e.isIntersecting) { io.unobserve(e.target); run(e.target); }
+ });
+ }, { threshold: 0.6 });
+ els.forEach(function(el) { io.observe(el); });
+ })();
  function filterSvcAud(btn) {
  var aud = btn.getAttribute('data-aud');
  document.querySelectorAll('#services [data-svc-aud]').forEach(function(card) {
