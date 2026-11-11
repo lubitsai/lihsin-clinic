@@ -2041,7 +2041,7 @@
  "url": "https://lhpedclinic.com.tw/#health-tips",
  "name": "立欣診所家長衛教知識庫",
  "description": "由立欣診所院長蔡宗儒醫師審閱的兒童健康衛教知識，涵蓋發燒判斷、氣喘照護、疫苗接種、新生兒護理及科學減重。",
- "dateModified": "2026-11-10T12:00:00+08:00", "lastReviewed": "2026-11-10T12:00:00+08:00",
+ "dateModified": "2026-11-11T12:00:00+08:00", "lastReviewed": "2026-11-11T12:00:00+08:00",
  "reviewedBy": {
  "@type": "Person",
  "@id": "https://lhpedclinic.com.tw/#physician-tsai",
@@ -2104,7 +2104,7 @@
  "isPartOf": {"@type": "WebSite", "@id": "https://lhpedclinic.com.tw/#website", "url": "https://lhpedclinic.com.tw/", "name": "立欣診所 LiHsin Clinic"},
  "datePublished": "2024-07-01",
  "dateModified": "2026-11-11T20:00:00+08:00",
- "lastReviewed": "2026-11-10T12:00:00+08:00",
+ "lastReviewed": "2026-11-11T12:00:00+08:00",
  "reviewedBy": {
   "@type": "Person",
   "@id": "https://lhpedclinic.com.tw/#physician-tsai",
@@ -3081,9 +3081,16 @@
  <p class="text-xl text-gray-600 font-chinese max-w-3xl mx-auto">台南市北區立欣診所提供全方位的醫療服務，從兒科到家庭醫學，滿足您全家人的健康需求</p>
  </div>
 
+ <div id="svc-aud-filter" class="flex flex-wrap items-center justify-center gap-3 mb-8" role="group" aria-label="依看診的人篩選門診">
+ <span class="text-sm text-gray-600 font-chinese">誰要看診？</span>
+ <button type="button" data-aud="all" aria-pressed="true" onclick="filterSvcAud(this)" class="inline-flex items-center gap-2 border border-[#A8C69F] rounded-full px-6 py-3 font-chinese font-semibold shadow-sm bg-[#7C9A6E] text-white">全部</button>
+ <button type="button" data-aud="child" aria-pressed="false" onclick="filterSvcAud(this)" class="inline-flex items-center gap-2 border border-[#A8C69F] rounded-full px-6 py-3 font-chinese font-semibold shadow-sm bg-white text-[#7C9A6E]">孩子</button>
+ <button type="button" data-aud="adult" aria-pressed="false" onclick="filterSvcAud(this)" class="inline-flex items-center gap-2 border border-[#A8C69F] rounded-full px-6 py-3 font-chinese font-semibold shadow-sm bg-white text-[#7C9A6E]">大人</button>
+ </div>
+
  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
  <!-- Service 1: 兒科門診 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" style="">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child" style="">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 448 512" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M152 88a72 72 0 1 1 144 0A72 72 0 1 1 152 88zM39.7 144.5c13-17.9 38-21.8 55.9-8.8L131.8 162c26.8 19.5 59.1 30 92.2 30s65.4-10.5 92.2-30l36.2-26.4c17.9-13 42.9-9 55.9 8.8s9 42.9-8.8 55.9l-36.2 26.4c-13.6 9.9-28.1 18.2-43.3 25V288H128V251.7c-15.2-6.7-29.7-15.1-43.3-25L48.5 200.3c-17.9-13-21.8-38-8.8-55.9zm89.8 184.8l60.6 53-26 37.2 24.3 24.3c15.6 15.6 15.6 40.9 0 56.6s-40.9 15.6-56.6 0l-48-48C70 438.6 68.1 417 79.2 401.1l50.2-71.8zm128.5 53l60.6-53 50.2 71.8c11.1 15.9 9.2 37.5-4.5 51.2l-48 48c-15.6 15.6-40.9 15.6-56.6 0s-15.6-40.9 0-56.6L284 419.4l-26-37.2z"/></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">兒科門診</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">立欣診所提供完整的兒科診療服務，<strong>台南假日兒科</strong>時段涵蓋週六、週日均有門診，平日提供上午、下午、夜診三段時間（08:00–12:00、14:30–18:00、18:30–21:30），讓雙薪家庭也能彈性安排就診時間。</p>
@@ -3092,7 +3099,7 @@
  </div>
 
  <!-- Service 2: 過敏氣喘 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child adult">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M288 32c0 17.7 14.3 32 32 32h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H352c53 0 96-43 96-96s-43-96-96-96H320c-17.7 0-32 14.3-32 32zm64 352c0 17.7 14.3 32 32 32h32c53 0 96-43 96-96s-43-96-96-96H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H384c-17.7 0-32 14.3-32 32zM128 512h32c53 0 96-43 96-96s-43-96-96-96H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H160c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32 14.3-32 32s14.3 32 32 32z"/></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">過敏氣喘</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">由具<strong>馬偕兒童過敏氣喘免疫風濕科訓練</strong>背景的蔡宗儒院長親自看診，提供完整的過敏與氣喘長期照護，涵蓋兒童氣喘、過敏性鼻炎、<strong>兒童異位性皮膚炎（異膚）照護</strong>、食物過敏等常見過敏問題。</p>
@@ -3118,7 +3125,7 @@
  </div>
 
  <!-- Service 3: 疫苗接種 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child adult">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M441 7l32 32 32 32c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-15-15L417.9 128l55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-72-72L295 73c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l55 55L422.1 56 407 41c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0zM210.3 155.7l61.1-61.1c.3 .3 .6 .7 1 1l16 16 56 56 56 56 16 16c.3 .3 .6 .6 1 1l-191 191c-10.5 10.5-24.7 16.4-39.6 16.4H97.9L41 505c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l57-57V325.3c0-14.9 5.9-29.1 16.4-39.6l43.3-43.3 57 57c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-57-57 41.4-41.4 57 57c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6l-57-57z"/></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">疫苗接種</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">提供完善的<strong>公費＋自費疫苗</strong>接種服務，從新生兒、學齡兒童到成人長輩，協助全家人建立完整的健康防護力。多數熱門自費疫苗<strong>現貨供應、隨到隨打</strong>，免預約（部分品項建議先來電或 LINE 確認當日庫存）。</p>
@@ -3139,7 +3146,7 @@
  </div>
 
  <!-- Service 4: 科學減重門診（2026-10-20 院長裁示移到第 4 格）-->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="adult">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M128 176a128 128 0 1 1 256 0 128 128 0 1 1 -256 0zM391.8 64C359.5 24.9 310.7 0 256 0S152.5 24.9 120.2 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H391.8zM296 224c0-10.6-4.1-20.2-10.9-27.4l33.6-78.3c3.5-8.1-.3-17.5-8.4-21s-17.5 .3-21 8.4L255.7 184c-22 .1-39.7 18-39.7 40c0 22.1 17.9 40 40 40s40-17.9 40-40z"/></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">科學減重門診</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">針對有體重控制需求的民眾，由<strong>台灣肥胖醫學會醫師蔡宗儒院長</strong>主持「<strong>三位一體科學減重方案</strong>」，結合精準評估與個人化規劃，依醫師評估提供醫療減重服務。</p>
@@ -3168,7 +3175,7 @@
  </div>
 
  <!-- Service 5: 家庭醫學照護 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" style="">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="adult" style="">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 448 512" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-96 55.2C54 332.9 0 401.3 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7c0-81-54-149.4-128-171.1V362c27.6 7.1 48 32.2 48 62v40c0 8.8-7.2 16-16 16H336c-8.8 0-16-7.2-16-16s7.2-16 16-16V424c0-17.7-14.3-32-32-32s-32 14.3-32 32v24c8.8 0 16 7.2 16 16s-7.2 16-16 16H256c-8.8 0-16-7.2-16-16V424c0-29.8 20.4-54.9 48-62V304.9c-6-.6-12.1-.9-18.3-.9H178.3c-6.2 0-12.3 .3-18.3 .9v65.4c23.1 6.9 40 28.3 40 53.7c0 30.9-25.1 56-56 56s-56-25.1-56-56c0-25.4 16.9-46.8 40-53.7V311.2zM144 448a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese" style="">家庭醫學照護</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-4" style=""><span style="background-color: rgb(253, 249, 244);">不只是孩子的診所，更是全家人的健康守護者。提供急性疾病診療、日常健康諮詢，以及高血壓、糖尿病、高血脂等慢性病的長期追蹤與照護管理。透過持續的醫療陪伴，幫助您穩定控制病情，降低併發症風險。</span></p>
@@ -3176,7 +3183,7 @@
  </div>
 
  <!-- Service 6: 預防保健 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" style="outline: none;">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child adult" style="outline: none;">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc. --><path d="M269.4 2.9C265.2 1 260.7 0 256 0s-9.2 1-13.4 2.9L54.3 82.8c-22 9.3-38.4 31-38.3 57.2c.5 99.2 41.3 280.7 213.6 363.2c16.7 8 36.1 8 52.8 0C454.7 420.7 495.5 239.2 496 140c.1-26.2-16.3-47.9-38.3-57.2L269.4 2.9zM144 221.3c0-33.8 27.4-61.3 61.3-61.3c16.2 0 31.8 6.5 43.3 17.9l7.4 7.4 7.4-7.4c11.5-11.5 27.1-17.9 43.3-17.9c33.8 0 61.3 27.4 61.3 61.3c0 16.2-6.5 31.8-17.9 43.3l-82.7 82.7c-6.2 6.2-16.4 6.2-22.6 0l-82.7-82.7c-11.5-11.5-17.9-27.1-17.9-43.3z"/></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">預防保健</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">秉持預防勝於治療的理念，提供成人健康檢查、兒童健康檢查、兒童發展評估及營養諮詢服務。協助您及早發現潛在健康問題，從日常照護到長期健康管理，為全家打造更完整的健康防護網。</p>
@@ -3185,7 +3192,7 @@
  </div>
 
  <!-- Service 6b: 幼兒專責醫師 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><path d="M4.5 6.2A2.2 2.2 0 0 1 6.7 4h10.6a2.2 2.2 0 0 1 2.2 2.2v13.3l-3.4-2.2-2.1 1.4-2-1.4-2 1.4-2.1-1.4-3.4 2.2z"></path><path d="M12 8.4v5"></path><path d="M9.5 10.9h5"></path></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">幼兒專責醫師</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">立欣診所參與衛生福利部<strong>幼兒專責醫師制度</strong>。未滿 3 歲的孩子可以指定一位固定的醫師，由這位醫師持續追蹤兒童預防保健、疫苗與牙齒塗氟的時程，在該做的時間點主動提醒，需要時協助轉介。</p>
@@ -3194,7 +3201,7 @@
  </div>
 
  <!-- Service 7: 耳鼻喉治療 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child adult">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><path d="M6.8 9.6a5 5 0 0 1 10 0c0 2.5-1.5 3.7-2.8 4.8-1.1 1-2 1.8-2 3.5a2.6 2.6 0 0 1-5.2 0"></path><path d="M10 9.9a1.8 1.8 0 0 1 3.4.2"></path><path d="M19.4 6a8 8 0 0 1 0 10"></path></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">耳鼻喉治療</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">鼻塞、流鼻水、鼻涕倒流、喉嚨痛、耳朵痛與中耳炎，這些孩子與大人常見的耳鼻喉相關症狀，門診都可以評估。院內備有<strong>專業耳鼻喉治療台</strong>與超音波噴霧治療器，另可處理<strong>耳垢清理</strong>與淺層魚刺。立欣診所為小兒科與家庭醫學診所、非耳鼻喉專科，需專科進一步處置者協助轉介。</p>
@@ -3202,7 +3209,7 @@
  </div>
 
  <!-- Service 8: 皮膚疾病 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child adult">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="9.4" cy="10" r="1.15"></circle><circle cx="14.7" cy="8.7" r="0.9"></circle><circle cx="12.2" cy="14.9" r="1.45"></circle></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">皮膚疾病</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">皮膚過敏、濕疹與異位性皮膚炎、蕁麻疹、黴菌感染（香港腳與各種癬）、單純疱疹等常見皮膚問題，兒童與成人皆可於門診評估與治療。蔡宗儒院長具<strong>馬偕兒童過敏氣喘免疫風濕科訓練</strong>背景，異位性皮膚炎方面師承新光醫院王怜人醫師。需切片、雷射或專科長期追蹤者協助轉介。</p>
@@ -3210,7 +3217,7 @@
  </div>
 
  <!-- Service 9: 外傷處理 -->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="child adult">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><rect x="3" y="6.5" width="18" height="14" rx="3"></rect><path d="M9 6.5V5A1.5 1.5 0 0 1 10.5 3.5h3A1.5 1.5 0 0 1 15 5v1.5"></path><path d="M12 10.5v6"></path><path d="M9 13.5h6"></path></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">外傷處理</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">擦傷、割傷、撕裂傷的清創與換藥，並由醫師評估後進行<strong>傷口縫合與拆線</strong>（他院縫合的傷口也可以來拆，醫學美容相關的縫線除外）、膿瘍處置，以及<strong>蜂窩性組織炎</strong>的口服抗生素治療與追蹤，另依受傷型態與接種紀錄評估破傷風。傷及肌腱神經血管、大量出血或大面積燒燙傷，請直接前往急診。</p>
@@ -3218,7 +3225,7 @@
  </div>
 
  <!-- Service 10: 戒菸門診（2026-10-19 院長指示加入服務項目；文字取自已核可之 health/smoking-cessation.html 速覽段）-->
- <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible">
+ <div class="bg-[#f8faf7] p-5 md:p-8 rounded-3xl shadow-md card-hover fade-in-up border-l-4 border-[#7C9A6E] visible" data-svc-aud="adult">
  <div class="text-4xl mb-4"><svg class="text-[#7C9A6E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:1em;height:1em;vertical-align:-0.125em;display:inline-block"><line x1="2" x2="22" y1="2" y2="22"></line><path d="M12 12H2v4h14"></path><path d="M22 12v4"></path><path d="M18 12h-.5"></path><path d="M7 12v4"></path><path d="M18 8c0-2.5-2-2.5-2-5"></path><path d="M22 8c0-2.5-2-2.5-2-5"></path></svg></div>
  <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese">戒菸門診</h3>
  <p class="text-gray-600 leading-relaxed font-chinese mb-3">立欣診所是國民健康署二代戒菸合約院所，由蔡宗儒院長看診。18 歲以上、尼古丁成癮度 4 分以上，或平均每天抽 10 支菸以上的民眾，可以接受國健署補助的戒菸藥物治療：每年 2 個療程，每個療程最多 8 週藥物，戒菸藥品免收部分負擔。</p>
@@ -3227,6 +3234,43 @@
  </div>
  <div class="text-center mt-8">
  <a href="/services/" class="inline-flex items-center gap-2 bg-white border border-[#A8C69F] text-[#7C9A6E] rounded-full px-6 py-3 font-chinese font-semibold hover:bg-[#f0f7ed] transition shadow-sm">查看全部 12 項門診服務 →</a>
+ </div>
+ <!-- 院內檢查與治療（2026-11-11k 新增；可見文字待院長逐字核可）-->
+ <div id="in-clinic-tests" class="max-w-6xl mx-auto mt-16">
+ <h3 class="text-2xl font-bold text-[#7C9A6E] mb-3 font-chinese text-center">院內可以做的檢查與治療</h3>
+ <p class="text-gray-600 font-chinese text-center mb-8 max-w-3xl mx-auto">以下項目在診所內進行。要不要做、做哪一項，由醫師看診後依症狀評估。</p>
+ <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+ <div class="bg-white rounded-2xl p-5 md:p-6 shadow-md border-t-4 border-[#7C9A6E]">
+ <h4 class="text-base md:text-lg font-bold text-gray-800 font-chinese leading-snug mb-2">肺功能檢查</h4>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-3">吹氣測量呼吸道的狀況，協助判斷氣喘控制得如何、追蹤治療後的變化。本院安排 6 歲以上的孩子施測。</p>
+ <a href="/services/pediatric-allergy-asthma.html" class="text-[#7C9A6E] font-chinese font-medium hover:underline text-sm">了解兒童過敏氣喘門診 →</a>
+ </div>
+ <div class="bg-white rounded-2xl p-5 md:p-6 shadow-md border-t-4 border-[#7C9A6E]">
+ <h4 class="text-base md:text-lg font-bold text-gray-800 font-chinese leading-snug mb-2">過敏原抽血檢測（自費）</h4>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-3">分急性（IgE）與慢性（IgG）兩類，經醫師評估後抽血檢驗。結果是調整環境與飲食的參考，不單以數值決定忌口。</p>
+ <a href="/services/allergy-testing.html" class="text-[#7C9A6E] font-chinese font-medium hover:underline text-sm">查看過敏原檢測說明 →</a>
+ </div>
+ <div class="bg-white rounded-2xl p-5 md:p-6 shadow-md border-t-4 border-[#7C9A6E]">
+ <h4 class="text-base md:text-lg font-bold text-gray-800 font-chinese leading-snug mb-2">快篩</h4>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-3">備有公費及自費快篩：A、B 型流感、RSV、腺病毒、hMPV、黴漿菌、新冠與 A 群鏈球菌（自費）。發燒不等於一定要驗，快篩也無法單獨掛號只做檢驗。</p>
+ <a href="/health/rapid-tests.html" class="text-[#7C9A6E] font-chinese font-medium hover:underline text-sm">快篩要驗哪一項 →</a>
+ </div>
+ <div class="bg-white rounded-2xl p-5 md:p-6 shadow-md border-t-4 border-[#7C9A6E]">
+ <h4 class="text-base md:text-lg font-bold text-gray-800 font-chinese leading-snug mb-2">尿液常規檢查</h4>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-3">院內備有全自動尿液分析儀，協助評估泌尿道感染、血尿、蛋白尿等狀況。</p>
+ <a href="/health/child-uti.html" class="text-[#7C9A6E] font-chinese font-medium hover:underline text-sm">了解兒童泌尿道感染 →</a>
+ </div>
+ <div class="bg-white rounded-2xl p-5 md:p-6 shadow-md border-t-4 border-[#7C9A6E]">
+ <h4 class="text-base md:text-lg font-bold text-gray-800 font-chinese leading-snug mb-2">InBody 身體組成分析</h4>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-3">科學減重門診的評估項目，搭配醫師面診一起判讀。</p>
+ <a href="/services/weight-management.html" class="text-[#7C9A6E] font-chinese font-medium hover:underline text-sm">了解科學減重門診 →</a>
+ </div>
+ <div class="bg-white rounded-2xl p-5 md:p-6 shadow-md border-t-4 border-[#7C9A6E]">
+ <h4 class="text-base md:text-lg font-bold text-gray-800 font-chinese leading-snug mb-2">超音波噴霧治療</h4>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-3">把藥液霧化成細微顆粒，由呼吸道吸入，常用於氣喘、細支氣管炎等呼吸道疾病。用藥內容由醫師依病情評估。</p>
+ </div>
+ </div>
+ <p class="text-sm text-gray-600 font-chinese text-center mt-5">本院是門診、非急診。症狀嚴重或呼吸困難，請直接到急診。</p>
  </div>
 
  </div>
@@ -3295,6 +3339,10 @@
  <span class="badge-green">肥胖醫學</span>
  </div>
  <a href="/team/dr-tsai.html" class="inline-flex items-center gap-1 mt-5 text-[#7C9A6E] font-bold font-chinese hover:underline">查看蔡醫師完整學經歷與衛教文章 →</a>
+ <div class="flex flex-wrap gap-3 mt-5">
+ <a href="https://lhpedclinic.booknow.com.tw/" target="_blank" rel="noopener" onclick="trackCTA('Booking_Team_Tsai')" class="inline-flex items-center gap-2 text-white rounded-full px-6 py-3 font-chinese font-semibold shadow-sm" style="background:#7C9A6E;">📅 網路預約掛號</a>
+ <a href="#schedule" onclick="trackCTA('Schedule_Team_Tsai')" class="inline-flex items-center gap-2 bg-white border border-[#A8C69F] text-[#7C9A6E] rounded-full px-6 py-3 font-chinese font-semibold hover:bg-[#f0f7ed] transition shadow-sm">看蔡醫師門診時間</a>
+ </div>
  </div>
  </div>
 
@@ -3343,6 +3391,10 @@
  <span class="badge-pink">小兒成長發育</span>
  </div>
  <a href="/team/dr-lee.html" class="inline-flex items-center gap-1 mt-5 text-[#c66060] font-bold font-chinese hover:underline">查看李醫師完整學經歷與衛教文章 →</a>
+ <div class="flex flex-wrap gap-3 mt-5">
+ <a href="https://lhpedclinic.booknow.com.tw/" target="_blank" rel="noopener" onclick="trackCTA('Booking_Team_Lee')" class="inline-flex items-center gap-2 text-white rounded-full px-6 py-3 font-chinese font-semibold shadow-sm" style="background:#c66060;">📅 網路預約掛號</a>
+ <a href="#schedule" onclick="trackCTA('Schedule_Team_Lee')" class="inline-flex items-center gap-2 bg-white border border-[#A8C69F] text-[#7C9A6E] rounded-full px-6 py-3 font-chinese font-semibold hover:bg-[#f0f7ed] transition shadow-sm">看李醫師門診時間</a>
+ </div>
  </div>
  </div>
  </div>
@@ -3569,10 +3621,14 @@
  <span class="inline-flex items-center gap-1 bg-[#e8f4e8] text-[#7C9A6E] text-xs font-chinese font-semibold px-2.5 py-1 rounded-full">💳 健保特約醫療機構</span>
  <span class="inline-flex items-center gap-1 bg-[#e8f4e8] text-[#7C9A6E] text-xs font-chinese font-semibold px-2.5 py-1 rounded-full">📅 開業：2024.07.01</span>
  </div>
+ <!-- 官方查證入口（2026-11-11k 新增）-->
+ <div class="mt-4 pt-4 border-t border-gray-100">
+ <p class="text-xs text-gray-600 font-chinese leading-relaxed"><strong>查證方式：</strong>到衛生福利部<a href="https://ma.mohw.gov.tw/masearch/" target="_blank" rel="noopener noreferrer" onclick="trackCTA('Verify_MOHW')" class="text-[#7C9A6E] underline hover:no-underline">醫事查詢系統</a>輸入醫師姓名，可以查到執業登記資料。</p>
+ </div>
  <!-- 內容審閱聲明（EEAT 核心：authorship + date）-->
  <div id="clinic-trust-summary" class="mt-4 pt-4 border-t border-gray-100">
  <p class="text-xs text-gray-400 font-chinese leading-relaxed">
- 本頁面醫療資訊由 <strong class="text-gray-600">立欣診所院長蔡宗儒醫師</strong> 審閱，最後更新日期：<time datetime="2026-11-10">2026年11月10日</time>。本院所有醫療建議僅供參考，實際診斷與治療請至診所由醫師面診評估。醫療廣告警語：醫療機構廣告，詳情請洽診所，效果因人而異。
+ 本頁面醫療資訊由 <strong class="text-gray-600">立欣診所院長蔡宗儒醫師</strong> 審閱，最後更新日期：<time datetime="2026-11-11">2026年11月11日</time>。本院所有醫療建議僅供參考，實際診斷與治療請至診所由醫師面診評估。醫療廣告警語：醫療機構廣告，詳情請洽診所，效果因人而異。
  </p>
  </div>
  </div>
@@ -3682,7 +3738,7 @@
  <!-- ★ EEAT 作者審閱聲明（可見 + 語意）-->
  <div class="eeat-author-block inline-flex items-center gap-2 mt-4 bg-[#f0f7ed] border border-[#A8C69F] rounded-full px-4 py-2 text-xs font-chinese text-gray-600">
  <svg width="14" height="14" viewBox="0 0 24 24" fill="#7C9A6E" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
- <span>由 <strong class="text-[#7C9A6E]">蔡宗儒院長（兒科醫師・馬偕過敏免疫風濕科訓練）</strong> 審閱・更新：<time datetime="2026-11-10">2026年11月</time></span>
+ <span>由 <strong class="text-[#7C9A6E]">蔡宗儒院長（兒科醫師・馬偕過敏免疫風濕科訓練）</strong> 審閱・更新：<time datetime="2026-11-11">2026年11月</time></span>
  </div>
  </div>
 
@@ -4069,7 +4125,7 @@
  <!-- 醫療免責聲明（合規 + EEAT）-->
  <div class="max-w-5xl mx-auto mt-8">
  <p class="text-xs text-gray-400 font-chinese text-center leading-relaxed border-t border-gray-100 pt-4">
- 以上衛教資訊由立欣診所院長蔡宗儒醫師（中國醫藥大學醫學士・馬偕兒童過敏氣喘免疫風濕科研究醫師）審閱，僅供一般衛教參考，不取代醫師面診評估。實際診斷與治療請至診所由醫師親自評估。醫療廣告警語：本院廣告，詳情請洽診所，效果因人而異。最後更新：<time datetime="2026-11-10">2026年11月10日</time>。
+ 以上衛教資訊由立欣診所院長蔡宗儒醫師（中國醫藥大學醫學士・馬偕兒童過敏氣喘免疫風濕科研究醫師）審閱，僅供一般衛教參考，不取代醫師面診評估。實際診斷與治療請至診所由醫師親自評估。醫療廣告警語：本院廣告，詳情請洽診所，效果因人而異。最後更新：<time datetime="2026-11-11">2026年11月11日</time>。
  </p>
  </div>
 
@@ -5988,6 +6044,21 @@ LINE：<a href="https://line.me/R/ti/p/@lhpedclinic" target="_blank" rel="noopen
  'event_label': label
  });
  }
+ }
+
+ function filterSvcAud(btn) {
+ var aud = btn.getAttribute('data-aud');
+ document.querySelectorAll('#services [data-svc-aud]').forEach(function(card) {
+ var show = aud === 'all' || card.getAttribute('data-svc-aud').split(' ').indexOf(aud) !== -1;
+ card.classList.toggle('hidden', !show);
+ });
+ document.querySelectorAll('#svc-aud-filter button').forEach(function(b) {
+ var on = b === btn;
+ b.setAttribute('aria-pressed', on ? 'true' : 'false');
+ b.classList.toggle('bg-[#7C9A6E]', on); b.classList.toggle('text-white', on);
+ b.classList.toggle('bg-white', !on); b.classList.toggle('text-[#7C9A6E]', !on);
+ });
+ trackCTA('Svc_Filter_' + aud);
  }
  // 手機版 Hero 小鹿：只在 Hero 區可見，滾出後隱藏
  (function() {
