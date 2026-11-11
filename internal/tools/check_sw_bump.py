@@ -33,6 +33,9 @@ import sys
 # ① 01 防呆 18 明列的共用根資產（多頁引用、走 SWR）
 # ② sw.js PRECACHE 的成員：它們只在 SW 安裝時寫入快取，**不 bump 就永遠不會更新**
 #    （/offline.html 更極端——它只會從快取被讀出來，網路路徑根本不經過它）
+#    ⚠️ 2026-11-11 v14 起 PRECACHE 另含 3 篇衛教 HTML、/growth.html、/clinic-assistant/ 3 檔（離線可用），
+#    **刻意不列入本清單**：它們走 network-first（HTML 導航、/clinic-assistant/），連線時每次抓最新並回寫快取，
+#    改它們不必 bump；只有像 offline.html 這種「只從快取讀」的檔才需要。
 SHARED_ASSETS = [
     'cta-track.js',           # ① GA4 轉換事件，75 頁引用
     'clarity.js',             # ①

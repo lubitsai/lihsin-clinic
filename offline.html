@@ -60,6 +60,12 @@
   .btn-green { background: linear-gradient(135deg, #7C9A6E, #5a7a50); color: #fff; }
   .btn-outline { background: #fff; color: #7C9A6E; border: 2px solid #7C9A6E; }
   .foot { margin-top: 1.2rem; font-size: 0.8rem; color: #999; }
+  .btn-red { background: #c66060; color: #fff; }
+  .tips a { color: #4a6340; font-weight: 700; }
+  .sched { width: 100%; border-collapse: collapse; margin: 0.4rem 0; font-size: 0.88rem; }
+  .sched th { text-align: left; white-space: nowrap; padding: 0.2rem 0.5rem 0.2rem 0; vertical-align: top; color: #4a6340; }
+  .sched td { padding: 0.2rem 0; white-space: pre-line; }
+  .note { font-size: 0.82rem; color: #6b7280; margin: 0.3rem 0 0; }
 </style>
 </head>
 <body>
@@ -72,9 +78,48 @@
       ・直接<strong>撥打電話</strong>預約或詢問（下方按鈕）<br>
       ・已看過的頁面可能仍可離線瀏覽
     </div>
+    <div class="tips">
+      📖 <strong>沒有網路也能看：</strong><br>
+      ・<a href="/health/child-emergency-signs.html">什麼時候建議去急診？</a><br>
+      ・<a href="/health/child-fever.html">小孩發燒幾度要看醫生？</a><br>
+      ・<a href="/health/child-burns.html">孩子燙到了怎麼辦？</a><br>
+      ・<a href="/growth.html">線上生長曲線計算工具</a>
+    </div>
+    <div class="tips" id="sched-box" hidden>
+      🕘 <strong>常態門診時間</strong>
+      <table class="sched"><tbody id="sched-rows"></tbody></table>
+      <p class="note" id="sched-legend"></p>
+      <p class="note">離線時只能顯示每週固定的門診時間；代診、休診等臨時異動，請在連上網路後以官網最新公告為準。</p>
+    </div>
     <button class="btn btn-green" onclick="location.reload()">🔄 重新整理</button>
     <a class="btn btn-outline" href="tel:062516086">📞 撥打 06-2516086</a>
+    <a class="btn btn-red" href="tel:119">🚑 撥打 119</a>
     <p class="foot">立欣診所 LiHsin Clinic｜台南市北區育德路467號</p>
   </main>
+<script>
+/* 常態門診時間：讀 Service Worker 已存下的小幫手題庫（與官網同一份班表，不另寫死），讀不到就不顯示 */
+(function () {
+  if (!('caches' in window)) return;
+  var DAY = ['日', '一', '二', '三', '四', '五', '六'], SESSION = { MORNING: '上午', AFTERNOON: '下午', EVENING: '夜間' };
+  caches.match('/clinic-assistant/knowledge.json').then(function (r) { return r && r.json(); }).then(function (kb) {
+    if (!kb || !kb.schedule || !kb.schedule.weekly) return;
+    var rows = document.getElementById('sched-rows');
+    [1, 2, 3, 4, 5, 6, 0].forEach(function (w) {
+      var list = kb.schedule.weekly[String(w)] || [], by = {};
+      list.forEach(function (x) { (by[x.session] = by[x.session] || []).push(x); });
+      var parts = Object.keys(by).map(function (k) {
+        return SESSION[k] + ' ' + by[k].map(function (x) { return x.start + '–' + x.end + ' ' + x.doctors.join('、'); }).join('\n　　 ');
+      });
+      var tr = document.createElement('tr'), th = document.createElement('th'), td = document.createElement('td');
+      th.textContent = '週' + DAY[w]; td.textContent = parts.length ? parts.join('\n') : '休診';
+      tr.appendChild(th); tr.appendChild(td); rows.appendChild(tr);
+    });
+    var doc = (kb.facts && kb.facts['醫師']) || '';
+    var names = doc.split('（')[0].split('、').filter(Boolean);
+    if (names.length) document.getElementById('sched-legend').textContent = names.map(function (n) { return n.charAt(0) + '＝' + n; }).join('，');
+    document.getElementById('sched-box').hidden = false;
+  }).catch(function () {});
+})();
+</script>
 </body>
 </html>

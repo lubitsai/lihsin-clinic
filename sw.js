@@ -1,6 +1,6 @@
 /* ============================================================
    立欣診所 PWA Service Worker
-   版本：lhpc-pwa-v13（2026-11-09 學員專區；v12＝2026-11-08；v11＝2026-11-07 PR #532；v10＝2026-10-19、v9＝2026-09-29b、v8＝2026-09-29、v7＝2026-09-26、v6＝2026-09-25、v5＝2026-09-24、v4＝2026-09-16、v3＝2026-09-10、v2＝2026-09-07、v1＝2026-07-04）
+   版本：lhpc-pwa-v14（2026-11-11 離線可用：急症／發燒／燙傷衛教、生長評估、小幫手離線版、離線頁常態門診表；v13＝2026-11-09 學員專區；v12＝2026-11-08；v11＝2026-11-07 PR #532；v10＝2026-10-19、v9＝2026-09-29b、v8＝2026-09-29、v7＝2026-09-26、v6＝2026-09-25、v5＝2026-09-24、v4＝2026-09-16、v3＝2026-09-10、v2＝2026-09-07、v1＝2026-07-04）
    ------------------------------------------------------------
    快取策略（保守設計，內容更新永遠優先）：
    1. HTML 導航請求 → network-first：
@@ -10,10 +10,11 @@
       先給快取秒開，背景更新下次生效。
    3. 跨網域（MainPI、GA4、LINE、Google Fonts）→ 完全不攔截，
       交由瀏覽器原生處理，看診進度絕不吃到快取。
-   4. /clinic-assistant/（線上小幫手，2026-09-24 起）→ 完全不攔截：
-      knowledge.json 內含門診異動與有期限公告，走第 2 條快取優先的話，
-      回訪者會先看到上一版（例如已過期的連假公告）；交給瀏覽器依
-      Netlify 預設 must-revalidate 處理，每次開啟都是最新版。v5 即為此 bump。
+   4. /clinic-assistant/（線上小幫手，2026-09-24 起）→ network-first（2026-11-11 v14 起）：
+      knowledge.json 內含門診異動與有期限公告，**不能**走第 2 條快取優先
+      （回訪者會先看到上一版，v5 即為此改成不攔截）。v14 改成「網路優先、斷線才用快取」：
+      有網路時永遠是最新版（與 v5～v13 相同），沒網路時用上次存下的版本，
+      小幫手自己會顯示「目前離線中」提醒；過期公告由 search.js 依 valid_until 自動隱藏。
    5. /notices/（門診異動橫幅，2026-09-25 起）→ 完全不攔截：
       notices.json 是有期限的公告，理由同第 4 條；notice-banner.js 同目錄一併放行，
       日後改這兩個檔都不必 bump。v6 即為此 bump。
@@ -22,6 +23,12 @@
       走第 2 條還會把 10 MB 影片整支塞進快取；交給瀏覽器原生處理。v12 即為此 bump。
    7. /members/（減重營養課學員專區，2026-11-09 起）→ 完全不攔截：
       加密教材每份 1～14 MB，走第 2 條會整份塞進快取；學員專區也不該離線留存。v13 即為此 bump。
+   8. 離線可用清單（2026-11-11 v14，院長「部分功能讓使用者離線也可以使用」→「全部」）：
+      PRECACHE 加 3 篇衛教（急症判斷／發燒／燙傷）、/growth.html、小幫手 3 檔，
+      第一次開官網就先存好，沒看過也能離線打開。
+      ⚠️ 這幾個檔**刻意不列入** check_sw_bump.py 受管清單：它們走 network-first
+      （HTML 導航與 /clinic-assistant/），連線時每次都抓最新並回寫快取，
+      不像 /offline.html 只會從快取讀出；改它們**不必** bump。
    ------------------------------------------------------------
    更新方式：改動本檔任一位元組（例如把 VERSION 尾碼 +1）即觸發
    瀏覽器重新安裝並清除舊版快取。
@@ -64,12 +71,20 @@
    ============================================================ */
 'use strict';
 
-const VERSION = 'lhpc-pwa-v13';
+const VERSION = 'lhpc-pwa-v14';
 const PRECACHE = [
   '/offline.html',
   '/tailwind.css',
   '/manifest.webmanifest',
-  '/images/logo.png'
+  '/images/logo.png',
+  // 離線可用（v14）：家長沒網路時最可能需要的內容；走 network-first，連線時自動更新
+  '/health/child-emergency-signs.html',
+  '/health/child-fever.html',
+  '/health/child-burns.html',
+  '/growth.html',
+  '/clinic-assistant/widget.js',
+  '/clinic-assistant/search.js',
+  '/clinic-assistant/knowledge.json'
 ];
 
 self.addEventListener('install', (event) => {
@@ -100,8 +115,21 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // 線上小幫手的資料與程式一律走網路（見檔頭第 4 條）
-  if (url.pathname.startsWith('/clinic-assistant/')) return;
+  // 線上小幫手：網路優先，斷線才用快取（見檔頭第 4 條）
+  if (url.pathname.startsWith('/clinic-assistant/')) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(VERSION).then((cache) => cache.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(req, { ignoreSearch: true }).then((cached) => cached || Response.error()))
+    );
+    return;
+  }
   // 門診異動公告資料與橫幅腳本一律走網路（見檔頭第 5 條）
   if (url.pathname.startsWith('/notices/')) return;
   // 宣傳短片一律走網路（見檔頭第 6 條）
