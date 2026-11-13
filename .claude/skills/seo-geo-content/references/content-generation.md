@@ -47,7 +47,9 @@
 4. **作者頁**（dr-tsai/dr-lee）：文章清單 +1（連結文字＝首頁卡標題）、desc/og
    「N 篇」+1、可見最後更新與 dateModified 跳當日、sitemap lastmod 同步。
 5. **舊文互連**:相關既有文章加內連（外科式插入，插入後驗證位置）。
-6. **驗證**：回 SKILL.md 第 4 步。
+6. **驗證**：先重產衛教總覽頁搜尋索引 `python3 internal/tools/build_health_search.py`
+   （`health/` 新文章才需要；改任一篇 keywords 也要重跑；忘了會出 W-HEALTHSEARCH，
+   新文章只能用卡片文字搜到、口語關鍵字搜不到；重產不必 bump `sw.js`），再回 SKILL.md 第 4 步。
 
 ## 步驟 4｜技術掛載
 
@@ -67,6 +69,7 @@
 - 可見文字變更清單（待院長逐字核可，merge＝核可）：新頁全文＋首頁卡＋作者頁清單項
 - dateModified 政策:新頁三日期＝當日；index/作者頁跳當日（新增可見項目）；其餘不跳
 - 六步整合：首頁卡／sitemap +N／llms +N／作者頁 N→N+1 篇／舊文互連 N 處
+- 搜尋索引：build_health_search.py 已重產（health/search-index.json）
 - 驗證：validate_site.py --stage deploy ERROR 0／WARN 逐條判讀：…
 - Playwright 390/1280px：零橫向溢出
 - merge 後動作：IndexNow 提交（新頁＋index＋作者頁）
