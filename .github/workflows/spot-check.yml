@@ -467,6 +467,7 @@ jobs:
           check /health/parent-child-reading.html 200
           check /health/baby-solid-foods.html 200
           check /health/child-rash.html 200
+          check /images/child-rash-infographic.jpg 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
