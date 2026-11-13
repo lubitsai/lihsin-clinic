@@ -1,3 +1,9 @@
+2026-11-13 第二版 2.55（題庫重產：PR #557／#558 FAQ；程式未改；取代未部署的 2.54）
+- LINE unittest 完整版（requirements.lock.txt）：104 項全過。
+- sync_assistants.py：官網、一致性比對全部一致；validate_site 通過。
+- --ask「感冒好了還在咳」「咳嗽拖兩週」兩邊皆命中新題。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-11 第二版 2.54（單日醫師異動：特例日只列當天有看診的醫師；core.py 有改；取代未部署的 2.53）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過（新增 test_schedule_exception_names_doctors）。
 - sync_assistants.py：官網 340 項、一致性比對 411 句全部一致；validate_site 通過。
