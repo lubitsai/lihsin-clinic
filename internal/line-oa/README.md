@@ -73,3 +73,10 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 - `rich-menu-9area-v3.jpg`：由原始 `rich-menu-8grid.jpg` 一次重製（`build_rich_menu_v3.py`，jf open 粉圓字型、字級對齊原圖 76px 字高）：下排②③改「過敏氣喘」「科學減重」、④「衛教專區」（取代 11-11 的 `rich-menu-9area-health.jpg`，那版字小一號）、中間品牌帶加膠囊標籤「週六、週日與平日夜間都有門診」（原擬「週六、週日都有門診｜平日夜診到 21:30」在手機上約 5pt 太小，改短句放大到約 8pt；院長 2026-11-13 確認此措辭可用）。
 - Colab 腳本：兩個官網連結加 UTM（`utm_source=line&utm_medium=richmenu&utm_campaign=line_oa&utm_content=health｜brand_band`）。API 建立的選單在 OA 後台沒有點擊統計，改由 GA4 看。線上掛號（BookNow LIFF）與看診進度（MainPi）是外部網址，不加。
 - ⏳ 流感季結束（2027 年春）後，左下「流感疫苗資訊」換成全年適用的「疫苗接種」或「新生兒照護」（見 `00` 待辦）。
+
+## 未來選項：分頁式圖文選單（院長 2026-11-13 提出，尚未決定做）
+
+參考：全鋒 T-Life 官方帳號（院長截圖 3 張，`archive/screenshot-tlife-tabs-*.png`）——選單上方 3 個分頁標籤，點標籤整張選單換頁。
+做法：LINE Messaging API 的 **richmenu alias＋richmenuswitch 動作**（每個分頁是一張獨立選單，標籤區設 `{"type":"richmenuswitch","richMenuAliasId":…}`），沿用現有 Colab 腳本改寫即可，**Cloud Run 程式不用改**；每張選單 2500×1686，標籤列約佔上方 200px。
+立欣可行的分頁草案：①**看診**（線上掛號／看診進度／醫師介紹／診所資訊／最新門診異動）②**門診服務**（過敏氣喘／科學減重／新生兒照護／疫苗接種／兒童發展篩檢／流感疫苗資訊）③**衛教**（衛教專區／急症判斷／發燒／生長曲線工具／粉絲專頁）。
+⚠️ 先決條件：先發布 v3 單頁選單，用 UTM 在 GA4 看 1～2 個月點擊數據，再依實際使用決定分頁怎麼排；需 3 張新選單圖（院長或設計師做圖，或 session 依現有手繪風重製）。
