@@ -25,7 +25,7 @@ def main():
     try:
         bot = call('GET', base + '/info')
         print('連線帳號：', bot.get('displayName'), bot.get('basicId'))
-        print('請上傳 rich-menu-9area-health.jpg（2500 × 1686、1 MB 以下；右下格為「衛教專區」）。')
+        print('請上傳 rich-menu-9area-v3.jpg（2500 × 1686、1 MB 以下；下排為「過敏氣喘」「科學減重」「衛教專區」，中間有「週六、週日與平日夜間都有門診」）。')
         uploaded = files.upload()
         if len(uploaded) != 1:
             raise ValueError('請只上傳一張圖片')
@@ -39,13 +39,13 @@ def main():
         display(im.resize((750, 506)))
 
         labels = ['線上掛號', '看診進度', '醫師介紹', '診所資訊',
-                  '流感疫苗資訊', '過敏門診', '減重門診', '衛教專區']
+                  '流感疫苗資訊', '過敏氣喘', '科學減重', '衛教專區']
         values = [
             'https://liff.line.me/2005432137-reYdg0y3',
             'https://www.mainpi.com/query?i=2935',
             '醫師介紹', '診所資訊', '流感疫苗資訊',
             '過敏氣喘諮詢', '減重營養諮詢',
-            'https://lhpedclinic.com.tw/health/'   # 2026-11-11 院長裁示：粉絲專頁改衛教專區（粉專移到「診所資訊」卡片按鈕）
+            'https://lhpedclinic.com.tw/health/?utm_source=line&utm_medium=richmenu&utm_campaign=line_oa&utm_content=health'   # 2026-11-13 加 UTM（API 建立的選單在 OA 後台看不到點擊數，改由 GA4 看）； 2026-11-11 院長裁示：粉絲專頁改衛教專區（粉專移到「診所資訊」卡片按鈕）
         ]
         areas = []
         print('已填入原有八格設定，並加上中間品牌帶 → 官網首頁。')
@@ -60,7 +60,7 @@ def main():
         # 2026-11-07 院長核可：中間品牌帶（y 610–1140）原本沒有動作，改為開啟官網首頁（首頁有最新門診異動公告）
         labels.append('官網首頁（中間品牌帶）')
         areas.append({'bounds': {'x': 0, 'y': 610, 'width': 2500, 'height': 530},
-                      'action': {'type': 'uri', 'label': '官網首頁', 'uri': 'https://lhpedclinic.com.tw/'}})
+                      'action': {'type': 'uri', 'label': '官網首頁', 'uri': 'https://lhpedclinic.com.tw/?utm_source=line&utm_medium=richmenu&utm_campaign=line_oa&utm_content=brand_band'}})
 
         menu = {'size': {'width': 2500, 'height': 1686}, 'selected': True,
                 'name': '立欣診所九區選單-' + datetime.now().strftime('%Y%m%d-%H%M%S'),

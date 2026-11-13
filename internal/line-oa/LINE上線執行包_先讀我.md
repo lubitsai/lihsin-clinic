@@ -80,13 +80,19 @@ bash deploy_cloudrun.sh <服務名稱> <區域>
 
 ---
 
-## D. 圖文選單右下格改成「衛教專區」（可另外找時間，約 10 分鐘）
+## D. 圖文選單更新（可另外找時間，約 10 分鐘）
 
-資料夾 `3_圖文選單衛教專區/` 有兩個檔案：`line_menu_clinic_ready.py`（Colab 腳本）、`rich-menu-9area-health.jpg`（新選單圖）。
+這次一起改四件事（院長 2026-11-13「全部依建議修改」）：
+- 右下格「粉絲專頁」→「衛教專區」（粉絲專頁改放「診所資訊」卡片按鈕，A 部署 2.53 以後生效）
+- 下排「過敏門診」→「過敏氣喘」、「減重門診」→「科學減重」（點下去的動作不變）
+- 中間品牌帶加一顆標籤「週六、週日與平日夜間都有門診」
+- 「衛教專區」與中間品牌帶的連結加上追蹤標記，之後可在 GA4 看到從 LINE 選單點進官網的人數
+
+資料夾 `3_圖文選單更新/` 有兩個檔案：`line_menu_clinic_ready.py`（Colab 腳本）、`rich-menu-9area-v3.jpg`（新選單圖）。
 
 1. 打開 https://colab.research.google.com → 新增筆記本 → 貼上腳本全文 → 執行。
-2. 貼上 Channel access token（畫面不顯示）→ 上傳 `rich-menu-9area-health.jpg`。
-3. 核對 9 個區域：右下應為「衛教專區 → https://lhpedclinic.com.tw/health/」，中間品牌帶為「官網首頁」。輸入 `發布`。
-4. 手機重開 LINE，點右下「衛教專區」確認開到官網衛教頁；把下載的 `line_menu_backup.json` 傳回來。
+2. 貼上 Channel access token（畫面不顯示）→ 上傳 `rich-menu-9area-v3.jpg`。
+3. 核對 9 個區域：下排應為「過敏氣喘」「科學減重」「衛教專區 → https://lhpedclinic.com.tw/health/?utm_source=line…」，中間品牌帶為「官網首頁 → https://lhpedclinic.com.tw/?utm_source=line…」。輸入 `發布`。
+4. 手機重開 LINE，9 格各點一次；把下載的 `line_menu_backup.json` 傳回來。
 
-粉絲專頁改放在「診所資訊」卡片底下的按鈕（A 部署 2.54 後生效）。
+**之後怎麼看成效**：GA4 → 報表 → 流量開發 → 篩選「工作階段來源／媒介」＝ `line / richmenu`，「工作階段手動廣告內容」可分出 `health`（衛教專區）與 `brand_band`（中間品牌帶）。
