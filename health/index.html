@@ -1610,7 +1610,8 @@ body{padding-bottom:76px}
  function match(tokens){
   return cards.filter(function(a){var h=hay(a);return tokens.every(function(t){return h.indexOf(t)>-1;});});
  }
- function show(el,on){if(el)el.style.display=on?'':'none';}
+ function show(el,on){if(!el)return;if(el._hsD===undefined)el._hsD=el.style.display;el.style.display=on?el._hsD:'none';}
+ var grids=cols.map(function(col){return [].slice.call(col.querySelectorAll('div[style*="display:grid"]'));});
  function run(){
   var raw=input.value.trim();
   clearBtn.style.display=raw?'':'none';
@@ -1626,7 +1627,7 @@ body{padding-bottom:76px}
   cards.forEach(function(a){show(a,set.has(a));});
   cols.forEach(function(col,ci){
    var n=0;
-   [].slice.call(col.querySelectorAll('div[style*="display:grid"]')).forEach(function(g){
+   grids[ci].forEach(function(g){
     var v=[].slice.call(g.querySelectorAll('a.flex.flex-col')).filter(function(a){return set.has(a);}).length;
     n+=v;show(g,v>0);
     var h=g.previousElementSibling;
