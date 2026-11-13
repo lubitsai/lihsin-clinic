@@ -70,6 +70,6 @@ LINE 後台才是上線位置；這裡是留底與比對用，換圖時同步更
 
 ## 2026-11-13 圖文選單 v3（院長「全部依建議修改」，待院長 Colab 發布）
 
-- `rich-menu-9area-v3.jpg`：由原始 `rich-menu-8grid.jpg` 一次重製（`build_rich_menu_v3.py`，jf open 粉圓字型、字級對齊原圖 76px 字高）：下排②③改「過敏氣喘」「科學減重」、④「衛教專區」（取代 11-11 的 `rich-menu-9area-health.jpg`，那版字小一號）、中間品牌帶加膠囊標籤「週六、週日與平日夜間都有門診」（原擬「週六、週日都有門診｜平日夜診到 21:30」在手機上約 5pt 太小，改短句放大到約 8pt）。
+- `rich-menu-9area-v3.jpg`：由原始 `rich-menu-8grid.jpg` 一次重製（`build_rich_menu_v3.py`，jf open 粉圓字型、字級對齊原圖 76px 字高）：下排②③改「過敏氣喘」「科學減重」、④「衛教專區」（取代 11-11 的 `rich-menu-9area-health.jpg`，那版字小一號）、中間品牌帶加膠囊標籤「週六、週日與平日夜間都有門診」（原擬「週六、週日都有門診｜平日夜診到 21:30」在手機上約 5pt 太小，改短句放大到約 8pt；院長 2026-11-13 確認此措辭可用）。
 - Colab 腳本：兩個官網連結加 UTM（`utm_source=line&utm_medium=richmenu&utm_campaign=line_oa&utm_content=health｜brand_band`）。API 建立的選單在 OA 後台沒有點擊統計，改由 GA4 看。線上掛號（BookNow LIFF）與看診進度（MainPi）是外部網址，不加。
 - ⏳ 流感季結束（2027 年春）後，左下「流感疫苗資訊」換成全年適用的「疫苗接種」或「新生兒照護」（見 `00` 待辦）。
