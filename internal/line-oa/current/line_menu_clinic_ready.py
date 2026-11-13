@@ -25,7 +25,7 @@ def main():
     try:
         bot = call('GET', base + '/info')
         print('連線帳號：', bot.get('displayName'), bot.get('basicId'))
-        print('請上傳 rich-menu-9area-v3.jpg（2500 × 1686、1 MB 以下；下排為「過敏氣喘」「科學減重」「衛教專區」，中間有「週六、週日與平日夜間都有門診」）。')
+        print('請上傳 rich-menu-9area-v4.jpg（2500 × 1686、1 MB 以下；右下為「粉絲專頁」，中間品牌帶右上有「衛教專區」按鈕）。')
         uploaded = files.upload()
         if len(uploaded) != 1:
             raise ValueError('請只上傳一張圖片')
@@ -39,16 +39,16 @@ def main():
         display(im.resize((750, 506)))
 
         labels = ['線上掛號', '看診進度', '醫師介紹', '診所資訊',
-                  '流感疫苗資訊', '過敏氣喘', '科學減重', '衛教專區']
+                  '流感疫苗資訊', '過敏氣喘', '科學減重', '粉絲專頁']
         values = [
             'https://liff.line.me/2005432137-reYdg0y3',
             'https://www.mainpi.com/query?i=2935',
             '醫師介紹', '診所資訊', '流感疫苗資訊',
             '過敏氣喘諮詢', '減重營養諮詢',
-            'https://lhpedclinic.com.tw/health/?utm_source=line&utm_medium=richmenu&utm_campaign=line_oa&utm_content=health'   # 2026-11-13 加 UTM（API 建立的選單在 OA 後台看不到點擊數，改由 GA4 看）； 2026-11-11 院長裁示：粉絲專頁改衛教專區（粉專移到「診所資訊」卡片按鈕）
+            'https://www.facebook.com/lhpedclinic/'   # 2026-11-13 院長：最新資訊常發在 Facebook，右下格改回粉絲專頁；衛教專區移到中間品牌帶右半
         ]
         areas = []
-        print('已填入原有八格設定，並加上中間品牌帶 → 官網首頁。')
+        print('已填入八格設定，並把中間品牌帶分成左（官網首頁）、右（衛教專區）兩區，共 10 區。')
         print('「過敏門診」傳送「過敏氣喘諮詢」；「減重門診」傳送「減重營養諮詢」，沿用後台自動回應。')
         for i, (label, value) in enumerate(zip(labels, values)):
             action = ({'type': 'uri', 'label': label, 'uri': value}
@@ -57,13 +57,16 @@ def main():
             areas.append({'bounds': {'x': (i % 4)*625,
                 'y': 0 if i < 4 else 1140, 'width': 625,
                 'height': 610 if i < 4 else 546}, 'action': action})
-        # 2026-11-07 院長核可：中間品牌帶（y 610–1140）原本沒有動作，改為開啟官網首頁（首頁有最新門診異動公告）
-        labels.append('官網首頁（中間品牌帶）')
-        areas.append({'bounds': {'x': 0, 'y': 610, 'width': 2500, 'height': 530},
+        # 中間品牌帶（y 610–1140）拆兩區（2026-11-13 v4）：左半（小鹿＋「立欣診所」）→ 官網首頁；右半（全家福＋「衛教專區 ›」按鈕）→ 衛教專區
+        labels.append('官網首頁（中間品牌帶左半）')
+        areas.append({'bounds': {'x': 0, 'y': 610, 'width': 1480, 'height': 530},
                       'action': {'type': 'uri', 'label': '官網首頁', 'uri': 'https://lhpedclinic.com.tw/?utm_source=line&utm_medium=richmenu&utm_campaign=line_oa&utm_content=brand_band'}})
+        labels.append('衛教專區（中間品牌帶右半）')
+        areas.append({'bounds': {'x': 1480, 'y': 610, 'width': 1020, 'height': 530},
+                      'action': {'type': 'uri', 'label': '衛教專區', 'uri': 'https://lhpedclinic.com.tw/health/?utm_source=line&utm_medium=richmenu&utm_campaign=line_oa&utm_content=health'}})
 
         menu = {'size': {'width': 2500, 'height': 1686}, 'selected': True,
-                'name': '立欣診所九區選單-' + datetime.now().strftime('%Y%m%d-%H%M%S'),
+                'name': '立欣診所選單v4-' + datetime.now().strftime('%Y%m%d-%H%M%S'),
                 'chatBarText': '診所服務選單', 'areas': areas}
         call('POST', base + '/richmenu/validate', json=menu)
         old = session.get(base + '/user/all/richmenu', timeout=60)
@@ -83,7 +86,7 @@ def main():
             detail = old.text.replace(token, '[已隱藏]')
             raise RuntimeError(f'無法確認舊選單，HTTP {old.status_code}：{detail}，尚未發布。')
 
-        print('\n請核對帳號與九區設定：', bot.get('displayName'), bot.get('basicId'))
+        print('\n請核對帳號與十區設定：', bot.get('displayName'), bot.get('basicId'))
         for label, area in zip(labels, areas):
             a = area['action']
             print(label, '→', a.get('uri', '傳送文字：' + a.get('text', '')))
@@ -103,7 +106,7 @@ def main():
         current = call('GET', base + '/user/all/richmenu')['richMenuId']
         if current != new_id:
             raise RuntimeError('發布後查核不一致，請用手機確認。')
-        print('發布成功！請重新開啟手機 LINE 聊天室並測試九區（含中間品牌帶）。')
+        print('發布成功！請重新開啟手機 LINE 聊天室並測試十區（中間品牌帶左半、右半各點一次）。')
         print('舊選單未刪除；個別用戶綁定的選單可能仍會優先顯示。')
         print('請保留下載的 line_menu_backup.json，內含新舊選單 ID，不含 Token。')
     finally:
