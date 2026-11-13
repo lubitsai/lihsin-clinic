@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-11-11</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -109,7 +109,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-lee.html</loc>
-    <lastmod>2026-11-02</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -219,6 +219,12 @@
     <loc>https://lhpedclinic.com.tw/health/newborn-feeding.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/newborn-feeding-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/baby-solid-foods.html</loc>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -962,7 +968,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -465,6 +465,7 @@ jobs:
           check /health/umbilical-granuloma.html 200
           check /health/infant-sleep-regression.html 200
           check /health/parent-child-reading.html 200
+          check /health/baby-solid-foods.html 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
@@ -1357,6 +1358,9 @@ jobs:
           # 2026-11-10：破圈文「兒童燙傷」新頁的快速重點段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           cb1=$(curl -s --max-time 20 "$BASE/health/child-burns.html" | grep -c '這比找藥膏重要' || true)
           if [ "$cb1" -ge 1 ]; then echo "OK    燙傷破圈文『快速重點』段已上線"; else echo "FAIL  燙傷頁未見『這比找藥膏重要』——11-10 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-14：破圈文「寶寶副食品」新頁的含鐵食物段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          sf1=$(curl -s --max-time 20 "$BASE/health/baby-solid-foods.html" | grep -c '肉泥不必等到很後面才給' || true)
+          if [ "$sf1" -ge 1 ]; then echo "OK    副食品破圈文『含鐵食物』段已上線"; else echo "FAIL  副食品頁未見『肉泥不必等到很後面才給』——11-14 新頁內文疑未上線或已回退"; fail=1; fi
           # 2026-11-03：破圈文「挑食」新頁的新食物段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           pe1=$(curl -s --max-time 20 "$BASE/health/picky-eating.html" | grep -c '願意碰一下、聞一下都算進步' || true)
           if [ "$pe1" -ge 1 ]; then echo "OK    挑食破圈文『新食物一小口』段已上線"; else echo "FAIL  挑食頁未見『願意碰一下、聞一下都算進步』——11-03 新頁內文疑未上線或已回退"; fail=1; fi
