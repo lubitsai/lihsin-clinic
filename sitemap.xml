@@ -224,6 +224,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/baby-solid-foods.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/baby-solid-foods-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
