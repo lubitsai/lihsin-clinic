@@ -1,0 +1,150 @@
+<!-- 選用：BookNow「關於我們」編輯器若能切到 HTML／原始碼模式，貼在最後。貼後檢視原始碼搜尋 ld+json，被剝除就刪掉這段，不影響其他內容。 -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "WebPage",
+   "@id": "https://lhpedclinic.booknow.com.tw/#webpage",
+   "name": "立欣診所網路預約｜台南市北區小兒科・家庭醫學",
+   "url": "https://lhpedclinic.booknow.com.tw/",
+   "inLanguage": "zh-TW",
+   "dateModified": "2026-11-13",
+   "description": "立欣診所（台南市北區育德路467號，健保特約小兒科・家庭醫學）的網路時段預約頁。每30分鐘一個時段、每個時段一組名額；網路預約是先保留名額，到櫃檯報到後才算正式掛號。本院為一般門診、非急診。",
+   "about": {
+    "@id": "https://lhpedclinic.com.tw/#organization"
+   },
+   "isPartOf": {
+    "@id": "https://lhpedclinic.com.tw/#website"
+   },
+   "potentialAction": {
+    "@type": "ReserveAction",
+    "name": "網路預約",
+    "target": "https://lhpedclinic.booknow.com.tw/"
+   }
+  },
+  {
+   "@type": [
+    "MedicalClinic",
+    "MedicalBusiness",
+    "LocalBusiness"
+   ],
+   "@id": "https://lhpedclinic.com.tw/#organization",
+   "name": "立欣診所",
+   "alternateName": [
+    "立欣診所 LiHsin Clinic",
+    "立欣小兒科",
+    "立欣兒科",
+    "立欣診所小兒科",
+    "立欣家庭醫學",
+    "LiHsin Clinic",
+    "LiHsin Pediatric Clinic",
+    "台南北區立欣診所",
+    "台南育德路立欣診所"
+   ],
+   "url": "https://lhpedclinic.com.tw/",
+   "telephone": "+886-6-2516086",
+   "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "育德路467號",
+    "addressLocality": "北區",
+    "addressRegion": "台南市",
+    "postalCode": "70457",
+    "addressCountry": "TW"
+   },
+   "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 23.014676834296754,
+    "longitude": 120.20645980056585
+   },
+   "openingHoursSpecification": [
+    {
+     "@type": "OpeningHoursSpecification",
+     "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+     ],
+     "opens": "08:00",
+     "closes": "12:00",
+     "description": "平日上午診"
+    },
+    {
+     "@type": "OpeningHoursSpecification",
+     "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+     ],
+     "opens": "14:30",
+     "closes": "18:00",
+     "description": "平日下午診"
+    },
+    {
+     "@type": "OpeningHoursSpecification",
+     "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+     ],
+     "opens": "18:30",
+     "closes": "21:30",
+     "description": "平日夜間門診"
+    },
+    {
+     "@type": "OpeningHoursSpecification",
+     "dayOfWeek": [
+      "Saturday"
+     ],
+     "opens": "08:00",
+     "closes": "11:30",
+     "description": "週六上午診"
+    },
+    {
+     "@type": "OpeningHoursSpecification",
+     "dayOfWeek": [
+      "Saturday"
+     ],
+     "opens": "14:30",
+     "closes": "18:00",
+     "description": "週六下午診"
+    },
+    {
+     "@type": "OpeningHoursSpecification",
+     "dayOfWeek": [
+      "Sunday"
+     ],
+     "opens": "08:00",
+     "closes": "11:30",
+     "description": "週日上午診"
+    },
+    {
+     "@type": "OpeningHoursSpecification",
+     "dayOfWeek": [
+      "Sunday"
+     ],
+     "opens": "18:30",
+     "closes": "21:00",
+     "description": "週日夜間門診"
+    }
+   ],
+   "sameAs": [
+    "https://www.facebook.com/lhpedclinic",
+    "https://line.me/R/ti/p/@lhpedclinic",
+    "https://www.instagram.com/lhpedclinic/",
+    "https://maps.app.goo.gl/i2yaH7yPD2jLymzP8",
+    "https://lhpedclinic.booknow.com.tw/",
+    "https://www.mainpi.com/query?i=2935",
+    "https://info.nhi.gov.tw/INAE1000/INAE1000S03?hosP_ID=3505350759",
+    "https://page.line.me/179tddtf"
+   ]
+  }
+ ]
+}
+</script>

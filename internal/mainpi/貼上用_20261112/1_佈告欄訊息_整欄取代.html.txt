@@ -611,7 +611,7 @@
     "@graph": [
       {
         "@type": "WebPage",
-        "@id": "https://www.mainpi.com/query?i=2935#webpage",
+        "@id": "https://www.mainpi.com/query?i=2935#webpage", "dateModified": "2026-11-13",
         "name": "立欣診所即時看診進度查詢｜台南市北區小兒科・家庭醫學",
         "description": "查詢立欣診所（台南市北區育德路467號）即時看診進度與目前叫號；預約號為偶數、現場號為奇數交錯看診，跳號屬正常。現場掛號自早診08:00、午診14:30、晚診18:00開始受理。立欣診所提供假日兒科（週六週日皆有門診）——平日（週一至週五）夜診18:30–21:30、週日夜間18:30–21:00（比平日早半小時結束）、週六無夜診——以及兒童過敏氣喘、新生兒照護、幼兒專責醫師與疫苗接種。本院為門診、非急診。",
         "url": "https://www.mainpi.com/query?i=2935",
@@ -662,7 +662,8 @@
           "https://maps.app.goo.gl/i2yaH7yPD2jLymzP8",
           "https://lhpedclinic.booknow.com.tw/",
           "https://www.mainpi.com/query?i=2935",
-          "https://info.nhi.gov.tw/INAE1000/INAE1000S03?hosP_ID=3505350759"
+          "https://page.line.me/179tddtf",
+      "https://info.nhi.gov.tw/INAE1000/INAE1000S03?hosP_ID=3505350759"
         ],
         "openingHoursSpecification": [
           {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "12:00"},
