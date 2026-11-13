@@ -1631,7 +1631,11 @@ body{padding-bottom:76px}
     var v=[].slice.call(g.querySelectorAll('a.flex.flex-col')).filter(function(a){return set.has(a);}).length;
     n+=v;show(g,v>0);
     var h=g.previousElementSibling;
-    if(h&&h.tagName==='H5')show(h,v>0);
+    if(h&&h.tagName==='H5'){
+     show(h,v>0);
+     var sp=h.querySelector('span');
+     if(sp){if(sp._hsT===undefined)sp._hsT=sp.textContent;sp.textContent=searching?sp._hsT.replace(/\d+/,v):sp._hsT;}
+    }
    });
    show(col,n>0);
    [].slice.call(col.querySelectorAll(':scope > div:first-child > p, :scope > nav')).forEach(function(el){show(el,!searching);});
