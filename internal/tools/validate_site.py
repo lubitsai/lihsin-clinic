@@ -77,6 +77,8 @@ validate_site.py — 立欣診所全站驗證器 v1.3（2026-10-14g；v1.0＝202
               DietarySupplement…）：GSC 會報產品摘要無效項目      ｜08-31c 規則，10-16 回退攔截
   W-FAQDUP    FAQPage 的 Question.name 全站不得逐字重複（一題只屬
               一頁；已裁示維持者列 FAQ_DUP_ALLOWLIST）             ｜10-14g 稽核查獲 9 組
+  W-HEALTHSEARCH health/search-index.json 須與各篇 keywords 同步
+              （新增文章或改 keywords 後重跑 build_health_search.py）｜11-13 衛教總覽搜尋
 
 已知設計取捨（弱模型請勿「修正」這些行為）
 ------------------------------------------
@@ -881,6 +883,16 @@ def check_site_level(root: Path, html_files: dict, rep: Report, partial: bool):
     # favicon（--partial 時跳過：測試樹可能不含二進位資產）
     if not partial and not (root / "favicon.ico").exists():
         rep.warn("favicon.ico", "W-FAVICON", "根目錄缺 favicon.ico（07-06 批④資產）")
+
+    # 衛教總覽頁搜尋索引（2026-11-13 起）：過期＝WARN 不是 ERROR——索引過期不會給錯資訊，
+    # 只是新文章暫時只能用卡片上的標題／摘要搜到（前端會退回比對卡片文字）。
+    hs_json = root / "health" / "search-index.json"
+    if hs_json.exists() and not partial:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import build_health_search as bhs
+        if hs_json.read_text(encoding="utf-8") != bhs.build(root):
+            rep.warn("health/search-index.json", "W-HEALTHSEARCH",
+                     "與衛教文章 keywords／總覽卡片不同步 → python3 internal/tools/build_health_search.py")
 
     # 線上小幫手資料檔（2026-09-24 起取代 Chatbase）：與知識庫正本＋首頁門診時間表不同步＝ERROR。
     # 為何是 ERROR：它會直接對家長說「9/26 全日休診」或「今天有看診」，改了 EXCEPTIONS 或公告卻沒重產，

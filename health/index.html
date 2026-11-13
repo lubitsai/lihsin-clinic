@@ -713,6 +713,9 @@
 body{padding-bottom:76px}
 #fab-group{bottom:88px!important}
 }
+ #hs-input::placeholder { color:#9ca3af; font-size:14px; }
+ #hs-input:focus { border-color:#7C9A6E; box-shadow:0 0 0 3px rgba(124,154,110,.2); }
+ #hs-input::-webkit-search-cancel-button { display:none; }
 </style>
 </head>
 <body class="bg-[#f8faf7]">
@@ -782,6 +785,16 @@ body{padding-bottom:76px}
  <span class="inline-block bg-[#f8faf7] text-[#7C9A6E] border border-[#7C9A6E] px-4 py-1 rounded-full text-sm font-chinese mb-3">衛教知識</span>
  <h1 class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-4 font-chinese">兒科衛教文章總覽</h1>
  <p class="text-base text-gray-600 font-chinese max-w-2xl mx-auto leading-relaxed">由蔡宗儒院長、李佳玲醫師與杜昀憬營養師撰寫的衛教文章，依主題分為五個專欄，共 101 篇。點選任一篇可閱讀完整內容。</p>
+ </div>
+
+ <div id="health-search" role="search" style="max-width:40rem;margin:0 auto 2rem;">
+  <label for="hs-input" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;">搜尋衛教文章</label>
+  <div style="position:relative;">
+   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C9A6E" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+   <input id="hs-input" type="search" enterkeyhint="search" autocomplete="off" placeholder="輸入症狀或關鍵字，例如：發燒、拉肚子、疫苗" style="display:block;width:100%;box-sizing:border-box;padding:.8rem 1rem .8rem 2.75rem;border:2px solid #A8C69F;border-radius:9999px;background:#fff;color:#374151;font-size:16px;outline:none;-webkit-appearance:none;appearance:none;">
+   <button type="button" id="hs-clear" aria-label="清除搜尋" style="display:none;position:absolute;right:.4rem;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;color:#6b7280;font-size:1.1rem;cursor:pointer;">✕</button>
+  </div>
+  <p id="hs-status" role="status" aria-live="polite" style="text-align:center;margin:.6rem 0 0;font-size:.9rem;color:#5f7a52;min-height:1.35em;"></p>
  </div>
 
  <nav aria-label="衛教專欄快速選單" style="position:sticky;top:72px;z-index:30;background:#f8faf7;padding:.6rem 0;margin:-1rem 0 2rem;">
@@ -1562,6 +1575,84 @@ body{padding-bottom:76px}
  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
  })();
+</script>
+
+<script>
+/* 衛教總覽搜尋（2026-11-13）：比對卡片文字＋各篇 keywords（/health/search-index.json，
+   第一次輸入才載入；索引抓不到時只比對卡片文字）。索引由 internal/tools/build_health_search.py 產生。 */
+(function(){
+ var input=document.getElementById('hs-input');
+ if(!input)return;
+ var clearBtn=document.getElementById('hs-clear');
+ var status=document.getElementById('hs-status');
+ var cards=[].slice.call(document.querySelectorAll('main a.flex.flex-col[href^="/health/"]'));
+ var cols=[].slice.call(document.querySelectorAll('main div[id^="col-"]'));
+ var chips=[].slice.call(document.querySelectorAll('nav[aria-label="衛教專欄快速選單"] a[href^="#col-"]'));
+ var chipText=chips.map(function(c){return c.textContent;});
+ var kw={},loading=null,timer=null;
+ function norm(t){
+  t=(t||'').normalize?t.normalize('NFKC'):(t||'');
+  return t.toLowerCase().replace(/臺/g,'台').replace(/\s+/g,'');
+ }
+ var FILLER=/怎麼辦|怎麼處理|怎麼辦呢|要看醫生嗎?|看哪一?科|要不要|嗎|呢|小朋友|小孩|孩子|兒童|幼兒|我家|一直|[?？!！。．]/g;
+ function slug(a){var m=a.getAttribute('href').match(/\/health\/([^\/.]+)\.html/);return m?m[1]:'';}
+ function hay(a){
+  if(!a._hsBase)a._hsBase=norm(a.textContent);
+  return a._hsBase+' '+(kw[slug(a)]||'');
+ }
+ function loadIndex(){
+  if(loading)return loading;
+  loading=fetch('/health/search-index.json').then(function(r){return r.ok?r.json():{};})
+   .then(function(d){Object.keys(d).forEach(function(k){kw[k]=norm(d[k]);});})
+   .catch(function(){});
+  return loading;
+ }
+ function match(tokens){
+  return cards.filter(function(a){var h=hay(a);return tokens.every(function(t){return h.indexOf(t)>-1;});});
+ }
+ function show(el,on){if(el)el.style.display=on?'':'none';}
+ function run(){
+  var raw=input.value.trim();
+  clearBtn.style.display=raw?'':'none';
+  input.style.paddingRight=raw?'3rem':'1rem';
+  var searching=!!raw;
+  var tokens=raw.split(/[\s,，、;；]+/).map(norm).filter(Boolean);
+  var hits=searching?match(tokens):cards;
+  if(searching&&!hits.length){
+   var t2=tokens.map(function(t){return t.replace(FILLER,'');}).filter(Boolean);
+   if(t2.length&&t2.join()!==tokens.join())hits=match(t2);
+  }
+  var set=new Set(hits);
+  cards.forEach(function(a){show(a,set.has(a));});
+  cols.forEach(function(col,ci){
+   var n=0;
+   [].slice.call(col.querySelectorAll('div[style*="display:grid"]')).forEach(function(g){
+    var v=[].slice.call(g.querySelectorAll('a.flex.flex-col')).filter(function(a){return set.has(a);}).length;
+    n+=v;show(g,v>0);
+    var h=g.previousElementSibling;
+    if(h&&h.tagName==='H5')show(h,v>0);
+   });
+   show(col,n>0);
+   [].slice.call(col.querySelectorAll(':scope > div:first-child > p, :scope > nav')).forEach(function(el){show(el,!searching);});
+   var chip=chips.filter(function(c){return c.getAttribute('href')==='#'+col.id;})[0];
+   if(chip){
+    var i=chips.indexOf(chip);
+    chip.textContent=searching?chipText[i].replace(/（\d+）/,'（'+n+'）'):chipText[i];
+    show(chip,n>0);
+   }
+  });
+  status.textContent=!searching?'':hits.length?'找到 '+hits.length+' 篇相關文章':'找不到相關文章，可以換個說法再試，或透過 LINE 詢問我們';
+ }
+ function schedule(){clearTimeout(timer);timer=setTimeout(run,150);}
+ input.addEventListener('focus',loadIndex,{once:true});
+ input.addEventListener('input',function(){loadIndex().then(run);schedule();});
+ input.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&input.value){input.value='';run();e.stopPropagation();}
+  if(e.key==='Enter'){e.preventDefault();input.blur();}
+ });
+ clearBtn.addEventListener('click',function(){input.value='';run();input.focus();});
+ if(input.value)loadIndex().then(run);
+})();
 </script>
 
 <div id="mobile-cta-bar" aria-label="快速聯絡按鈕">
