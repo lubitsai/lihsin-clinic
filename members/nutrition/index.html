@@ -10,74 +10,134 @@
 <link rel="icon" href="/favicon.ico">
 <!--
   學員專區（院長 2026-11-09 裁示）：只給參加八堂課付費減重課程的學員。
-  不進 sitemap／llms、不給搜尋引擎收錄，官網任何公開頁面都不連到這裡。
+  不進 sitemap／llms、不給搜尋引擎收錄；公開頁面只有首頁頁尾一個「減重學員專區」連結。
   影片 ID 與教材金鑰都在下方 vault 的密文裡；改密碼、填影片一律用
   internal/tools/build_members.py，不要手改 vault。
-  樣式自包含（同 offline.html），不依賴 tailwind.css。
+  版型與 /team/ 一致（頂部導覽、麵包屑、卡片），2026-11-14 院長要求「與網站風格一致」。
+  不掛 pwa-register／cta-track（validate_site 豁免 pwa、twcard）。
 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&amp;family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="/tailwind.css">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-    background: #f8faf7; color: #333; line-height: 1.7; min-height: 100vh;
-  }
-  header { background: #fff; border-bottom: 1px solid #eef2ec; padding: .9rem 1rem; }
-  header a { color: #5f7a52; font-weight: 700; text-decoration: none; font-size: 1.05rem; }
-  main { max-width: 56rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
-  h1 { color: #5f7a52; font-size: 1.5rem; margin-bottom: .5rem; }
-  .lead { color: #555; margin-bottom: 1.25rem; }
-  .card { background: #fff; border: 1px solid #eef2ec; border-radius: 1rem; box-shadow: 0 4px 16px rgba(124,154,110,.08); padding: 1.25rem; }
-  #gate { max-width: 26rem; }
-  label { display: block; font-weight: 700; margin-bottom: .4rem; }
-  input[type=password] { width: 100%; font-size: 1rem; padding: .7rem .8rem; border: 1px solid #cfdcc8; border-radius: .6rem; }
-  input[type=password]:focus { outline: 2px solid #A8C69F; border-color: #7C9A6E; }
-  .btn { display: inline-block; background: #7C9A6E; color: #fff; border: 0; border-radius: 999px; padding: .6rem 1.4rem; font-size: 1rem; font-weight: 700; cursor: pointer; text-decoration: none; font-family: inherit; }
-  .btn:disabled { opacity: .6; cursor: wait; }
-  .btn-line { background: #fff; color: #5f7a52; border: 1px solid #A8C69F; font-size: .92rem; padding: .45rem 1rem; }
-  .row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-top: .9rem; }
-  .msg { margin-top: .8rem; font-size: .95rem; min-height: 1.5em; }
-  .err { color: #b04a4a; }
-  .note { color: #666; font-size: .9rem; margin-top: 1rem; }
-  #lessons { display: grid; gap: 1.25rem; }
-  .lesson h2 { font-size: 1.15rem; color: #333; margin-bottom: .75rem; }
-  .video { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #eef2ec; border-radius: .75rem; overflow: hidden; }
-  .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-  .video .pending { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #6b7d63; font-weight: 700; }
-  .lesson-body { display: grid; gap: 1rem; margin-top: 1rem; grid-template-columns: 1fr; }
-  .lesson-body img { width: 100%; max-width: 14rem; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: .75rem; border: 1px solid #eef2ec; display: block; }
-  .links a { color: #5f7a52; }
-  .links p { margin-bottom: .35rem; }
-  .topbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
-  footer { text-align: center; color: #999; font-size: .8rem; padding: 1.5rem 1rem; }
-  footer a { color: inherit; }
-  @media (min-width: 640px) { .lesson-body { grid-template-columns: 14rem 1fr; } }
-  [hidden] { display: none !important; }
+ body { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
+ .font-chinese { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
+ .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+ .mobile-menu.open { transform: translateX(0); }
+ .mobile-menu a.text-gray-700{min-height:44px;display:flex;align-items:center}
+ /* 學員專區元件：Tailwind 沒有的部分 */
+ #pw:focus { outline: none; border-color: #7C9A6E; box-shadow: 0 0 0 3px rgba(168,198,159,.45); }
+ #lessons .video { position: relative; aspect-ratio: 16 / 9; }
+ #lessons .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+ #lessons img { aspect-ratio: 1 / 1; object-fit: cover; height: auto; }
+ #go:disabled, #lessons button:disabled { opacity: .6; cursor: wait; }
+ [hidden] { display: none !important; }
 </style>
 </head>
-<body>
-<header><a href="/">立欣診所</a></header>
-<main>
-  <h1>減重營養課學員專區</h1>
-  <p class="lead">參加立欣診所八堂減重營養課的學員，可以在這裡觀看課程影片、開啟教材。</p>
+<body class="bg-[#f8faf7]">
 
-  <form id="gate" class="card" autocomplete="off">
-    <label for="pw">課程密碼</label>
-    <input id="pw" type="password" required autocomplete="current-password">
-    <div class="row"><button class="btn" id="go" type="submit">進入</button></div>
-    <p class="msg" id="msg" role="status" aria-live="polite"></p>
-    <p class="note">忘記密碼請洽診所櫃檯，或在立欣診所營養專業規劃LINE詢問。</p>
-  </form>
+<!-- 頂部導覽列（與首頁一致，10項）-->
+<nav role="navigation" aria-label="主選單" class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+ <div class="container mx-auto px-4 py-4">
+ <div class="flex items-center justify-between">
+ <a href="/" class="flex items-center gap-3">
+ <img src="/images/logo.png" alt="立欣診所 LOGO" style="width:40px;height:40px;object-fit:contain" onerror="this.style.display='none'">
+ <div>
+ <div class="text-xl md:text-2xl font-bold text-[#7C9A6E] font-chinese">立欣診所</div>
+ <p class="text-xs md:text-sm text-gray-600">LiHsin Clinic</p>
+ </div>
+ </a>
+ <div class="hidden md:flex items-center gap-5">
+ <a href="/#schedule" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">門診時間</a>
+ <a href="/#services" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">服務項目</a>
+ <a href="/#team" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">醫療團隊</a>
+ <a href="/#director-message" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">認識立欣</a>
+ <a href="/#health-tips" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">衛教知識</a>
+ <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">看診進度</a>
+ <a href="/#faq" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">常見問題</a>
+ <a href="/#contact" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">聯絡我們</a>
+ <a href="/growth.html" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium">📈生長評估</a>
+ <a href="https://www.facebook.com/lhpedclinic" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium flex items-center gap-1" aria-label="官方臉書">
+ <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+ </a>
+ <a href="tel:062516086" class="px-5 py-2.5 rounded-full font-chinese font-medium text-white" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">📞 06-2516086</a>
+ </div>
+ <button id="mobile-menu-btn" class="md:hidden text-3xl text-[#7C9A6E] min-w-[44px] min-h-[44px] flex items-center justify-center" aria-label="開啟選單">☰</button>
+ </div>
+ </div>
+</nav>
 
-  <section id="zone" hidden>
-    <div class="topbar">
-      <p class="lead" style="margin:0">影片與教材僅供學員個人學習使用，請勿轉傳或公開分享。</p>
-      <button class="btn btn-line" id="logout" type="button">登出</button>
-    </div>
-    <div id="lessons"></div>
-    <p class="note">課程內容是一般營養衛教，個人的熱量、份量與用藥，請依醫師和營養師的評估調整。</p>
-  </section>
+<!-- Mobile Menu（手機側滑選單）-->
+<div id="mobile-menu-overlay" class="fixed inset-0 bg-black/40 z-40 hidden"></div>
+<div id="mobile-menu" class="mobile-menu fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-50 p-6 overflow-y-auto">
+ <button id="mobile-menu-close" class="text-3xl text-gray-600 mb-8" style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;" aria-label="關閉選單">✕</button>
+ <div class="flex flex-col gap-6">
+ <a href="/#schedule" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">門診時間</a>
+ <a href="/#services" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">服務項目</a>
+ <a href="/#team" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">醫療團隊</a>
+ <a href="/#director-message" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">認識立欣</a>
+ <a href="/#health-tips" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">衛教知識</a>
+ <a href="https://www.mainpi.com/query?i=2935" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">看診進度</a>
+ <a href="/#faq" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">常見問題</a>
+ <a href="/#contact" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">聯絡我們</a>
+ <a href="/growth.html" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">📈生長評估</a>
+ <a href="https://www.facebook.com/lhpedclinic" target="_blank" rel="noopener" class="text-gray-700 hover:text-[#7C9A6E] transition font-chinese font-medium text-lg">官方臉書</a>
+ <a href="tel:062516086" class="px-6 py-3 rounded-full font-chinese font-medium text-center text-white" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">📞 06-2516086</a>
+ </div>
+</div>
+<div style="height:76px"></div>
+
+<div style="height:76px"></div>
+
+<nav aria-label="breadcrumb" class="container mx-auto px-4 pt-5">
+ <ol class="flex flex-wrap items-center gap-1 text-xs text-gray-500 font-chinese">
+ <li><a href="/" class="hover:text-[#7C9A6E]">首頁</a></li>
+ <li class="text-gray-300">/</li>
+ <li class="text-gray-700">減重營養課學員專區</li>
+ </ol>
+</nav>
+
+<main class="container mx-auto px-4 py-8">
+ <div class="max-w-5xl mx-auto">
+ <div class="text-center mb-10">
+ <span class="inline-block bg-[#f8faf7] text-[#7C9A6E] border border-[#7C9A6E] px-4 py-1 rounded-full text-sm font-chinese mb-3">減重營養課</span>
+ <h1 class="text-3xl sm:text-4xl font-bold text-[#7C9A6E] mb-4 font-chinese">減重營養課學員專區</h1>
+ <p class="text-base text-gray-600 font-chinese max-w-2xl mx-auto leading-relaxed">參加立欣診所八堂減重營養課的學員，可以在這裡觀看課程影片、開啟教材。</p>
+ </div>
+
+ <div id="gate" class="grid md:grid-cols-2 gap-8 items-center">
+ <figure>
+ <picture>
+ <source type="image/webp" srcset="/images/weight-management-team-infographic-768.webp 768w, /images/weight-management-team-infographic.webp 1254w" sizes="(max-width: 767px) 82vw, 448px">
+ <img src="/images/weight-management-team-infographic.jpg" width="1254" height="1254" fetchpriority="high" decoding="async" alt="立欣診所科學減重團隊 Q 版插圖：蔡宗儒院長、杜昀憬營養師與小鹿醫師" class="block w-full max-w-md mx-auto rounded-3xl shadow-md">
+ </picture>
+ </figure>
+ <form id="gate-form" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 w-full max-w-md mx-auto" autocomplete="off">
+ <div class="text-4xl mb-3" aria-hidden="true">🔒</div>
+ <label for="pw" class="block text-lg font-bold text-gray-800 font-chinese mb-3">課程密碼</label>
+ <input id="pw" type="password" required autocomplete="current-password" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl">
+ <button id="go" type="submit" class="w-full mt-4 px-6 py-3 rounded-full font-chinese font-bold text-white shadow-md" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">進入學員專區</button>
+ <p id="msg" class="mt-3 text-sm font-chinese leading-relaxed" role="status" aria-live="polite"></p>
+ <p class="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-500 font-chinese leading-relaxed">忘記密碼請洽診所櫃檯，或在立欣診所營養專業規劃LINE詢問。</p>
+ </form>
+ </div>
+
+ <section id="zone" hidden>
+ <div class="flex flex-wrap items-center justify-between gap-3 bg-[#f0f7ed] border border-[#A8C69F] rounded-2xl px-5 py-4 mb-8">
+ <p class="text-sm text-gray-700 font-chinese leading-relaxed">影片與教材僅供學員個人學習使用，請勿轉傳或公開分享。</p>
+ <button id="logout" type="button" class="px-4 py-2 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese font-medium text-sm">登出</button>
+ </div>
+ <div id="lessons" class="grid gap-6"></div>
+ <p class="mt-8 text-sm text-gray-500 font-chinese text-center leading-relaxed">課程內容是一般營養衛教，個人的熱量、份量與用藥，請依醫師和營養師的評估調整。</p>
+ </section>
+ </div>
 </main>
-<footer>© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086</footer>
+
+<footer class="bg-white border-t border-gray-100 py-6 mt-8">
+ <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086｜<a href="/privacy.html" style="color:inherit;text-decoration:underline;">隱私權政策</a></p>
+</footer>
 
 <script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "IWBkSkulKeBo26uRlQfDgg==", "iv": "gHxlazzg9IDtMWf5", "ct": "EqnAvV8bgJYZBKDxLFBbH6z7gnccOVrgCWSNxEVVFiLGptvoIzztmcfG7O4JMRO2yV32bqvG7aKp4J2YmKLKCXIdx6Suv1B0EiDq0VaxGa70PFor0ODRvR95QYTPWBwO2s/tj8FRYsiwLtylK8re/E8Q62irefzbxR4KKWLoXIfmKb5/IvDnHiWgoKyoQXRvMlf+PEeo0hFaN96eOlcXt5NsxLFKkC1bIL4YaIqk4jS2jUoBzVZxIIOxvpZG1f3No96zEHWWDq05Fwn8Z8vnsBr4s78R2ljqJnU="}</script>
 <script>
@@ -128,7 +188,7 @@
       const raw = new Uint8Array(await res.arrayBuffer());
       const pdf = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: raw.slice(0, 12) }, contentKey, raw.slice(12));
       const url = URL.createObjectURL(new Blob([pdf], { type: 'application/pdf' }));
-      const a = el('a', { href: url, target: '_blank', rel: 'noopener', class: 'btn btn-line', download: `第${n}堂教材.pdf` }, `下載第${n}堂教材 PDF`);
+      const a = el('a', { href: url, target: '_blank', rel: 'noopener', class: PDF_BTN, download: `第${n}堂教材.pdf` }, `下載第${n}堂教材 PDF`);
       btn.replaceWith(a);
     } catch (e) {
       btn.disabled = false;
@@ -136,13 +196,16 @@
     }
   }
 
+  const PDF_BTN = 'inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese font-bold text-sm hover:bg-[#f0f7ed] transition';
+
   function render(data) {
     const box = $('lessons');
     box.textContent = '';
     LESSONS.forEach(([title, slug, read], i) => {
       const n = i + 1;
+      const [num, name] = title.split('｜');
       const id = data.v[String(n)];
-      const video = el('div', { class: 'video' });
+      const video = el('div', { class: 'video w-full rounded-xl overflow-hidden bg-[#f0f7ed]' });
       if (id) {
         video.append(el('iframe', {
           src: `https://www.youtube-nocookie.com/embed/${id}?rel=0`,
@@ -151,18 +214,22 @@
           allowfullscreen: '', referrerpolicy: 'strict-origin-when-cross-origin',
         }));
       } else {
-        video.append(el('div', { class: 'pending' }, '影片準備中'));
+        video.append(el('div', { class: 'absolute inset-0 flex items-center justify-center text-[#7C9A6E] font-bold font-chinese' }, '影片準備中'));
       }
-      const pdfBtn = el('button', { class: 'btn btn-line', type: 'button' }, `開啟第${n}堂教材 PDF`);
+      const pdfBtn = el('button', { class: PDF_BTN, type: 'button' }, `📄 開啟第${n}堂教材 PDF`);
       pdfBtn.addEventListener('click', () => openPdf(n, pdfBtn));
-      const card = el('a', { href: `/images/${slug}-infographic.jpg`, target: '_blank', rel: 'noopener' },
-        el('img', { src: `/images/${slug}-infographic-768.webp`, alt: `${title} 課程重點圖卡`, width: '768', height: '768', loading: 'lazy' }));
-      const links = el('div', { class: 'links' },
-        el('p', {}, '課程重點圖卡：點圖片看大圖'),
-        el('p', {}, '延伸閱讀：', el('a', { href: `/health/${slug}.html` }, read)),
-        el('div', { class: 'row' }, pdfBtn));
-      box.append(el('article', { class: 'card lesson' },
-        el('h2', {}, title), video, el('div', { class: 'lesson-body' }, card, links)));
+      const card = el('a', { href: `/images/${slug}-infographic.jpg`, target: '_blank', rel: 'noopener', class: 'block flex-shrink-0' },
+        el('img', { src: `/images/${slug}-infographic-768.webp`, alt: `${title} 課程重點圖卡`, width: '768', height: '768', loading: 'lazy', class: 'block w-24 md:w-32 rounded-xl border border-gray-100 shadow-sm' }));
+      const links = el('div', { class: 'flex-grow text-sm text-gray-600 font-chinese leading-relaxed' },
+        el('p', { class: 'mb-1' }, '課程重點圖卡：點圖片看大圖'),
+        el('p', { class: 'mb-3' }, '延伸閱讀：', el('a', { href: `/health/${slug}.html`, class: 'text-[#7C9A6E] underline hover:no-underline' }, read)),
+        pdfBtn);
+      box.append(el('article', { class: 'bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6' },
+        el('div', { class: 'flex flex-wrap items-center gap-3 mb-4' },
+          el('span', { class: 'inline-block bg-[#f8faf7] text-[#7C9A6E] border border-[#7C9A6E] px-3 py-1 rounded-full text-sm font-chinese' }, num),
+          el('h2', { class: 'text-lg md:text-xl font-bold text-gray-800 font-chinese' }, name)),
+        video,
+        el('div', { class: 'flex items-start gap-4 mt-5' }, card, links)));
     });
   }
 
@@ -175,17 +242,17 @@
     $('zone').hidden = false;
   }
 
-  $('gate').addEventListener('submit', async (ev) => {
+  $('gate-form').addEventListener('submit', async (ev) => {
     ev.preventDefault();
     const go = $('go'), msg = $('msg');
     go.disabled = true;
-    msg.className = 'msg';
+    msg.className = 'mt-3 text-sm font-chinese leading-relaxed text-gray-500';
     msg.textContent = '確認中…';
     try {
       await unlock($('pw').value);
       msg.textContent = '';
     } catch (e) {
-      msg.className = 'msg err';
+      msg.className = 'mt-3 text-sm font-chinese leading-relaxed text-red-700';
       msg.textContent = window.crypto && crypto.subtle
         ? '密碼不正確，請再確認一次。如果還需要觀看，請洽診所櫃檯，或在立欣診所營養專業規劃LINE詢問。'
         : '這個瀏覽器無法開啟專區，請改用新版的 Chrome、Safari 或 Edge。';
@@ -202,6 +269,21 @@
   const saved = store.get();
   if (saved) unlock(saved).catch(() => store.clear());
 })();
+</script>
+<script>
+ (function(){
+ var btn=document.getElementById('mobile-menu-btn');
+ var menu=document.getElementById('mobile-menu');
+ var closeBtn=document.getElementById('mobile-menu-close');
+ var overlay=document.getElementById('mobile-menu-overlay');
+ function open(){menu.classList.add('open');if(overlay)overlay.classList.remove('hidden');document.body.style.overflow='hidden';}
+ function close(){menu.classList.remove('open');if(overlay)overlay.classList.add('hidden');document.body.style.overflow='';}
+ if(btn)btn.addEventListener('click',open);
+ if(closeBtn)closeBtn.addEventListener('click',close);
+ if(overlay)overlay.addEventListener('click',close);
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+ menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
+ })();
 </script>
 </body>
 </html>
