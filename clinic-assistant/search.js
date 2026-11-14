@@ -264,7 +264,12 @@ export function createAssistant(kb) {
     const sameDay = kb.fees?.notes.find((t) => t.startsWith('同一天要看診也要接種公費疫苗'));
     return pub && [pub, sameDay].filter(Boolean).join('\n\n');
   };
-  const selfVaxNote = () => kb.fees?.notes.find((t) => t.startsWith('單純接種自費疫苗'));
+  // 自費疫苗掛號費＋同日看診只收看診掛號費（院長 2026-11-14）
+  const selfVaxNote = () => {
+    const self = kb.fees?.notes.find((t) => t.startsWith('單純接種自費疫苗'));
+    const sameDay = kb.fees?.notes.find((t) => t.startsWith('同一天要看診也要接種自費疫苗'));
+    return self && [self, sameDay].filter(Boolean).join('\n\n');
+  };
   const checkupNote = () => kb.fees?.notes.find((t) => t.startsWith('單純做成人預防保健'));
   const faqBlock = (hits) => ({
     type: 'faq',
