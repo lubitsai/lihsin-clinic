@@ -1,3 +1,8 @@
+2026-11-15 第二版 2.61（配方奶試用罐題＋core.py TOPIC 加「試用奶粉」對照；取代未部署的 2.60）
+- sync_assistants.py：官網 340 項、一致性比對 426 句全部一致；validate_site 通過。
+- --ask「有送試用奶粉嗎」「可以拿試喝的奶粉嗎」「有奶粉試用嗎」：兩邊皆找到配方奶試用罐題；「寶寶換奶粉」仍走便秘／牛奶蛋白過敏題（未受影響）。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-14 第二版 2.60（重新打包；程式與題庫同 2.59；取代未部署的 2.59）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過。
 - sync_assistants.py：官網、一致性比對全部一致；validate_site 通過。
