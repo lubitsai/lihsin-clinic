@@ -258,7 +258,12 @@ export function createAssistant(kb) {
     if (row.seasonal) text += `\n\n以上為 ${kb.reviewed_at} 版資料；年度政策與資格請再確認最新公告。`;
     return text;
   }
-  const publicVaxNote = () => kb.fees?.notes.find((t) => t.startsWith('單純接種公費疫苗'));
+  // 公費疫苗掛號費＋同日看診與接種分別掛號（院長 2026-11-14，只適用公費疫苗）
+  const publicVaxNote = () => {
+    const pub = kb.fees?.notes.find((t) => t.startsWith('單純接種公費疫苗'));
+    const sameDay = kb.fees?.notes.find((t) => t.startsWith('同一天要看診也要接種公費疫苗'));
+    return pub && [pub, sameDay].filter(Boolean).join('\n\n');
+  };
   const selfVaxNote = () => kb.fees?.notes.find((t) => t.startsWith('單純接種自費疫苗'));
   const checkupNote = () => kb.fees?.notes.find((t) => t.startsWith('單純做成人預防保健'));
   const faqBlock = (hits) => ({
