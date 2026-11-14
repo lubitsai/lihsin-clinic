@@ -6,7 +6,7 @@ build_members.py — 減重營養課「學員專區」（/members/nutrition/）�
 院長 2026-11-09 裁示：影片與教材 PDF 只給參加八堂課付費減重課程的學員，
 官網放一個「輸入密碼才看得到」的專區（純前端密碼，院長知悉其限制）。
 
-加密設計（兩層，換密碼不必重新加密 PDF）：
+加密設計（兩層）：
   • 內容金鑰 K（隨機 32 bytes）：AES-256-GCM 加密每份教材 PDF →
       members/nutrition/files/NN.bin（12 bytes nonce ＋ 密文）
   • 密碼 → PBKDF2-SHA256（600,000 次）→ 包裝金鑰：AES-GCM 加密
@@ -14,15 +14,18 @@ build_members.py — 減重營養課「學員專區」（/members/nutrition/）�
       <script id="vault" type="application/json">。
   網頁原始碼裡沒有密碼、沒有 K、沒有影片 ID；K 與影片 ID 只存在 vault 密文裡，
   repo 任何地方都沒有明文。要改內容就得先用舊密碼解開 vault。
+  換密碼時 K 也一起換、教材重新加密（院長 2026-11-14 裁示），舊密碼解得開的舊 K
+  打不開新版教材。只填影片、密碼不變時 K 沿用。
+  ⚠️ 本 repo 公開：舊版 vault 與 .bin 留在 git 歷史，知道舊密碼的人仍能從歷史取回
+  「當時那一版」教材與影片 ID；影片要擋舊學員得換新的 YouTube 連結。
 
 限制（已向院長說明）：學員把密碼或 YouTube 連結轉出去，拿到的人就能看。
-每梯換一次密碼可以擋掉舊學員。
 
 用法：
   # 第一次建立（產生新的 K，加密 8 份 PDF）
   python3 internal/tools/build_members.py --password 新密碼 --pdf-dir <含 01_教材.pdf…08_教材.pdf 的資料夾>
 
-  # 換密碼（K 與影片沿用；PDF 不必重做）
+  # 換密碼（影片沿用；內容金鑰 K 一起換，8 份教材自動用新 K 重新加密，不必給 PDF 原檔）
   python3 internal/tools/build_members.py --old-password 舊密碼 --password 新密碼
 
   # 填影片（YouTube「不公開」影片的網址或 ID；可一次給多個）
@@ -138,16 +141,27 @@ def main():
         payload["v"][n] = youtube_id(url)
         print(f"第{n}堂影片 → {payload['v'][n]}")
 
-    if a.pdf_dir:
+    # 換密碼＝連內容金鑰一起換（院長 2026-11-14 裁示：知道舊密碼的人不能再打開新版教材）
+    rotate = bool(vault) and a.password != a.old_password
+    if a.pdf_dir or rotate:
+        old_k = unb64(payload["k"])
+        if rotate:
+            payload["k"] = b64(os.urandom(32))
         k = unb64(payload["k"])
         FILES.mkdir(parents=True, exist_ok=True)
         for n in range(1, LESSONS + 1):
-            src = a.pdf_dir / f"{n:02d}_教材.pdf"
-            if not src.exists():
-                sys.exit(f"✗ 找不到 {src}")
+            out = FILES / f"{n:02d}.bin"
+            if a.pdf_dir:
+                src = a.pdf_dir / f"{n:02d}_教材.pdf"
+                if not src.exists():
+                    sys.exit(f"✗ 找不到 {src}")
+                pdf = src.read_bytes()
+            else:
+                raw = out.read_bytes()
+                pdf = AESGCM(old_k).decrypt(raw[:12], raw[12:], None)
             nonce = os.urandom(12)
-            (FILES / f"{n:02d}.bin").write_bytes(nonce + AESGCM(k).encrypt(nonce, src.read_bytes(), None))
-            print(f"第{n}堂教材 → members/nutrition/files/{n:02d}.bin")
+            out.write_bytes(nonce + AESGCM(k).encrypt(nonce, pdf, None))
+            print(f"第{n}堂教材 → members/nutrition/files/{n:02d}.bin" + ("（新金鑰）" if rotate else ""))
 
     write_vault(payload, a.password)
     print("✓ vault 已寫入 members/nutrition/index.html")
