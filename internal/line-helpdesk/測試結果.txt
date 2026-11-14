@@ -1,3 +1,8 @@
+2026-11-14 第二版 2.60（重新打包；程式與題庫同 2.59；取代未部署的 2.59）
+- LINE unittest 完整版（requirements.lock.txt）：104 項全過。
+- sync_assistants.py：官網、一致性比對全部一致；validate_site 通過。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-14 第二版 2.59（題庫重產：PR #568 更正自費疫苗同日看診掛號費；程式未改；取代未部署的 2.58）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過。
 - sync_assistants.py：官網 340 項、一致性比對 420 句全部一致；validate_site 通過。
