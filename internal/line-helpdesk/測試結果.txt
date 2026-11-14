@@ -1,3 +1,9 @@
+2026-11-14 第二版 2.56（題庫重產：PR #565 同日看診＋接種公費疫苗需分別掛號；程式未改；取代未部署的 2.55）
+- LINE unittest 完整版（requirements.lock.txt）：104 項全過。
+- sync_assistants.py：官網 340 項、一致性比對 415 句全部一致；validate_site 通過。
+- --ask「公費疫苗跟看病同一天掛號費怎麼算」：兩邊皆回公費疫苗掛號費＋同日分別掛號規則。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-13 第二版 2.55（題庫重產：PR #557／#558 FAQ；程式未改；取代未部署的 2.54）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過。
 - sync_assistants.py：官網、一致性比對全部一致；validate_site 通過。

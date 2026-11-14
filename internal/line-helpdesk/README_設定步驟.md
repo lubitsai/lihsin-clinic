@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.55）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.56）
 
-2026-11-13 第二版 2.55｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-14 第二版 2.56｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.56 題庫重產：同日看診＋接種公費疫苗需分別掛號（2026-11-14）
+
+題庫收進 PR #565：問公費疫苗掛號費時，回答在「單純接種公費疫苗只酌收掛號費」之後附上「同一天要看診也要接種公費疫苗：看診與接種需分別掛號，掛號費分別酌收；如果只掛一次號，當天只能擇一處理（看診或接種疫苗）。」產生器 `build_faq.py` 的 `public_vax_note`／`present()` 與官網 `search.js` `publicVaxNote()` 同步；`main.py`／`core.py`／`requirements.txt` 未改。取代未部署的 2.55（2.55 的內容全數包含）。
 
 ## 2.55 題庫重產：咳嗽拖兩週、醫師選擇問答（2026-11-13）
 
