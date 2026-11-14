@@ -1,0 +1,47 @@
+# 員工敏感資料閘門(2026-11-14 院長裁示新增)
+# 用途:本 repo 在 GitHub 是公開的。員工個資、薪資、出勤、人事事件一律只放私人 repo
+#       lhclinic-work,任何分支都不得提交(曾發生在未合併分支)。
+# 範圍:所有分支的 push 與所有 PR,不只 main。
+# 限制:push 後才跑,只能「發現」不能「阻止上傳」——一旦紅燈,資料已在公開 GitHub,
+#       要刪分支或改寫歷史。圖片、PDF 不看內容。
+# 邏輯:internal/tools/check_staff_data.py(可本機執行)
+# 逃生門:確定不是員工資料的單行,在該行加 staff-data-ok。
+name: Staff data gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  staff-data-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 需要完整歷史才看得到這批每個 commit
+
+      - name: Scan whole tree
+        run: python3 internal/tools/check_staff_data.py --all
+
+      - name: Scan every commit in this push / PR
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+          PUSH_AFTER: ${{ github.sha }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            base=$PR_BASE_SHA; head=$PR_HEAD_SHA
+          else
+            head=$PUSH_AFTER; base=$PUSH_BEFORE
+            # 新分支首推或 force-push:改從與 main 的分岔點算起
+            if [ "$base" = "0000000000000000000000000000000000000000" ] \
+               || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+              base=$(git merge-base origin/main "$head" 2>/dev/null || true)
+            fi
+          fi
+          if [ -z "$base" ]; then
+            echo "找不到比較基準,只做整棵樹掃描"; exit 0
+          fi
+          python3 internal/tools/check_staff_data.py --range "$base" "$head"
