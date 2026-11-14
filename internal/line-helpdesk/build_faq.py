@@ -71,6 +71,14 @@ def line_text(text):
         text = pattern.sub(to, text)
     return text
 
+def self_vax_note(notes, note):
+    """search.js selfVaxNote(): 自費疫苗掛號費＋同日看診只收看診掛號費（院長 2026-11-14）."""
+    text = note('單純接種自費疫苗')
+    if any(t.startswith('同一天要看診也要接種自費疫苗') for t in notes):
+        text += '\n\n' + note('同一天要看診也要接種自費疫苗')
+    return text
+
+
 def public_vax_note(notes, note):
     """search.js publicVaxNote(): 公費疫苗掛號費＋同日看診與接種分別掛號（院長 2026-11-14）."""
     text = note('單純接種公費疫苗')
@@ -239,7 +247,7 @@ def build(kb_bytes, aliases, overrides=None):
         'action': ACTION_TEXT + f"\n\n網路預約：{fx['網路預約']}\n看診進度查詢：{fx['看診進度查詢']}\n電話：{fx['電話']}",
         'booking_links': f"網路預約：{fx['網路預約']}\n電話：{fx['電話']}",
         'public_vax_note': public_vax_note(notes, note),
-        'self_vax_note': note('單純接種自費疫苗'),
+        'self_vax_note': self_vax_note(notes, note),
         'self_vax_tail': '自費疫苗本身的費用，' + CONTACT,
         'checkup_note': note('單純做成人預防保健'),
         'vaccine_note': VACCINE_NOTE,
