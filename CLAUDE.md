@@ -17,8 +17,9 @@
 - 官網改動會連動 LINE、iOS App（`lubitsai/lihsin-app`）、預約系統的批次，另跑 `python3 internal/tools/check_channels.py`；哪一項不同步該跑什麼，見 `assistant-sync` skill〈跨系統對照表〉。
 - **不是每批都該開 PR**（院長 2026-09-06 裁示）：**三條判準有任一成立才開 PR**——①影響患者體驗（可見文字／版面／CTA／公告／圖片）②影響搜尋收錄（schema／meta／`sitemap.xml`／`llms` 雙檔／`_redirects`／canonical）③影響轉換率（預約入口／GA4 事件／追蹤腳本）。**三條都不成立就直接 commit 進 `main`、不開 PR**（PR 會產生 Netlify Deploy Preview，對正式站零影響的變更不值得那次 build）。典型不開 PR：`internal/**`、`.claude/skills/**`、`internal/tools/*.py`、`.github/workflows/*.yml`。⚠️ **不開 PR ≠ 不進 main**——`00`／`01` 是跨 session 的單一事實來源，延後進 main 的代價是下一棒讀到過期文件。詳見 `00` §8-7。
 
-## 這個 repo 的兩個陷阱
+## 這個 repo 的三個陷阱
 
+- **GitHub repo 本身是公開的。** 員工個資、薪資、出勤、人事事件（資遣／離職／疏失紀錄）**一律只放私人 repo `lhclinic-work`**，本 repo 任何分支都不得提交——`_redirects` 只擋 Netlify，擋不住 GitHub（2026-11-14 院長裁示；曾發生在未合併分支，已移除）。
 - **整棵樹由 Netlify 公開部署。** `internal/`、`.claude/`、`.codex/`、`CLAUDE.md`、`AGENTS.md`、`.mcp.json`、`booking-system/` 靠 `_redirects` 第 5 節強制 404 擋住；新增內部檔案時必須同步攔截規則。
 - **`booking-system/` 不是官網頁面。** 獨立的 Next.js＋PostgreSQL 應用，走 Docker 部署到獨立網域，改官網時不要動它。
   **唯一的例外是門診時間**：預約系統的班表以官網 `index.html` 的門診時間表為準，動到門診時間就要跑
