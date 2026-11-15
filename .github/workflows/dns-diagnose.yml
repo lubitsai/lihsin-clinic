@@ -33,5 +33,15 @@ jobs:
           for q in "booking.lhpedclinic.com.tw A" "lhpedclinic.com.tw MX" "lhpedclinic.com.tw TXT" "lhpedclinic.com.tw AAAA" "lhpedclinic.com.tw CNAME" "lhpedclinic.com.tw ANY"; do
             echo "=== $q"; dig @ns1.cyberdns.tw +time=5 +tries=1 $q | sed -n '/->>HEADER<<-/p;/ANSWER SECTION/,/^$/p'
           done
+      - name: Ask Netlify nameservers directly
+        run: |
+          for ns in dns1.p05.nsone.net dns2.p05.nsone.net; do
+            for q in "lhpedclinic.com.tw A" "www.lhpedclinic.com.tw A" "lhpedclinic.com.tw TXT"; do
+              echo "=== @$ns $q"; dig @$ns +time=5 +tries=1 $q | sed -n '/->>HEADER<<-/p;/ANSWER SECTION/,/^$/p'
+            done
+          done
+          ip=$(dig @dns1.p05.nsone.net +short lhpedclinic.com.tw A | head -1)
+          echo "=== HTTPS via Netlify IP $ip"
+          curl -s -o /dev/null -w "%{http_code}\n" --max-time 20 --resolve lhpedclinic.com.tw:443:$ip https://lhpedclinic.com.tw/services/weight-management.html || true
       - name: Whois
         run: whois -h whois.twnic.net.tw lhpedclinic.com.tw | head -40 || true
