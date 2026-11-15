@@ -1,3 +1,9 @@
+2026-11-15 第二版 2.63（題庫重產：減重針劑視力警訊、胰島素阻抗兩題；程式同 2.62；取代未部署的 2.62）
+- LINE unittest 完整版（requirements.lock.txt）：104 項全過。
+- sync_assistants.py：官網、一致性比對全部一致；validate_site 通過。
+- 2.61 起 core.py 有改 → 部署走測試模式＋實測。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-14 第二版 2.62（重新打包；程式與題庫同 2.61；取代未部署的 2.61）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過。
 - sync_assistants.py：官網、一致性比對全部一致；validate_site 通過。
