@@ -2,15 +2,15 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "458b15f3e5c75171b1858e18f80251162634858a051ac63ecbe106db646f28cf"
+   "kb_sha256": "6d91ed3d57d2c2de2e88b6203cb1d4e133a50541af09b19e89a9ea744a247284"
   },
-  "knowledge_sha256": "a769342ef763c3a2120a307e8c37b204424035763c7cefc17e47457f9ee09381",
+  "knowledge_sha256": "e9c3412579e2c7d2426b110a219b7e587a6ccbe2ab649e7e2421f2eb3c92a941",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
    "faq": 1272,
    "ops": 8,
-   "notice": 9,
+   "notice": 10,
    "navigation": 1
   }
  },
@@ -745,6 +745,76 @@
   },
   "exceptions": {
    "2026-11-15": [
+    {
+     "session": "MORNING",
+     "start": "08:00",
+     "end": "11:30",
+     "doctors": [
+      "蔡"
+     ]
+    },
+    {
+     "session": "EVENING",
+     "start": "18:30",
+     "end": "21:00",
+     "doctors": [
+      "蔡"
+     ]
+    }
+   ],
+   "2026-11-19": [
+    {
+     "session": "MORNING",
+     "start": "08:00",
+     "end": "12:00",
+     "doctors": [
+      "李"
+     ]
+    },
+    {
+     "session": "AFTERNOON",
+     "start": "14:30",
+     "end": "18:00",
+     "doctors": [
+      "蔡"
+     ]
+    },
+    {
+     "session": "EVENING",
+     "start": "18:30",
+     "end": "21:30",
+     "doctors": [
+      "蔡"
+     ]
+    }
+   ],
+   "2026-11-20": [
+    {
+     "session": "MORNING",
+     "start": "08:00",
+     "end": "12:00",
+     "doctors": [
+      "蔡"
+     ]
+    },
+    {
+     "session": "AFTERNOON",
+     "start": "14:30",
+     "end": "18:00",
+     "doctors": [
+      "蔡"
+     ]
+    },
+    {
+     "session": "EVENING",
+     "start": "18:30",
+     "end": "21:30",
+     "doctors": [
+      "李"
+     ]
+    }
+   ],
+   "2026-11-22": [
     {
      "session": "MORNING",
      "start": "08:00",
@@ -18690,6 +18760,18 @@
   {
    "id": "N2",
    "kind": "notice",
+   "title": "11/19 午診、11/20 晚診、11/22 早診看診醫師異動",
+   "questions": [
+    "11/19 午診、11/20 晚診、11/22 早診看診醫師異動"
+   ],
+   "answer": "三個診次都照常看診、時間不變，只有看診醫師調整：11 月 19 日（四）午診（14:30–18:00）改由蔡宗儒醫師看診；11 月 20 日（五）晚診（18:30–21:30）改由李佳玲醫師看診；11 月 22 日（日）早診（08:00–11:30）只有蔡宗儒醫師一診。有疑問請來電 06-2516086 或在此聊天室輸入「專人服務」。",
+   "valid_until": "2026-11-22",
+   "schedule": true,
+   "start": "2026-11-19"
+  },
+  {
+   "id": "N3",
+   "kind": "notice",
    "title": "2026 自費流感疫苗資訊｜2026 年 9 月 24 日",
    "questions": [
     "2026 自費流感疫苗資訊｜2026 年 9 月 24 日",
@@ -18699,7 +18781,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N3",
+   "id": "N4",
    "kind": "notice",
    "title": "公費流感疫苗第二階段 11/2 起開打",
    "questions": [
@@ -18709,7 +18791,7 @@
    "valid_until": "2026-11-30"
   },
   {
-   "id": "N4",
+   "id": "N5",
    "kind": "notice",
    "title": "自費流感疫苗賽諾菲菲流達到貨公告｜2026 年 10 月 30 日",
    "questions": [
@@ -18720,7 +18802,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N5",
+   "id": "N6",
    "kind": "notice",
    "title": "今日公費流感疫苗品牌查詢方式公告｜2026 年 10 月 3 日",
    "questions": [
@@ -18731,7 +18813,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N6",
+   "id": "N7",
    "kind": "notice",
    "title": "自費流感疫苗四款到貨公告｜2026 年 9 月 30 日",
    "questions": [
@@ -18742,7 +18824,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N7",
+   "id": "N8",
    "kind": "notice",
    "title": "流感疫苗 5 大問資訊｜2026 年 9 月 26 日",
    "questions": [
@@ -18753,7 +18835,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N8",
+   "id": "N9",
    "kind": "notice",
    "title": "自費流感疫苗 GSK 伏流感到貨公告｜2026 年 9 月 24 日",
    "questions": [
@@ -18764,7 +18846,7 @@
    "valid_until": "2027-03-31"
   },
   {
-   "id": "N9",
+   "id": "N10",
    "kind": "notice",
    "title": "自費流感疫苗東洋輔流威護到貨公告｜2026 年 9 月 21 日",
    "questions": [
