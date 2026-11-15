@@ -1,0 +1,32 @@
+# 臨時診斷：正式站網域解析狀態（2026-11-15 spot-check 連續 exit code 6 = 網域解析失敗）
+# 只讀：dig／whois／curl，不寫任何檔案。查完即刪。
+name: DNS diagnose (temporary)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install tools
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq dnsutils whois >/dev/null
+      - name: Resolve via several resolvers
+        run: |
+          for host in lhpedclinic.com.tw www.lhpedclinic.com.tw; do
+            for r in "" 8.8.8.8 1.1.1.1 168.95.1.1; do
+              echo "=== $host @${r:-system}"
+              dig ${r:+@$r} +time=5 +tries=1 "$host" A | sed -n '/->>HEADER<<-/p;/ANSWER SECTION/,/^$/p;/AUTHORITY SECTION/,/^$/p'
+            done
+          done
+          echo "=== NS (parent .com.tw)"
+          dig +time=5 +tries=1 NS lhpedclinic.com.tw @8.8.8.8 | sed -n '/->>HEADER<<-/p;/ANSWER/,/^$/p;/AUTHORITY/,/^$/p'
+          echo "=== trace"
+          dig +trace +time=5 lhpedclinic.com.tw A | tail -25 || true
+          echo "=== DNSSEC check (cd flag)"
+          dig +cd +time=5 +tries=1 lhpedclinic.com.tw A @8.8.8.8 | sed -n '/->>HEADER<<-/p;/ANSWER/,/^$/p'
+          echo "=== netlify subdomain"
+          dig +time=5 +tries=1 lihsin-clinic.netlify.app A @8.8.8.8 | sed -n '/ANSWER/,/^$/p'
+          curl -s -o /dev/null -w "lihsin-clinic.netlify.app -> %{http_code}\n" --max-time 20 https://lihsin-clinic.netlify.app/services/weight-management.html || true
+      - name: Whois
+        run: whois -h whois.twnic.net.tw lhpedclinic.com.tw | head -40 || true
