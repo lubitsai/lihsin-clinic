@@ -1,3 +1,9 @@
+2026-11-15 第二版 2.66（題庫重產：迷思大破解 #1 鼻噴劑與身高 7 題；程式同 2.65；取代未部署的 2.65）
+- LINE unittest 完整版（requirements.lock.txt）：104 項全過。
+- sync_assistants.py：官網 340 項、一致性比對全部一致；validate_site 通過。
+- 程式自 2.65 起有改（2.65 未部署）→ 部署走測試模式＋實測。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-15 第二版 2.65（core.py TOPIC 加減重藥停藥復胖對照；取代未部署的 2.64）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過。
 - sync_assistants.py：官網 340 項、一致性比對全部一致；validate_site 通過。
