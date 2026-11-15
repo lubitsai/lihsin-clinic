@@ -1,3 +1,9 @@
+2026-11-15 第二版 2.65（core.py TOPIC 加減重藥停藥復胖對照；取代未部署的 2.64）
+- LINE unittest 完整版（requirements.lock.txt）：104 項全過。
+- sync_assistants.py：官網 340 項、一致性比對全部一致；validate_site 通過。
+- core.py 有改 → 部署走測試模式＋實測。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-15 第二版 2.64（core.py TOPIC 加減重針劑俗名＋視力／停藥對照；取代未部署的 2.63）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過。
 - sync_assistants.py：官網 340 項、一致性比對 437 句全部一致；validate_site 通過。
