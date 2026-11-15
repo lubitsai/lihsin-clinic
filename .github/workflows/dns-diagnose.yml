@@ -28,5 +28,10 @@ jobs:
           echo "=== netlify subdomain"
           dig +time=5 +tries=1 lihsin-clinic.netlify.app A @8.8.8.8 | sed -n '/ANSWER/,/^$/p'
           curl -s -o /dev/null -w "lihsin-clinic.netlify.app -> %{http_code}\n" --max-time 20 https://lihsin-clinic.netlify.app/services/weight-management.html || true
+      - name: Other records
+        run: |
+          for q in "booking.lhpedclinic.com.tw A" "lhpedclinic.com.tw MX" "lhpedclinic.com.tw TXT" "lhpedclinic.com.tw AAAA" "lhpedclinic.com.tw CNAME" "lhpedclinic.com.tw ANY"; do
+            echo "=== $q"; dig @ns1.cyberdns.tw +time=5 +tries=1 $q | sed -n '/->>HEADER<<-/p;/ANSWER SECTION/,/^$/p'
+          done
       - name: Whois
         run: whois -h whois.twnic.net.tw lhpedclinic.com.tw | head -40 || true
