@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><title>過敏追蹤路線 入口小卡</title>
+<style>*{box-sizing:border-box}
+body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;color:#222;margin:0}
+h1{text-align:center;letter-spacing:2pt;margin:0}
+h2{color:#7a4a1f;border-bottom:1.5px solid #A0662F;padding-bottom:0.5mm}
+.foot{color:#555;text-align:center;border-top:1px solid #ccc;padding-top:1.5mm}
+@page{size:A4;margin:0}
+.sheet{width:210mm;height:297mm;padding:13.5mm 15mm;display:grid;grid-template-columns:90mm 90mm;grid-auto-rows:54mm;page-break-after:always}
+.sheet:last-child{page-break-after:auto}
+.card{border:0.3mm dashed #bbb;padding:3.2mm 4mm;font-size:8.6pt;line-height:1.45;display:flex;flex-direction:column}
+.top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:0.4mm solid #A0662F;padding-bottom:0.6mm;margin-bottom:1.2mm}
+.clinic{font-size:7.4pt;font-weight:bold;color:#7a4a1f;letter-spacing:1pt}
+.no{font-size:7pt;color:#555;font-family:monospace}
+p{margin:0 0 0.8mm;text-align:justify}
+.t{font-size:12pt;font-weight:bold;color:#9b2c1f;margin-bottom:1.2mm}
+.c{font-weight:bold;margin-top:auto}
+.e{font-size:6.8pt;color:#555;margin:0}
+</style></head><body>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T001</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T002</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T003</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T004</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T005</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T006</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T007</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T008</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T009</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T010</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T011</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T012</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T013</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T014</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T015</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T016</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T017</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T018</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T019</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T020</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T021</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T022</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T023</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T024</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T025</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T026</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T027</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T028</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T029</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T030</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T031</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T032</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T033</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T034</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T035</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T036</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T037</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T038</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T039</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T040</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T041</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T042</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T043</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T044</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T045</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T046</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T047</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T048</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T049</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T050</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T051</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T052</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T053</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T054</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T055</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T056</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T057</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T058</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T059</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T060</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T061</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T062</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T063</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T064</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T065</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T066</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T067</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T068</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T069</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T070</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T071</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T072</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T073</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T074</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T075</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T076</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T077</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T078</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T079</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T080</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T081</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T082</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T083</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T084</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T085</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T086</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T087</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T088</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T089</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T090</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T091</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T092</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T093</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T094</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T095</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T096</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T097</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T098</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T099</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. T100</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L001</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L002</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L003</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L004</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L005</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L006</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L007</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L008</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L009</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L010</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L011</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L012</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L013</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L014</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L015</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L016</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L017</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L018</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L019</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L020</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L021</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L022</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L023</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L024</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L025</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L026</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L027</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L028</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L029</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L030</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L031</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L032</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L033</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L034</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L035</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L036</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L037</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L038</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L039</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L040</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L041</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L042</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L043</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L044</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L045</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L046</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L047</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L048</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L049</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L050</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L051</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L052</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L053</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L054</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L055</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L056</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L057</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L058</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L059</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L060</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L061</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L062</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L063</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L064</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L065</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L066</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L067</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L068</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L069</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L070</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L071</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L072</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L073</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L074</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L075</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L076</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L077</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L078</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L079</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L080</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L081</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L082</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L083</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L084</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L085</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L086</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L087</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L088</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L089</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L090</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+<div class="sheet"><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L091</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L092</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L093</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L094</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L095</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L096</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L097</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L098</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L099</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div><div class="card"><div class="top"><span class="clinic">立欣診所</span><span class="no">No. L100</span></div>
+<p class="t">孩子咳嗽、鼻塞常常好了又來？</p>
+<p>咳嗽超過 2～3 週仍未改善、半夜或清晨反覆咳，或是長期鼻塞、打噴嚏、皮膚癢，有些和過敏有關。</p>
+<p>可以預約過敏門診，由醫師依症狀和病史評估是否需要檢查。</p>
+<p class="c">預約：LINE @lhpedclinic｜電話 06-2516086</p>
+<p class="e">本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p></div></div>
+</body></html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><title>居家環境檢核表</title>
+<style>*{box-sizing:border-box}
+body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;color:#222;margin:0}
+h1{text-align:center;letter-spacing:2pt;margin:0}
+h2{color:#7a4a1f;border-bottom:1.5px solid #A0662F;padding-bottom:0.5mm}
+.foot{color:#555;text-align:center;border-top:1px solid #ccc;padding-top:1.5mm}
+@page{size:A5;margin:11mm 12mm 10mm}
+body{font-size:10pt;line-height:1.5}
+h1{font-size:16pt;margin-bottom:3mm}
+h2{font-size:10.5pt;margin:4mm 0 1.5mm}
+.head{border:1px solid #A0662F;background:#fbf3ea;padding:2mm 3mm;line-height:2.1}
+.blank{display:inline-block;border-bottom:1px solid #444;min-width:28mm;margin-right:4mm}
+.bx{display:inline-block;width:4mm;height:4mm;border:1.2px solid #444;vertical-align:-0.6mm;margin:0 0.8mm}
+ol{margin:0;padding-left:0;list-style:none}
+li{margin:0 0 1.6mm;padding-left:8mm;text-indent:-8mm}
+li .bx{margin:0 2mm 0 0}
+.n{display:inline-block;width:0;overflow:visible}
+.tail{margin-top:4mm;font-size:8.8pt;background:#fbf3ea;border-left:4px solid #A0662F;padding:1.5mm 3mm}
+.tail p{margin:0 0 0.8mm}
+.foot{font-size:8pt;margin-top:3mm}
+</style></head><body>
+<h1>居家環境檢核表</h1>
+<div class="head">孩子姓名<span class="blank"></span>日期<span class="blank"></span><br>醫師勾選本次先做：<span class="bx"></span><span class="bx"></span><span class="bx"></span></div>
+
+<h2>甲部分：塵蟎（檢測塵蟎陽性，或醫師判斷與塵蟎有關時使用）</h2>
+<ol>
+<li><span class="bx"></span>1. 床墊和枕頭用防蟎套包起來（選有 IBT 防蟎認證、六面全包式的）</li>
+<li><span class="bx"></span>2. 床單、被套、枕套每 1～2 週清洗一次：先用 55℃ 以上熱水泡 10 分鐘，或用洗烘脫洗衣機先烘過，再正常清洗</li>
+<li><span class="bx"></span>3. 室內濕度維持在 50～60%，保持通風</li>
+<li><span class="bx"></span>4. 孩子房間少放厚重布窗簾、布地毯、布沙發和絨毛玩偶</li>
+</ol>
+
+<h2>乙部分：其他誘發因子（只勾選，回診時跟醫師討論）</h2>
+<ol>
+<li><span class="bx"></span>5. 家裡有人抽菸</li>
+<li><span class="bx"></span>6. 浴室、牆角或衣櫃有看得到的黴斑</li>
+<li><span class="bx"></span>7. 家裡有養有毛的寵物</li>
+<li><span class="bx"></span>8. 家裡常看到蟑螂</li>
+</ol>
+
+<div class="tail">
+<p>做好環境整理之後，症狀仍反覆發作或持續變嚴重，請回診讓醫師評估。檢測結果要搭配症狀與病史判讀，不單以數值決定處置。</p>
+<p>本院為門診、非急診；孩子若喘到說不出話、嘴唇發紫，請立即送急診或撥 119。</p>
+</div>
+<p class="foot">立欣診所｜台南市北區育德路467號｜06-2516086｜LINE @lhpedclinic</p>
+</body></html>
