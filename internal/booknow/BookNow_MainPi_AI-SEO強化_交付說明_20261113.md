@@ -1,5 +1,7 @@
 # BookNow／MainPi｜AI SEO・SEO・AEO・GEO 強化交付說明（2026-11-13）
 
+> **2026-11-16 更新**：MainPi 改貼 `internal/mainpi/貼上用_20261116/`（已含本說明的 sameAs／dateModified 改動，dateModified 改 2026-11-16）；BookNow 2 號檔補疫苗掛號兩句。見 `internal/booknow/BookNow_MainPi_更新交付說明_20261116.md`。
+
 > 院長指示：「優化 BookNow 及 MainPi 的 AI SEO/SEO/AEO/GEO」。只動 `internal/**`，兩平台後台由院長貼上。
 
 ## 一、兩個平台能被搜尋引擎與 AI 讀到的範圍（2026-11-13 實測）
