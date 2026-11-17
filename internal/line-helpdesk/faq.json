@@ -4,7 +4,7 @@
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
    "kb_sha256": "28f3347c8fda8605d0c7c9f73ff7b0e835aae89d6004b56e27187c7100c9563a"
   },
-  "knowledge_sha256": "deaf5e43f36ede73110e9a75bafaa8a2a204c3c9079901630d46fa097d463f9c",
+  "knowledge_sha256": "a17a04d611c2210a9ee0358913c6e816b209c92fdba0b3c690ea1d5f4468495d",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
@@ -60,9 +60,19 @@
   ]
  },
  "prices": {
-  "reviewed_at": "2026-10-29",
+  "reviewed_at": "2026-11-17",
   "no_data": "目前這份價目資料沒有您詢問項目的費用，請來電 06-2516086 或在此聊天室輸入「專人服務」詢問。",
   "rules": [
+   {
+    "id": "D04",
+    "kind": "other",
+    "all": [
+     "疫苗|接種|免疫|注射|打針",
+     "證明"
+    ],
+    "not": "診斷",
+    "reply": "您好，疫苗注射暨免疫證明書（中英文雙語）每份 100 元，請洽櫃檯申請。"
+   },
    {
     "id": "ALLERGY_TEST",
     "kind": "test",

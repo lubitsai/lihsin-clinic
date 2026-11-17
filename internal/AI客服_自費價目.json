@@ -8,9 +8,10 @@
   "2026-10-29 院長交付減重療程 115/11/1 起調整：4 週 20,800（不變）、8 週 32,800、續加四週 14,000（含醫師評估後開立的藥物，不含抽血；W06）。LINE 8 週為原價 36,800、推廣價 32,800。",
   "kind=vaccine 的回覆會在後面附疫苗四但書（VACCINE_NOTE）。改完跑 python3 internal/tools/build_assistant_kb.py 與 node internal/tools/test_assistant.mjs。"
  ],
- "reviewed_at": "2026-10-29",
+ "reviewed_at": "2026-11-17",
  "no_data": "目前這份價目資料沒有您詢問項目的費用，",
  "rules": [
+  {"id": "D04", "kind": "other", "all": ["疫苗|接種|免疫|注射|打針", "證明"], "not": "診斷", "reply": "您好，疫苗注射暨免疫證明書（中英文雙語）每份 100 元，請洽櫃檯申請。"},
   {"id": "T03", "kind": "test", "all": ["rsv|呼吸道融合", "快篩|篩檢|檢測|篩"], "reply": "您好，呼吸道融合病毒（RSV）快篩費用為 250 元。如需確認含看診的總費用，可由櫃檯協助。"},
   {"id": "RSV_PREG", "kind": "vaccine", "all": ["rsv|呼吸道融合|艾沛兒|abrysvo", "孕婦|懷孕|孕期|產前|艾沛兒|abrysvo"], "not": "單株|抗體|樂唯初|beyfortus", "reply": "您好，孕婦 RSV 疫苗（艾沛兒 Abrysvo）費用為 7,800 元，需事先預約。單純接種不另外收取掛號費。"},
   {"id": "RSV_ELDER", "kind": "vaccine", "all": ["rsv|呼吸道融合|欣剋融|arexvy", "長輩|長者|老人|老年|阿公|阿嬤|爺爺|奶奶|欣剋融|arexvy"], "reply": "您好，長者 RSV 疫苗（欣剋融 Arexvy）費用為 7,800 元，需事先預約。單純接種不另外收取掛號費。"},
