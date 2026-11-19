@@ -413,6 +413,7 @@ jobs:
           check /health/pertussis.html 200
           check /health/stop-medicine.html 200
           check /health/nhi-copayment.html 200
+          check /images/nhi-copayment-infographic.jpg 200
           check /health/giving-medicine.html 200
           check /health/picky-eating.html 200
           check /health/child-burns.html 200
