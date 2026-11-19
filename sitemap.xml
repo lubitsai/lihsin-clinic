@@ -35,7 +35,7 @@
   -->
   <url>
     <loc>https://lhpedclinic.com.tw/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
 
@@ -103,7 +103,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/team/dr-tsai.html</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -439,6 +439,12 @@
     <loc>https://lhpedclinic.com.tw/health/common-cold.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/common-cold-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/child-cold-nasal-tools.html</loc>
+    <lastmod>2026-11-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -989,7 +995,7 @@
 
   <url>
     <loc>https://lhpedclinic.com.tw/health/</loc>
-    <lastmod>2026-11-18</lastmod>
+    <lastmod>2026-11-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
