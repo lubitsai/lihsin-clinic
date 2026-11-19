@@ -36,6 +36,9 @@ build_members.py — 減重營養課「學員專區」（/members/nutrition/）�
   python3 internal/tools/build_members.py --old-password 密碼 --password 密碼 \
       --add t01=…/t01.pdf --add w00=…/w00.pdf --add quiz=…/quiz.json
 
+  # 設定課程回饋問卷網址（只在解鎖後顯示按鈕）
+  python3 internal/tools/build_members.py --old-password 密碼 --password 密碼 --feedback https://forms.gle/…
+
   # 只檢查：用密碼解開 vault，列出影片設定與 PDF 能否解密
   python3 internal/tools/build_members.py --check --password 密碼
 
@@ -108,6 +111,7 @@ def main():
     ap.add_argument("--old-password", help="目前密碼；vault 已存在時必填")
     ap.add_argument("--pdf-dir", type=Path, help="重新加密教材 PDF（01_教材.pdf～08_教材.pdf）")
     ap.add_argument("--video", action="append", default=[], metavar="N=URL", help="設定第 N 堂影片")
+    ap.add_argument("--feedback", metavar="URL", help="課程回饋問卷網址（例如 Google 表單）；給空字串則移除按鈕")
     ap.add_argument("--add", action="append", default=[], metavar="NAME=PATH",
                     help="加密任一檔案成 files/NAME.bin（逐字稿 t01～t08、練習單 w00～w08、小測驗 quiz）")
     ap.add_argument("--check", action="store_true", help="只檢查，不寫檔")
@@ -126,6 +130,7 @@ def main():
                 raw = f.read_bytes()
                 ok = "PDF 可解密" if AESGCM(k).decrypt(raw[:12], raw[12:], None)[:5] == b"%PDF-" else "✗ 不是 PDF"
             print(f"第{n}堂  影片：{p['v'].get(str(n)) or '（未設定）'}  教材：{ok}")
+        print(f"回饋問卷：{p.get('f') or '（未設定）'}")
         extras = sorted(f for f in FILES.glob("*.bin") if not re.fullmatch(r"\d{2}\.bin", f.name))
         for f in extras:
             raw = f.read_bytes()
@@ -152,6 +157,15 @@ def main():
             sys.exit(f"✗ --video 格式是 N=網址（N 為 1～{LESSONS}）：{item}")
         payload["v"][n] = youtube_id(url)
         print(f"第{n}堂影片 → {payload['v'][n]}")
+
+    if a.feedback is not None:
+        if a.feedback and not a.feedback.startswith("https://"):
+            sys.exit("✗ --feedback 必須是 https:// 開頭的網址")
+        if a.feedback:
+            payload["f"] = a.feedback
+        else:
+            payload.pop("f", None)
+        print(f"回饋問卷 → {a.feedback or '（移除）'}")
 
     # 換密碼＝連內容金鑰一起換（院長 2026-11-14 裁示：知道舊密碼的人不能再打開新版教材）
     rotate = bool(vault) and a.password != a.old_password
