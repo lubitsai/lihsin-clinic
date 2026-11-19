@@ -227,6 +227,7 @@ ROUTE_SRC = {
     'PUBLIC_VAX': r'公費.{0,10}(?:疫苗|流感|接種|打針)|(?:疫苗|流感).{0,10}公費',
     'SELF_VAX': r'自費.{0,10}(?:疫苗|流感|接種|打針)|(?:疫苗|流感).{0,10}自費',
     'CHECKUP': r'成人健檢|公費健檢|成人預防保健|成人.{0,4}健康檢查',
+    'COPAY': r'(?:藥|怎麼算|計算|級距|上限|最多|慢箋|慢性處方|連續處方|醫院|醫學中心|免|小孩|孩子|兒童|幾歲|為什麼).{0,12}部分負擔|部分負擔.{0,12}(?:藥|怎麼算|計算|級距|上限|最多|慢箋|慢性處方|連續處方|醫院|醫學中心|免|小孩|孩子|兒童|幾歲|為什麼)',
     'CHILD': r'兒童|小孩|孩子|寶寶|嬰兒|幼兒|小朋友',
     'MONEY': r'多少|錢|費|免費|收費|付',
     # 鼻噴（能伏鼻）本季已售完（院長 2026-10-17; search.js 3-1a）：下一季到貨時移除這兩條與 PIN_NASAL_SOLDOUT
@@ -245,6 +246,7 @@ ROUTE_SRC = {
     'PHONE': r'電話|打電話|聯絡|聯繫',
 }
 PRICE, PUBLIC_FLU, BRAND_ASK, PUBLIC_BRAND, VAX_CUTOFF, FLU_DOCS, STUDENT, DOSE, SUITABLE, QUOTA, ACTION, FEE, PUBLIC_VAX, SELF_VAX, CHECKUP, CHILD, MONEY = (re.compile(ROUTE_SRC[n]) for n in ['PRICE', 'PUBLIC_FLU', 'BRAND_ASK', 'PUBLIC_BRAND', 'VAX_CUTOFF', 'FLU_DOCS', 'STUDENT', 'DOSE', 'SUITABLE', 'QUOTA', 'ACTION', 'FEE', 'PUBLIC_VAX', 'SELF_VAX', 'CHECKUP', 'CHILD', 'MONEY'])
+COPAY = re.compile(ROUTE_SRC['COPAY'])
 NASAL, NASAL_STOCK = (re.compile(ROUTE_SRC[n]) for n in ['NASAL', 'NASAL_STOCK'])
 LATE, CROSS, STOCK, COVID, HOLIDAY, SCHED_WORDS, HOURS_TOPIC, QUEUE, ADDRESS, PHONE = (re.compile(ROUTE_SRC[n]) for n in ['LATE', 'CROSS', 'STOCK', 'COVID', 'HOLIDAY', 'SCHED_WORDS', 'HOURS_TOPIC', 'QUEUE', 'ADDRESS', 'PHONE'])
 # search.js 7 clarify buttons (verbatim)
@@ -290,6 +292,7 @@ PINS = {
     'PIN_FLU_DOCS': ['打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？', '國小到高中職學生要打公費流感疫苗，需要帶什麼？'],
     'PIN_FLU_DOCS_STUDENT': ['國小到高中職學生要打公費流感疫苗，需要帶什麼？', '打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？'],
     'PIN_NASAL_SOLDOUT': ['鼻噴式流感疫苗還有嗎？能伏鼻售完了嗎？'],
+    'COPAY_TOPICS': ['慢箋|慢性處方|連續處方', '小孩|孩子|兒童|幾歲|寶寶|未滿', '醫院|醫學中心', '免', '為什麼|比上次|比較貴|比較多|不一樣', '藥費|藥品|藥|怎麼算|計算|級距|上限|最多'],   # 不是題目標題：部分負擔題的主題詞（search.js 同名）
 }
 BRAND_BUTTON = '流感疫苗資訊'   # rich-menu keyword answered by the official account backend (passthrough)
 
@@ -372,6 +375,13 @@ class Catalog:
             return r['public_vax_note'] + '\n\n' + r['vaccine_note']
         if CHECKUP.search(q) and not CHILD.search(q) and asks_money:
             return r['checkup_note'] + '\n\n' + r['other_fees']
+        if COPAY.search(q):   # search.js 6-0b（院長 2026-11-19）：部分負擔細節問法答部分負擔衛教文 FAQ，不給收費表
+            pool = [i for i in self.items if i.get('kind') == 'faq' and is_valid(i, today)
+                    and re.search('部分負擔|付的錢比上次多', i.get('title', '')) and '收費標準' not in i['title']]
+            if pool:
+                def score(row):
+                    return sum(1 for t in PINS['COPAY_TOPICS'] if re.search(t, q) and re.search(t, row['title']))
+                return sorted(enumerate(pool), key=lambda x: (-score(x[1]), x[0]))[0][1]['answer']
         if re.search('慢性處方|慢箋|連續處方', q) and re.search('氣喘|過敏|噴劑|鼻炎|鼻子', q):
             row = next((i for i in self.items if i.get('kind') == 'faq' and '本院最多開 28 天' in i.get('kb_answer', '')), None)
             if row:

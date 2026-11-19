@@ -87,6 +87,8 @@ def public_vax_note(notes, note):
     return text
 
 
+STATUTORY_COPAY_PATH = '/health/nhi-copayment.html'   # search.js 同名常數，逐字核對
+
 def present(row, kb):
     """search.js present(): append the notes the website shows under an answer."""
     notes = kb['fees']['notes']
@@ -96,7 +98,7 @@ def present(row, kb):
         public_vax += '\n\n' + same_day
     if row.get('fee'):
         return row['answer'] + '\n\n' + OTHER_FEES
-    if PRICE.search(core.normalize(row['title'])):
+    if PRICE.search(core.normalize(row['title'])) and row.get('path') != STATUTORY_COPAY_PATH:   # 院長 2026-11-18：健保署法定部分負擔可答，限此頁
         return '費用依項目與當日狀況不同，' + CONTACT
     text, all_text = row['answer'], row['title'] + row['answer']
     if re.search('疫苗|接種', all_text) and not ('仿單' in all_text and '醫師評估' in all_text
@@ -170,7 +172,8 @@ def check_regex_parity(js):
         if not m or re.findall(r"'([^']+)'", m.group(1)) != mine:
             raise SystemExit(f'✗ core.PINS[{name}] 與官網 search.js 不一致，請先同步 core.py')
     for literal in (CLINICAL, ACTION_TEXT, SELF_VAX_TAIL, LATE_CLARIFY, REGISTER_CLARIFY, STOCK_HEAD, HOLIDAY_NOTE,
-                    HOLIDAY_TAIL, PAST_DATE, HOURS_NOTE, COVID_NOTE, VAX_CUTOFF_REPLY):
+                    HOLIDAY_TAIL, PAST_DATE, HOURS_NOTE, COVID_NOTE, VAX_CUTOFF_REPLY,
+                    "const STATUTORY_COPAY_PATH = '" + STATUTORY_COPAY_PATH + "';"):
         if literal not in js:
             raise SystemExit('✗ 固定回覆與官網 search.js 不一致：' + literal[:30])
     for literal, mine in BUTTONS:

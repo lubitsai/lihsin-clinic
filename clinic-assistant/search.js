@@ -91,6 +91,9 @@ const PRICE = /費用|價格|多少錢|價錢|折扣|收費|價位|要錢嗎|免
 const PRICE_G = new RegExp(PRICE.source, 'g');
 // 門診收費（系統指示第 5 條唯一例外，院長 2026-09-24 核可）：掛號費／部分負擔／押單費／診斷書可給金額
 const FEE = /掛號費|部分負擔|收費標準|收費表|看診.{0,4}(?:多少錢|費用|要錢|收多少)|看(?:一次|病|醫師|醫生).{0,4}(?:多少錢|費用|收多少)|押單|(?:沒帶|忘記帶|忘了帶|未帶).{0,3}健保卡|健保卡.{0,4}(?:沒帶|忘記|忘了)|診斷書|慢性處方|慢箋|福保|自費看診|自費掛號/;
+const STATUTORY_COPAY_PATH = '/health/nhi-copayment.html';
+// 健保部分負擔細節問法（藥費級距、慢箋、兒童、免部分負擔、大醫院）→ 部分負擔衛教文 FAQ，不給收費表（院長 2026-11-19）
+const COPAY = /(?:藥|怎麼算|計算|級距|上限|最多|慢箋|慢性處方|連續處方|醫院|醫學中心|免|小孩|孩子|兒童|幾歲|為什麼).{0,12}部分負擔|部分負擔.{0,12}(?:藥|怎麼算|計算|級距|上限|最多|慢箋|慢性處方|連續處方|醫院|醫學中心|免|小孩|孩子|兒童|幾歲|為什麼)/;
 const OTHER_FEES = '自費疫苗、快篩、減重等項目的費用，可以直接輸入項目名稱查詢（例如「水痘疫苗多少錢」）；其他自費項目' + CONTACT;
 // 自費價目（院長 2026-10-05；系統指示第 5 條例外二）：規則與回覆都在 knowledge.json 的 prices（由 internal/AI客服_自費價目.json 產生）。
 // 閘門：有問價格才查；含「公費」不查；疫苗問「免費／要錢嗎」不查（交給下面的公費／自費疫苗掛號費規則）。
@@ -131,6 +134,8 @@ const VAX_CUTOFF_REPLY = '您好，因疫苗清點與申報作業，本院於每
 const PIN_CUTOFF = ['週六、週日或夜診時段可以接種疫苗嗎？', '打疫苗需要預約嗎？要先確認有沒有貨嗎？'];
 const PIN_FLU_DOCS = ['打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？', '國小到高中職學生要打公費流感疫苗，需要帶什麼？'];
 const PIN_FLU_DOCS_STUDENT = ['國小到高中職學生要打公費流感疫苗，需要帶什麼？', '打流感疫苗要預約嗎？可以直接現場掛號嗎？當天要帶什麼？'];
+// 部分負擔題的主題詞：問句與題目同時命中的組數多者先答（院長 2026-11-19；core.PINS 同名逐字核對）
+const COPAY_TOPICS = ['慢箋|慢性處方|連續處方', '小孩|孩子|兒童|幾歲|寶寶|未滿', '醫院|醫學中心', '免', '為什麼|比上次|比較貴|比較多|不一樣', '藥費|藥品|藥|怎麼算|計算|級距|上限|最多'];
 const PIN_NASAL_SOLDOUT = ['鼻噴式流感疫苗還有嗎？能伏鼻售完了嗎？'];
 // 預約額滿、電話預約（院長 2026-09-24）：只有網路系統一個管道，額滿不加號
 const QUOTA = /額滿|滿了|約滿|約不到|沒名額|沒有名額|加號|加掛|還有名額|有沒有名額|還有位子|電話.{0,4}(?:預約|掛號|約)|打電話.{0,6}(?:約|掛)/;
@@ -251,7 +256,8 @@ export function createAssistant(kb) {
   function present(row) {
     if (row.fee) return row.answer + '\n\n' + OTHER_FEES;
     const pub = publicVaxNote();
-    if (PRICE.test(normalize(row.title))) return '費用依項目與當日狀況不同，' + CONTACT;
+    // 健保署法定部分負擔規則可答（院長 2026-11-18 裁示 §4-12 例外，限此頁）；本院收費仍轉人工
+    if (PRICE.test(normalize(row.title)) && row.path !== STATUTORY_COPAY_PATH) return '費用依項目與當日狀況不同，' + CONTACT;
     let text = row.answer;
     const all = row.title + row.answer;
     if (/疫苗|接種/.test(all) && !(/仿單/.test(all) && /醫師評估/.test(all) && /來電|LINE/.test(all) && /暫緩|急性/.test(all))) text += '\n\n' + VACCINE_NOTE;
@@ -458,6 +464,16 @@ export function createAssistant(kb) {
     }
     if (CHECKUP.test(q) && !CHILD.test(q) && asksMoney && checkupNote()) {
       return reply('fee', checkupNote(), [{ type: 'text', text: OTHER_FEES }]);
+    }
+    // 6-0b. 健保部分負擔細節：答部分負擔衛教文的 FAQ（依 COPAY_TOPICS 命中組數排序，同分照頁面順序），不給門診收費標準表
+    if (COPAY.test(q)) {
+      const pool = kb.faqs.filter((r) => valid(r, today) && /部分負擔|付的錢比上次多/.test(r.title) && !/收費標準/.test(r.title));
+      if (pool.length) {
+        const score = (row) => COPAY_TOPICS.filter((t) => new RegExp(t).test(q) && new RegExp(t).test(row.title)).length;
+        const hits = pool.map((row, i) => ({ row, score: score(row), i })).sort((a, b) => b.score - a.score || a.i - b.i).slice(0, 3);
+        const fb = faqBlock(hits);
+        return reply('results', '', [{ ...fb, items: fb.items.map((it, i) => ({ ...it, open: i === 0 })) }]);
+      }
     }
     // 過敏用藥問慢箋：本院最多開 28 天、不開慢性病連續處方箋（院長 2026-09-26），不是收費問題
     if (/慢性處方|慢箋|連續處方/.test(q) && /氣喘|過敏|噴劑|鼻炎|鼻子/.test(q)) {
