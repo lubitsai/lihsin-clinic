@@ -32,6 +32,10 @@ build_members.py — 減重營養課「學員專區」（/members/nutrition/）�
   python3 internal/tools/build_members.py --old-password 密碼 --password 密碼 \\
       --video 1=https://youtu.be/XXXXXXXXXXX --video 2=YYYYYYYYYYY
 
+  # 加附加檔（逐字稿、課後練習單、小測驗；來源由 lhclinic-work 的 學員資料/make_member_docs.py 產生）
+  python3 internal/tools/build_members.py --old-password 密碼 --password 密碼 \
+      --add t01=…/t01.pdf --add w00=…/w00.pdf --add quiz=…/quiz.json
+
   # 只檢查：用密碼解開 vault，列出影片設定與 PDF 能否解密
   python3 internal/tools/build_members.py --check --password 密碼
 
@@ -104,6 +108,8 @@ def main():
     ap.add_argument("--old-password", help="目前密碼；vault 已存在時必填")
     ap.add_argument("--pdf-dir", type=Path, help="重新加密教材 PDF（01_教材.pdf～08_教材.pdf）")
     ap.add_argument("--video", action="append", default=[], metavar="N=URL", help="設定第 N 堂影片")
+    ap.add_argument("--add", action="append", default=[], metavar="NAME=PATH",
+                    help="加密任一檔案成 files/NAME.bin（逐字稿 t01～t08、練習單 w00～w08、小測驗 quiz）")
     ap.add_argument("--check", action="store_true", help="只檢查，不寫檔")
     a = ap.parse_args()
 
@@ -120,6 +126,12 @@ def main():
                 raw = f.read_bytes()
                 ok = "PDF 可解密" if AESGCM(k).decrypt(raw[:12], raw[12:], None)[:5] == b"%PDF-" else "✗ 不是 PDF"
             print(f"第{n}堂  影片：{p['v'].get(str(n)) or '（未設定）'}  教材：{ok}")
+        extras = sorted(f for f in FILES.glob("*.bin") if not re.fullmatch(r"\d{2}\.bin", f.name))
+        for f in extras:
+            raw = f.read_bytes()
+            body = AESGCM(k).decrypt(raw[:12], raw[12:], None)
+            kind = "PDF" if body[:5] == b"%PDF-" else "JSON" if body[:1] in b"{[" else "其他"
+            print(f"附加檔 {f.name}：{kind} 可解密（{len(body):,} bytes）")
         return
 
     if vault:
@@ -143,12 +155,37 @@ def main():
 
     # 換密碼＝連內容金鑰一起換（院長 2026-11-14 裁示：知道舊密碼的人不能再打開新版教材）
     rotate = bool(vault) and a.password != a.old_password
+    old_k = unb64(payload["k"])
+    if rotate:
+        payload["k"] = b64(os.urandom(32))
+    k = unb64(payload["k"])
+    FILES.mkdir(parents=True, exist_ok=True)
+
+    def seal(out, body):
+        nonce = os.urandom(12)
+        out.write_bytes(nonce + AESGCM(k).encrypt(nonce, body, None))
+
+    # 附加檔（逐字稿、練習單、小測驗）：換密碼時一起用新 K 重新加密；--add 給的檔案以新內容加密
+    added = {}
+    for item in a.add:
+        name, _, path = item.partition("=")
+        if not re.fullmatch(r"[a-z0-9-]+", name) or re.fullmatch(r"\d{2}", name):
+            sys.exit(f"✗ --add 名稱只能用小寫英數與連字號，且不可與教材 01～08 同名：{item}")
+        if not Path(path).is_file():
+            sys.exit(f"✗ 找不到 {path}")
+        added[name] = Path(path).read_bytes()
+    if rotate:
+        for f in sorted(FILES.glob("*.bin")):
+            name = f.stem
+            if re.fullmatch(r"\d{2}", name) or name in added:
+                continue
+            raw = f.read_bytes()
+            seal(f, AESGCM(old_k).decrypt(raw[:12], raw[12:], None))
+            print(f"附加檔 {f.name}（新金鑰）")
+    for name, body in added.items():
+        seal(FILES / f"{name}.bin", body)
+        print(f"附加檔 {name} → members/nutrition/files/{name}.bin")
     if a.pdf_dir or rotate:
-        old_k = unb64(payload["k"])
-        if rotate:
-            payload["k"] = b64(os.urandom(32))
-        k = unb64(payload["k"])
-        FILES.mkdir(parents=True, exist_ok=True)
         for n in range(1, LESSONS + 1):
             out = FILES / f"{n:02d}.bin"
             if a.pdf_dir:
@@ -159,8 +196,7 @@ def main():
             else:
                 raw = out.read_bytes()
                 pdf = AESGCM(old_k).decrypt(raw[:12], raw[12:], None)
-            nonce = os.urandom(12)
-            out.write_bytes(nonce + AESGCM(k).encrypt(nonce, pdf, None))
+            seal(out, pdf)
             print(f"第{n}堂教材 → members/nutrition/files/{n:02d}.bin" + ("（新金鑰）" if rotate else ""))
 
     write_vault(payload, a.password)
