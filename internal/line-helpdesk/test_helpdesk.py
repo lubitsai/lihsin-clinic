@@ -39,7 +39,10 @@ class RoutingTests(unittest.TestCase):
                 main.process_event(ev)
                 db.assert_not_called()
                 text = rep.call_args.args[1][0]['text']
-                self.assertTrue(text.startswith('目前沒有門診異動') or '門診異動公告' in text, mode)
+                # 公告標題由官網決定（例：「看診醫師異動」），不寫死字樣：比對程式對同一句應回的公告內容
+                expected = main.CATALOG.notice_answer('最新門診異動', main.now().astimezone(main.TAIPEI).date())['text']
+                self.assertEqual(text, expected, mode)
+                self.assertTrue(text.startswith('目前沒有門診異動') or any(n['title'] in text for n in main.CATALOG._schedule_notices(main.now().astimezone(main.TAIPEI).date())), mode)
         # 若仍設為後台回答（passthrough），程式不重複回
         with patch('main.database'), patch('main.reply') as rep, patch.dict(os.environ,{'BOT_MODE':'pilot','OA_PASSTHROUGH_KEYWORDS':'["最新門診異動"]'}):
             main.process_event(ev)

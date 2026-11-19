@@ -1,3 +1,9 @@
+2026-11-19 第二版 2.67（題庫重產：健保部分負擔 8 題含級距更正、兒童感冒居家工具 7 題、11/19～11/22 醫師異動公告；部署程式同 2.66；取代未部署的 2.66）
+- LINE unittest 完整版（requirements.lock.txt）：104 項全過。test_helpdesk 的「最新門診異動」測試原本寫死公告標題須含「門診異動公告」，遇到標題為「看診醫師異動」的公告會誤判失敗 → 改為比對程式實際應回的公告內容（只改測試，部署檔案不變）。
+- sync_assistants.py：官網 340 項、一致性比對 452 句全部一致；validate_site 通過。
+- 部署程式（main.py／core.py／requirements.txt）自 2.65 未改；2.65 起的程式變更仍未部署 → 部署走測試模式＋實測。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-15 第二版 2.66（題庫重產：迷思大破解 #1 鼻噴劑與身高 7 題；程式同 2.65；取代未部署的 2.65）
 - LINE unittest 完整版（requirements.lock.txt）：104 項全過。
 - sync_assistants.py：官網 340 項、一致性比對全部一致；validate_site 通過。
