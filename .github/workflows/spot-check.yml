@@ -1359,6 +1359,10 @@ jobs:
           # 2026-11-18：寵粉文「健保藥費部分負擔怎麼算」新頁的減藥提醒段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           nc1=$(curl -s --max-time 20 "$BASE/health/nhi-copayment.html" | grep -c '再跑一趟，花的時間和費用都更多' || true)
           if [ "$nc1" -ge 1 ]; then echo "OK    部分負擔寵粉文『不要為了省部分負擔自己減藥』段已上線"; else echo "FAIL  部分負擔頁未見『再跑一趟，花的時間和費用都更多』——11-18 新頁內文疑未上線或已回退"; fail=1; fi
+          check /health/child-cold-nasal-tools.html 200
+          # 2026-11-19：新頁「兒童感冒三法寶」快速重點的霧化器定位句（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          cn1=$(curl -s --max-time 20 "$BASE/health/child-cold-nasal-tools.html" | grep -c '霧化器是給藥的機器，一般感冒用不到' || true)
+          if [ "$cn1" -ge 1 ]; then echo "OK    感冒三法寶新頁『霧化器是給藥的機器』定位句已上線"; else echo "FAIL  感冒三法寶頁未見『霧化器是給藥的機器，一般感冒用不到』——11-19 新頁內文疑未上線或已回退"; fail=1; fi
           # 2026-11-03：寵粉文「兒童餵藥」新頁的針筒餵法段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           gm1=$(curl -s --max-time 20 "$BASE/health/giving-medicine.html" | grep -c '對著臉頰內側推一點' || true)
           if [ "$gm1" -ge 1 ]; then echo "OK    餵藥寵粉文『針筒餵法』段已上線"; else echo "FAIL  餵藥頁未見『對著臉頰內側推一點』——11-03 新頁內文疑未上線或已回退"; fail=1; fi
