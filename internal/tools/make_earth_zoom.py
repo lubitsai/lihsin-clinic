@@ -25,7 +25,7 @@ PHOTO = sys.argv[2]
 OUT = sys.argv[3]
 W, H, FPS = 1080, 1920, 30
 SS = 2  # supersampling for vector layer
-LON_T, LAT_T = 120.20645980056585, 23.014676834296754
+LON_T, LAT_T = 120.2064375, 23.0145625
 FONT = os.environ.get("EARTH_ZOOM_FONT", "/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc")
 CORAL = (238, 112, 89)
 
