@@ -225,3 +225,18 @@ class TailRouteTests(unittest.TestCase):
         self.assertIn('立欣診所門診時間', self.ans('夜診幾點')[1]['text'])
         self.assertIn('lhpedclinic@gmail.com', self.ans('email')[1]['text'])
         self.assertIn('台南市北區育德路', self.ans('停車方便嗎')[1]['text'])
+
+class CopayRouteTests(unittest.TestCase):
+    """search.js 6-0b（院長 2026-11-19）：部分負擔細節問法答部分負擔文 FAQ；法定數字放行，本院收費仍走收費表"""
+    def test_copay_detail_questions(self):
+        day = date(2026, 11, 20)
+        for q, head in [('藥品部分負擔怎麼算', '在基層診所，藥費 100 元以下不用付'), ('藥費250元部分負擔多少', '在基層診所，藥費 100 元以下不用付'),
+                        ('慢箋要付部分負擔嗎', '基層診所開立的慢性病連續處方箋'), ('小孩看病要付部分負擔嗎', '未滿 3 歲的孩子'),
+                        ('去醫學中心拿藥部分負擔多少', '會。2023 年 7 月 1 日起'), ('哪些人免部分負擔', '依健保規定')]:
+            action, payload = route(q, day)
+            self.assertEqual(action, 'answer', q)
+            self.assertTrue(payload['text'].startswith(head), (q, payload['text'][:40]))
+    def test_plain_fee_question_keeps_fee_table(self):
+        action, payload = route('部分負擔多少', date(2026, 11, 20))
+        self.assertIn('掛號費 150 元', payload['text'])
+
