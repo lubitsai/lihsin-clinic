@@ -185,7 +185,7 @@
 
  <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-6" aria-labelledby="after-h2">
  <h2 id="after-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-2">🌱 八堂課之後</h2>
- <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-4">結業後繼續用課程的方法練習：每週勾一次自我檢查，體重停滯時先回頭看紀錄，再帶著紀錄回診討論。</p>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-4">結業後繼續用課程的方法練習：每週勾一次自我檢查，體重停滯時先回頭看紀錄，再帶著紀錄回診討論。在家煮可以參考 6 套一人份家常餐盤；也可以把家人支持指南分享給同住的家人。</p>
  <div id="after-buttons" class="flex flex-wrap gap-2"></div>
  </section>
  <p class="mt-8 text-sm text-gray-500 font-chinese text-center leading-relaxed">課程內容是一般營養衛教，個人的熱量、份量與用藥，請依醫師和營養師的評估調整。</p>
@@ -197,7 +197,7 @@
  <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086｜<a href="/privacy.html" style="color:inherit;text-decoration:underline;">隱私權政策</a></p>
 </footer>
 
-<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "gvdmxTapuZm52zyryKbQmg==", "iv": "yZp0AuKkVZi0mAUb", "ct": "MG5G5rhq7bP5qzfMfYcgePwoz19eZlh6YmbQkGqSw3ug1BvmRYuX+0Ho5nJ71z32hcDcylaro0Y1uzfJmr21SySBT7n1MVchBEnoqmvPaF2XzY+L6r4t0ra6o5pmuv3LpnoZ5iRZi4cZeUoiJo6Bas50NWOKXatO4277V/T5eKqMua93Ld053nm9nkkJXL/a9WZTiwOneSQ1jZ0Vbrrax8+WiE4FnNUfvBR77nEpikROyw+u3hL7/B+oV76pFeTWuoMEpE/FRzF6Jvp2e/FioUtJ30osUAJrEms="}</script>
+<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "wKAi2Ttl97waPYpIpXOroA==", "iv": "SWgMa08PN9adAa9x", "ct": "0iz5Qtp0VHOt7dDpsatm2T4SHX/SFkQ2J6M3c0UIryDfZDKKH0n/RmXeTiraA5NMHIA2shLLGwgWRx3dp9fSuyW9mj9hZhcrtrBbSNgtEB5FdlPhNGc+oeucJkf0yTubdDlXatnRQuFYtLMpA/ZZU6wolMnFBLyrhwK7KVDaParShJPbhLirltvLL0MZLaTXYs6CKJ3Wut7ABq42r/fCbfU+1B3msd9YxCkMS4fWkbTnEx4AOKTxgsWByxdJo1UnVwdk4jYxt0jwtBL13KF50k975QRtPl6RT9k="}</script>
 <script>
 (() => {
   const LESSONS = [
@@ -411,7 +411,9 @@
       fileButton('book', '📚', '練習單合訂本', '減重營養課練習單合訂本.pdf'),
       fileButton('card-portion', '📱', '份量速查小卡', '份量速查小卡.png', 'image/png'),
       fileButton('card-eatout', '📱', '外食點餐小卡', '外食點餐小卡.png', 'image/png'));
-    const after = [fileButton('w09', '🌱', '結業後的維持練習', '結業後的維持練習.pdf')];
+    const after = [fileButton('w09', '🌱', '結業後的維持練習', '結業後的維持練習.pdf'),
+      fileButton('r01', '🍲', '減重家常餐盤', '減重家常餐盤.pdf'),
+      fileButton('f01', '👨‍👩‍👧', '給家人的支持指南', '給家人的支持指南.pdf')];
     if (data.f) after.push(el('a', { href: data.f, target: '_blank', rel: 'noopener', class: BTN }, '📮 填寫課程回饋問卷'));
     $('after-buttons').replaceChildren(...after);
     updateProgress();
