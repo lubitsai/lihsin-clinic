@@ -135,7 +135,8 @@ def main():
         for f in extras:
             raw = f.read_bytes()
             body = AESGCM(k).decrypt(raw[:12], raw[12:], None)
-            kind = "PDF" if body[:5] == b"%PDF-" else "JSON" if body[:1] in b"{[" else "其他"
+            kind = ("PDF" if body[:5] == b"%PDF-" else "JSON" if body[:1] in b"{[" else "PNG" if body[:4] == b"\x89PNG"
+                    else "MP3" if body[:3] == b"ID3" or body[:2] == b"\xff\xfb" else "其他")
             print(f"附加檔 {f.name}：{kind} 可解密（{len(body):,} bytes）")
         return
 
