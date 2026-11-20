@@ -138,6 +138,45 @@
  <p class="mt-3 text-sm text-gray-500 font-chinese leading-relaxed">看完一堂就勾「已看完」，進度只存在這台裝置。每堂附逐字稿、課後練習單和小測驗；一週飲食紀錄表可列印，回診時帶給醫師或營養師。</p>
  </div>
  <div id="lessons" class="grid gap-6"></div>
+
+ <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-6" aria-labelledby="calc-h2">
+ <h2 id="calc-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-2">🧮 熱量與蛋白質試算（第 3 堂）</h2>
+ <p class="text-sm text-gray-500 font-chinese leading-relaxed mb-4">幫助理解課程的算法，不是個人目標。實際要吃多少，請和醫師或營養師一起訂；試算的數字不會傳出這台裝置。</p>
+ <div class="grid md:grid-cols-2 gap-6">
+ <div>
+ <h3 class="font-bold text-[#7C9A6E] font-chinese mb-2">熱量赤字</h3>
+ <label for="c-tdee" class="block text-sm text-gray-700 font-chinese mb-1">每日總消耗熱量 TDEE（大卡，可請營養師提供）</label>
+ <input id="c-tdee" type="number" inputmode="numeric" min="0" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl mb-3">
+ <label for="c-bmr" class="block text-sm text-gray-700 font-chinese mb-1">基礎代謝 BMR（大卡，InBody 量測，可不填）</label>
+ <input id="c-bmr" type="number" inputmode="numeric" min="0" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl mb-3">
+ <label for="c-eat" class="block text-sm text-gray-700 font-chinese mb-1">每天吃進去的熱量（大卡）</label>
+ <input id="c-eat" type="number" inputmode="numeric" min="0" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl">
+ <p id="c-kcal-out" class="mt-3 text-sm font-chinese leading-relaxed text-gray-700" aria-live="polite"></p>
+ </div>
+ <div>
+ <h3 class="font-bold text-[#7C9A6E] font-chinese mb-2">蛋白質換成豆魚蛋肉份數</h3>
+ <label for="c-kg" class="block text-sm text-gray-700 font-chinese mb-1">體重（公斤）</label>
+ <input id="c-kg" type="number" inputmode="decimal" min="0" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl mb-3">
+ <label for="c-act" class="block text-sm text-gray-700 font-chinese mb-1">運動習慣</label>
+ <select id="c-act" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl bg-white">
+ <option value="a">沒有運動，或做有氧運動</option>
+ <option value="r">有做重訓等肌力訓練</option>
+ </select>
+ <p id="c-pro-out" class="mt-3 text-sm font-chinese leading-relaxed text-gray-700" aria-live="polite"></p>
+ </div>
+ </div>
+ </section>
+
+ <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-6" aria-labelledby="faq-h2" id="faq-box" hidden>
+ <h2 id="faq-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-3">💬 學員常見問題</h2>
+ <div id="faq-list" class="flex flex-col gap-2"></div>
+ </section>
+
+ <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-6" aria-labelledby="after-h2">
+ <h2 id="after-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-2">🌱 八堂課之後</h2>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-4">結業後繼續用課程的方法練習：每週勾一次自我檢查，體重停滯時先回頭看紀錄，再帶著紀錄回診討論。</p>
+ <div id="after-buttons" class="flex flex-wrap gap-2"></div>
+ </section>
  <p class="mt-8 text-sm text-gray-500 font-chinese text-center leading-relaxed">課程內容是一般營養衛教，個人的熱量、份量與用藥，請依醫師和營養師的評估調整。</p>
  </section>
  </div>
@@ -147,7 +186,7 @@
  <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086｜<a href="/privacy.html" style="color:inherit;text-decoration:underline;">隱私權政策</a></p>
 </footer>
 
-<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "abAvUICocoxtg51eESXpsQ==", "iv": "SSnIThAf+bXzdoMz", "ct": "JkqZsSzDVnDDvgO6+wN9oMUUNrGWHl0keigCB+x+36O+5Ab0mXNMO422TPyNe+A+6muVmwqqPjM2LWqdFgJU47UEffh6M6Tj8U9EJSYz2a+c1LWAB7MOITIs+7qc5FbCHZD/6ZrTNt2rED+tAwRo9gRHFfkmJuOQk+fcN7oMpJ3c2VYrbOeFFdlZoy8Q3Vj3F2KyYZC8DPKDvVjNxizwDdd45V05WmcGqERaGwXJWQ4HbFz5X/KX+0J4KSvYrlNOuYAn251G3g1RRsiTKdUZRHIIGKByodqlanc="}</script>
+<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "aJG5q1wJMz23txfrr9Qdzg==", "iv": "/l+eDP0jUgmLim2u", "ct": "OlEn8BoPX57Xw0jed8F8fgl+YmjdkBMIenBBYQLnWfXVCIvNA5941CE0y2kZ+Gvdkg0tPFqAxBXVGXRvVe0N+2EePqFa1FMISZwO5tR2nzg6CSmjYqorPXf4GEgwDkFy6i9pZpC/Hu5Jl7jf6n0jPF6ZWKlG+AJ58tFe0MQYcdG+CFGBHgQMY5Vptw671JxAfKRZOkYE1tx0Z16pL0QZXylYC3mmTpCmUZnW26/mlhxdWQPabFkc8f0aAB7xW2577QSG5MYTj8bPiKJHsyJh/voWLEoDpFb5A9M="}</script>
 <script>
 (() => {
   const LESSONS = [
@@ -293,8 +332,43 @@
       box.append(article);
     });
     $('weekly-log').replaceChildren(fileButton('w00', '📋', '一週飲食紀錄表', '一週飲食紀錄表.pdf'));
+    const after = [fileButton('w09', '🌱', '結業後的維持練習', '結業後的維持練習.pdf')];
+    if (data.f) after.push(el('a', { href: data.f, target: '_blank', rel: 'noopener', class: BTN }, '📮 填寫課程回饋問卷'));
+    $('after-buttons').replaceChildren(...after);
     updateProgress();
   }
+
+  function renderFaq(items) {
+    $('faq-list').replaceChildren(...items.map((it) => el('details', { class: 'bg-[#f8faf7] rounded-xl border border-gray-100 p-4' },
+      el('summary', { class: 'font-bold text-gray-800 font-chinese cursor-pointer text-sm' }, it.q),
+      el('p', { class: 'mt-2 text-sm text-gray-600 font-chinese leading-relaxed' }, `${it.a}（第 ${it.n} 堂）`))));
+    $('faq-box').hidden = false;
+  }
+
+  // 試算：只做課程教的兩個算法，不推估減重天數（第 3 堂：算式不保證減重速度）
+  function calc() {
+    const num = (id) => { const v = parseFloat($(id).value); return v > 0 ? v : null; };
+    const tdee = num('c-tdee'), bmr = num('c-bmr'), eat = num('c-eat'), kg = num('c-kg');
+    const notes = [];
+    if (tdee && eat) {
+      const gap = tdee - eat;
+      notes.push(gap > 0 ? `熱量赤字約 ${Math.round(gap)} 大卡（${Math.round(tdee)} － ${Math.round(eat)}）。` : '吃進去的熱量沒有低於每日總消耗，沒有熱量赤字。');
+      if (bmr && eat < bmr) notes.push('教材建議減重期間吃的熱量仍要高於基礎代謝。');
+      if (eat < 1200) notes.push('國健署提醒每天熱量不建議低於 1,200 大卡，更低的熱量需要在醫療人員指導下進行。');
+      notes.push('算式不保證減重速度，實際要吃多少請和醫師或營養師一起安排。');
+    }
+    $('c-kcal-out').textContent = notes.join('');
+    if (kg) {
+      const [lo, hi] = $('c-act').value === 'r' ? [1.5, 1.5] : [1.2, 1.5];
+      const g = (f) => Math.round(kg * f), p = (f) => Math.round((kg * f) / 7);
+      const grams = lo === hi ? `約 ${g(lo)} 公克` : `約 ${g(lo)}～${g(hi)} 公克`;
+      const parts = lo === hi ? `約 ${p(lo)} 份` : `約 ${p(lo)}～${p(hi)} 份`;
+      $('c-pro-out').textContent = `每公斤體重 ${lo === hi ? lo : `${lo}～${hi}`} 公克：蛋白質${grams}，換成豆魚蛋肉${parts}（一份約 7 公克），分散到一天的各餐。這是課程的估算方式，個人目標請營養師確認。`;
+    } else {
+      $('c-pro-out').textContent = '';
+    }
+  }
+  ['c-tdee', 'c-bmr', 'c-eat', 'c-kg', 'c-act'].forEach((id) => $(id).addEventListener('input', calc));
 
   async function unlock(password, quiet) {
     const data = await openVault(password);
@@ -303,6 +377,7 @@
     let quiz = null;
     try { quiz = JSON.parse(new TextDecoder().decode(await decryptFile('quiz'))); } catch (e) {}
     render(data, quiz);
+    try { renderFaq(JSON.parse(new TextDecoder().decode(await decryptFile('faq')))); } catch (e) {}
     $('gate').hidden = true;
     $('zone').hidden = false;
   }
