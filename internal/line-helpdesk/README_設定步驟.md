@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.68）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.69）
 
-2026-11-19 第二版 2.68｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-20 第二版 2.69｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.69 診所資訊卡「地圖導航」改連 Google 商家（2026-11-20）
+
+院長手機核對：原連結 `maps.app.goo.gl/Z9k5pigizhbdM9cp9` 開的是「704臺南市北區福德里育德路467號」地址點（無店名、無評論，圖釘偏北），不是診所的 Google 商家頁。改用官網首頁 schema 同一條 `maps.app.goo.gl/i2yaH7yPD2jLymzP8`（院長核對：開啟「立欣診所｜小兒專科・家庭醫學」）。`legacy_messages.json` 兩處（「立欣診所」與「診所資訊」卡）。另含 11-20l 題庫重產（清 11/15 過期門診特例，對回答無影響）。程式（`main.py`／`core.py`）未改，與 2.68 相同；取代未部署的 2.68。
 
 ## 2.68 健保部分負擔問法分流（2026-11-19）
 

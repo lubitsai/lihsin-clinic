@@ -241,7 +241,7 @@
                 "action": {
                   "type": "uri",
                   "label": "地圖導航",
-                  "uri": "https://maps.app.goo.gl/Z9k5pigizhbdM9cp9"
+                  "uri": "https://maps.app.goo.gl/i2yaH7yPD2jLymzP8"
                 },
                 "style": "primary",
                 "height": "sm",
@@ -2414,7 +2414,7 @@
                 "action": {
                   "type": "uri",
                   "label": "地圖導航",
-                  "uri": "https://maps.app.goo.gl/Z9k5pigizhbdM9cp9"
+                  "uri": "https://maps.app.goo.gl/i2yaH7yPD2jLymzP8"
                 },
                 "style": "primary",
                 "height": "sm",
