@@ -39,6 +39,17 @@ export function sessionOfTime(time: string): SessionPeriod {
   return "EVENING";
 }
 
+const APPLY_ORDER: Record<ExceptionType, number> = {
+  CLINIC_CLOSED_DAY: 0,
+  SESSION_CLOSED: 1,
+  DOCTOR_OFF: 2,
+  DOCTOR_SUBSTITUTE: 3,
+  SPECIAL_HOURS: 4,
+  EXTRA_SESSION: 5,
+  SLOT_BLOCKED: 6,
+  CLINIC_TYPE_SUSPENDED: 7,
+};
+
 /**
  * 將日期例外套用到看診區間。
  * 唯一實作：實際班表（getDayScheduleBlocks）與後台「受影響預約」模擬共用，
@@ -51,8 +62,11 @@ export function applyExceptions(
 ): WorkingBlock[] {
   if (exceptions.some((e) => e.type === "CLINIC_CLOSED_DAY")) return [];
 
+  // 依類型排序再套用：資料庫回傳順序不固定，代診若排在特殊時間之後，
+  // 以代診醫師為對象的特殊時間會找不到區間而默默失效。
+  const ordered = [...exceptions].sort((a, b) => APPLY_ORDER[a.type] - APPLY_ORDER[b.type]);
   let blocks = input;
-  for (const e of exceptions) {
+  for (const e of ordered) {
     switch (e.type) {
       case "SESSION_CLOSED":
         blocks = blocks.filter((b) => b.session !== e.session);

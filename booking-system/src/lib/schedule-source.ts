@@ -93,10 +93,12 @@ interface DesiredTemplate {
 }
 interface DesiredException {
   date: string;
-  type: "CLINIC_CLOSED_DAY" | "SESSION_CLOSED" | "SPECIAL_HOURS" | "DOCTOR_OFF";
+  type: "CLINIC_CLOSED_DAY" | "SESSION_CLOSED" | "SPECIAL_HOURS" | "DOCTOR_OFF" | "DOCTOR_SUBSTITUTE";
   session?: SessionPeriod;
-  /** 有值＝只影響這位醫師（DOCTOR_OFF 一定有；SPECIAL_HOURS 有值時只改這位醫師的時間） */
+  /** 有值＝只影響這位醫師（DOCTOR_OFF／DOCTOR_SUBSTITUTE 一定有；SPECIAL_HOURS 有值時只改這位醫師的時間） */
   doctorId?: string;
+  /** DOCTOR_SUBSTITUTE 的代診醫師 */
+  substituteDoctorId?: string;
   startTime?: string;
   endTime?: string;
 }
@@ -180,10 +182,37 @@ function planSchedule(
             usual.set(id, { start: slot.start, end: slot.end });
           }
         }
+        // 平常有班、當天沒列到的醫師 vs 當天列到、平常沒班的醫師：
+        // 一對一配成代診（2026-11-19 午診李→蔡、11-20 晚診蔡→李），配不完的才當休診或回報。
+        const absent = [...usual.keys()].filter((id) => !present.has(id));
+        const extra = [...present].filter((id) => !usual.has(id));
+        const pairs = Math.min(absent.length, extra.length);
+        for (let i = 0; i < pairs; i++) {
+          exceptions.push({
+            date,
+            type: "DOCTOR_SUBSTITUTE",
+            session: base.session,
+            doctorId: absent[i],
+            substituteDoctorId: extra[i],
+          });
+          const span = usual.get(absent[i])!;
+          if (span.start !== match.start || span.end !== match.end) {
+            // applyExceptions 先套代診再套特殊時間，所以這裡對的是代診醫師
+            exceptions.push({
+              date,
+              type: "SPECIAL_HOURS",
+              session: base.session,
+              doctorId: extra[i],
+              startTime: match.start,
+              endTime: match.end,
+            });
+          }
+        }
+        for (const doctorId of absent.slice(pairs)) {
+          exceptions.push({ date, type: "DOCTOR_OFF", session: base.session, doctorId });
+        }
         for (const [doctorId, span] of usual) {
-          if (!present.has(doctorId)) {
-            exceptions.push({ date, type: "DOCTOR_OFF", session: base.session, doctorId });
-          } else if (span.start !== match.start || span.end !== match.end) {
+          if (present.has(doctorId) && (span.start !== match.start || span.end !== match.end)) {
             exceptions.push({
               date,
               type: "SPECIAL_HOURS",
@@ -194,14 +223,12 @@ function planSchedule(
             });
           }
         }
-        for (const doctorId of present) {
-          if (!usual.has(doctorId)) {
-            const name = doctors.find((d) => d.id === doctorId)?.name ?? doctorId;
-            warnings.push(
-              `${date} ${sessionLabel(base.session)}官網寫由${name}醫師看診，但這位醫師平常這個診次沒有班，` +
-                `未自動建立。請於後台「排班管理」手動加診。`,
-            );
-          }
+        for (const doctorId of extra.slice(pairs)) {
+          const name = doctors.find((d) => d.id === doctorId)?.name ?? doctorId;
+          warnings.push(
+            `${date} ${sessionLabel(base.session)}官網寫由${name}醫師看診，但這位醫師平常這個診次沒有班、` +
+              `也沒有可對應的代診對象，未自動建立。請於後台「排班管理」手動加診。`,
+          );
         }
       } else if (match.start !== base.start || match.end !== base.end) {
         exceptions.push({
@@ -236,7 +263,8 @@ function planSchedule(
  *   - 空陣列          → 整日休診
  *   - 當日少了某診次   → 該診次停診
  *   - 時間與平常不同   → 該診次特殊時間
- *   - 該診次寫了醫師   → 逐位比對：沒列到的醫師當診休診（DOCTOR_OFF）、列到但時間不同的只改那位醫師
+ *   - 該診次寫了醫師   → 逐位比對：平常有班沒列到＋平常沒班有列到 → 一對一配成代診（DOCTOR_SUBSTITUTE）；
+ *                        配不完的：沒列到的當診休診（DOCTOR_OFF）、多出來的只回報；列到但時間不同的只改那位醫師
  *   - 多出平常沒有的診次 → **不自動建立**（官網沒寫由哪位醫師看，猜錯比不做更糟），只回報
  * 只處理今天以後的日期；過期條目官網說可留著，這裡略過。
  */
@@ -290,6 +318,7 @@ export async function applySchedule(
           type: e.type,
           session: e.session ?? null,
           doctorId: e.doctorId ?? null,
+          substituteDoctorId: e.substituteDoctorId ?? null,
           startTime: e.startTime ?? null,
           endTime: e.endTime ?? null,
         })),
@@ -366,6 +395,7 @@ export async function applySchedule(
         type: e.type,
         session: e.session,
         doctorId: e.doctorId,
+        substituteDoctorId: e.substituteDoctorId,
         startTime: e.startTime,
         endTime: e.endTime,
         reason,

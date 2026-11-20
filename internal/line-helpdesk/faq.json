@@ -4,7 +4,7 @@
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
    "kb_sha256": "e790c40110d4e549919f67cfdd5bf4a63dc83162779b163abfdf686828326010"
   },
-  "knowledge_sha256": "97e5d41663f58e6044f379d9d62cfad0eb812ce6338859cca163eba36c271677",
+  "knowledge_sha256": "297a06976c2ac5a2c6614a4ce6ce13d8cfa8a0a2d1cd9066cd1f778e22a1972c",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
@@ -745,24 +745,6 @@
    ]
   },
   "exceptions": {
-   "2026-11-15": [
-    {
-     "session": "MORNING",
-     "start": "08:00",
-     "end": "11:30",
-     "doctors": [
-      "蔡"
-     ]
-    },
-    {
-     "session": "EVENING",
-     "start": "18:30",
-     "end": "21:00",
-     "doctors": [
-      "蔡"
-     ]
-    }
-   ],
    "2026-11-19": [
     {
      "session": "MORNING",

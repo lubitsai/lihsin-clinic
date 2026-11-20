@@ -11,7 +11,7 @@ import {
   WEBSITE_SYNC_ACTOR,
   type ScheduleSource,
 } from "@/lib/schedule-source";
-import { getDayScheduleBlocks } from "@/lib/schedule";
+import { applyExceptions, getDayScheduleBlocks } from "@/lib/schedule";
 import { dateToDb } from "@/lib/tw-time";
 import { resetDb } from "./helpers";
 
@@ -298,6 +298,67 @@ describe("單日特例以官網為準", () => {
     );
   });
 
+  it("換醫師看診配成代診：原醫師的時段改由代診醫師看（11/19 午診李→蔡）", async () => {
+    const { tsai, lee } = await seedDoctors();
+    const thursday: ScheduleSource["weekly"] = {
+      ...WEEKLY_ONLY_MONDAY,
+      "4": [
+        { session: "MORNING", start: "08:00", end: "12:00", doctors: ["李"] },
+        { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: ["李"] },
+        { session: "EVENING", start: "18:30", end: "21:30", doctors: ["蔡"] },
+      ],
+    };
+    const day = "2026-08-13"; // 週四
+    const r = await applySchedule(
+      prisma,
+      {
+        weekly: thursday,
+        exceptions: {
+          [day]: [
+            { session: "MORNING", start: "08:00", end: "12:00", doctors: ["李"] },
+            { session: "AFTERNOON", start: "14:30", end: "18:00", doctors: ["蔡"] },
+            { session: "EVENING", start: "18:30", end: "21:30", doctors: ["蔡"] },
+          ],
+        },
+      },
+      TODAY,
+    );
+    expect(r.warnings.filter((w) => w.includes("未自動建立"))).toEqual([]);
+    const rows = await prisma.scheduleException.findMany({ where: { date: dateToDb(day) } });
+    expect(rows.map((x) => `${x.type}|${x.session}|${x.doctorId}|${x.substituteDoctorId}`)).toEqual([
+      `DOCTOR_SUBSTITUTE|AFTERNOON|${lee.id}|${tsai.id}`,
+    ]);
+    const blocks = await getDayScheduleBlocks(day);
+    expect(blocks.map((b) => `${b.session}|${b.doctorId}|${b.startTime}-${b.endTime}`).sort()).toEqual(
+      [
+        `MORNING|${lee.id}|08:00-12:00`,
+        `AFTERNOON|${tsai.id}|14:30-18:00`,
+        `EVENING|${tsai.id}|18:30-21:30`,
+      ].sort(),
+    );
+  });
+
+  it("代診且時間不同：特殊時間套在代診醫師身上", async () => {
+    const { tsai, lee } = await seedDoctors();
+    const sunday = "2026-08-09";
+    await applySchedule(
+      prisma,
+      {
+        weekly: {
+          ...WEEKLY_ONLY_MONDAY,
+          "0": [{ session: "MORNING", start: "08:00", end: "11:30", doctors: ["李"] }],
+        },
+        exceptions: { [sunday]: [{ session: "MORNING", start: "08:00", end: "11:00", doctors: ["蔡"] }] },
+      },
+      TODAY,
+    );
+    const blocks = await getDayScheduleBlocks(sunday);
+    expect(blocks.map((b) => `${b.session}|${b.doctorId}|${b.startTime}-${b.endTime}`)).toEqual([
+      `MORNING|${tsai.id}|08:00-11:00`,
+    ]);
+    expect(blocks.some((b) => b.doctorId === lee.id)).toBe(false);
+  });
+
   it("特例寫的醫師平常該診次沒有班：只回報、不自動加診", async () => {
     await seedDoctors();
     const r = await applySchedule(
@@ -325,5 +386,18 @@ describe("單日特例以官網為準", () => {
 
     await applySchedule(prisma, { ...base, exceptions: {} }, TODAY);
     expect(await prisma.scheduleException.count({ where: { createdBy: WEBSITE_SYNC_ACTOR } })).toBe(0);
+  });
+});
+
+describe("applyExceptions 套用順序固定（不依資料庫回傳順序）", () => {
+  it("特殊時間排在代診前面，仍套在代診醫師身上", () => {
+    const blocks = [
+      { doctorId: "lee", session: "MORNING" as const, startTime: "08:00", endTime: "11:30", slotCapacity: 1, allowOnline: true },
+    ];
+    const out = applyExceptions(blocks, [
+      { type: "SPECIAL_HOURS", session: "MORNING", doctorId: "tsai", startTime: "08:00", endTime: "11:00" },
+      { type: "DOCTOR_SUBSTITUTE", session: "MORNING", doctorId: "lee", substituteDoctorId: "tsai" },
+    ]);
+    expect(out.map((b) => `${b.doctorId}|${b.startTime}-${b.endTime}`)).toEqual(["tsai|08:00-11:00"]);
   });
 });
