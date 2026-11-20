@@ -136,6 +136,17 @@
  </div>
  <div class="mt-3 h-2 rounded-full bg-[#f0f7ed] overflow-hidden"><div id="progress-bar" class="h-2 rounded-full bg-[#7C9A6E]" style="width:0"></div></div>
  <p class="mt-3 text-sm text-gray-500 font-chinese leading-relaxed">看完一堂就勾「已看完」，進度只存在這台裝置。每堂附逐字稿、課後練習單和小測驗；一週飲食紀錄表可列印，回診時帶給醫師或營養師。</p>
+ <div id="extra-downloads" class="flex flex-wrap gap-2 mt-4"></div>
+ <p class="mt-2 text-xs text-gray-500 font-chinese leading-relaxed">手機速查小卡可存進相簿，外食時打開對照。</p>
+ <div class="mt-5 pt-5 border-t border-gray-100">
+ <p id="cert-hint" class="text-sm text-gray-600 font-chinese leading-relaxed">🎓 八堂都勾「已看完」後，可以下載一張結業紀念卡。</p>
+ <form id="cert-form" class="flex flex-wrap items-center gap-3" hidden>
+ <div class="flex-grow"><label for="cert-name" class="block text-sm text-gray-700 font-chinese mb-1">🎓 恭喜看完八堂課！輸入要印在紀念卡上的名字（只在這台裝置產生，不會傳出）</label>
+ <input id="cert-name" type="text" maxlength="20" required class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl"></div>
+ <button type="submit" class="px-6 py-3 rounded-full font-chinese font-bold text-white shadow-md" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">產生結業紀念卡</button>
+ </form>
+ <div id="cert-out" class="mt-3"></div>
+ </div>
  </div>
  <div id="lessons" class="grid gap-6"></div>
 
@@ -186,7 +197,7 @@
  <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086｜<a href="/privacy.html" style="color:inherit;text-decoration:underline;">隱私權政策</a></p>
 </footer>
 
-<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "aJG5q1wJMz23txfrr9Qdzg==", "iv": "/l+eDP0jUgmLim2u", "ct": "OlEn8BoPX57Xw0jed8F8fgl+YmjdkBMIenBBYQLnWfXVCIvNA5941CE0y2kZ+Gvdkg0tPFqAxBXVGXRvVe0N+2EePqFa1FMISZwO5tR2nzg6CSmjYqorPXf4GEgwDkFy6i9pZpC/Hu5Jl7jf6n0jPF6ZWKlG+AJ58tFe0MQYcdG+CFGBHgQMY5Vptw671JxAfKRZOkYE1tx0Z16pL0QZXylYC3mmTpCmUZnW26/mlhxdWQPabFkc8f0aAB7xW2577QSG5MYTj8bPiKJHsyJh/voWLEoDpFb5A9M="}</script>
+<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "gvdmxTapuZm52zyryKbQmg==", "iv": "yZp0AuKkVZi0mAUb", "ct": "MG5G5rhq7bP5qzfMfYcgePwoz19eZlh6YmbQkGqSw3ug1BvmRYuX+0Ho5nJ71z32hcDcylaro0Y1uzfJmr21SySBT7n1MVchBEnoqmvPaF2XzY+L6r4t0ra6o5pmuv3LpnoZ5iRZi4cZeUoiJo6Bas50NWOKXatO4277V/T5eKqMua93Ld053nm9nkkJXL/a9WZTiwOneSQ1jZ0Vbrrax8+WiE4FnNUfvBR77nEpikROyw+u3hL7/B+oV76pFeTWuoMEpE/FRzF6Jvp2e/FioUtJ30osUAJrEms="}</script>
 <script>
 (() => {
   const LESSONS = [
@@ -239,13 +250,13 @@
   }
 
   // 按一下先解密，解好換成可開啟／下載的連結（iOS 不允許非同步後自動開新分頁）
-  function fileButton(name, icon, label, filename) {
+  function fileButton(name, icon, label, filename, type = 'application/pdf') {
     const btn = el('button', { class: BTN, type: 'button' }, `${icon} ${label}`);
     btn.addEventListener('click', async () => {
       btn.disabled = true;
       btn.textContent = `${label}解密中…`;
       try {
-        const url = URL.createObjectURL(new Blob([await decryptFile(name)], { type: 'application/pdf' }));
+        const url = URL.createObjectURL(new Blob([await decryptFile(name)], { type }));
         btn.replaceWith(el('a', { href: url, target: '_blank', rel: 'noopener', class: BTN, download: filename }, `⬇️ 下載${label}`));
       } catch (e) {
         btn.disabled = false;
@@ -259,7 +270,70 @@
     const n = LESSONS.filter((_, i) => done[i + 1]).length;
     $('progress-text').textContent = `已看完 ${n}／${LESSONS.length} 堂`;
     $('progress-bar').style.width = `${(n / LESSONS.length) * 100}%`;
+    const all = n === LESSONS.length;
+    $('cert-hint').hidden = all;
+    $('cert-form').hidden = !all;
   }
+
+  // 音檔：解密後就地換成播放器（通勤、做家事時只聽不看）
+  function audioButton(name, n) {
+    const btn = el('button', { class: BTN, type: 'button' }, '🎧 音檔');
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      btn.textContent = '音檔解密中…';
+      try {
+        const url = URL.createObjectURL(new Blob([await decryptFile(name)], { type: 'audio/mpeg' }));
+        const player = el('audio', { controls: '', src: url, preload: 'auto', class: 'w-full mt-2' });
+        btn.replaceWith(el('div', { class: 'w-full' }, player,
+          el('a', { href: url, download: `第${n}堂音檔.mp3`, class: 'text-xs text-[#7C9A6E] underline font-chinese' }, '下載音檔')));
+        player.play().catch(() => {});
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = '音檔開啟失敗，請再試一次';
+      }
+    });
+    return btn;
+  }
+
+  // 結業紀念卡：在瀏覽器裡用 canvas 畫，名字不離開這台裝置
+  async function makeCert(name) {
+    const W = 1080, H = 1350, c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+    const bg = g.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, '#f8faf7'); bg.addColorStop(1, '#e3efdc');
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    g.strokeStyle = '#A8C69F'; g.lineWidth = 6; g.strokeRect(50, 50, W - 100, H - 100);
+    g.strokeStyle = '#7C9A6E'; g.lineWidth = 2; g.strokeRect(70, 70, W - 140, H - 140);
+    await document.fonts.load('700 60px "Noto Sans TC"').catch(() => {});
+    const font = (w, px) => `${w} ${px}px "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif`;
+    g.textAlign = 'center';
+    const logo = new Image();
+    logo.src = '/images/logo.png';
+    await logo.decode().then(() => g.drawImage(logo, W / 2 - 60, 150, 120, 120)).catch(() => {});
+    g.fillStyle = '#5f7a52'; g.font = font(700, 40); g.fillText('立欣診所｜減重營養課', W / 2, 340);
+    g.fillStyle = '#7C9A6E'; g.font = font(700, 96); g.fillText('結業紀念卡', W / 2, 500);
+    g.fillStyle = '#333'; g.font = font(700, 80); g.fillText(name, W / 2, 690);
+    g.strokeStyle = '#A8C69F'; g.lineWidth = 3; g.beginPath(); g.moveTo(W / 2 - 260, 725); g.lineTo(W / 2 + 260, 725); g.stroke();
+    g.fillStyle = '#444'; g.font = font(400, 40);
+    g.fillText('完成八堂減重營養課', W / 2, 830);
+    g.fillText('謝謝你一路的練習', W / 2, 895);
+    g.font = font(400, 30); g.fillStyle = '#666';
+    ['認識食物・看懂份量・了解需求・建立習慣', '外食搭配・在家煮食・運動飲食・用藥照護'].forEach((t, i) => g.fillText(t, W / 2, 1010 + i * 50));
+    const d = new Date();
+    g.font = font(400, 30); g.fillStyle = '#5f7a52';
+    g.fillText(`${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日`, W / 2, 1180);
+    const blob = await new Promise((r) => c.toBlob(r, 'image/png'));
+    const url = URL.createObjectURL(blob);
+    $('cert-out').replaceChildren(
+      el('img', { src: url, alt: '結業紀念卡', class: 'block w-full max-w-md rounded-xl border border-gray-100 shadow-sm mb-3' }),
+      el('a', { href: url, download: '減重營養課結業紀念卡.png', class: BTN }, '⬇️ 下載結業紀念卡'));
+  }
+  $('cert-form').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const name = $('cert-name').value.trim();
+    if (name) makeCert(name);
+  });
 
   function quizBlock(items) {
     const box = el('details', { class: 'mt-5 bg-[#f8faf7] rounded-xl border border-gray-100 p-4' },
@@ -319,7 +393,8 @@
         el('div', { class: 'flex flex-wrap gap-2' },
           fileButton(nn, '📄', '教材 PDF', `第${n}堂教材.pdf`),
           fileButton(`t${nn}`, '📖', '逐字稿', `第${n}堂逐字稿.pdf`),
-          fileButton(`w${nn}`, '📝', '課後練習單', `第${n}堂課後練習單.pdf`)));
+          fileButton(`w${nn}`, '📝', '課後練習單', `第${n}堂課後練習單.pdf`),
+          audioButton(`a${nn}`, n)));
       const article = el('article', { class: 'bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6' },
         el('div', { class: 'flex flex-wrap items-center justify-between gap-3 mb-4' },
           el('div', { class: 'flex flex-wrap items-center gap-3' },
@@ -332,6 +407,10 @@
       box.append(article);
     });
     $('weekly-log').replaceChildren(fileButton('w00', '📋', '一週飲食紀錄表', '一週飲食紀錄表.pdf'));
+    $('extra-downloads').replaceChildren(
+      fileButton('book', '📚', '練習單合訂本', '減重營養課練習單合訂本.pdf'),
+      fileButton('card-portion', '📱', '份量速查小卡', '份量速查小卡.png', 'image/png'),
+      fileButton('card-eatout', '📱', '外食點餐小卡', '外食點餐小卡.png', 'image/png'));
     const after = [fileButton('w09', '🌱', '結業後的維持練習', '結業後的維持練習.pdf')];
     if (data.f) after.push(el('a', { href: data.f, target: '_blank', rel: 'noopener', class: BTN }, '📮 填寫課程回饋問卷'));
     $('after-buttons').replaceChildren(...after);
