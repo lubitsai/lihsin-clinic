@@ -1,3 +1,9 @@
+2026-11-21 第二版 2.70（core.py TOPIC 加黃鼻涕／咳嗽好幾天／感冒還是過敏對照＋迷思大破解 #2 題庫；取代未部署的 2.69）
+- LINE unittest 完整版（requirements.lock.txt）：106 項全過。
+- sync_assistants.py：官網測試、一致性比對全部一致；validate_site 通過。
+- core.py 有改 → 部署走測試模式＋實測。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-20 第二版 2.69（診所資訊卡「地圖導航」改連 Google 商家；程式同 2.68；取代未部署的 2.68）
 - LINE unittest 完整版（requirements.lock.txt）：106 項全過；sync_assistants.py：官網 354 項、一致性比對 452 句全部一致；validate_site 通過。
 - legacy_messages.json：地圖連結 2 處改為 maps.app.goo.gl/i2yaH7yPD2jLymzP8（與官網首頁一致；院長 2026-11-20 手機核對開啟 Google 商家）。
