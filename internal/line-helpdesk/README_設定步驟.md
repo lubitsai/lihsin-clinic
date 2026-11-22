@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.72）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.73）
 
-2026-11-22 第二版 2.72｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-22 第二版 2.73｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.73 題庫重產：迷思大破解 #4 牛奶與身高（2026-11-22）
+
+題庫依官網 11-22j 新文〈每天多喝幾杯牛奶，孩子就會長比較高嗎？〉重產，新增 6 題（喝牛奶可以長高嗎、孩子不愛喝牛奶、一天喝多少、喝太多會怎樣、高鈣或強調長高的奶粉、什麼情況評估身高）。`parity_queries.json` +5 句。程式同 2.72（`core.py` 自 2.70 起有改、2.70～2.72 皆未部署）→ **部署照程式變更流程：測試模式 → 實測 → 切正式。** 取代未部署的 2.72。
 
 ## 2.72 萬剋喘（孟魯司特）商品名問法對照（2026-11-22）
 

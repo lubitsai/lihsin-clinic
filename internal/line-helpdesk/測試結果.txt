@@ -1,3 +1,9 @@
+2026-11-22 第二版 2.73（題庫重產：迷思大破解 #4 牛奶與身高 6 題；程式同 2.72；取代未部署的 2.72）
+- LINE unittest 完整版（requirements.lock.txt）：106 項全過。
+- sync_assistants.py：官網測試、一致性比對全部一致；validate_site 通過。
+- 程式自 2.70 起有改（2.70～2.72 未部署）→ 部署走測試模式＋實測。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-22 第二版 2.72（core.py TOPIC 加萬剋喘商品名對照＋題庫重產；取代未部署的 2.71）
 - LINE unittest 完整版（requirements.lock.txt）：106 項全過。
 - sync_assistants.py：官網測試、一致性比對全部一致；validate_site 通過。
