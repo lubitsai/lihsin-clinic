@@ -475,6 +475,7 @@ jobs:
           check /images/nasal-steroid-growth-infographic.jpg 200
           check /health/runny-nose-cough.html 200
           check /images/runny-nose-cough-infographic.jpg 200
+          check /health/montelukast-asthma.html 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
@@ -1384,6 +1385,9 @@ jobs:
           # 2026-11-21：迷思大破解 #2「流鼻水咳嗽一定是感冒嗎」新頁的三件事段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           rn1=$(curl -s --max-time 20 "$BASE/health/runny-nose-cough.html" | grep -c '每一種都附上本院的詳細文章' || true)
           if [ "$rn1" -ge 1 ]; then echo "OK    迷思大破解 #2 流鼻水咳嗽頁已上線"; else echo "FAIL  流鼻水咳嗽頁未見『每一種都附上本院的詳細文章』——11-21 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-22：迷思大破解 #3「欣流可以當氣管保養藥嗎」新頁的開場段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          mk1=$(curl -s --max-time 20 "$BASE/health/montelukast-asthma.html" | grep -c '孟魯司特在治療裡排在哪裡' || true)
+          if [ "$mk1" -ge 1 ]; then echo "OK    迷思大破解 #3 欣流頁已上線"; else echo "FAIL  欣流頁未見『孟魯司特在治療裡排在哪裡』——11-22 新頁內文疑未上線或已回退"; fail=1; fi
           # 2026-11-14：破圈文「寶寶副食品」新頁的含鐵食物段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           sf1=$(curl -s --max-time 20 "$BASE/health/baby-solid-foods.html" | grep -c '肉泥不必等到很後面才給' || true)
           if [ "$sf1" -ge 1 ]; then echo "OK    副食品破圈文『含鐵食物』段已上線"; else echo "FAIL  副食品頁未見『肉泥不必等到很後面才給』——11-14 新頁內文疑未上線或已回退"; fail=1; fi
