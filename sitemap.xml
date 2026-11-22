@@ -865,6 +865,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/milk-height.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/milk-height-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
