@@ -239,6 +239,8 @@ ROUTE_SRC = {
     # 鼻噴（能伏鼻）本季已售完（院長 2026-10-17; search.js 3-1a）：下一季到貨時移除這兩條與 PIN_NASAL_SOLDOUT
     'NASAL': r'鼻噴|噴鼻|能伏鼻|flumist',
     'NASAL_STOCK': r'現貨|庫存|有貨|沒貨|缺貨|剩幾|到貨|打得到|還有嗎|還有沒有|還有貨|售完|賣完|賣光|沒有了|補貨|進貨',
+    # GSK Fluarix / Sanofi Vaxigrip currently sold out (director 2026-11-23; search.js 3-1b): remove when restocked
+    'FLU_SOLDOUT': r'伏流感|fluarix|菲流達|vaxigrip',
     # search.js 7–10 (ported 2026-10-08o): cross-session registration, late, stock, COVID, dates, holidays, hours, contact
     'LATE': r'遲到|沒趕上|來不及|趕不上',
     'CROSS': r'預掛|掛.{0,4}(?:下午|晚上|晚診|午診|早診|明天|明早|下一診)|(?:早上|下午|晚上|晚診|午診|早診|明天|明早)的號|跨診|當診次',
@@ -253,7 +255,7 @@ ROUTE_SRC = {
 }
 PRICE, PUBLIC_FLU, BRAND_ASK, PUBLIC_BRAND, VAX_CUTOFF, FLU_DOCS, STUDENT, DOSE, SUITABLE, QUOTA, ACTION, FEE, PUBLIC_VAX, SELF_VAX, CHECKUP, CHILD, MONEY = (re.compile(ROUTE_SRC[n]) for n in ['PRICE', 'PUBLIC_FLU', 'BRAND_ASK', 'PUBLIC_BRAND', 'VAX_CUTOFF', 'FLU_DOCS', 'STUDENT', 'DOSE', 'SUITABLE', 'QUOTA', 'ACTION', 'FEE', 'PUBLIC_VAX', 'SELF_VAX', 'CHECKUP', 'CHILD', 'MONEY'])
 COPAY = re.compile(ROUTE_SRC['COPAY'])
-NASAL, NASAL_STOCK = (re.compile(ROUTE_SRC[n]) for n in ['NASAL', 'NASAL_STOCK'])
+NASAL, NASAL_STOCK, FLU_SOLDOUT = (re.compile(ROUTE_SRC[n]) for n in ['NASAL', 'NASAL_STOCK', 'FLU_SOLDOUT'])
 LATE, CROSS, STOCK, COVID, HOLIDAY, SCHED_WORDS, HOURS_TOPIC, QUEUE, ADDRESS, PHONE = (re.compile(ROUTE_SRC[n]) for n in ['LATE', 'CROSS', 'STOCK', 'COVID', 'HOLIDAY', 'SCHED_WORDS', 'HOURS_TOPIC', 'QUEUE', 'ADDRESS', 'PHONE'])
 # search.js 7 clarify buttons (verbatim)
 LATE_BUTTONS = ['預約遲到怎麼辦', '現場號過號怎麼辦']
@@ -344,6 +346,13 @@ class Catalog:
             first = self.by_title(PINS['PIN_NASAL_SOLDOUT'][0], today)
             if first:
                 return {'type': 'text', 'text': first['answer']}
+        # search.js 3-1b: Fluarix / Vaxigrip currently sold out -> that item's price reply (already says sold out)
+        if FLU_SOLDOUT.search(q) and NASAL_STOCK.search(q):
+            hits = [x for x in self.prices.rules if x.get('id') in ('F01', 'F03') and all(rx.search(q) for rx in x['res'])]
+            if hits:
+                note = '\n\n' + r.get('vaccine_note', '')   # LINE price replies already end with the note; keep it once
+                texts = [x['reply'][:-len(note)] if x['reply'].endswith(note) else x['reply'] for x in hits]
+                return {'type': 'text', 'text': '\n'.join(texts) + note}
         if DOSE.search(q) or SUITABLE.search(q):
             return {'type': 'text', 'text': r['clinical']}
         if QUOTA.search(q):

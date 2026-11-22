@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.74）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.75）
 
-2026-11-22 第二版 2.74｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-23 第二版 2.75｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.75 伏流感、菲流達「目前已售完」＋問現貨固定回答（2026-11-23）
+
+①題庫重產：11/26 午診改蔡醫師、11/28 選舉日正常看診公告；首頁撤下伏流感、菲流達到貨公告；官網 PR #603 伏流感、菲流達「目前已售完」加註（價目 F01／F03／FLU_VAX 改「目前已售完」）。②**程式有改**：`core.py` 新增 `FLU_SOLDOUT` 與 route 3-1b（與官網 search.js 逐字同步）——問「伏流感／菲流達還有嗎、有現貨嗎、售完了嗎」直接回該品項價目句（句中已寫「目前已售完」），兩款都問就兩句、接種提醒只留一次；輔流威護照舊走現貨回覆。補貨時移除 `FLU_SOLDOUT` 與 3-1b。`test_routing.py` +1。**部署照程式變更流程：測試模式 → 實測 → 切正式。** 取代未部署的 2.74。
 
 ## 2.74 題庫重產：欣流 FAQ 改為停藥指示（2026-11-22）
 
