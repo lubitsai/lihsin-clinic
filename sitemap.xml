@@ -450,6 +450,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lhpedclinic.com.tw/health/cold-food-cough.html</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://lhpedclinic.com.tw/health/child-cold-nasal-tools.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/child-cold-nasal-tools-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-19</lastmod>
@@ -786,6 +792,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://lhpedclinic.com.tw/health/teething-fever.html</loc>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://lhpedclinic.com.tw/health/baby-constipation.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/baby-constipation-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-10</lastmod>
@@ -866,6 +878,12 @@
   <url>
     <loc>https://lhpedclinic.com.tw/health/milk-height.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/milk-height-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lhpedclinic.com.tw/health/sugar-hyperactivity.html</loc>
     <lastmod>2026-11-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

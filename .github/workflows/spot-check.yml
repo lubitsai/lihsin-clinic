@@ -480,6 +480,9 @@ jobs:
           check /health/myths.html 200
           check /health/milk-height.html 200
           check /images/milk-height-infographic.jpg 200
+          check /health/cold-food-cough.html 200
+          check /health/teething-fever.html 200
+          check /health/sugar-hyperactivity.html 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
@@ -1395,6 +1398,15 @@ jobs:
           # 2026-11-22：迷思大破解 #4「喝牛奶可以長高嗎」新頁的研究段標題（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           mh1=$(curl -s --max-time 20 "$BASE/health/milk-height.html" | grep -c '營養正常的孩子，多喝不會多長' || true)
           if [ "$mh1" -ge 1 ]; then echo "OK    迷思大破解 #4 牛奶頁已上線"; else echo "FAIL  牛奶頁未見『營養正常的孩子，多喝不會多長』——11-22 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-22：迷思大破解 #5 新頁哨兵（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          cf1=$(curl -s --max-time 20 "$BASE/health/cold-food-cough.html" | grep -c '吃冰會讓感冒變嚴重嗎' || true)
+          if [ "$cf1" -ge 1 ]; then echo "OK    迷思大破解 #5 已上線"; else echo "FAIL  /health/cold-food-cough.html 未見『吃冰會讓感冒變嚴重嗎』——11-22 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-22：迷思大破解 #6 新頁哨兵（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          tf1=$(curl -s --max-time 20 "$BASE/health/teething-fever.html" | grep -c '體溫可能略升，但不是發燒' || true)
+          if [ "$tf1" -ge 1 ]; then echo "OK    迷思大破解 #6 已上線"; else echo "FAIL  /health/teething-fever.html 未見『體溫可能略升，但不是發燒』——11-22 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-22：迷思大破解 #7 新頁哨兵（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          sh1=$(curl -s --max-time 20 "$BASE/health/sugar-hyperactivity.html" | grep -c '糖不會讓孩子過動' || true)
+          if [ "$sh1" -ge 1 ]; then echo "OK    迷思大破解 #7 已上線"; else echo "FAIL  /health/sugar-hyperactivity.html 未見『糖不會讓孩子過動』——11-22 新頁內文疑未上線或已回退"; fail=1; fi
           # 2026-11-14：破圈文「寶寶副食品」新頁的含鐵食物段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           sf1=$(curl -s --max-time 20 "$BASE/health/baby-solid-foods.html" | grep -c '肉泥不必等到很後面才給' || true)
           if [ "$sf1" -ge 1 ]; then echo "OK    副食品破圈文『含鐵食物』段已上線"; else echo "FAIL  副食品頁未見『肉泥不必等到很後面才給』——11-14 新頁內文疑未上線或已回退"; fail=1; fi
