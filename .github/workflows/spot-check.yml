@@ -476,6 +476,7 @@ jobs:
           check /health/runny-nose-cough.html 200
           check /images/runny-nose-cough-infographic.jpg 200
           check /health/montelukast-asthma.html 200
+          check /health/myths.html 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
