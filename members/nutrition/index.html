@@ -189,6 +189,27 @@
  <div id="after-buttons" class="flex flex-wrap gap-2"></div>
  </section>
  <p class="mt-8 text-sm text-gray-500 font-chinese text-center leading-relaxed">課程內容是一般營養衛教，個人的熱量、份量與用藥，請依醫師和營養師的評估調整。</p>
+<details class="mt-4">
+ <summary class="text-xs text-gray-400 font-chinese text-center">份量計算單</summary>
+ <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-3">
+ <p class="text-sm text-gray-500 font-chinese leading-relaxed mb-4">依 InBody 報告試算每日份量，請以營養師給你的份量為準；數字不會傳出這台裝置。</p>
+ <div class="grid md:grid-cols-2 gap-3">
+ <div><label for="pc-bmr" class="block text-sm text-gray-700 font-chinese mb-1">基礎代謝率（大卡）</label>
+ <input id="pc-bmr" type="number" inputmode="numeric" min="0" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl"></div>
+ <div><label for="pc-tw" class="block text-sm text-gray-700 font-chinese mb-1">目標體重（公斤）</label>
+ <input id="pc-tw" type="number" inputmode="decimal" min="0" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl"></div>
+ <div><label for="pc-w" class="block text-sm text-gray-700 font-chinese mb-1">體重（公斤）</label>
+ <input id="pc-w" type="number" inputmode="decimal" min="0" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl"></div>
+ <div><label for="pc-act" class="block text-sm text-gray-700 font-chinese mb-1">活動量</label>
+ <select id="pc-act" class="w-full text-base px-4 py-3 border border-gray-200 rounded-xl bg-white">
+ <option value="1.2">沒有運動，或做有氧運動</option>
+ <option value="1.3">規律運動</option>
+ <option value="1.5">有做重訓等肌力訓練</option>
+ </select></div>
+ </div>
+ <p id="pc-out" class="mt-4 text-sm text-gray-700 font-chinese leading-relaxed" aria-live="polite" style="white-space:pre-line"></p>
+ </div>
+</details>
  </section>
  </div>
 </main>
@@ -197,7 +218,7 @@
  <p class="text-center text-xs text-gray-400 font-chinese">© 立欣診所 LiHsin Clinic｜台南市北區育德路467號｜06-2516086｜<a href="/privacy.html" style="color:inherit;text-decoration:underline;">隱私權政策</a></p>
 </footer>
 
-<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "wKAi2Ttl97waPYpIpXOroA==", "iv": "SWgMa08PN9adAa9x", "ct": "0iz5Qtp0VHOt7dDpsatm2T4SHX/SFkQ2J6M3c0UIryDfZDKKH0n/RmXeTiraA5NMHIA2shLLGwgWRx3dp9fSuyW9mj9hZhcrtrBbSNgtEB5FdlPhNGc+oeucJkf0yTubdDlXatnRQuFYtLMpA/ZZU6wolMnFBLyrhwK7KVDaParShJPbhLirltvLL0MZLaTXYs6CKJ3Wut7ABq42r/fCbfU+1B3msd9YxCkMS4fWkbTnEx4AOKTxgsWByxdJo1UnVwdk4jYxt0jwtBL13KF50k975QRtPl6RT9k="}</script>
+<script id="vault" type="application/json">{"kdf": "PBKDF2-SHA256", "iter": 600000, "salt": "Jtbx+y6R1lxNtK34DmBO8g==", "iv": "cU54rlkWj7pm1lo4", "ct": "z8f+4VAtdEPSFq4gCuMmb6oqQtUsnZNo6D3qIXMxb2QEFXbVIwzs5lmjqHFOHPKENj32L/U1aOFCG8hDg3yrwr1zCuesBSTqexW21vXS6dec43G1klrY6bzC0iK+NRASFVxZ9V5fkLxdHoYwqTe59XWob1/7ddullkgmyHZ/Hv5Knj3hjpWNB94x0PC1PHJhm5wyQXSfSUsFRDX2SMNZrkvqbb+a5VCuVMqJyFZxVVP5FXno8So3MdlQ01z5r+GzkmkEGj7RJkVNyN6bcTuQK3GrmpngDTUm0U0="}</script>
 <script>
 (() => {
   const LESSONS = [
@@ -505,6 +526,26 @@
  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
  menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
  })();
+</script>
+<script>
+// 份量計算單：規則由 lhclinic-work 衛教影片/減重營養課/學員資料/份量計算單.html 同步，改規則兩邊一起改
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const num = (id) => { const v = parseFloat($(id).value); return v > 0 ? v : null; };
+  function calc() {
+    const bmr = num('pc-bmr'), tw = num('pc-tw'), w = num('pc-w');
+    if (!bmr || !tw || !w) { $('pc-out').textContent = ''; return; }
+    const heavy = w >= 100;
+    const B = (heavy ? Math.ceil(bmr / 100) : Math.round(bmr / 100)) * 100;
+    const P = Math.ceil(+(tw * parseFloat($('pc-act').value) / 7).toFixed(6));
+    const V = 6, O = 6;
+    const C = Math.max(5, Math.ceil(+((B - P * 55 - V * 25 - O * 45) / 70).toFixed(6) - 0.5));
+    const water = heavy ? Math.ceil(+(w * 35).toFixed(6) / 100) * 100 : Math.max(2500, Math.round(w * 35 / 500) * 500);
+    $('pc-out').textContent = [`BMR ${B} 大卡`, `C 全穀雜糧類 ${C} 份`, `P 豆魚蛋肉類 ${P} 份`,
+      `V 蔬菜類 ${V} 份`, `O 油脂與堅果種子類 ${O} 份`, `水 ${water} 毫升`].join('\n');
+  }
+  ['pc-bmr', 'pc-tw', 'pc-w', 'pc-act'].forEach((id) => $(id).addEventListener('input', calc));
+})();
 </script>
 </body>
 </html>

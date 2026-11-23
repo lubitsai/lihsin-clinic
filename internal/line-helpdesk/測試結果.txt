@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 2026-11-23 第二版 2.75（題庫重產：11/26 門診異動、撤下伏流感／菲流達到貨公告、兩款「目前已售完」；程式新增 FLU_SOLDOUT／route 3-1b；取代未部署的 2.74）
 - LINE unittest 完整版（requirements.lock.txt）：107 項全過。
 - sync_assistants.py：官網測試 368 項、一致性比對 490 句全部一致；validate_site 通過。
+=======
+2026-11-23 第二版 2.75（題庫重產：迷思大破解 #5～#7 共 18 題；程式同 2.74；取代未部署的 2.74）
+- LINE unittest 完整版（requirements.lock.txt）：106 項全過。
+- sync_assistants.py：官網測試、一致性比對全部一致；validate_site 通過。
+>>>>>>> origin/main
 - 程式自 2.70 起有改（2.70～2.74 未部署）→ 部署走測試模式＋實測。
 - 未對真實 Google Cloud／LINE 執行；尚未部署。
 
