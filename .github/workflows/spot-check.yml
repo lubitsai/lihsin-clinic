@@ -486,6 +486,7 @@ jobs:
           check /images/teething-fever-infographic.jpg 200
           check /health/sugar-hyperactivity.html 200
           check /images/sugar-hyperactivity-infographic.jpg 200
+          check /health/eczema-relapse.html 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
@@ -1410,6 +1411,9 @@ jobs:
           # 2026-11-22：迷思大破解 #7 新頁哨兵（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           sh1=$(curl -s --max-time 20 "$BASE/health/sugar-hyperactivity.html" | grep -c '糖不會讓孩子過動' || true)
           if [ "$sh1" -ge 1 ]; then echo "OK    迷思大破解 #7 已上線"; else echo "FAIL  /health/sugar-hyperactivity.html 未見『糖不會讓孩子過動』——11-22 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-23：迷思大破解 #8 新頁哨兵（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          er1=$(curl -s --max-time 20 "$BASE/health/eczema-relapse.html" | grep -c '疹子退了，皮膚底下還在恢復' || true)
+          if [ "$er1" -ge 1 ]; then echo "OK    迷思大破解 #8 已上線"; else echo "FAIL  /health/eczema-relapse.html 未見『疹子退了，皮膚底下還在恢復』——11-23 新頁內文疑未上線或已回退"; fail=1; fi
           # 2026-11-14：破圈文「寶寶副食品」新頁的含鐵食物段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           sf1=$(curl -s --max-time 20 "$BASE/health/baby-solid-foods.html" | grep -c '肉泥不必等到很後面才給' || true)
           if [ "$sf1" -ge 1 ]; then echo "OK    副食品破圈文『含鐵食物』段已上線"; else echo "FAIL  副食品頁未見『肉泥不必等到很後面才給』——11-14 新頁內文疑未上線或已回退"; fail=1; fi
