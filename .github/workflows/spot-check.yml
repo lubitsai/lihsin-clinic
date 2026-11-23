@@ -481,8 +481,11 @@ jobs:
           check /health/milk-height.html 200
           check /images/milk-height-infographic.jpg 200
           check /health/cold-food-cough.html 200
+          check /images/cold-food-cough-infographic.jpg 200
           check /health/teething-fever.html 200
+          check /images/teething-fever-infographic.jpg 200
           check /health/sugar-hyperactivity.html 200
+          check /images/sugar-hyperactivity-infographic.jpg 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200

@@ -451,6 +451,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/cold-food-cough.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/cold-food-cough-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -793,6 +794,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/teething-fever.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/teething-fever-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -884,6 +886,7 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/sugar-hyperactivity.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/sugar-hyperactivity-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
