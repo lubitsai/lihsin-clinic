@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.74）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.75）
 
-2026-11-22 第二版 2.74｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-23 第二版 2.75｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.75 題庫重產：迷思大破解 #5～#7（2026-11-23）
+
+題庫依官網 11-22u 三篇新文重產，新增 18 題：〈孩子感冒咳嗽吵著吃冰，真的不能吃嗎？〉〈寶寶在長牙又發燒，是長牙引起的嗎？〉〈孩子吃了糖就特別亢奮，糖真的會讓孩子過動嗎？〉各 6 題。`parity_queries.json` +7 句。程式同 2.74（`core.py` 自 2.70 起有改、2.70～2.74 皆未部署）→ **部署照程式變更流程：測試模式 → 實測 → 切正式。** 取代未部署的 2.74。
 
 ## 2.74 題庫重產：欣流 FAQ 改為停藥指示（2026-11-22）
 
