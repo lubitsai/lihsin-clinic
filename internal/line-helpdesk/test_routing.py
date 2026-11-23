@@ -70,6 +70,18 @@ class RoutingTests(unittest.TestCase):
             self.assertEqual(msg['text'], item['answer'], q)
         self.assertIn('1,600', route('能伏鼻多少錢', date(2026, 10, 17))[1]['text'])
 
+    def test_fluarix_vaxigrip_sold_out(self):
+        # search.js 3-1b (2026-11-23): stock questions -> that item's price reply, which says 目前已售完
+        for q in ['伏流感還有嗎', '菲流達還有貨嗎', '伏流感售完了嗎', 'GSK伏流感現在打得到嗎', 'Vaxigrip有現貨嗎']:
+            action, msg = route(q, date(2026, 11, 23))
+            self.assertEqual(action, 'answer', q)
+            self.assertIn('目前已售完', msg['text'], q)
+        both = route('伏流感跟菲流達還有嗎', date(2026, 11, 23))[1]['text']
+        self.assertIn('伏流感', both)
+        self.assertIn('菲流達', both)
+        self.assertEqual(both.count('接種提醒'), 1)
+        self.assertNotIn('目前已售完', route('輔流威護有現貨嗎', date(2026, 11, 23))[1]['text'])
+
     def test_follow_up_button_answers(self):
         # Tapping the button sends the full title, which must hit the exact-match answer.
         for fid in ('Q198', 'Q202', 'Q524'):

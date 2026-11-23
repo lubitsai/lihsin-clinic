@@ -126,6 +126,8 @@ const PREORDER = /預購|預定|預訂|訂了.{0,6}疫苗|先付.{0,4}錢/;
 // 先於預購規則與現貨分流；不含現貨字詞的鼻噴問題（費用、適合性、預購退費）照舊。下一季到貨時移除本條、NASAL_STOCK 與 PIN_NASAL_SOLDOUT。
 const NASAL = /鼻噴|噴鼻|能伏鼻|flumist/;
 const NASAL_STOCK = /現貨|庫存|有貨|沒貨|缺貨|剩幾|到貨|打得到|還有嗎|還有沒有|還有貨|售完|賣完|賣光|沒有了|補貨|進貨/;
+// GSK 伏流感、賽諾菲菲流達目前已售完（院長 2026-11-23）：問現貨直接回該品項的價目句（已含「目前已售完」）。補貨時移除本條與 3-1b。
+const FLU_SOLDOUT = /伏流感|fluarix|菲流達|vaxigrip/;
 // 「今天公費哪一牌」沒講流感／疫苗，但公費＋牌子在流感季只會是公費流感疫苗
 const PUBLIC_BRAND = /公費.{0,8}(?:品牌|牌子|廠牌|哪一?牌)/;
 // 疫苗最後施打時間（每日最後一診結束前 1 小時停打）；「疫苗打到幾點」原本會配到夜診題
@@ -418,6 +420,11 @@ export function createAssistant(kb) {
     if (NASAL.test(q) && NASAL_STOCK.test(q)) {
       const r = pinned(PIN_NASAL_SOLDOUT);
       if (r) return r;
+    }
+    // 3-1b. 伏流感／菲流達目前已售完：問現貨直接回該品項價目句（F01／F03，句中已寫「目前已售完」）
+    if (FLU_SOLDOUT.test(q) && NASAL_STOCK.test(q)) {
+      const hits = priceRules.filter((x) => (x.id === 'F01' || x.id === 'F03') && x.res.every((re) => re.test(q)));
+      if (hits.length) return reply('price_item', hits.map((x) => x.reply).join('\n'), [{ type: 'text', text: VACCINE_NOTE }]);
     }
     // 3-1. 流感疫苗預購：先回預購規則卡（先於適合性與費用，「預購鼻噴不適合」「預購可以退費嗎」都走這裡）
     if (PREORDER.test(q)) {
