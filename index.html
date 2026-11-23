@@ -2724,12 +2724,37 @@
  <p class="text-xl text-gray-600 font-english">News</p>
  </div>
  <div class="max-w-4xl mx-auto fade-in-up">
+ <!-- 🆕 2026-11-24 上架（院長指令「用諾羅病毒頁放到最新消息」；急性腸胃炎時事卡，常駐頁為 health/norovirus.html）。
+      圖組：暫用既有 norovirus-infographic 衍生的 480² 縮圖 norovirus-thumb.jpg／.webp（院長表示縮圖之後另做，換圖時改這兩檔或改 src，並同批改 spot-check 哨兵）。
+      ⚠️ 刪卡時 .github/workflows/spot-check.yml 的 /images/norovirus-thumb.jpg 200 哨兵要同批移除（防呆 17）。
+      ⏳ 退場條件（同 09-03f 型態，不設日期）：腸胃炎疫情趨緩、或有新的最新消息要上架而版位已滿時可整塊刪除；
+      health/norovirus.html、sitemap.xml、llms 雙檔不因刪卡而動。
+      「疾管署提醒秋冬好發、今年以 GII.17 為主要流行型別」引自疾管署 2026 年 3 月與 8 月分型結果（新聞引述），延後更新時要一併改本卡。 -->
+ <a href="/health/norovirus.html" onclick="trackCTA('News_Norovirus')" aria-label="閱讀最新消息：急性腸胃炎變多！每天噴酒精，為什麼還是全家輪流吐？" class="news-card block bg-white rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#A8C69F]" style="text-decoration:none;">
+ <div class="flex flex-col sm:flex-row">
+ <div class="news-media flex-shrink-0">
+ <picture>
+ <source type="image/webp" srcset="/images/norovirus-thumb.webp">
+ <img src="/images/norovirus-thumb.jpg" width="480" height="480" loading="lazy" decoding="async" alt="立欣診所諾羅病毒衛教圖：諾羅病毒怎麼照顧？嘔吐、腹瀉多在 1～3 天緩解；洗手要用肥皂加清水，酒精乾洗手不能取代洗手；補水少量多次；環境用稀釋漂白水消毒；超過 8 小時沒尿、精神變差或一直吐喝不下，立即就醫。" class="w-full">
+ </picture>
+ </div>
+ <div class="p-6 md:p-8" style="display:flex;flex-direction:column;justify-content:center;">
+ <div class="flex items-center gap-2 mb-3">
+ <span class="inline-block bg-[#f0f7ed] text-[#7C9A6E] border border-[#A8C69F] px-3 py-1 rounded-full text-xs font-chinese">腸胃炎衛教</span>
+ <time datetime="2026-11-24" class="text-xs text-gray-400 font-chinese">2026.11.24</time>
+ </div>
+ <h3 class="text-xl md:text-2xl font-bold text-gray-800 font-chinese leading-snug mb-2">急性腸胃炎變多！每天噴酒精，為什麼還是全家輪流吐？</h3>
+ <p class="text-sm md:text-base text-gray-600 font-chinese leading-relaxed mb-4">疾管署提醒，諾羅病毒好發於秋冬，今年以新型 GII.17 為主要流行型別。諾羅病毒極少量就能感染，酒精乾洗手效果有限，要用肥皂和流動清水洗手；環境用稀釋漂白水消毒，病人吃剩的食物直接丟掉，餐具和毛巾分開。持續嘔吐喝不下、尿量明顯變少或精神變差，請盡快就醫。</p>
+ <span class="inline-flex items-center gap-1 text-sm font-chinese font-semibold text-[#7C9A6E]">閱讀全文 →</span>
+ </div>
+ </div>
+ </a>
  <!-- 🆕 2026-11-15 上架（院長指令「先同時加入最新消息」；院長交付圖＝11-15r 流感頁中段 5 問懶人包，常駐頁為 health/influenza.html）。
       圖組 slug＝influenza-5q-20261115（5 檔；縮圖用 -thumb）。
       ⚠️ 刪卡時 .github/workflows/spot-check.yml 的 /images/influenza-5q-20261115-thumb.jpg 200 哨兵要同批移除（防呆 17）。
       ⏳ 退場條件：**圖內「公費擴大條件至 2026/11/30」11/30 後過期** → 屆時整塊刪除或換圖；health/influenza.html、sitemap.xml、llms 雙檔不因刪卡而動。
       「疾管署 11 月 10 日」為該日新聞稿，延後更新時要一併改本卡。 -->
- <a href="/health/influenza.html" onclick="trackCTA('News_Influenza5Q')" aria-label="閱讀最新消息：突然高燒、全身痠痛，是流感嗎？家長常問的 5 個問題" class="news-card block bg-white rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#A8C69F]" style="text-decoration:none;">
+ <a href="/health/influenza.html" onclick="trackCTA('News_Influenza5Q')" aria-label="閱讀最新消息：突然高燒、全身痠痛，是流感嗎？家長常問的 5 個問題" class="news-card block bg-white rounded-3xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#A8C69F] mt-6" style="text-decoration:none;">
  <div class="flex flex-col sm:flex-row">
  <div class="news-media flex-shrink-0">
  <picture>
