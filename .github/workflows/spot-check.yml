@@ -487,6 +487,7 @@ jobs:
           check /health/sugar-hyperactivity.html 200
           check /images/sugar-hyperactivity-infographic.jpg 200
           check /health/eczema-relapse.html 200
+          check /images/eczema-relapse-infographic.jpg 200
           check /health/adult-gerd.html 200
           check /health/smoking-cessation.html 200
           check /health/flu-vaccine-egg-cell.html 200
