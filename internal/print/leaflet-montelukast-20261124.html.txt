@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW"><head><meta charset="utf-8"><title>孩子吃欣流（孟魯司特）衛教單張</title>
+<style>
+@page{size:A4;margin:14mm 15mm 12mm}
+*{box-sizing:border-box}
+body{font-family:"WenQuanYi Zen Hei","Noto Sans TC",sans-serif;font-size:11pt;line-height:1.52;color:#222;margin:0}
+h1{font-size:19pt;text-align:center;margin:0 0 1mm;letter-spacing:1pt}
+.by{text-align:right;font-weight:bold;margin:0 0 3mm}
+h2{font-size:12pt;margin:3.5mm 0 1mm;color:#7a4a1f;border-bottom:1.5px solid #A0662F;padding-bottom:0.5mm}
+p{margin:0 0 1mm;text-align:justify}
+b{color:#9b2c1f}
+ul{margin:0.5mm 0 1mm;padding-left:6mm}
+li{margin:0 0 0.5mm}
+.note{background:#fbf3ea;border-left:4px solid #A0662F;padding:1.5mm 3mm;margin:1.5mm 0}
+.src{font-size:8.5pt;color:#555;margin:3mm 0 1.5mm}
+.foot{font-size:8.5pt;color:#555;text-align:center;border-top:1px solid #ccc;padding-top:1.5mm}
+</style></head><body>
+<h1>孩子吃欣流（孟魯司特），家長要留意的事</h1>
+<p class="by">蔡宗儒醫師 編撰</p>
+
+<h2>1. 這是什麼藥？</h2>
+<p>欣流、萬剋喘的成分都是<b>孟魯司特（montelukast）</b>，屬於白三烯素受體拮抗劑，是醫師處方的口服控制藥，不是類固醇，也不是保健品。它用來預防與長期控制氣喘、預防運動引起的支氣管收縮。用在過敏性鼻炎時，食藥署 2021 年起限定為其他抗過敏藥效果不好或無法耐受才使用。它不是急性喘的救急藥，氣喘發作時請依醫師給的氣喘行動計畫使用急救藥。</p>
+
+<h2>2. 為什麼要特別提醒？</h2>
+<p>2020 年，美國食品藥物管理局（FDA）在孟魯司特的仿單加上<b>加框警語</b>，提醒可能出現神經精神方面的不良反應；我國仿單也有相關警語。多數孩子吃了沒有這些狀況，但家長知道要看什麼，有變化時才能早點發現。</p>
+
+<h2>3. 用藥期間，請留意孩子有沒有這些變化</h2>
+<ul>
+<li>睡眠：做惡夢、夢境特別鮮明、睡不好、失眠、夢遊。</li>
+<li>情緒：易怒、焦躁、坐立不安、焦慮、情緒低落。</li>
+<li>行為與專注：變得有攻擊性、注意力不集中、記性變差、搞不清楚時間或地點、說話結巴、手抖，或出現抽動（不自主眨眼、清喉嚨、聳肩）、一直重複同一個動作。</li>
+<li>嚴重時：看到或聽到不存在的東西，或說出想死、想傷害自己的話。</li>
+</ul>
+<p>這些變化可能在開始吃藥後不久出現，也可能吃了一段時間才出現。</p>
+
+<h2>4. 出現變化時怎麼做？</h2>
+<div class="note">
+<p>出現上面任何一項，<b>請停用孟魯司特，立即聯絡醫師</b>。孩子說出想死、想傷害自己，或看到、聽到不存在的東西，請立即就醫；情況危急請撥打 119。</p>
+</div>
+<p>沒有這些變化，只是覺得沒效、想停藥或想減量，請先回診和醫師討論，不要自己停藥。孩子同時在用的其他氣喘控制藥，也請照常使用，不要一起停掉。</p>
+
+<h2>5. 開藥前，請先告訴醫師</h2>
+<p>孩子曾經有焦慮、憂鬱、過動或注意力不足、抽動、睡眠問題，或曾說過想傷害自己，請在開藥前告訴醫師，醫師會一起評估效益與風險。</p>
+<p>沒有診斷、沒有症狀，不需要為了「保養氣管」每天吃藥。確定是氣喘、需要每天用控制藥時，國際氣喘指引優先建議的是吸入型類固醇，孟魯司特屬於替代選項；要不要用、用多久，由醫師評估。回診時請把藥袋和吸入器帶來。</p>
+
+<p class="src">資料來源：美國 FDA 藥品安全通報（2020/3/4）；衛生福利部食品藥物管理署公告（2021/12/7）；含 montelukast 成分藥品中文仿單。更多說明：lhpedclinic.com.tw/health/montelukast-asthma.html</p>
+<p class="foot">立欣診所｜台南市北區育德路467號｜電話 06-2516086｜LINE @lhpedclinic｜本院為一般門診、非急診</p>
+</body></html>
