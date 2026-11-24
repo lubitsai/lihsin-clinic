@@ -39,6 +39,14 @@ class TriageTests(unittest.TestCase):
                 self.assertEqual(action, 'urgent')
                 self.assertIn('119', text)
 
+    def test_self_harm_routes_urgent_with_1925(self):
+        for q in ['孩子吃欣流說想自殺', '小孩說想死', '孩子說不想活了', '吃欣流會有自殺念頭嗎']:
+            with self.subTest(q=q):
+                action, text = route(q)
+                self.assertEqual(action, 'urgent')
+                self.assertIn('119', text)
+                self.assertIn('1925', text)
+
     def test_emergency_answered_even_while_waiting_for_staff(self):
         self.assertEqual(route('孩子現在呼吸很喘', pending=True)[0], 'urgent')
         self.assertEqual(route('高燒不退第三天', pending=True)[0], 'soon')

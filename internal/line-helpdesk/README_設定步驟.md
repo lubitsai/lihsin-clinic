@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.77）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.78）
 
-2026-11-24 第二版 2.77｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-24 第二版 2.78｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.78 自傷字詞進緊急判斷＋安心專線 1925（2026-11-24）
+
+院長「『自殺／想死』要加進緊急字詞、要附安心專線 1925」。`core.py` `URGENT_SRC` 與官網 `search.js` `URGENT` 逐字同步加：自殺、想死、不想活、輕生、傷害自己、自殘、自傷、割腕。知識庫正本第三節急症固定回覆末加一行「若孩子說出想死、想傷害自己，請陪在孩子身邊，也可以撥打衛福部安心專線 1925（24 小時免付費）。」（所有急症回覆都會帶這行）。`test_faq_catalog` 加 1 項回歸測試；`parity_queries` +5。程式有改 → 部署走測試模式＋實測；取代未部署的 2.77。
 
 ## 2.77 欣流副作用症狀問法對照（2026-11-24）
 

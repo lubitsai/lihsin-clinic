@@ -1,3 +1,10 @@
+2026-11-24 第二版 2.78（URGENT 加自傷字詞、急症回覆加安心專線 1925；取代未部署的 2.77）
+- LINE unittest：本環境缺套件，題庫與價目測試全過（test_faq_catalog 30 項含新增自傷回歸測試）；完整版請以 requirements.lock.txt 環境再跑。
+- sync_assistants.py：官網測試 354 項、一致性比對 503 句全部一致；validate_site 通過。
+- --ask：「孩子吃欣流說想自殺」「小孩說想死」「吃欣流會有自殺念頭嗎」兩邊皆走急症回覆（含 119 與 1925）；「孩子呼吸很喘」照舊急症；「孟魯司特 幻覺」仍對到副作用題。
+- 程式有改（2.70～2.78 未部署）→ 部署走測試模式＋實測。
+- 未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-24 第二版 2.77（core.py TOPIC 加欣流副作用症狀對照；取代未部署的 2.76）
 - LINE unittest：本環境缺套件，只跑題庫與價目測試 37 項全過（完整版請以 requirements.lock.txt 環境再跑）。
 - sync_assistants.py：官網測試 354 項、一致性比對 497 句全部一致；validate_site 通過。
