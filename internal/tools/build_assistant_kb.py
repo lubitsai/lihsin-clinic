@@ -143,8 +143,8 @@ def build(root: Path, kb_path: Path) -> dict:
     if len(greet_blocks) != 2:
         raise KbError(f'第二節應有開場白與建議問題兩個程式碼區塊，實得 {len(greet_blocks)}')
     urgent_blocks = code_blocks(section(kb, '## 三、', '## 四、'))
-    if len(urgent_blocks) != 2:
-        raise KbError(f'第三節應有急症與次級紅旗兩段固定回覆，實得 {len(urgent_blocks)}')
+    if len(urgent_blocks) != 3:
+        raise KbError(f'第三節應有急症、次級紅旗、自傷急症三段固定回覆，實得 {len(urgent_blocks)}')
 
     # ── 四、診所基本事實 ──
     ops = section(kb, '## 四、', '## 五、')
@@ -282,6 +282,7 @@ def build(root: Path, kb_path: Path) -> dict:
         'suggestions': [s.strip() for s in greet_blocks[1].splitlines() if s.strip()],
         'urgent_reply': urgent_blocks[0],
         'soon_reply': urgent_blocks[1],
+        'selfharm_reply': urgent_blocks[2],
         'facts': facts,
         'fees': fees,
         'prices': load_prices(root),

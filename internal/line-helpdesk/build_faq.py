@@ -163,7 +163,7 @@ VAX_CUTOFF_REPLY = '您好，因疫苗清點與申報作業，本院於每日最
 BUTTONS = (("quick: ['預約遲到怎麼辦', '現場號過號怎麼辦']", core.LATE_BUTTONS), ("quick: ['網路預約怎麼約', '現場掛號幾點開始']", core.REGISTER_BUTTONS))
 
 def check_regex_parity(js):
-    for name, mine in (('URGENT', core.URGENT_SRC), ('SOON', core.SOON_SRC), *core.ROUTE_SRC.items()):
+    for name, mine in (('URGENT', core.URGENT_SRC), ('SELFHARM', core.SELFHARM_SRC), ('SOON', core.SOON_SRC), *core.ROUTE_SRC.items()):
         m = re.search(r'^const ' + name + r' = /(.*)/;$', js, re.M)
         if not m or m.group(1) != mine:
             raise SystemExit(f'✗ core 的 {name} 與官網 search.js 不一致，請先同步 core.py')
@@ -237,6 +237,7 @@ def build(kb_bytes, aliases, overrides=None):
     fee_table = next(i['answer'] for i in items if i['id'] == 'KEY06')
     replies = {
         'urgent': kb['urgent_reply'],
+        'selfharm': kb['selfharm_reply'],
         'soon': kb['soon_reply'],
         'suggest_head': '以下是官網上的相關問答，請點選下方按鈕查看：',
         'unknown': '這部分我不確定，找不到足夠的資料。' + CONTACT,

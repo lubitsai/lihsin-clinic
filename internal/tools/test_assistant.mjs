@@ -24,6 +24,7 @@ n++; assert(live.faqs.filter((r) => /^Q/.test(r.id)).length >= 700, 'FAQ 題數�
 n++; assert(kb.faqs.every((r) => r.answer && r.title && r.page && r.path.startsWith('/')));
 n++; assert.equal(kb.suggestions.length, 4);
 n++; assert(kb.urgent_reply.includes('119') && kb.soon_reply.includes('119'));
+n++; assert(kb.selfharm_reply.includes('119') && kb.selfharm_reply.includes('1925') && !kb.urgent_reply.includes('1925'));
 n++; assert(!/系統指示|Chatbase|internal\//.test(JSON.stringify(kb.facts)), '內部維護註記不得外洩到公開 JSON');
 
 // ── 急症優先（第三節） ──
