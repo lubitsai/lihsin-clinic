@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.76）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.77）
 
-2026-11-24 第二版 2.76｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-24 第二版 2.77｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.77 欣流副作用症狀問法對照（2026-11-24）
+
+院長「補上孟魯司特幻覺的小幫手對照」。`core.py` `TOPIC` 與官網 `search.js` 逐字同步加 1 條（只影響檢索、不改回覆文字）：欣流／萬剋喘／萬克喘／孟魯司特／montelukast 6 字內接幻覺、夢遊、惡夢、睡不好、失眠、抽動、注意力、情緒、易怒、脾氣、焦慮、憂鬱、自殺、行為改變（或反過來）→ 對到〈吃欣流會有副作用嗎？〉。`parity_queries` +6。程式有改 → 部署走測試模式＋實測；取代未部署的 2.76。
 
 ## 2.76 題庫重產：欣流神經精神警語補症狀與用藥前告知（2026-11-24）
 
