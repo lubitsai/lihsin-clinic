@@ -84,5 +84,8 @@ exit 0、ffprobe 為 1080×1920／30fps、總長＝片頭＋人聲、抽兩格�
 
 - `internal/tools/make_short.sh`、本 Skill 屬內部檔，三條判準皆不成立 → **直進 `main`、不開 PR**。
   改 `00` 前先備份到 `internal/archive/`，push 前跑 `validate_site.py --stage deploy`。
-- 影片要放上官網（嵌入頁面、加 VideoObject schema）是另一回事：屬判準①②，走 PR，
-  並須先和院長討論託管位置（影片檔不進 repo）。
+- **公開範圍（院長 2026-11-25 裁示）**：本 Skill 做的社群短片**可以公開在官網**；
+  **只有減重營養課八堂影片不公開**（僅學員專區，見 `lhclinic-work` 的 `衛教影片/減重營養課/README.md`）。
+- 影片要放上官網（嵌入頁面、加 VideoObject schema）屬判準①②，走 PR，
+  並須先和院長決定託管方式（嵌入 FB／IG／YouTube 公開影片，或放進 repo 的 `/videos/`；
+  後者前例＝2026-11-05 宣傳片，要嵌入頁面時須先改 `sw.js` 讓 `/videos/` 走網路並 bump VERSION）。
