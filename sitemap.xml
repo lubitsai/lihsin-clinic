@@ -564,6 +564,8 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/child-leg-alignment.html</loc>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/child-leg-alignment-infographic.jpg</image:loc></image:image>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/child-leg-alignment-timeline-infographic.jpg</image:loc></image:image>
     <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
