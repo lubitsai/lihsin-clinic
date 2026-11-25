@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.79）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.80）
 
-2026-11-24 第二版 2.79｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-25 第二版 2.80｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.80 題庫重產：首頁新增「立欣診所開藥的原則是什麼？」（2026-11-25）
+
+院長交付開藥理念全文（首頁「院長的話」新增一節、首頁 FAQ 新增 1 題、`dr-tsai` 看診理念加 1 句），LINE 重產題庫後即可回答開藥原則類問法；同批累積 11-24zg（猛健樂心血管適應症）、11-25l（腿型破圈文）已在 `main` 重產但未打包的題庫。`parity_queries` +2。程式未改（`main.py`／`core.py`／`requirements.txt` 與 2.79 相同）；2.70～2.79 的程式變更仍未部署，部署照舊走測試模式＋實測。取代未部署的 2.79。
 
 ## 2.79 1925 只出現在自傷急症回覆（2026-11-24）
 
