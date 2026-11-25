@@ -479,6 +479,7 @@ jobs:
           check /health/montelukast-asthma.html 200
           check /images/montelukast-asthma-infographic.jpg 200
           check /health/myths.html 200
+          check /images/myths-infographic.jpg 200
           check /health/milk-height.html 200
           check /images/milk-height-infographic.jpg 200
           check /health/cold-food-cough.html 200
