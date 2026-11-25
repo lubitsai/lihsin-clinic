@@ -1,11 +1,15 @@
-# 立欣診所 LINE 問答＋人工接手（第二版 2.80）
+# 立欣診所 LINE 問答＋人工接手（第二版 2.81）
 
-2026-11-25 第二版 2.80｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
+2026-11-25 第二版 2.81｜部署準備包，尚未連線到您的 Google Cloud 或 LINE 帳號，尚未上線。
 
 > **🚀 要部署請看 `部署操作步驟.md`**（Cloud Shell 一鍵腳本 `deploy_cloudrun.sh`＋LINE 後台＋實測清單＋回退）。本 README 是技術細節與版本紀錄；第一～六步的手動做法仍適用於不想用腳本、改用 Cloud Run 主控台的情況。
 
 
 > **📍 正本位置（2026-10-06 起）**：本程式包的正本放在官網 repo `internal/line-helpdesk/`（`_redirects` 的 `/internal/*` 規則擋成 404，不會公開）。官網內容一改，Claude Code 的 hook 會自動重產 `faq.json`，`validate_site.py` 以 W-LINE 提醒不同步；流程見 `.claude/skills/assistant-sync/SKILL.md`。部署時把整個資料夾打包上傳 Cloud Run 即可，在 repo 外執行時 `build_faq.py` 會改讀官網線上的 knowledge.json／search.js。
+
+## 2.81 題庫重產：首頁新增「正在吃別的藥，可以和立欣診所開的藥一起吃嗎？」（2026-11-25）
+
+補 2.80 回報的缺口（「我有在吃別的藥可以一起吃嗎」兩邊皆答不出）：首頁 FAQ 新增 1 題，重產後「別家診所的藥／慢性病的藥／藥可以一起吃嗎」皆對到新題。`parity_queries` +3。程式未改；2.70～2.79 程式變更仍未部署，部署照舊走測試模式＋實測。取代未部署的 2.80。
 
 ## 2.80 題庫重產：首頁新增「立欣診所開藥的原則是什麼？」（2026-11-25）
 
