@@ -34,6 +34,13 @@
  #lessons img { aspect-ratio: 1 / 1; object-fit: cover; height: auto; }
  #go:disabled, #lessons button:disabled { opacity: .6; cursor: wait; }
  [hidden] { display: none !important; }
+ #zone summary { list-style: none; }
+ #zone summary::-webkit-details-marker { display: none; }
+ #zone details > summary .chev { transition: transform .2s; }
+ #zone details[open] > summary .chev { transform: rotate(180deg); }
+ #zone [id] { scroll-margin-top: 96px; }
+ .dpad { padding: 0 1.25rem 1.25rem; }
+ @media (min-width: 768px) { .dpad { padding: 0 1.5rem 1.5rem; } }
 </style>
 </head>
 <body class="bg-[#f8faf7]">
@@ -87,8 +94,6 @@
  <a href="tel:062516086" class="px-6 py-3 rounded-full font-chinese font-medium text-center text-white" style="background:linear-gradient(135deg,#7C9A6E,#A8C69F)">📞 06-2516086</a>
  </div>
 </div>
-<div style="height:76px"></div>
-
 <div style="height:76px"></div>
 
 <nav aria-label="breadcrumb" class="container mx-auto px-4 pt-5">
@@ -148,10 +153,28 @@
  <div id="cert-out" class="mt-3"></div>
  </div>
  </div>
- <div id="lessons" class="grid gap-6"></div>
-
- <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-6" aria-labelledby="calc-h2">
- <h2 id="calc-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-2">🧮 熱量與蛋白質試算（第 3 堂）</h2>
+ <nav aria-label="學員專區快速導覽" class="mb-6">
+ <p class="text-sm font-bold text-gray-700 font-chinese mb-2">快速前往</p>
+ <div id="quick-nav" class="flex flex-wrap gap-2">
+ <a href="#lesson-1" data-lesson="1" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第1堂</a>
+ <a href="#lesson-2" data-lesson="2" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第2堂</a>
+ <a href="#lesson-3" data-lesson="3" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第3堂</a>
+ <a href="#lesson-4" data-lesson="4" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第4堂</a>
+ <a href="#lesson-5" data-lesson="5" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第5堂</a>
+ <a href="#lesson-6" data-lesson="6" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第6堂</a>
+ <a href="#lesson-7" data-lesson="7" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第7堂</a>
+ <a href="#lesson-8" data-lesson="8" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">第8堂</a>
+ <a href="#tool-calc" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">🧮 試算</a>
+ <a href="#faq-box" id="quick-faq" hidden class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">💬 常見問題</a>
+ <a href="#tool-after" class="px-3 py-1 rounded-full bg-white border border-[#A8C69F] text-[#7C9A6E] font-chinese text-sm hover:bg-[#f0f7ed]">🌱 八堂課之後</a>
+ </div>
+ </nav>
+ <div class="mb-8">
+ <h2 class="text-lg font-bold text-gray-700 font-chinese mb-3">學習工具</h2>
+ <div class="grid gap-4">
+ <details id="tool-calc" class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+ <summary class="flex items-center justify-between gap-3 p-5 md:p-6 cursor-pointer"><h2 id="calc-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese">🧮 熱量與蛋白質試算（第 3 堂）</h2><span class="chev text-[#7C9A6E]" aria-hidden="true">▾</span></summary>
+ <div class="dpad">
  <p class="text-sm text-gray-500 font-chinese leading-relaxed mb-4">幫助理解課程的算法，不是個人目標。實際要吃多少，請和醫師或營養師一起訂；試算的數字不會傳出這台裝置。</p>
  <div class="grid md:grid-cols-2 gap-6">
  <div>
@@ -176,18 +199,24 @@
  <p id="c-pro-out" class="mt-3 text-sm font-chinese leading-relaxed text-gray-700" aria-live="polite"></p>
  </div>
  </div>
+ </div>
+ </details>
+ <section id="tool-after" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6" aria-labelledby="after-h2">
+ <h2 id="after-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-2">🌱 八堂課之後</h2>
+ <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-4">結業後繼續用課程的方法練習：每週勾一次自我檢查，體重停滯時先回頭看紀錄，再帶著紀錄回診討論。在家煮可以參考 6 套一人份家常餐盤；也可以把家人支持指南分享給同住的家人。</p>
+ <div id="after-buttons" class="flex flex-wrap gap-2"></div>
  </section>
+ </div>
+ </div>
+ <h2 class="text-lg font-bold text-gray-700 font-chinese mb-3">八堂課程</h2>
+ <div id="lessons" class="grid gap-3"></div>
+
 
  <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-6" aria-labelledby="faq-h2" id="faq-box" hidden>
  <h2 id="faq-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-3">💬 學員常見問題</h2>
  <div id="faq-list" class="flex flex-col gap-2"></div>
  </section>
 
- <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6 mt-6" aria-labelledby="after-h2">
- <h2 id="after-h2" class="text-lg md:text-xl font-bold text-gray-800 font-chinese mb-2">🌱 八堂課之後</h2>
- <p class="text-sm text-gray-600 font-chinese leading-relaxed mb-4">結業後繼續用課程的方法練習：每週勾一次自我檢查，體重停滯時先回頭看紀錄，再帶著紀錄回診討論。在家煮可以參考 6 套一人份家常餐盤；也可以把家人支持指南分享給同住的家人。</p>
- <div id="after-buttons" class="flex flex-wrap gap-2"></div>
- </section>
  <p class="mt-8 text-sm text-gray-500 font-chinese text-center leading-relaxed">課程內容是一般營養衛教，個人的熱量、份量與用藥，請依醫師和營養師的評估調整。</p>
 <details class="mt-4">
  <summary class="text-xs text-gray-400 font-chinese text-center">份量計算單</summary>
@@ -405,7 +434,15 @@
       }
       const check = el('input', { type: 'checkbox', id: `done-${n}`, class: 'w-5 h-5' });
       check.checked = !!done[n];
-      check.addEventListener('change', () => { if (check.checked) done[n] = true; else delete done[n]; saveDone(); updateProgress(); });
+      const status = el('span', { class: 'text-xs font-chinese px-2 py-0.5 rounded-full' });
+      const paintStatus = () => {
+        status.textContent = check.checked ? '✓ 已看完' : '未看完';
+        status.className = 'text-xs font-chinese px-2 py-0.5 rounded-full ' + (check.checked ? 'bg-[#f0f7ed] text-[#7C9A6E]' : 'bg-gray-100 text-gray-500');
+        const chip = document.querySelector(`#quick-nav a[data-lesson="${n}"]`);
+        if (chip) chip.textContent = `第${n}堂${check.checked ? ' ✓' : ''}`;
+      };
+      paintStatus();
+      check.addEventListener('change', () => { if (check.checked) done[n] = true; else delete done[n]; saveDone(); updateProgress(); paintStatus(); });
       const card = el('a', { href: `/images/${slug}-infographic.jpg`, target: '_blank', rel: 'noopener', class: 'block flex-shrink-0' },
         el('img', { src: `/images/${slug}-infographic-768.webp`, alt: `${title} 課程重點圖卡`, width: '768', height: '768', loading: 'lazy', class: 'block w-24 md:w-32 rounded-xl border border-gray-100 shadow-sm' }));
       const links = el('div', { class: 'flex-grow text-sm text-gray-600 font-chinese leading-relaxed' },
@@ -416,17 +453,22 @@
           fileButton(`t${nn}`, '📖', '逐字稿', `第${n}堂逐字稿.pdf`),
           fileButton(`w${nn}`, '📝', '課後練習單', `第${n}堂課後練習單.pdf`),
           audioButton(`a${nn}`, n)));
-      const article = el('article', { class: 'bg-white rounded-2xl border border-gray-100 shadow-sm p-5 md:p-6' },
-        el('div', { class: 'flex flex-wrap items-center justify-between gap-3 mb-4' },
-          el('div', { class: 'flex flex-wrap items-center gap-3' },
-            el('span', { class: 'inline-block bg-[#f8faf7] text-[#7C9A6E] border border-[#7C9A6E] px-3 py-1 rounded-full text-sm font-chinese' }, num),
-            el('h2', { class: 'text-lg md:text-xl font-bold text-gray-800 font-chinese' }, name)),
-          el('label', { for: `done-${n}`, class: 'flex items-center gap-2 text-sm text-gray-600 font-chinese cursor-pointer' }, check, '已看完')),
+      const body = el('div', { class: 'dpad' },
         video,
         el('div', { class: 'flex items-start gap-4 mt-5' }, card, links));
-      if (quiz && quiz[String(n)]) article.append(quizBlock(quiz[String(n)]));
+      if (quiz && quiz[String(n)]) body.append(quizBlock(quiz[String(n)]));
+      body.append(el('label', { for: `done-${n}`, class: 'mt-5 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-700 font-chinese cursor-pointer' }, check, '已看完'));
+      const article = el('details', { id: `lesson-${n}`, class: 'bg-white rounded-2xl border border-gray-100 shadow-sm' },
+        el('summary', { class: 'flex items-center justify-between gap-3 p-4 md:p-5 cursor-pointer' },
+          el('div', { class: 'flex items-center gap-3 min-w-0' },
+            el('span', { class: 'flex-shrink-0 inline-block bg-[#f8faf7] text-[#7C9A6E] border border-[#7C9A6E] px-3 py-1 rounded-full text-sm font-chinese' }, num),
+            el('h3', { class: 'text-base md:text-lg font-bold text-gray-800 font-chinese' }, name)),
+          el('div', { class: 'flex items-center gap-2 flex-shrink-0' }, status, el('span', { class: 'chev text-[#7C9A6E]', 'aria-hidden': 'true' }, '▾'))),
+        body);
       box.append(article);
     });
+    const next = LESSONS.findIndex((_, i) => !done[i + 1]);
+    if (next >= 0) $(`lesson-${next + 1}`).open = true;
     $('weekly-log').replaceChildren(fileButton('w00', '📋', '一週飲食紀錄表', '一週飲食紀錄表.pdf'));
     $('extra-downloads').replaceChildren(
       fileButton('book', '📚', '練習單合訂本', '減重營養課練習單合訂本.pdf'),
@@ -445,6 +487,7 @@
       el('summary', { class: 'font-bold text-gray-800 font-chinese cursor-pointer text-sm' }, it.q),
       el('p', { class: 'mt-2 text-sm text-gray-600 font-chinese leading-relaxed' }, `${it.a}（第 ${it.n} 堂）`))));
     $('faq-box').hidden = false;
+    $('quick-faq').hidden = false;
   }
 
   // 試算：只做課程教的兩個算法，不推估減重天數（第 3 堂：算式不保證減重速度）
@@ -471,6 +514,12 @@
     }
   }
   ['c-tdee', 'c-bmr', 'c-eat', 'c-kg', 'c-act'].forEach((id) => $(id).addEventListener('input', calc));
+
+  $('quick-nav').addEventListener('click', (ev) => {
+    const a = ev.target.closest('a[href^="#"]');
+    const target = a && document.querySelector(a.getAttribute('href'));
+    if (target && target.tagName === 'DETAILS') target.open = true;
+  });
 
   async function unlock(password, quiet) {
     const data = await openVault(password);
