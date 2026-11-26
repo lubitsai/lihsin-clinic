@@ -475,7 +475,7 @@ jobs:
           check /health/child-rash.html 200
           check /images/child-rash-infographic.jpg 200
           check /health/nasal-steroid-growth.html 200
-          check /images/nasal-steroid-growth-infographic.jpg 200
+          check /images/nasal-steroid-growth-20261127-infographic.jpg 200
           check /health/runny-nose-cough.html 200
           check /images/runny-nose-cough-infographic.jpg 200
           check /health/montelukast-asthma.html 200
