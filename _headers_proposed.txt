@@ -1,5 +1,5 @@
 # ===== 立欣診所 CSP 草案（_headers_proposed.txt）=====
-# 建立：2026-07-28｜狀態：草稿，**尚未上線**
+# 建立：2026-07-28｜2026-11-26c 重盤並上線第一階段（Report-Only，已貼進 `_headers`）
 #
 # ⚠️ 這個檔 Netlify 不讀（只讀 `_headers`），放在這裡純粹是讓草案進版控。
 #    要上線＝把下面「正式版」那段貼進 `_headers` 的 `/*` 區塊。
@@ -31,6 +31,14 @@
 #   線上小幫手     → 'self' 即可（/clinic-assistant/ 同網域 module＋JSON；Shadow DOM 內 <style> 受 style-src 'unsafe-inline' 涵蓋）
 #   Google Maps    → frame-src（首頁 iframe）
 #
+# ── 2026-11-26c 重盤補上的三處（07-28 版沒有，照舊版上正式會壞）──
+#   frame-src  + https://www.youtube-nocookie.com  → 學員專區 /members/nutrition/ 影片
+#   media-src  'self' blob:   → 學員專區音檔解密後以 blob: 播放（舊版無此指令＝落回 default-src，Playwright 實測會被擋）
+#   img-src    + blob:        → 學員專區結業紀念卡 canvas→blob 圖（同上實測會被擋）
+#   另依 Google／Microsoft 公開 CSP 建議放寬：GA4 改 *.googletagmanager.com、img-src 補 GA4 與 Clarity 信標主機。
+#   本機 Playwright 以 Report-Only 爬 147 頁：違規 0（唯一回報為 logo 絕對網址在 localhost 測試源下的假陽性，正式站屬 'self'）。
+#   容器代理擋 googletagmanager／clarity，GA／Clarity 實際送出**未在容器驗證**，須在 Deploy Preview 人工確認（下方驗收點 2、3）。
+#
 # ⚠️ 'unsafe-inline' 兩處都拿不掉的原因：
 #   script-src：各頁的 JSON-LD（<script type="application/ld+json">）**受
 #     script-src 管轄**，加上 gtag config 與頁內 inline script，靜態多頁站
@@ -45,14 +53,14 @@
 # ────────────────────────────────────────────────
 # 貼進 `_headers` 的 /* 區塊，觀察 Deploy Preview 的 Console：
 
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-src 'self' https://maps.google.com https://www.google.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; media-src 'self' blob:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-src 'self' https://maps.google.com https://www.google.com https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
 
 
 # ────────────────────────────────────────────────
 # 【第二階段】正式版：確認零違規後才換上
 # ────────────────────────────────────────────────
 
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-src 'self' https://maps.google.com https://www.google.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; media-src 'self' blob:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-src 'self' https://maps.google.com https://www.google.com https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
 
 
 # ── 驗收抽測點（Deploy Preview，逐項看 Console 有無違規）──
@@ -62,6 +70,7 @@
 #   4. 首頁：右下角線上小幫手開得起來、問「門診時間」有回答
 #   5. 首頁：Google 地圖 iframe 顯示正常
 #   6. 任一頁：PWA service worker 正常註冊（Application → Service Workers）
+#   7. 學員專區（2026-11-26c 新增）：登入後播一段影片、開一個音檔、產一張結業卡
 #
 # ── 新增外部服務時記得回來改這裡 ──
 #   加任何第三方 script／iframe／API，都要同步補對應指令，
