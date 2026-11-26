@@ -11,7 +11,7 @@
 
 安全機制：
   - 冪等：頁面已含 manifest.webmanifest 即整頁跳過（可重複執行）
-  - 排除清單：offline.html、404.html（離線/錯誤頁不需註冊）
+  - 排除清單：offline.html、404.html（離線/錯誤頁不需註冊）；目錄 members/、internal/line-oa/archive/
   - 只用 str.find / 精準插入，不經 BeautifulSoup 重新序列化
   - 每檔回報插入結果與位移位元組數，異常（找不到 </head>）即跳過並警告
 
@@ -26,6 +26,9 @@ MANIFEST_TAG = '<link rel="manifest" href="/manifest.webmanifest">'
 REGISTER_TAG = '<script src="/pwa-register.js" defer></script>'
 THEME_TAG = '<meta name="theme-color" content="#7C9A6E">'
 EXCLUDE = {'offline.html', '404.html'}
+# 目錄排除（2026-11-26）：members/＝build_members.py 產出的加密學員專區，插入會破壞加密頁；
+# internal/line-oa/archive/＝LINE 官方帳號頁面存檔，不是網站頁面。路徑相對於目標目錄。
+EXCLUDE_DIRS = {'members', 'internal/line-oa/archive'}
 
 
 def patch_file(path, dry=False):
@@ -82,7 +85,10 @@ def main():
         print('【DRY RUN：僅預覽，不寫入】')
 
     total, patched = 0, 0
-    for dirpath, _dirnames, filenames in os.walk(root):
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames
+                       if os.path.relpath(os.path.join(dirpath, d), root).replace(os.sep, '/')
+                       not in EXCLUDE_DIRS]
         for name in sorted(filenames):
             if not name.endswith('.html'):
                 continue
