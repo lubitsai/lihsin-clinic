@@ -1,3 +1,10 @@
+2026-11-26 第二版 2.82（題庫重產：兒童發展檢核表線上自評 7 題；取代未部署的 2.81）
+- LINE unittest：本環境缺套件，題庫與價目測試 39 項全過；完整版請以 requirements.lock.txt 環境再跑。
+- sync_assistants.py：官網測試 355 項、一致性比對全部一致；validate_site 通過。
+- --ask：「可以在家先做兒童發展檢核嗎」「有沒有線上的發展檢核表」「發展自評的答案會上傳嗎」「自評分數沒過是發展遲緩嗎」「發展篩檢量表的實和問是什麼意思」LINE 相似題首位皆為新題。
+- 修正 build_assistant_kb.py 刪除標題內文 ★ 的問題（只影響 1 題標題）。
+- 程式未改；未對真實 Google Cloud／LINE 執行；尚未部署。
+
 2026-11-25 第二版 2.81（題庫重產：用藥併用 FAQ；取代未部署的 2.80）
 - LINE unittest：本環境缺套件，題庫與價目測試 39 項全過；完整版請以 requirements.lock.txt 環境再跑。
 - sync_assistants.py：官網測試 355 項、一致性比對（含新增 3 句）全部一致；validate_site 通過。
