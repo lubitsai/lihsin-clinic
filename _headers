@@ -12,9 +12,9 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   # 限制可使用的瀏覽器功能（診所網站不需要這些感測器/裝置權限）
   Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()
-  # CSP（2026-11-26c）：第一階段 Report-Only，只回報不阻擋；Deploy Preview 確認零違規後換正式版。
+  # CSP（2026-11-26c）：正式版。院長於 PR #630 Deploy Preview 以 Report-Only 驗收點 1～7 回報零違規後換上。
   # 白名單依據與驗收點見 /_headers_proposed.txt（兩檔的 policy 必須逐字一致）。
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; media-src 'self' blob:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-src 'self' https://maps.google.com https://www.google.com https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://*.googletagmanager.com https://www.clarity.ms https://*.clarity.ms; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.google-analytics.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; media-src 'self' blob:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.clarity.ms https://c.bing.com; frame-src 'self' https://maps.google.com https://www.google.com https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'
 
 # ── 靜態資源快取（圖片、PDF）：加速回訪載入 ──
 /images/*
@@ -31,7 +31,7 @@
 /631da727697dc88a64a8f0b76042c891.txt
   Content-Type: text/plain; charset=utf-8
 
-# 註：CSP 於 2026-11-26c 起上線（先 Report-Only）。外部相依現況（2026-11-26 程式化重盤）：
+# 註：CSP 於 2026-11-26c 起上線（Report-Only 驗收零違規後換正式版）。外部相依現況（2026-11-26 程式化重盤）：
 # Google Fonts、Google Analytics(gtag)、Microsoft Clarity、首頁 Google 地圖 iframe、
 # 學員專區 youtube-nocookie iframe 與 blob: 音檔／結業卡圖。草案與來源依據見
 # repo 根目錄 /_headers_proposed.txt（已由 _redirects 第 5 節攔成 404、不對外）。

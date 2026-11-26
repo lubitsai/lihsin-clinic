@@ -1,5 +1,5 @@
 # ===== 立欣診所 CSP 草案（_headers_proposed.txt）=====
-# 建立：2026-07-28｜2026-11-26c 重盤並上線第一階段（Report-Only，已貼進 `_headers`）
+# 建立：2026-07-28｜2026-11-26c 重盤；Report-Only 經院長 Deploy Preview 驗收零違規，正式版已貼進 `_headers`
 #
 # ⚠️ 這個檔 Netlify 不讀（只讀 `_headers`），放在這裡純粹是讓草案進版控。
 #    要上線＝把下面「正式版」那段貼進 `_headers` 的 `/*` 區塊。
