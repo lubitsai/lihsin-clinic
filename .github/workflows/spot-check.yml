@@ -1395,9 +1395,9 @@ jobs:
           # 2026-11-14：破圈文「身上紅疹是過敏嗎」新頁的吃藥期間出疹段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           cr1=$(curl -s --max-time 20 "$BASE/health/child-rash.html" | grep -c '值得花一次門診把它釐清' || true)
           if [ "$cr1" -ge 1 ]; then echo "OK    紅疹破圈文『吃藥期間出疹』段已上線"; else echo "FAIL  紅疹頁未見『值得花一次門診把它釐清』——11-14 新頁內文疑未上線或已回退"; fail=1; fi
-          # 2026-11-15：迷思大破解 #1「鼻噴劑會讓孩子長不高嗎」新頁的研究段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
-          ns1=$(curl -s --max-time 20 "$BASE/health/nasal-steroid-growth.html" | grep -c '差距很小，而且看成分' || true)
-          if [ "$ns1" -ge 1 ]; then echo "OK    迷思大破解 #1 鼻噴劑與身高研究段已上線"; else echo "FAIL  鼻噴劑頁未見『差距很小，而且看成分』——11-15 新頁內文疑未上線或已回退"; fail=1; fi
+          # 2026-11-15 新頁／2026-11-26 改寫：迷思大破解 #1「鼻噴劑會讓孩子長不高嗎」的研究段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
+          ns1=$(curl -s --max-time 20 "$BASE/health/nasal-steroid-growth.html" | grep -c '一年下來，身高沒有明顯差別' || true)
+          if [ "$ns1" -ge 1 ]; then echo "OK    迷思大破解 #1 鼻噴劑與身高研究段已上線"; else echo "FAIL  鼻噴劑頁未見『一年下來，身高沒有明顯差別』——11-26 改寫內文疑未上線或已回退"; fail=1; fi
           # 2026-11-21：迷思大破解 #2「流鼻水咳嗽一定是感冒嗎」新頁的三件事段（純中文、全站僅該頁命中；防呆 17：改寫時同批改本檢查）
           rn1=$(curl -s --max-time 20 "$BASE/health/runny-nose-cough.html" | grep -c '每一種都附上本院的詳細文章' || true)
           if [ "$rn1" -ge 1 ]; then echo "OK    迷思大破解 #2 流鼻水咳嗽頁已上線"; else echo "FAIL  流鼻水咳嗽頁未見『每一種都附上本院的詳細文章』——11-21 新頁內文疑未上線或已回退"; fail=1; fi
