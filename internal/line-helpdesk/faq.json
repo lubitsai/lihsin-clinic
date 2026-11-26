@@ -2,9 +2,9 @@
  "meta": {
   "source": {
    "kb": "AI客服知識庫_立欣診所_正本_20260924.md",
-   "kb_sha256": "8c0e81690965a165cd2a7d0f5c1fbfce2ea375e510f49868f6b98975a55de671"
+   "kb_sha256": "6464df81c448e9e8d1b32d6fbeb62aaba57aadcb8bad0853475dd0ad4a591125"
   },
-  "knowledge_sha256": "28c578ee7038cdfc9009d54e1355198e1410be6d74a78ebdb95aafb3af89fa7e",
+  "knowledge_sha256": "0c579050a122b24c9552d8175915eaadc11a895f74b57271fc527690a9b92553",
   "reviewed_at": "2026-09-24",
   "site": "https://lhpedclinic.com.tw",
   "counts": {
@@ -14604,8 +14604,8 @@
    "questions": [
     "類固醇鼻噴劑會讓孩子長不高嗎？"
    ],
-   "answer": "依醫囑使用時影響很小，而且依成分不同。一年期的研究中，fluticasone furoate 讓孩子一年平均少長約 0.27 公分；mometasone 和安慰劑組相近，沒有看到生長變慢；較早期的 beclomethasone 差距約 0.9 公分。醫師會挑選成分、用能控制症狀的最低劑量，並請家長定期量身高。",
-   "kb_answer": "依醫囑使用時影響很小，而且依成分不同。一年期的研究中，fluticasone furoate 讓孩子一年平均少長約 0.27 公分；mometasone 和安慰劑組相近，沒有看到生長變慢；較早期的 beclomethasone 差距約 0.9 公分。醫師會挑選成分、用能控制症狀的最低劑量，並請家長定期量身高。",
+   "answer": "依醫囑使用時幾乎不會影響身高，可以放心噴。把一年期的研究合起來看，用藥和沒用藥的孩子身高沒有明顯差別。醫師會用能控制症狀的最低劑量，並請家長每 3 到 6 個月量一次身高。",
+   "kb_answer": "依醫囑使用時幾乎不會影響身高，可以放心噴。把一年期的研究合起來看，用藥和沒用藥的孩子身高沒有明顯差別。醫師會用能控制症狀的最低劑量，並請家長每 3 到 6 個月量一次身高。",
    "page": "類固醇鼻噴劑會讓孩子長不高嗎？研究與用藥重點",
    "source_url": "https://lhpedclinic.com.tw/health/nasal-steroid-growth.html",
    "core": false,
