@@ -8,7 +8,7 @@
 
 安全機制：
   - 冪等：頁面已含 cta-track.js 即整頁跳過（可重複執行）
-  - 排除清單：offline.html、404.html、game.html（後者＝/game/ 內嵌遊戲本體，外框頁已掛）
+  - 排除清單：offline.html、404.html、game.html（後者＝/game/ 內嵌遊戲本體，外框頁已掛）；目錄 members/、internal/line-oa/archive/
   - 只用 str.find 精準插入，不重新序列化 HTML
   - growth.html 一併掛載（院長 2026-07-10 核可：零外部相依的唯一例外＝GA）
 
@@ -23,6 +23,9 @@ CTA_TAG = '<script src="/cta-track.js" defer></script>'
 # 外框頁 game/index.html 已掛同一支腳本，內框再掛會讓每次開遊戲送出兩份事件
 # （GA4 雙計、Clarity 多一份 iframe 錄影）。首跑就是這樣被抓到的，勿移除本項。
 EXCLUDE = {'offline.html', '404.html', 'game.html'}
+# 目錄排除（2026-11-26）：members/＝build_members.py 產出的加密學員專區，插入會破壞加密頁；
+# internal/line-oa/archive/＝LINE 官方帳號頁面存檔，不是網站頁面。路徑相對於目標目錄。
+EXCLUDE_DIRS = {'members', 'internal/line-oa/archive'}
 
 
 def patch_file(path, dry=False):
@@ -51,7 +54,9 @@ def main():
     total, patched = 0, 0
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames
-                       if d not in ('internal', 'node_modules', '.git')]
+                       if d not in ('internal', 'node_modules', '.git')
+                       and os.path.relpath(os.path.join(dirpath, d), root).replace(os.sep, '/')
+                       not in EXCLUDE_DIRS]
         for name in sorted(filenames):
             if not name.endswith('.html'):
                 continue

@@ -204,8 +204,8 @@
   </url>
   <url>
     <loc>https://lhpedclinic.com.tw/health/nasal-steroid-growth.html</loc>
-    <image:image><image:loc>https://lhpedclinic.com.tw/images/nasal-steroid-growth-infographic.jpg</image:loc></image:image>
-    <lastmod>2026-11-15</lastmod>
+    <image:image><image:loc>https://lhpedclinic.com.tw/images/nasal-steroid-growth-20261127b-infographic.jpg</image:loc></image:image>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -326,6 +326,13 @@
   </url>
 
   <url>
+    <loc>https://lhpedclinic.com.tw/development-check.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://lhpedclinic.com.tw/services/pediatric-allergy-asthma.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/pediatric-allergy-asthma-infographic.jpg</image:loc></image:image>
     <lastmod>2026-10-26</lastmod>
@@ -360,7 +367,7 @@
   <url>
     <loc>https://lhpedclinic.com.tw/services/child-development-screening.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/child-development-screening-infographic.jpg</image:loc></image:image>
-    <lastmod>2026-09-25</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -424,7 +431,7 @@
   <url>
     <loc>https://lhpedclinic.com.tw/health/mycoplasma-pneumonia.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/mycoplasma-infographic.jpg</image:loc></image:image>
-    <lastmod>2026-09-20</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -818,7 +825,7 @@
   <url>
     <loc>https://lhpedclinic.com.tw/health/rsv.html</loc>
     <image:image><image:loc>https://lhpedclinic.com.tw/images/rsv-infographic.jpg</image:loc></image:image>
-    <lastmod>2026-10-11</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -95,10 +95,11 @@ def extract_qa(text: str, prefix: str) -> list[dict]:
         pages = re.findall(r'^### 來源頁：`([^`]+)`', text[:m.start()], re.M)
         rows.append({
             'id': m.group(1),
-            'title': m.group(3).replace('★', '').strip(),
+            # 只認開頭的「★ 」為核心題標記；標題內文的 ★（如量表題號標記）保留（2026-11-26j）
+            'title': re.sub(r'^★\s*', '', m.group(3)).strip(),
             'answer': answer,
             'path': pages[-1] if pages else '/',
-            'core': '★' in m.group(3),
+            'core': m.group(3).startswith('★'),
             'seasonal': bool(m.group(2)),
         })
     return rows
