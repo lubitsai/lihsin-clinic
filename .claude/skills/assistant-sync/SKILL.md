@@ -74,7 +74,7 @@ internal/line-helpdesk/aliases.json、prices_line.json ── build_faq.py ─�
 | 各頁 FAQ、自費價目 | `sync_assistants.py` | 不受影響 | 不受影響 |
 | `services/index.html`〈不確定要找哪一位？〉 | 醫師卡「這些狀況可以找我」手改 `legacy_messages.json`（程式變更 → 升版打包） | 不受影響 | `clinic-notes.ts` `DOCTOR_GUIDE`（`website-parity` 會紅） |
 | `team/index.html` 卡片第一句、`/health/`／`/services/`／`/news/` 總覽 | 不受影響 | 重跑 `build_site_index.py` | 不受影響 |
-| 急症三篇、`growth.html`、`game/`、PWA PRECACHE 衛教頁增減 | 不適用 | 重跑 `build_offline_site.py` | 不受影響 |
+| 急症三篇、`growth.html`、`development-check.html`、`game/`、PWA PRECACHE 衛教頁增減 | 不適用 | 重跑 `build_offline_site.py` | 不受影響 |
 | `visit-guide.html` 掛號／過號／預防針規則 | FAQ 有改就重產 | `Resources/visit-guide.json` 逐字同步（可見文字） | `clinic-notes.ts`（`website-parity` 會紅） |
 | 電話、地址、LINE 帳號、看診進度網址 | `legacy_messages.json` | `ClinicLinks.swift` | `clinic-info.ts` |
 | 掛號入口（BookNow → 自建） | 圖文選單腳本重新發布 | 合併分支 `claude/charming-knuth-66v6lv` | 照 `booking-system/docs/11` 切換清單，三邊同一天 |
